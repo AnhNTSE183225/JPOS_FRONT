@@ -5,7 +5,6 @@ import HomePage from './pages/HomePage';
 import CustomDesignPage from './pages/CustomDesignPage';
 import NotFoundPage from './pages/NotFoundPage';
 import DiamondPriceListPage from './pages/DiamondPriceListPage';
-weewwewe
 
 const router = createBrowserRouter([{
   path: '/',
