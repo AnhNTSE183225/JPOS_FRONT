@@ -1,6 +1,13 @@
+import NavigationBar from "../components/NavigationBar";
+
 const HomePage = () => {
     return (
-        <h1>Home page</h1>
+        <div>
+            <NavigationBar/>
+            <div>
+                <h1>Home page</h1>
+            </div>
+        </div>
     )
 }
 
