@@ -1,7 +1,10 @@
 import NavigationBar from "../components/NavigationBar";
-import './CustomDesignPage.css'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import img from '../assets/jewelry_manufacturing_process.png';
+import './CustomDesignPage.css'
+import axios from 'axios';
 
 const CustomDesignPage = () => {
 
@@ -39,32 +42,41 @@ const CustomDesignPage = () => {
                 }
             )
         }
+        console.log(sessionStorage.getItem('username'));
     }
 
     return (
-        <div>
+        <>
             <NavigationBar />
-            <div>
-                <h1>Design your own</h1>
-                <div>
-                    <div>
-                        <p>Give us reference images of your idea</p>
-                        <textarea value={designFile} onChange={handleDesignFile} rows='1' cols='30'></textarea>
+            <div className="container">
+
+                <div className="row">
+                    <div className="col-md-4">
+                        <h1>Design your own</h1>
+                        <div>
+                            <div className="mb-3">
+                                <label className="form-label">Give us reference images of your idea</label>
+                                <textarea maxLength={255} className="form-control" value={designFile} onChange={handleDesignFile} rows='1' cols='30'></textarea>
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Describe what you want</label>
+                                <textarea maxLength={255} className="form-control" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">What's your budget?</label>
+                                <textarea maxLength={255} className="form-control" value={budget} onChange={handleBudget} rows='1' cols='30'></textarea>
+                            </div>
+                            <div>
+                                <button className="btn btn-dark w-100" onClick={submitForm}>Submit</button>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p>Describe what you want</p>
-                        <textarea value={description} onChange={handleDescription} rows='6' cols='30'></textarea>
-                    </div>
-                    <div>
-                        <p>What's your budget?</p>
-                        <textarea value={budget} onChange={handleBudget} rows='1' cols='30'></textarea>
-                    </div>
-                    <div>
-                        <button onClick={submitForm}>Submit</button>
+                    <div className="col-md-8">
+                        <img src={img} className="img-fluid" />
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

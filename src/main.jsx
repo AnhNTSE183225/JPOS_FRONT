@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import CustomDesignPage from './pages/CustomDesignPage';
 import NotFoundPage from './pages/NotFoundPage';
 import DiamondPriceListPage from './pages/DiamondPriceListPage';
+import LoginPage from './pages/LoginPage';
 
 const router = createBrowserRouter([{
   path: '/',
@@ -18,6 +19,10 @@ const router = createBrowserRouter([{
 {
   path: '/diamond-price-list',
   element: <DiamondPriceListPage/>
+},
+{
+  path: '/login',
+  element: <LoginPage/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
