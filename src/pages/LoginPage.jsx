@@ -1,6 +1,7 @@
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import NavigationBar from '../components/NavigationBar';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -8,6 +9,7 @@ const LoginPage = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleUsername = (event) => {
         setUsername(event.target.value);
@@ -18,7 +20,19 @@ const LoginPage = () => {
     }
 
     const login = () => {
-        axios
+        axios.post('http://localhost:8080/api/login',
+            {
+                username: username,
+                password: password
+            }
+        ).then((response) => {
+            sessionStorage.setItem('customer_id',response.data.customerId);
+            sessionStorage.setItem('username',response.data.username);
+            sessionStorage.setItem('address',response.data.address);
+            navigate('/');
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     return (
@@ -41,10 +55,10 @@ const LoginPage = () => {
                             </div>
                             <div className='mb-3 row'>
                                 <div className='col'>
-                                    <button className='btn btn-dark w-100'>Login</button>
+                                    <button onClick={login} className='btn btn-dark w-100'>Login</button>
                                 </div>
                                 <div className='col'>
-                                    <button onClick={login} className='btn btn-light w-100'>Register</button>
+                                    <button className='btn btn-light w-100'>Register</button>
                                 </div>
                             </div>
                         </div>
