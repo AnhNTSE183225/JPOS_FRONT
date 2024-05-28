@@ -1,0 +1,34 @@
+.ringsType {
+    width: 1430px;
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    scrollbar-color: transparent transparent;
+    user-select: none;
+    background-color: white;
+}
+.ringsType::-webkit-scrollbar {
+    height: 1px;
+    background-color: transparent;
+}
+.ringsType .ring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+.ringsType .ring .ringImage {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.ringsType .ring .ringImage img {
+    width: 100%;
+    height: 100%;
+}
+.ringsType .ring .ringName {
+    font-size: 14px;
+    color: black;
+}
