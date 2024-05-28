@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import './NavigationBar.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 
-const UserComponent = () => {
-    if (sessionStorage.getItem('username') == null) {
+const UserComponent = (props) => {
+
+    const logout = () => {
+        sessionStorage.clear();
+        props.setLoggedIn(false);
+    }
+
+    if (!props.loggedIn) {
         return (
             <li className="nav-item">
                 <Link className='nav-link' to='/login'>Login/Register</Link>
@@ -22,7 +29,7 @@ const UserComponent = () => {
                         <li><a className="dropdown-item" href="#">Your requests</a></li>
                         <li><a className="dropdown-item" href="#">Your designs</a></li>
                         <li><hr className="dropdown-divider" /></li>
-                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                        <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
                     </ul>
                 </li>
             </>
@@ -31,6 +38,8 @@ const UserComponent = () => {
 }
 
 const NavigationBar = () => {
+
+    const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('username') != null);
 
     return (
         <>
@@ -42,7 +51,7 @@ const NavigationBar = () => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <UserComponent/>
+                            <UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
                             <li className="nav-item">
                                 <Link className='nav-link' to='/'>Home</Link>
                             </li>
