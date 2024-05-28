@@ -4,6 +4,7 @@ import NavigationBar from '../components/NavigationBar';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {Toaster, toast} from 'sonner';
 import axios from 'axios';
 
 const LoginPage = () => {
@@ -33,12 +34,14 @@ const LoginPage = () => {
             sessionStorage.setItem('address', response.data.address);
             navigate('/');
         }).catch((error) => {
-            console.log(error);
+            toast.error(error);
+            //console.log(error);
         })
     }
 
     return (
         <>
+            <Toaster position='top-center' richColors expand={true}/>
             <NavigationBar />
             <div className='container'>
                 <div className='row'>

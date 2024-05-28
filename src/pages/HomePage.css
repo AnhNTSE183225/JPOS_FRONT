@@ -1,7 +1,7 @@
 .ringsType {
-    width: 1430px;
+    width: 100vw;
     display: flex;
-    gap: 30px;
+    gap: 5vw;
     overflow-x: auto;
     scrollbar-color: transparent transparent;
     user-select: none;
@@ -19,8 +19,8 @@
     cursor: pointer;
 }
 .ringsType .ring .ringImage {
-    width: 60px;
-    height: 60px;
+    width: 20vw;
+    height: 20vw;
     border-radius: 50%;
     overflow: hidden;
 }

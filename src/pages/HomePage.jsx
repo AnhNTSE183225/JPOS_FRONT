@@ -47,7 +47,7 @@ const HomePage = () => {
         if(!isMouseDown) return;
         e.preventDefault();
         const x = e.pageX - itemsRef.current.offsetLeft;
-        const walk = (x - startX) * 2;
+        const walk = (x - startX) * 1.5;
         itemsRef.current.scrollLeft = scrollLeft - walk;
     }
 

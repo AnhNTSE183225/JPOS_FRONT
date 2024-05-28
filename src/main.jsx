@@ -1,12 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {Toaster, toast} from 'sonner';
 import HomePage from './pages/HomePage';
 import CustomDesignPage from './pages/CustomDesignPage';
 import NotFoundPage from './pages/NotFoundPage';
 import DiamondPriceListPage from './pages/DiamondPriceListPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import './main.css';
 
 const router = createBrowserRouter([{
   path: '/',
@@ -31,7 +33,5 @@ const router = createBrowserRouter([{
 }]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
 )

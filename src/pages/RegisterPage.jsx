@@ -1,6 +1,7 @@
 import NavigationBar from "../components/NavigationBar";
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import {Toaster, toast} from 'sonner';
 import axios from 'axios';
 
 const RegisterPage = () => {
@@ -41,14 +42,17 @@ const RegisterPage = () => {
                 }
             ).catch(
                 (error) => {
-                    console.log(error);
+                    toast.error('Username already exists!');
                 }
             )
+        } else {
+            toast.error('Please fill in all fields!');
         }
     }
 
     return (
         <>
+            <Toaster position='top-center' richColors expand={true}/>
             <NavigationBar />
             <div className="container">
                 <div className="row">
