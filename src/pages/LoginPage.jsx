@@ -3,6 +3,7 @@ import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import NavigationBar from '../components/NavigationBar';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const LoginPage = () => {
@@ -26,9 +27,10 @@ const LoginPage = () => {
                 password: password
             }
         ).then((response) => {
-            sessionStorage.setItem('customer_id',response.data.customerId);
-            sessionStorage.setItem('username',response.data.username);
-            sessionStorage.setItem('address',response.data.address);
+            sessionStorage.setItem('customer_id', response.data.customerId);
+            sessionStorage.setItem('username', response.data.username);
+            sessionStorage.setItem('name', response.data.name);
+            sessionStorage.setItem('address', response.data.address);
             navigate('/');
         }).catch((error) => {
             console.log(error);
@@ -58,7 +60,7 @@ const LoginPage = () => {
                                     <button onClick={login} className='btn btn-dark w-100'>Login</button>
                                 </div>
                                 <div className='col'>
-                                    <button className='btn btn-light w-100'>Register</button>
+                                    <Link to='/register'><button className='btn btn-light w-100'>Register</button></Link>
                                 </div>
                             </div>
                         </div>
