@@ -21,7 +21,7 @@ const LoginPage = () => {
     }
 
     const login = () => {
-        axios.post('http://localhost:8080/api/login',
+        axios.post('http://localhost:8080/api/customer-login',
             {
                 username: username,
                 password: password
@@ -60,7 +60,7 @@ const LoginPage = () => {
                                     <button onClick={login} className='btn btn-dark w-100'>Login</button>
                                 </div>
                                 <div className='col'>
-                                    <Link to='/register'><button className='btn btn-light w-100'>Register</button></Link>
+                                    <Link to='/customer-register'><button className='btn btn-light w-100'>Register</button></Link>
                                 </div>
                             </div>
                         </div>

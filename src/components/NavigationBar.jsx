@@ -14,7 +14,7 @@ const UserComponent = (props) => {
     if (!props.loggedIn) {
         return (
             <li className="nav-item">
-                <Link className='nav-link' to='/login'>Login/Register</Link>
+                <Link className='nav-link' to='/customer-login'>Login/Register</Link>
             </li>
         )
     } else {
@@ -43,7 +43,7 @@ const NavigationBar = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg">
+            <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <Link to='/' className="navbar-brand">LOGO</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
