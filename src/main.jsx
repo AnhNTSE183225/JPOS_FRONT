@@ -22,11 +22,11 @@ const router = createBrowserRouter([{
   element: <DiamondPriceListPage/>
 },
 {
-  path: '/login',
+  path: '/customer-login',
   element: <LoginPage/>
 },
 {
-  path: '/register',
+  path: '/customer-register',
   element: <RegisterPage/>
 }]);
 
