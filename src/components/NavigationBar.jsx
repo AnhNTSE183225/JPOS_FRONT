@@ -22,7 +22,7 @@ const UserComponent = (props) => {
             <>
                 <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Moc Nguyen
+                        {sessionStorage.getItem('name')}
                     </a>
                     <ul className="dropdown-menu">
                         <li><a className="dropdown-item" href="#">View profile</a></li>

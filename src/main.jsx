@@ -6,6 +6,7 @@ import CustomDesignPage from './pages/CustomDesignPage';
 import NotFoundPage from './pages/NotFoundPage';
 import DiamondPriceListPage from './pages/DiamondPriceListPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 const router = createBrowserRouter([{
   path: '/',
@@ -23,6 +24,10 @@ const router = createBrowserRouter([{
 {
   path: '/login',
   element: <LoginPage/>
+},
+{
+  path: '/register',
+  element: <RegisterPage/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
