@@ -89,6 +89,7 @@
     text-align: center; 
     padding: 20px; 
     background-color: rgba(0, 0, 0, 0.5); 
+    overflow: hidden;
   }
   
   .image-text h2 {
@@ -97,7 +98,7 @@
   }
   
   .image-text p {
-    font-size: 1em; 
+    font-size: 1.2em; 
     line-height: 1.5;
     margin-bottom: 15px;
   }
