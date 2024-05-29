@@ -1,5 +1,6 @@
 import NavigationBar from "../components/NavigationBar";
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { Toaster, toast } from 'sonner';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import img from '../assets/jewelry_manufacturing_process.png';
@@ -26,30 +27,36 @@ const CustomDesignPage = () => {
 
     const submitForm = () => {
         if (designFile.length !== 0 && description.length != 0 && budget.length != 0) {
-            axios.post('http://localhost:8080/api/orders?id=1',
+            axios.post('http://localhost:8080/api/send-request',
                 {
+                    customerId: sessionStorage.getItem('customer_id'),
                     designFile: designFile,
                     description: description,
                     budget: budget
                 }
             ).then(
-                (response) => {
-                    console.log(response);
+                response => {
+                    toast.success('Form submitted successfully!');
+                    setDesignFile('');
+                    setDescription('');
+                    setBudget('');
                 }
             ).catch(
                 error => {
                     console.log(error);
+                    toast.error("Something went wrong! Please try again");
                 }
             )
+        } else {
+            toast.error('Please fill in all fields!');   
         }
-        console.log(sessionStorage.getItem('username'));
     }
 
     return (
         <>
+            <Toaster position='top-center' richColors expand={true} />
             <NavigationBar />
             <div className="container">
-
                 <div className="row">
                     <div className="col-md-4">
                         <h1>Design your own</h1>

@@ -46,7 +46,7 @@ const DiamondTable = (props) => {
                         <th>Price</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="table-group-divider">
                     {props.diamondPriceList.map(
                         (entry) => (
                             <tr key={entry.diamondPriceId}>
