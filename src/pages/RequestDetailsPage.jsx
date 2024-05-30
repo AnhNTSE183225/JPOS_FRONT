@@ -1,8 +1,15 @@
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
+const WaitSaleStaff = (order) => {
 
+    return (
+        <>
+
+        </>
+    )
+}
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
@@ -38,11 +45,13 @@ const RequestDetailPage = () => {
         productionPrice: null,
         markupRate: null
     }
-    switch(order.status) {
+    switch (order.status) {
         case "wait_sale_staff":
             break;
         case "wait_manager":
-            break;
+            return (
+                <WaitSaleStaff />
+            );
         case "manager_approved":
             break;
         case "wait_customer":
