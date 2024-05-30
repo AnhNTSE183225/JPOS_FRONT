@@ -19,7 +19,7 @@ const UserComponent = (props) => {
     if (!props.loggedIn) {
         return (
             <li className="nav-item">
-                <Link className='nav-link' to='/customer-login'>Login/Register</Link>
+                <Link className='nav-link' to='/login'>Login/Register</Link>
             </li>
         )
     } else {

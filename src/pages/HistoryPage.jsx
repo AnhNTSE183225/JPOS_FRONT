@@ -1,7 +1,7 @@
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
-import { formatDate, formatPrice } from '../helper_function/ConvertFunction'
-import { Link } from 'react-router-dom'
+import {formatDate, formatPrice} from '../helper_function/ConvertFunction'
+import {Link} from 'react-router-dom'
 
 const orders = [
     {
@@ -166,7 +166,6 @@ const orders = [
     }
 ];
 
-
 const TableComponent = () => {
     return (
         <table className='table table-hover'>
@@ -177,7 +176,6 @@ const TableComponent = () => {
                     <th>Date</th>
                     <th>Budget</th>
                     <th>Status</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -187,12 +185,7 @@ const TableComponent = () => {
                         <td>{order.customerName}</td>
                         <td>{formatDate(order.orderDate)}</td>
                         <td>{formatPrice(order.budget)}</td>
-                        <td>{order.status}</td>
-                        <td>
-                            <Link to={`/profile/request/${order.orderId}`}>
-                                <button className='btn btn-primary'>Manage</button>
-                            </Link>
-                        </td>
+                        <td>Completed</td>
                     </tr>
                 ))}
             </tbody>
@@ -200,23 +193,19 @@ const TableComponent = () => {
     )
 }
 
-const RequestPage = () => {
-
-    //console.log("Is customer? ", sessionStorage.getItem('customer_id') !== null);
-    //console.log("Is staff?", sessionStorage.getItem('staff_id') !== null);
-
+const HistoryPage = () => {
     return (
         <>
             <div className='container-fluid'>
                 <div className='row'>
-                    <h1>Request Screen</h1>
+                    <h1>History</h1>
                 </div>
                 <div className='row'>
                     <TableComponent />
                 </div>
             </div>
         </>
-    )
+    );
 }
 
-export default RequestPage;
+export default HistoryPage;

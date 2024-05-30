@@ -8,11 +8,12 @@ import DiamondPriceListPage from './pages/DiamondPriceListPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/Profile';
-import RequestQuotationPage from './pages/RequestQuotationPage';
 import RequestPage from './pages/RequestPage';
 import FrameSidebar from './pages/FrameSidebar';
 import FrameNavbar from './pages/FrameNavbar';
+import HistoryPage from './pages/HistoryPage';
 import './main.css';
+import RequestDetailPage from './pages/RequestDetailsPage';
 
 const router = createBrowserRouter([{
   path: '/',
@@ -21,45 +22,45 @@ const router = createBrowserRouter([{
   children: [
     {
       path: '/',
-      element: <HomePage />
+      element: <HomePage /> //Customer exclusive
     },
     {
       path: '/custom-design',
-      element: <CustomDesignPage />
+      element: <CustomDesignPage /> //Customer exclusive
     },
     {
       path: '/diamond-price-list',
-      element: <DiamondPriceListPage />
+      element: <DiamondPriceListPage /> //Customer exclusive
     },
     {
-      path: '/customer-login',
-      element: <LoginPage />
+      path: '/login',
+      element: <LoginPage /> //Customer, Staff
     },
     {
       path: '/customer-register',
-      element: <RegisterPage />
+      element: <RegisterPage /> //Customer
     },
   ]
 },
 {
-  path: '/manage-request',
-  element: <RequestQuotationPage />
-},
-{
-  path: '/requests',
-  element: <RequestPage />
-},
-{
-  path: '/profile',
+  path: '/profile', //Customer, Staff
   element: <FrameSidebar />,
   children: [
     {
-      path:'/profile',
-      element:<ProfilePage/>
+      path: '',
+      element: <ProfilePage /> //Customer, Staff
     },
     {
-      path: '/profile/request',
-      element: <RequestPage />
+      path: 'request',
+      element: <RequestPage /> //Staff
+    },
+    {
+      path: 'history',
+      element: <HistoryPage /> //Staff
+    },
+    {
+      path: 'request/:orderId',
+      element: <RequestDetailPage/> //Staff
     }
   ]
 }]);
