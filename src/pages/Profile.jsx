@@ -6,19 +6,14 @@ import Sidebar from '../components/Sidebar';
 const ProfilePage = () => {
     return (
         <>
-            <div className='container-fluid'>
-                <div className='row'>
-                    <div className='col-2'>
+            <div className='container-fluid p-0'>
+                <div className='row min-vh-100 flex-nowrap'>
+                    <div className='col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark'>
                         <Sidebar />
                     </div>
-                    <div className='col'>
+                    <div className='col py-3'>
                         <h1>Liem</h1>
                     </div>
-                    <div className='col'>
-                        <h1>Liem</h1>
-                    </div>
-                </div>
-                <div className='row'>
                     <div className='col'>
                         <h1>Liem</h1>
                     </div>
