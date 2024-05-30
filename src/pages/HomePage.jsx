@@ -65,11 +65,11 @@ const HomePage = () => {
             <div>
                 <NavigationBar />
             </div>
-            <div className="backImg">
+            <div className="image-container">
                 <img src={img} alt="mrs_indian" />
-                <div class="image-text">
+                <div className="image-text">
                     <h2>Embrace the Opulence of Autumn</h2>
-                    <p>
+                    <p className="text-break">
                         As the leaves turn to shades of amber and gold, we unveil our Fall
                         Collection, a tribute to the timeless elegance of Indian
                         craftsmanship. Our cover, a portrait of grace, captures the essence
@@ -77,7 +77,7 @@ const HomePage = () => {
                         of traditional attire, her visage framed by exquisite jewelry that
                         whispers tales of heritage and opulence.
                     </p>
-                    <button>Learn More</button>{" "}
+                    <button>Learn More</button>
                 </div>
             </div>
             <div className="chooseRings">

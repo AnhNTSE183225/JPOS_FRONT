@@ -1,127 +1,128 @@
 .chooseRings .ringsType {
-    margin-left: 2.5vw;
-    margin-right: 2vw;
-    width: 95.5vw;
-    display: flex;
-    gap: 5vw;
-    overflow-x: auto;
-    scrollbar-color: transparent transparent;
-    user-select: none;
-    background-color: white;
+  margin-left: 2.5vw;
+  margin-right: 2vw;
+  width: 95.5vw;
+  display: flex;
+  gap: 5vw;
+  overflow-x: auto;
+  scrollbar-color: transparent transparent;
+  user-select: none;
+  background-color: white;
 }
 
 .chooseRings .ringsType::-webkit-scrollbar {
-    height: 1px;
-    background-color: transparent;
+  height: 1px;
+  background-color: transparent;
 }
 
 .chooseRings .ringsType .ring {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 }
 
 .chooseRings .ringsType .ring .ringImage {
-    width: 20vw;
-    height: 20vw;
-    border-radius: 50%;
-    overflow: hidden;
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .chooseRings .ringsType .ring .ringImage img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .chooseRings .ringsType .ring .ringName {
-    font-size: 14px;
-    color: black;
+  font-size: 14px;
+  color: black;
 }
 
 .title {
-    text-align: center;
-    color: #48AAAD
+  text-align: center;
+  color: #48aaad;
 }
 
 .chooseShapes .shapesType {
-    margin-left: 2.5vw;
-    margin-right: 2vw;
-    width: 95.5vw;
-    display: flex;
-    gap: 5vw;
-    overflow-x: auto;
-    scrollbar-color: transparent transparent;
-    user-select: none;
-    background-color: white;
+  margin-left: 2.5vw;
+  margin-right: 2vw;
+  width: 95.5vw;
+  display: flex;
+  gap: 5vw;
+  overflow-x: auto;
+  scrollbar-color: transparent transparent;
+  user-select: none;
+  background-color: white;
 }
 
 .chooseShapes .shapesType::-webkit-scrollbar {
-    height: 1px;
-    background-color: transparent;
+  height: 1px;
+  background-color: transparent;
 }
 
 .chooseShapes .shapesType .shape {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 }
 
 .chooseShapes .shapesType .shape .shapeImage {
-    width: 20vw;
-    height: 20vw;
-    overflow: hidden;
+  width: 20vw;
+  height: 20vw;
+  overflow: hidden;
 }
 
 .chooseShapes .shapesType .shape .shapeImage img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .chooseShapes .shapesType .shape .shapeName {
-    font-size: 14px;
-    color: black;
-}
-
-.backImg {
-    text-align: center;
+  font-size: 14px;
+  color: black;
 }
 
 .image-container {
-    position: relative;
+  text-align: center;
+  position: relative;
+  width: 100vw;
+}
+.image-container img {
+    width: auto;
+    height: auto;
 }
 
 .image-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);  
-    color: white; 
-    text-align: center; 
-    padding: 20px; 
-    background-color: rgba(0, 0, 0, 0.5); 
-    overflow: hidden;
-  }
-  
-  .image-text h2 {
-    font-size: 2em; 
-    margin-bottom: 10px; 
-  }
-  
-  .image-text p {
-    font-size: 1.2em; 
-    line-height: 1.5;
-    margin-bottom: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.image-text h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.image-text p {
+  font-size: 1.2em;
+  line-height: 1.5;
+  margin-bottom: 15px;
 }
 
 .image-text button {
-    background-color: #48AAAD;
-    color: rgba(255, 255, 255, 0.688);
-    border: 1px solid white;
-    /* White border for visibility */
-    padding: 10px 20px;
-    cursor: pointer;
+  background-color: #48aaad;
+  color: rgb(255, 255, 255);
+  border: 1px solid white;
+  padding: 10px 20px;
+  cursor: pointer;
 }
