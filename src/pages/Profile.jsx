@@ -11,12 +11,6 @@ const ProfilePage = () => {
                     <div className='col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark'>
                         <Sidebar />
                     </div>
-                    <div className='col py-3'>
-                        <h1>Liem</h1>
-                    </div>
-                    <div className='col'>
-                        <h1>Liem</h1>
-                    </div>
                 </div>
             </div>
         </>

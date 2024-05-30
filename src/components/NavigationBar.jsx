@@ -25,7 +25,7 @@ const UserComponent = (props) => {
                     </a>
                     <ul className="dropdown-menu">
                         <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
-                        <li><a className="dropdown-item" href="#">Your requests</a></li>
+                        <li><Link className="dropdown-item" to='/manage-request'>Your requests</Link></li>
                         <li><a className="dropdown-item" href="#">Your designs</a></li>
                         <li><hr className="dropdown-divider" /></li>
                         <li><a className="dropdown-item" onClick={logout}>Logout</a></li>

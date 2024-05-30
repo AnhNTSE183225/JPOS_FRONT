@@ -8,6 +8,7 @@ import DiamondPriceListPage from './pages/DiamondPriceListPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/Profile';
+import RequestQuotationPage from './pages/RequestQuotationPage';
 import './main.css';
 
 const router = createBrowserRouter([{
@@ -34,6 +35,10 @@ const router = createBrowserRouter([{
 {
   path : '/profile',
   element: <ProfilePage/>
+},
+{
+  path : '/manage-request',
+  element: <RequestQuotationPage/>
 }]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
