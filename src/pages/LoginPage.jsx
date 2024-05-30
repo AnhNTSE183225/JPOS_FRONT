@@ -35,7 +35,6 @@ const LoginPage = () => {
       })
       .catch((error) => {
         toast.error(error);
-        //console.log(error);
       });
   };
   const loginStaff = () => {
@@ -58,7 +57,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <Toaster position="top-center" richColors expand={true} />
+      <Toaster position="top-right" richColors expand={true} />
       <NavigationBar />
       <div className="container">
         <div className="row">
@@ -92,13 +91,13 @@ const LoginPage = () => {
               </div>
               <div className="mb-3 row">
                 <div className="col">
-                  <button onClick={login} className="btn btn-dark w-100">
+                  <button onClick={login} className="btn btn-dark w-100" style={{ color: '#48AAAD' }}>
                     Login
                   </button>
                 </div>
                 <div className="col">
                   <Link to="/customer-register">
-                    <button className="btn btn-light w-100">Register</button>
+                    <button className="btn btn-light w-100" style={{ color: '#48AAAD' }}>Register</button>
                   </Link>
                 </div>
               </div>
