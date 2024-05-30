@@ -37,11 +37,7 @@ const LoginPage = () => {
                     navigate("/");
                 })
                 .catch((error) => {
-                    if (error.response) {
-                        toast(error.response.data);
-                    } else {
-                        console.log(error);
-                    }
+                    console.log(error);
                 });
         } else {
             toast.error("Please fill in all forms!");
@@ -63,11 +59,8 @@ const LoginPage = () => {
                     navigate("/profile");
                 })
                 .catch((error) => {
-                    if (error.response) {
-                        toast(error.response.data);
-                    } else {
-                        console.log(error);
-                    }
+                    toast('Invalid login credentials');
+                    console.log(error);
                 });
         } else {
             toast.error("Please fill in all forms!");

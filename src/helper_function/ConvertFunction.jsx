@@ -1,5 +1,8 @@
 
 export const formatPrice = (price) => {
+    if(price === null || price === undefined) {
+        return "";
+    }
     return price.toLocaleString('vi-VN', {
         style: 'currency',
         currency: 'VND',
@@ -9,6 +12,11 @@ export const formatPrice = (price) => {
 };
 
 export const formatDate = (dateString) => {
+    
+    if(dateString === null || dateString === undefined) {
+        return "";
+    }
+    
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // January is 0!
