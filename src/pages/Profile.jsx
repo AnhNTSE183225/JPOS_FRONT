@@ -6,10 +6,9 @@ import Sidebar from '../components/Sidebar';
 const ProfilePage = () => {
     return (
         <>
-            <NavigatonBar />
             <div className='container-fluid'>
                 <div className='row'>
-                    <div className='col'>
+                    <div className='col-2'>
                         <Sidebar />
                     </div>
                     <div className='col'>
