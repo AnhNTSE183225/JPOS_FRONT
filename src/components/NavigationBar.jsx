@@ -25,7 +25,7 @@ const UserComponent = (props) => {
                         {sessionStorage.getItem('name')}
                     </a>
                     <ul className="dropdown-menu">
-                        <li><a className="dropdown-item" href="#">View profile</a></li>
+                        <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
                         <li><a className="dropdown-item" href="#">Your requests</a></li>
                         <li><a className="dropdown-item" href="#">Your designs</a></li>
                         <li><hr className="dropdown-divider" /></li>
