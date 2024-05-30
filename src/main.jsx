@@ -8,44 +8,62 @@ import DiamondPriceListPage from './pages/DiamondPriceListPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/Profile';
-import RequestQuotationPage from './pages/RequestQuotationPage';
 import RequestPage from './pages/RequestPage';
+import FrameSidebar from './pages/FrameSidebar';
+import FrameNavbar from './pages/FrameNavbar';
+import HistoryPage from './pages/HistoryPage';
 import './main.css';
+import RequestDetailPage from './pages/RequestDetailsPage';
 
 const router = createBrowserRouter([{
   path: '/',
-  element: <HomePage />,
-  errorElement: <NotFoundPage />
+  element: <FrameNavbar />,
+  errorElement: <NotFoundPage />,
+  children: [
+    {
+      path: '/',
+      element: <HomePage /> //Customer exclusive
+    },
+    {
+      path: '/custom-design',
+      element: <CustomDesignPage /> //Customer exclusive
+    },
+    {
+      path: '/diamond-price-list',
+      element: <DiamondPriceListPage /> //Customer exclusive
+    },
+    {
+      path: '/login',
+      element: <LoginPage /> //Customer, Staff
+    },
+    {
+      path: '/customer-register',
+      element: <RegisterPage /> //Customer
+    },
+  ]
 },
 {
-  path: '/custom-design',
-  element: <CustomDesignPage />
-},
-{
-  path: '/diamond-price-list',
-  element: <DiamondPriceListPage />
-},
-{
-  path: '/customer-login',
-  element: <LoginPage />
-},
-{
-  path: '/customer-register',
-  element: <RegisterPage />
-},
-{
-  path : '/profile',
-  element: <ProfilePage/>
-},
-{
-  path : '/manage-request',
-  element: <RequestQuotationPage/>
-},
-{
-  path: '/requests',
-  element: <RequestPage/>
+  path: '/profile', //Customer, Staff
+  element: <FrameSidebar />,
+  children: [
+    {
+      path: '',
+      element: <ProfilePage /> //Customer, Staff
+    },
+    {
+      path: 'request',
+      element: <RequestPage /> //Staff
+    },
+    {
+      path: 'history',
+      element: <HistoryPage /> //Staff
+    },
+    {
+      path: 'request/:orderId',
+      element: <RequestDetailPage/> //Staff
+    }
+  ]
 }]);
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterProvider router={router} />
 )

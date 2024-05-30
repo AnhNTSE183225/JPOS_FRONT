@@ -9,7 +9,7 @@ const ProfilePage = () => {
             <div className='container-fluid p-0'>
                 <div className='row'>
                     <div className='col-md-2'>
-                        <Sidebar active="home"/>
+                        Test
                     </div>
                 </div>
             </div>

@@ -3,27 +3,10 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { formatDate,formatPrice } from "../helper_function/ConvertFunction";
 
 const DiamondTable = (props) => {
 
-    const formatPrice = (price) => {
-        return price.toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // January is 0!
-        const year = date.getFullYear();
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}`;
-    };
 
     if (props.diamondPriceList.length === 0) {
         return (
@@ -87,8 +70,7 @@ const DiamondPriceListPage = () => {
     }, []);
 
     return (
-        <div>
-            <NavigationBar />
+        <>
             <div>
                 <div className="container">
                     <div className="row mt-3">
@@ -101,7 +83,7 @@ const DiamondPriceListPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
