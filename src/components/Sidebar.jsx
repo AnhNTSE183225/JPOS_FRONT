@@ -1,44 +1,53 @@
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import {Link} from 'react-router-dom'
 
-const Sidebar = () => {
+const components = (props) => {
+
+}
+
+const Sidebar = (props) => {
+
+    let classStyle = {
+        home: "nav-link text-white",
+        request: "nav-link text-white",
+        history: "nav-link text-white"
+    }
+
+    switch (props.active) {
+        case "home":
+            classStyle.home = "nav-link active";
+            break;
+        case "request":
+            classStyle.request = "nav-link active";
+            break;
+        case "history":
+            classStyle.history = "nav-link active";
+            break;
+        default:
+    }
+
     return (
-        <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100">
+        <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
             <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <svg className="bi me-2" width="40" height="32"><use xlinkHref="#bootstrap" /></svg>
                 <span className="fs-4">Sidebar</span>
             </a>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
                 <li className="nav-item">
-                    <a href="#" className="nav-link active" aria-current="page">
-                        <svg className="bi me-2" width="16" height="16"><use xlinkHref="#home" /></svg>
+                    <Link to="/profile" className={classStyle.home} aria-current="page">
                         Home
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="#" className="nav-link text-white">
-                        <svg className="bi me-2" width="16" height="16"><use xlinkHref="#speedometer2" /></svg>
-                        Dashboard
-                    </a>
+                    <Link to="/requests" className={classStyle.request}>
+                        Requests
+                    </Link>
                 </li>
                 <li>
-                    <a href="#" className="nav-link text-white">
-                        <svg className="bi me-2" width="16" height="16"><use xlinkHref="#table" /></svg>
-                        Orders
-                    </a>
-                </li>
-                <li>
-                    <a href="#" className="nav-link text-white">
-                        <svg className="bi me-2" width="16" height="16"><use xlinkHref="#grid" /></svg>
-                        Products
-                    </a>
-                </li>
-                <li>
-                    <a href="#" className="nav-link text-white">
-                        <svg className="bi me-2" width="16" height="16"><use xlinkHref="#people-circle" /></svg>
-                        Customers
-                    </a>
+                    <Link href="#" className={classStyle.history}>
+                        History
+                    </Link>
                 </li>
             </ul>
             <hr />
