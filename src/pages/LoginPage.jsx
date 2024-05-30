@@ -19,6 +19,9 @@ const LoginPage = () => {
     const handlePassword = (event) => {
         setPassword(event.target.value);
     };
+
+
+
     const login = () => {
         if (username.length !== 0 && password.length !== 0) {
             axios
@@ -52,11 +55,11 @@ const LoginPage = () => {
                     password: password,
                 })
                 .then((response) => {
-                    sessionStorage.setItem("staff_id",response.data.staffId);
-                    sessionStorage.setItem("username",response.data.username);
-                    sessionStorage.setItem("name",response.data.name);
-                    sessionStorage.setItem("phone",response.data.phone);
-                    sessionStorage.setItem("staff_type",response.data.staffType);
+                    sessionStorage.setItem("staff_id", response.data.staffId);
+                    sessionStorage.setItem("username", response.data.username);
+                    sessionStorage.setItem("name", response.data.name);
+                    sessionStorage.setItem("phone", response.data.phone);
+                    sessionStorage.setItem("staff_type", response.data.staffType);
                     navigate("/profile");
                 })
                 .catch((error) => {
@@ -74,7 +77,6 @@ const LoginPage = () => {
     return (
         <>
             <Toaster position="top-center" richColors expand={true} />
-            <NavigationBar />
             <div className="container">
                 <div className="row">
                     <div className="col">
@@ -118,7 +120,7 @@ const LoginPage = () => {
                                 </div>
                             </div>
                             <div className="d-flex justify-content-end">
-                                <a onClick={loginStaff} style={{ color: '#48AAAD' }}>Login as staff</a>
+                                <Link to="" onClick={loginStaff} style={{ color: '#48AAAD' }}>Login as staff</Link>
                             </div>
                         </div>
                     </div>

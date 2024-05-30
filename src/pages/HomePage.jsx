@@ -62,9 +62,6 @@ const HomePage = () => {
 
     return (
         <>
-            <div>
-                <NavigationBar />
-            </div>
             <div className="image-container">
                 <img src={img} alt="mrs_indian" />
                 <div className="image-text">

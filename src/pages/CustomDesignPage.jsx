@@ -55,7 +55,6 @@ const CustomDesignPage = () => {
     return (
         <>
             <Toaster position='top-center' richColors expand={true} />
-            <NavigationBar />
             <div className="container">
                 <div className="row">
                     <div className="col-md-4">

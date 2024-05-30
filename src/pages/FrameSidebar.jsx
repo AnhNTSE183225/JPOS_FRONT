@@ -1,15 +1,19 @@
+import React, {useState} from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
-import NavigatonBar from '../components/NavigationBar'
+import 'bootstrap/dist/js/bootstrap.bundle';
 import Sidebar from '../components/Sidebar';
+import {Link, Outlet} from 'react-router-dom';
 
-const ProfilePage = () => {
+const FrameSidebar = () => {
     return (
         <>
             <div className='container-fluid p-0'>
                 <div className='row'>
                     <div className='col-md-2'>
-                        Test
+                        <Sidebar/>
+                    </div>
+                    <div className='col-md-9'>
+                        <Outlet/>
                     </div>
                 </div>
             </div>
@@ -17,4 +21,4 @@ const ProfilePage = () => {
     )
 }
 
-export default ProfilePage;
+export default FrameSidebar;

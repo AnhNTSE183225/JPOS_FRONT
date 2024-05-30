@@ -1,12 +1,22 @@
+import { useState } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
-import {Link} from 'react-router-dom'
+import {useLocation, Link, useNavigate} from 'react-router-dom';
 
-const components = (props) => {
+const Sidebar = () => {
 
-}
+    const navigate = useNavigate();
+    const location = useLocation().pathname.split('/');
+    const [dropdown, setDropdown] = useState(false);
 
-const Sidebar = (props) => {
+    const handleDropdown = () => {
+        setDropdown(!dropdown);
+    }
+
+    const logout = () => {
+        sessionStorage.clear();
+        navigate('/');
+    }
 
     let classStyle = {
         home: "nav-link text-white",
@@ -14,10 +24,7 @@ const Sidebar = (props) => {
         history: "nav-link text-white"
     }
 
-    switch (props.active) {
-        case "home":
-            classStyle.home = "nav-link active";
-            break;
+    switch (location[location.length-1]) {
         case "request":
             classStyle.request = "nav-link active";
             break;
@@ -25,6 +32,7 @@ const Sidebar = (props) => {
             classStyle.history = "nav-link active";
             break;
         default:
+            classStyle.home = "nav-link active";
     }
 
     return (
@@ -40,7 +48,7 @@ const Sidebar = (props) => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/requests" className={classStyle.request}>
+                    <Link to="/profile/request" className={classStyle.request}>
                         Requests
                     </Link>
                 </li>
@@ -52,16 +60,14 @@ const Sidebar = (props) => {
             </ul>
             <hr />
             <div className="dropdown">
-                <a href="#" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <Link to="" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" aria-expanded="false" onClick={handleDropdown}>
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
                     <strong>mdo</strong>
-                </a>
-                <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a className="dropdown-item" href="#">New project...</a></li>
-                    <li><a className="dropdown-item" href="#">Settings</a></li>
-                    <li><a className="dropdown-item" href="#">Profile</a></li>
+                </Link>
+                <ul className={dropdown == false ? "dropdown-menu dropdown-menu-dark text-small shadow" : "dropdown-menu dropdown-menu-dark text-small shadow show"} aria-labelledby="dropdownUser1">
+                    <li><Link className="dropdown-item" to="">Placeholder</Link></li>
                     <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item" href="#">Sign out</a></li>
+                    <li><Link className="dropdown-item" onClick={logout}>Sign out</Link></li>
                 </ul>
             </div>
         </div>
