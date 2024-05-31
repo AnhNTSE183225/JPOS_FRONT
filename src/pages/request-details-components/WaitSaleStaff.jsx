@@ -3,30 +3,96 @@ import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const getLatestPrice = (diamondPrices) => {
+    // Get the current date and time
+    const now = new Date();
+
+    // Filter out prices with effective dates in the future
+    const pastPrices = diamondPrices.filter(price => {
+        const effectiveDate = new Date(price.effectiveDate);
+        return effectiveDate <= now;
+    });
+
+    // Sort the prices by effective date in descending order
+    pastPrices.sort((a, b) => new Date(b.effectiveDate) - new Date(a.effectiveDate));
+
+    // Return the first item from the sorted array, which is the latest price
+    return pastPrices.length > 0 ? pastPrices[0] : null;
+};
+
 const WaitSaleStaff = ({ order }) => {
 
     const [cut, setCut] = useState('');
     const [color, setColor] = useState('');
     const [clarity, setClarity] = useState('');
-    const [caratWeight, setCaratWeight] = useState(0.0);
+    const [shape, setShape] = useState('');
+    const [fromCaratWeight, setFromCaratWeight] = useState(0.0);
+    const [toCaratWeight, setToCaratWeight] = useState(10.0);
+    const [diamondList, setDiamondList] = useState([]);
+    const [latestPrice, setLatestPrice] = useState(0);
+    const [chosenDiamonds, setChosenDiamonds] = useState([]);
 
-    const fetchPrice = (cut, color, clarity, caratWeight) => {
-        axios.get(`http://localhost:8080/api/get-price-by-4C`,
+    const chooseDiamond = (id, code, price) => {
+        setChosenDiamonds(oldList => [...oldList, {
+            id: id,
+            code: code,
+            price: price
+        }]);
+        console.log(chosenDiamonds);
+    }
+
+    useEffect(() => {
+        if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0) {
+            setLatestPrice(0);
+            fetchPrice(cut, color, clarity, fromCaratWeight, toCaratWeight);
+        }
+        if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0 && shape.length != 0) {
+            setDiamondList([]);
+            fetchDiamonds(cut, color, clarity, fromCaratWeight, toCaratWeight, shape);
+        }
+    }, [cut, color, clarity, fromCaratWeight, toCaratWeight, shape])
+
+    const fetchPrice = (cut, color, clarity, fromCaratWeight, toCaratWeight) => {
+
+        axios.post(`http://localhost:8080/api/get-price-by-4C`,
             {
                 cut: cut,
                 clarity: clarity,
-                caratWeight: caratWeight,
+                fromCaratWeight: fromCaratWeight,
+                toCaratWeight: toCaratWeight,
                 color: color
             }
         ).then(
             response => {
-                console.log(response.data);
+                const diamondPrice = response.data;
+                if (diamondPrice !== null) {
+                    setLatestPrice(getLatestPrice(diamondPrice));
+                }
             }
         ).catch(
             error => {
-                console.log(error);
+                console.log('no price');
             }
         )
+    }
+
+    const fetchDiamonds = (cut, color, clarity, fromCaratWeight, toCaratWeight, shape) => {
+
+        axios.get(`http://localhost:8080/api/get-diamonds-by-4C?fromCaratWeight=${fromCaratWeight}&toCaratWeight=${toCaratWeight}&cut=${cut}&clarity=${clarity}&color=${color}&shape=${shape}`)
+            .then(
+                response => {
+                    setDiamondList(response.data);
+                    console.log(diamondList);
+                }
+            ).catch(
+                error => {
+                    console.log('no diamonds');
+                }
+            )
+    }
+
+    const handleShape = (event) => {
+        setShape(event.target.value);
     }
 
     const handleCut = (event) => {
@@ -41,19 +107,24 @@ const WaitSaleStaff = ({ order }) => {
         setClarity(event.target.value);
     }
 
-    const handleCaratWeight = (event) => {
+    const handleFromCaratWeight = (event) => {
         const value = parseFloat(event.target.value);
-        setCaratWeight(isNaN(value) ? 0 : value);
+        setFromCaratWeight(isNaN(value) ? 0 : value);
+    }
+
+    const handleToCaratWeight = (event) => {
+        const value = parseFloat(event.target.value);
+        setToCaratWeight(isNaN(value) ? 0 : value);
     }
 
     return (
         <>
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row mt-5">
                     <h3>
                         <b>Request Quotation</b>
                     </h3>
-                    <div className="col px-3">
+                    <div className="col-md-3 px-3">
                         <p>
                             <b>Full Name</b>
                         </p>
@@ -68,28 +139,28 @@ const WaitSaleStaff = ({ order }) => {
                         <p className="px-3">{order.budget}</p>
                     </div>
 
-                    <div className="col px-3">
+                    <div className="col-md-5 px-3">
                         <div>
                             <p>
                                 <b>Main Diamond Quality</b>
                             </p>
-                            <div className="col-8 form-floating mb-2">
-                                <select className="form-select">
+                            <div className="form-floating col-10 mb-2">
+                                <select value={shape} onChange={handleShape} className="form-select">
                                     <option value>Choose shape</option>
-                                    <option value="Round">Round</option>
-                                    <option value="Princess">Princess</option>
-                                    <option value="Cushion">Cushion</option>
-                                    <option value="Emerald">Emerald</option>
-                                    <option value="Oval">Oval</option>
-                                    <option value="Radiant">Radiant</option>
-                                    <option value="Asscher">Asscher</option>
-                                    <option value="Marquise">Marquise</option>
-                                    <option value="Heart">Heart</option>
-                                    <option value="Pear">Pear</option>
+                                    <option value="round">Round</option>
+                                    <option value="princess">Princess</option>
+                                    <option value="cushion">Cushion</option>
+                                    <option value="emerald">Emerald</option>
+                                    <option value="oval">Oval</option>
+                                    <option value="radiant">Radiant</option>
+                                    <option value="asscher">Asscher</option>
+                                    <option value="marquise">Marquise</option>
+                                    <option value="heart">Heart</option>
+                                    <option value="pear">Pear</option>
                                 </select>
                                 <label>Shape</label>
                             </div>
-                            <div className="form-floating col-8 mb-2">
+                            <div className="form-floating col-10 mb-2">
                                 <select value={cut} onChange={handleCut} className="form-select">
                                     <option value>Choose cut</option>
                                     <option value="Excellent">Excellent</option>
@@ -100,7 +171,7 @@ const WaitSaleStaff = ({ order }) => {
                                 </select>
                                 <label>Cut</label>
                             </div>
-                            <div className="col-8 form-floating mb-2">
+                            <div className="col-10 form-floating mb-2">
                                 <select value={color} onChange={handleColor} className="form-select">
                                     <option value>Choose color</option>
                                     <option value="K">K</option>
@@ -114,7 +185,7 @@ const WaitSaleStaff = ({ order }) => {
                                 </select>
                                 <label>Color</label>
                             </div>
-                            <div className="col-8 form-floating mb-2">
+                            <div className="col-10 form-floating mb-2">
                                 <select value={clarity} onChange={handleClarity} className="form-select">
                                     <option value>Choose clarity</option>
                                     <option value="SI2">SI2</option>
@@ -128,42 +199,116 @@ const WaitSaleStaff = ({ order }) => {
                                 </select>
                                 <label>Clarity</label>
                             </div>
-                            <form className="form-floating col-8 mb-2">
-                                <input
-                                    value={caratWeight}
-                                    onChange={handleCaratWeight}
-                                    type="number"
-                                    className="form-control"
-                                    step='0.1'
-                                    placeholder='1.0'
-                                />
-                                <label>Carat Weight</label>
-                            </form>
-                            <form className="form-floating col-8 mb-2">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="1.0"
-                                />
-                                <label>Diamond code</label>
-                            </form>
+                            <div className='row'>
+                                <div className="col-md-5">
+                                    <form className="form-floating mb-2">
+                                        <input
+                                            value={fromCaratWeight}
+                                            onChange={handleFromCaratWeight}
+                                            type="number"
+                                            className="form-control"
+                                            step='0.1'
+                                            placeholder='0.0'
+                                        />
+                                        <label>From Carat Weight</label>
+                                    </form>
+                                </div>
+                                <div className="col-md-5">
+                                    <form className="form-floating mb-2">
+                                        <input
+                                            value={toCaratWeight}
+                                            onChange={handleToCaratWeight}
+                                            type="number"
+                                            className="form-control"
+                                            step='0.1'
+                                            placeholder='10.0'
+                                        />
+                                        <label>To Carat Weight</label>
+                                    </form>
+                                </div>
+                            </div>
                             <button type="button" className="btn btn-secondary">
                                 Add
                             </button>
-                            <button onClick={() => fetchPrice(cut, color, clarity, caratWeight)} type="button" className="btn btn-secondary">
-                                Update price
-                            </button>
+                        </div>
+
+                        <div className='row'>
+                            <div className='col-10'>
+                                <table className='table table-hover'>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Code</th>
+                                            <th>Ct.W</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='table-group-divider'>
+                                        {diamondList.map(
+                                            diamond => (
+                                                <tr key={diamond.diamondId}>
+                                                    <td>{diamond.diamondId}</td>
+                                                    <td>{diamond.diamondCode}</td>
+                                                    <td>{diamond.caratWeight}</td>
+                                                    <td><button
+                                                        onClick={() => chooseDiamond(diamond.diamondId, diamond.diamondCode, latestPrice.price)}
+                                                        disabled={chosenDiamonds.some(chosenDiamond => chosenDiamond.id === diamond.diamondId)}
+                                                    >Choose</button></td>
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>tinh total cc gi day</p>
+                                <p>{latestPrice.price}</p>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <h3>
+                                <b>
+                                    Chosen diamonds
+                                </b>
+                            </h3>
+                            <div className='col-10'>
+                                <table className='table table-hover'>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Code</th>
+                                            <th>Price</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='table-group-divider'>
+                                        {chosenDiamonds.map(
+                                            diamond => (
+                                                <tr key={diamond.id}>
+                                                    <td>{diamond.id}</td>
+                                                    <td>{diamond.code}</td>
+                                                    <td>{diamond.price}</td>
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className="col-8 d-flex justify-content-between align-items-center">
+                                <p className="fw-semibold">Price</p>
+                                <p>{latestPrice.price}</p>
                             </div>
                         </div>
 
+                    </div>
+                    <div className="col-md-4 px-3">
                         <div>
                             <p>
                                 <b>Material</b>
                             </p>
-                            <div className="form-floating col-8 mb-2">
+                            <div className="form-floating col-10 mb-2">
                                 <select className="form-select">
                                     <option value>Choose material</option>
                                     <option value="1">14K Yellow Gold</option>
@@ -174,7 +319,7 @@ const WaitSaleStaff = ({ order }) => {
                                 </select>
                                 <label>Material</label>
                             </div>
-                            <form className="form-floating col-8 mb-2">
+                            <form className="form-floating col-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
@@ -192,11 +337,12 @@ const WaitSaleStaff = ({ order }) => {
                             </div>
                         </div>
 
+
                         <div>
                             <p>
                                 <b>Extra</b>
                             </p>
-                            <form className="form-floating col-8 mb-2">
+                            <form className="form-floating col-md-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
@@ -205,7 +351,7 @@ const WaitSaleStaff = ({ order }) => {
                                 />
                                 <label>Extra Diamond</label>
                             </form>
-                            <form className="form-floating col-8 mb-2">
+                            <form className="form-floating col-md-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
@@ -217,7 +363,7 @@ const WaitSaleStaff = ({ order }) => {
                             <button type="button" className="btn btn-secondary">
                                 Add
                             </button>
-                            <div className="col-8 d-flex justify-content-between align-items-center">
+                            <div className="col-md-10 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
                                 <p>tinh total cc gi day</p>
                             </div>
@@ -227,7 +373,7 @@ const WaitSaleStaff = ({ order }) => {
                             <p>
                                 <b>Production</b>
                             </p>
-                            <form className="form-floating col-8 mb-2">
+                            <form className="form-floating col-md-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
@@ -241,7 +387,7 @@ const WaitSaleStaff = ({ order }) => {
                             <p>
                                 <b>Markup rate</b>
                             </p>
-                            <form className="form-floating col-8 mb-2">
+                            <form className="form-floating col-md-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
@@ -251,9 +397,14 @@ const WaitSaleStaff = ({ order }) => {
                                 <label>Rate</label>
                             </form>
                         </div>
-                        <button type="button" className="btn btn-secondary col-8">
+                        <div className="col-md-10 d-flex justify-content-between align-items-center">
+                            <p className="fw-bold">Total Price</p>
+                            <p>tinh total cc gi day</p>
+                        </div>
+                        <button type="button" className="btn btn-secondary col-md-10">
                             Request Manager
                         </button>
+
                     </div>
                 </div>
             </div>
