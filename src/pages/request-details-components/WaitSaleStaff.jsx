@@ -3,6 +3,13 @@ import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const getLatestMaterialPrice = (material) => {
+    const now = new Date();
+    const pastPrices = material.materialPrices.filter(price => new Date(price.id.effectiveDate) <= now);
+    const latestPrice = pastPrices.reduce((prev, current) => (new Date(prev.id.effectiveDate) > new Date(current.id.effectiveDate)) ? prev : current);
+    return latestPrice.price === null ? 0 : latestPrice.price;
+}
+
 const getLatestPrice = (diamondPrices) => {
     const now = new Date();
     const pastPrices = diamondPrices.filter(price => {
@@ -24,8 +31,12 @@ const WaitSaleStaff = ({ order }) => {
     const [diamondList, setDiamondList] = useState([]);
     const [latestPrice, setLatestPrice] = useState(0);
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
+    const [chosenMaterials, setChosenMaterials] = useState([]);
+    const [totalMaterialPrice, setTotalMaterialPrice] = useState(0);
     const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
     const [materialList, setMaterialList] = useState([]);
+    const [materialWeight, setMaterialWeight] = useState(0);
+    const [currentMaterial, setCurrentMaterial] = useState({});
 
     const removeDiamond = (id, price) => {
         setChosenDiamonds(oldList => oldList.filter(diamond => diamond.id !== id));
@@ -40,6 +51,22 @@ const WaitSaleStaff = ({ order }) => {
         }]);
         setTotalDiamondPrice(prevPrice => prevPrice + price);
     }
+
+    const chooseMaterial = () => {
+        const material = currentMaterial;
+        if (material.materialId !== null && materialWeight !== null && materialWeight > 0) {
+            setChosenMaterials(oldList => [...oldList, {
+                id: material.materialId,
+                weight: materialWeight,
+                price: 0
+            }]);
+            setTotalMaterialPrice(prevPrice => prevPrice + price);
+        }
+    }
+
+    useEffect(() => {
+
+    })
 
     useEffect(() => {
         if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0) {
@@ -56,24 +83,18 @@ const WaitSaleStaff = ({ order }) => {
         fetchMaterials();
     }, [])
 
-    const fetchMaterials = () => {
-        axios.get(`http://localhost:8080/api/material/all`)
-            .then(
-                response => {
-                    if (response.status === 204) {
-                        console.log("No data");
-                    } else {
-                        setMaterialList(response.data);
-                        console.log('Material');
-                        console.log(materialList);
-                    }
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error);
-                }
-            )
+    const fetchMaterials = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/material/all`);
+            if (response.status === 204) {
+                console.log("No data");
+            } else {
+                setMaterialList(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 
     const fetchPrice = (cut, color, clarity, fromCaratWeight, toCaratWeight) => {
@@ -120,6 +141,14 @@ const WaitSaleStaff = ({ order }) => {
                     console.log('no diamonds');
                 }
             )
+    }
+
+    const handleMaterial = (event) => {
+        setCurrentMaterial(event.target.value);
+    }
+
+    const handleMaterialWeight = (event) => {
+        setMaterialWeight(event.target.value);
     }
 
     const handleShape = (event) => {
@@ -335,31 +364,34 @@ const WaitSaleStaff = ({ order }) => {
                                 <b>Material</b>
                             </p>
                             <div className="form-floating col-10 mb-2">
-                                <select className="form-select">
+                                <select value={currentMaterial} onChange={handleMaterial} className="form-select">
                                     <option value>Choose material</option>
-                                    <option value="1">14K Yellow Gold</option>
-                                    <option value="2">14K White Gold</option>
-                                    <option value="3">14K Rose Gold</option>
-                                    <option value="4">18K Yellow Gold</option>
-                                    <option value="5">Platinum</option>
+                                    {materialList.map(
+                                        material => (
+                                            <option key={material.materialId} value={material}>{material.materialName}</option>
+                                        )
+                                    )}
                                 </select>
                                 <label>Material</label>
                             </div>
                             <form className="form-floating col-10 mb-2">
                                 <input
+                                    value={materialWeight}
+                                    onChange={handleMaterialWeight}
                                     type="number"
                                     className="form-control"
                                     id="floatingInputValue"
-                                    placeholder="1.0"
+                                    placeholder="0.0"
+                                    step="0.1"
                                 />
                                 <label>Weight</label>
                             </form>
-                            <button type="button" className="btn btn-secondary">
+                            <button onClick={chooseMaterial} type="button" className="btn btn-secondary">
                                 Add
                             </button>
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>tinh total cc gi day</p>
+                                <p>{totalMaterialPrice}</p>
                             </div>
                         </div>
 
