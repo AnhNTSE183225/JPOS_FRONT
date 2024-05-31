@@ -20,34 +20,20 @@ const ProfilePage = () => {
                                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
                                                         className="rounded-circle img-fluid" style={{ width: '100px' }} alt="Profile" />
                                                 </div>
-                                                <h4 className="mb-2">Julie L. Arsenault</h4>
-                                                <p className="text-muted mb-4">@Programmer <span className="mx-2">|</span> <a href="#!">mdbootstrap.com</a></p>
-                                                <div className="mb-4 pb-2">
-                                                    <button type="button" className="btn btn-outline-primary btn-floating">
-                                                        <i className="fab fa-facebook-f fa-lg"></i>
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-primary btn-floating">
-                                                        <i className="fab fa-twitter fa-lg"></i>
-                                                    </button>
-                                                    <button type="button" className="btn btn-outline-primary btn-floating">
-                                                        <i className="fab fa-skype fa-lg"></i>
-                                                    </button>
-                                                </div>
+                                                <h4 className="mb-2">Nguyen Duc Truong Thinh</h4>
+                                                <p className="text-muted mb-4">@Custommer <span className="mx-2">|</span> <a href="#!"></a></p>
+                                             
                                                 <button type="button" className="btn btn-primary btn-rounded btn-lg">
                                                     Message now
                                                 </button>
                                                 <div className="d-flex justify-content-between text-center mt-5 mb-2">
                                                     <div>
-                                                        <p className="mb-2 h5">8471</p>
-                                                        <p className="text-muted mb-0">Wallets Balance</p>
+                                                        <p className="mb-2 h5">01</p>
+                                                        <p className="text-muted mb-0">Quantity purchased</p>
                                                     </div>
                                                     <div className="px-3">
-                                                        <p className="mb-2 h5">8512</p>
-                                                        <p className="text-muted mb-0">Income amounts</p>
-                                                    </div>
-                                                    <div>
-                                                        <p className="mb-2 h5">4751</p>
-                                                        <p className="text-muted mb-0">Total Transactions</p>
+                                                        <p className="mb-2 h5">01</p>
+                                                        <p className="text-muted mb-0">Quantity PreOrder</p>
                                                     </div>
                                                 </div>
                                             </div>
