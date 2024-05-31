@@ -85,7 +85,7 @@ const WaitSaleStaff = ({ order }) => {
                             </p>
                             <div className="col-8 form-floating mb-2">
                                 <select className="form-select">
-                                    <option selected>Choose shape</option>
+                                    <option value>Choose shape</option>
                                     <option value="Round">Round</option>
                                     <option value="Princess">Princess</option>
                                     <option value="Cushion">Cushion</option>
@@ -101,7 +101,7 @@ const WaitSaleStaff = ({ order }) => {
                             </div>
                             <div className="form-floating col-8 mb-2">
                                 <select value={cut} onChange={handleCut} className="form-select">
-                                    <option selected>Choose cut</option>
+                                    <option value>Choose cut</option>
                                     <option value="Excellent">Excellent</option>
                                     <option value="Very_Good">Very Good</option>
                                     <option value="Good">Good</option>
@@ -112,7 +112,7 @@ const WaitSaleStaff = ({ order }) => {
                             </div>
                             <div className="col-8 form-floating mb-2">
                                 <select value={color} onChange={handleColor} className="form-select">
-                                    <option selected>Choose color</option>
+                                    <option value>Choose color</option>
                                     <option value="K">K</option>
                                     <option value="J">J</option>
                                     <option value="I">I</option>
@@ -126,7 +126,7 @@ const WaitSaleStaff = ({ order }) => {
                             </div>
                             <div className="col-8 form-floating mb-2">
                                 <select value={clarity} onChange={handleClarity} className="form-select">
-                                    <option selected>Choose clarity</option>
+                                    <option value>Choose clarity</option>
                                     <option value="SI2">SI2</option>
                                     <option value="SI1">SI1</option>
                                     <option value="VS2">VS2</option>
@@ -175,7 +175,7 @@ const WaitSaleStaff = ({ order }) => {
                             </p>
                             <div className="form-floating col-8 mb-2">
                                 <select className="form-select">
-                                    <option selected>Choose material</option>
+                                    <option value>Choose material</option>
                                     <option value="1">14K Yellow Gold</option>
                                     <option value="2">14K White Gold</option>
                                     <option value="3">14K Rose Gold</option>
