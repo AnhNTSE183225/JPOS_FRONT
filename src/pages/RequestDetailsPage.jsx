@@ -136,9 +136,9 @@ const WaitManager = ({ order }) => {
     const acceptQuote = () => {
         let staff_id = sessionStorage.getItem('staff_id');
         if (staff_id !== null) {
-            axios.get(`http://localhost:8080/api/${staff_id}/manage-response?managerApproved=true`)
+            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`)
                 .then(
-                    reponse => {
+                    response => {
                         toast(response.data);
                         navigate('/profile/request');
                     }
@@ -156,7 +156,7 @@ const WaitManager = ({ order }) => {
     const refuseQuote = () => {
         let staff_id = sessionStorage.getItem('staff_id');
         if (staff_id !== null) {
-            axios.get(`http://localhost:8080/api/${staff_id}/manage-response?managerApproved=false`)
+            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=false`)
                 .then(
                     response => {
                         toast(response.data);
