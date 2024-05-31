@@ -221,42 +221,43 @@ const WaitSaleStaff = ({ order }) => {
 const WaitManager = ({ order }) => {
   const navigate = useNavigate();
 
-  const acceptQuote = () => {
-    let staff_id = sessionStorage.getItem("staff_id");
-    if (staff_id !== null) {
-      axios
-        .get(
-          `http://localhost:8080/api/${staff_id}/manage-response?managerApproved=true`
-        )
-        .then((reponse) => {
-          toast(response.data);
-          navigate("/profile/request");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      toast("Logged out");
-      navigate("/login");
-    }
+    const acceptQuote = () => {
+        let staff_id = sessionStorage.getItem('staff_id');
+        if (staff_id !== null) {
+            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`)
+                .then(
+                    response => {
+                        toast(response.data);
+                        navigate('/profile/request');
+                    }
+                ).catch(
+                    error => {
+                        console.log(error);
+                    }
+                )
+        } else {
+            toast('Logged out');
+            navigate('/login');
+        }
+    
   };
 
-  const refuseQuote = () => {
-    let staff_id = sessionStorage.getItem("staff_id");
-    if (staff_id !== null) {
-      axios
-        .get(
-          `http://localhost:8080/api/${staff_id}/manage-response?managerApproved=false`
-        )
-        .then((response) => {
-          toast(response.data);
-          navigate("/profile/request");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const refuseQuote = () => {
+        let staff_id = sessionStorage.getItem('staff_id');
+        if (staff_id !== null) {
+            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=false`)
+                .then(
+                    response => {
+                        toast(response.data);
+                        navigate('/profile/request');
+                    }
+                ).catch(
+                    error => {
+                        console.log(error);
+                    }
+                )
+        }
     }
-  };
 
   return (
     <>
