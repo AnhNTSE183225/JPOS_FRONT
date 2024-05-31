@@ -4,20 +4,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const getLatestPrice = (diamondPrices) => {
-    // Get the current date and time
     const now = new Date();
-
-    // Filter out prices with effective dates in the future
     const pastPrices = diamondPrices.filter(price => {
         const effectiveDate = new Date(price.effectiveDate);
         return effectiveDate <= now;
     });
-
-    // Sort the prices by effective date in descending order
     pastPrices.sort((a, b) => new Date(b.effectiveDate) - new Date(a.effectiveDate));
-
-    // Return the first item from the sorted array, which is the latest price
-    return pastPrices.length > 0 ? pastPrices[0] : null;
+    return pastPrices.length > 0 ? pastPrices[0].price : 0;
 };
 
 const WaitSaleStaff = ({ order }) => {
@@ -31,6 +24,13 @@ const WaitSaleStaff = ({ order }) => {
     const [diamondList, setDiamondList] = useState([]);
     const [latestPrice, setLatestPrice] = useState(0);
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
+    const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
+    const [materialList, setMaterialList] = useState([]);
+
+    const removeDiamond = (id, price) => {
+        setChosenDiamonds(oldList => oldList.filter(diamond => diamond.id !== id));
+        setTotalDiamondPrice(prevPrice => prevPrice - price);
+    }
 
     const chooseDiamond = (id, code, price) => {
         setChosenDiamonds(oldList => [...oldList, {
@@ -38,7 +38,7 @@ const WaitSaleStaff = ({ order }) => {
             code: code,
             price: price
         }]);
-        console.log(chosenDiamonds);
+        setTotalDiamondPrice(prevPrice => prevPrice + price);
     }
 
     useEffect(() => {
@@ -52,6 +52,30 @@ const WaitSaleStaff = ({ order }) => {
         }
     }, [cut, color, clarity, fromCaratWeight, toCaratWeight, shape])
 
+    useEffect(() => {
+        fetchMaterials();
+    }, [])
+
+    const fetchMaterials = () => {
+        axios.get(`http://localhost:8080/api/material/all`)
+            .then(
+                response => {
+                    if (response.status === 204) {
+                        console.log("No data");
+                    } else {
+                        setMaterialList(response.data);
+                        console.log('Material');
+                        console.log(materialList);
+                    }
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error);
+                }
+            )
+    }
+
     const fetchPrice = (cut, color, clarity, fromCaratWeight, toCaratWeight) => {
 
         axios.post(`http://localhost:8080/api/get-price-by-4C`,
@@ -64,14 +88,18 @@ const WaitSaleStaff = ({ order }) => {
             }
         ).then(
             response => {
-                const diamondPrice = response.data;
-                if (diamondPrice !== null) {
-                    setLatestPrice(getLatestPrice(diamondPrice));
+                if (response.status === 204) {
+                    console.log("No data");
+                } else {
+                    const diamondPrice = response.data;
+                    if (diamondPrice !== null) {
+                        setLatestPrice(getLatestPrice(diamondPrice));
+                    }
                 }
             }
         ).catch(
             error => {
-                console.log('no price');
+                console.log(error);
             }
         )
     }
@@ -81,8 +109,11 @@ const WaitSaleStaff = ({ order }) => {
         axios.get(`http://localhost:8080/api/get-diamonds-by-4C?fromCaratWeight=${fromCaratWeight}&toCaratWeight=${toCaratWeight}&cut=${cut}&clarity=${clarity}&color=${color}&shape=${shape}`)
             .then(
                 response => {
-                    setDiamondList(response.data);
-                    console.log(diamondList);
+                    if (response.status === 204) {
+                        console.log("No data");
+                    } else {
+                        setDiamondList(response.data);
+                    }
                 }
             ).catch(
                 error => {
@@ -174,28 +205,22 @@ const WaitSaleStaff = ({ order }) => {
                             <div className="col-10 form-floating mb-2">
                                 <select value={color} onChange={handleColor} className="form-select">
                                     <option value>Choose color</option>
-                                    <option value="K">K</option>
-                                    <option value="J">J</option>
-                                    <option value="I">I</option>
-                                    <option value="H">H</option>
-                                    <option value="G">G</option>
-                                    <option value="F">F</option>
-                                    <option value="E">E</option>
-                                    <option value="D">D</option>
+                                    {['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'].map(
+                                        value => (
+                                            <option key={value} value={value}>{value}</option>
+                                        )
+                                    )}
                                 </select>
                                 <label>Color</label>
                             </div>
                             <div className="col-10 form-floating mb-2">
                                 <select value={clarity} onChange={handleClarity} className="form-select">
                                     <option value>Choose clarity</option>
-                                    <option value="SI2">SI2</option>
-                                    <option value="SI1">SI1</option>
-                                    <option value="VS2">VS2</option>
-                                    <option value="VS1">VS1</option>
-                                    <option value="VVS2">VVS2</option>
-                                    <option value="VVS1">VVS1</option>
-                                    <option value="IF">IF</option>
-                                    <option value="FL">FL</option>
+                                    {['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'].map(
+                                        value => (
+                                            <option key={value} value={value}>{value}</option>
+                                        )
+                                    )}
                                 </select>
                                 <label>Clarity</label>
                             </div>
@@ -251,7 +276,7 @@ const WaitSaleStaff = ({ order }) => {
                                                     <td>{diamond.diamondCode}</td>
                                                     <td>{diamond.caratWeight}</td>
                                                     <td><button
-                                                        onClick={() => chooseDiamond(diamond.diamondId, diamond.diamondCode, latestPrice.price)}
+                                                        onClick={() => chooseDiamond(diamond.diamondId, diamond.diamondCode, latestPrice)}
                                                         disabled={chosenDiamonds.some(chosenDiamond => chosenDiamond.id === diamond.diamondId)}
                                                     >Choose</button></td>
                                                 </tr>
@@ -263,7 +288,7 @@ const WaitSaleStaff = ({ order }) => {
 
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>{latestPrice.price}</p>
+                                <p>{latestPrice}</p>
                             </div>
                         </div>
                         <div className='row'>
@@ -289,6 +314,7 @@ const WaitSaleStaff = ({ order }) => {
                                                     <td>{diamond.id}</td>
                                                     <td>{diamond.code}</td>
                                                     <td>{diamond.price}</td>
+                                                    <td><button onClick={() => removeDiamond(diamond.id, diamond.price)}><b>-</b></button></td>
                                                 </tr>
                                             )
                                         )}
@@ -298,7 +324,7 @@ const WaitSaleStaff = ({ order }) => {
 
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>{latestPrice.price}</p>
+                                <p>{totalDiamondPrice}</p>
                             </div>
                         </div>
 
