@@ -6,6 +6,129 @@ import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 
+const WaitSaleStaff = ({ order }) => {
+    return (
+        <>
+            <div className="container">
+                <div class="row mt-5">
+                    <h3>
+                        <b>Request Quotation</b>
+                    </h3>
+                    <div class="col px-3">
+                        <p>
+                            <b>Full Name</b>
+                        </p>
+                        <p class="px-3">{order.customer.name}</p>
+                        <p>
+                            <b>Description</b>
+                        </p>
+                        <p class="px-3">{order.description}</p>
+                        <p>
+                            <b>Budget</b>
+                        </p>
+                        <p class="px-3">{order.budget}</p>
+                    </div>
+                    <div class="col px-3">
+                        <div>
+                            <p>
+                                <b>Main Diamond Quality</b>
+                            </p>
+                            <div class="col-6 form-floating mb-2">
+                                <select class="form-select">
+                                    <option selected>Choose shape</option>
+                                    <option value="1">Round</option>
+                                    <option value="2">Princess</option>
+                                    <option value="3">Cushion</option>
+                                    <option value="4">Emerald</option>
+                                    <option value="5">Oval</option>
+                                    <option value="6">Radiant</option>
+                                    <option value="7">Asscher</option>
+                                    <option value="8">Marquise</option>
+                                    <option value="9">Heart</option>
+                                    <option value="10">Pear</option>
+                                </select>
+                                <label>Shape</label>
+                            </div>
+                            <div class="form-floating col-6 mb-2">
+                                <select class="form-select">
+                                    <option selected>Choose cut</option>
+                                    <option value="1">Excellent</option>
+                                    <option value="2">Very Good</option>
+                                    <option value="3">Good</option>
+                                    <option value="4">Fair</option>
+                                    <option value="5">Poor</option>
+                                </select>
+                                <label>Cut</label>
+                            </div>
+                            <div class="col-6 form-floating mb-2">
+                                <select class="form-select">
+                                    <option selected>Choose color</option>
+                                    <option value="1">K</option>
+                                    <option value="2">J</option>
+                                    <option value="3">I</option>
+                                    <option value="4">H</option>
+                                    <option value="5">G</option>
+                                    <option value="6">F</option>
+                                    <option value="7">E</option>
+                                    <option value="8">D</option>
+                                </select>
+                                <label>Color</label>
+                            </div>
+                            <div class="col-6 form-floating mb-2">
+                                <select class="form-select">
+                                    <option selected>Choose clarity</option>
+                                    <option value="1">SI2</option>
+                                    <option value="2">SI1</option>
+                                    <option value="3">VS2</option>
+                                    <option value="4">VS1</option>
+                                    <option value="5">VVS2</option>
+                                    <option value="6">VVS1</option>
+                                    <option value="7">IF</option>
+                                    <option value="8">FL</option>
+                                </select>
+                                <label>Clarity</label>
+                            </div>
+                            <div className="col-6 d-flex justify-content-between align-items-center">
+                                <p class="fw-semibold">Price</p>
+                                <p>tinh total cc gi day</p>
+                            </div>
+                            <button type="button" class="btn btn-secondary">
+                                Add
+                            </button>
+                        </div>
+                        <div>
+                            <p>
+                                <b>Material</b>
+                            </p>
+                            <div class="form-floating col-6 mb-2">
+                                <select class="form-select">
+                                    <option selected>Choose material</option>
+                                    <option value="1">14K Yellow Gold</option>
+                                    <option value="2">14K White Gold</option>
+                                    <option value="3">14K Rose Gold</option>
+                                    <option value="4">18K Yellow Gold</option>
+                                    <option value="5">Platinum</option>
+                                </select>
+                                <label>Material</label>
+                            </div>
+                            <div class="input-group col-6 mb-2">
+                                <textarea></textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input
+                                    type="text"
+                                    class="form-control col-6"
+                                    placeholder="Recipient's username"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
 const WaitManager = ({ order }) => {
 
     const navigate = useNavigate();
@@ -14,16 +137,16 @@ const WaitManager = ({ order }) => {
         let staff_id = sessionStorage.getItem('staff_id');
         if (staff_id !== null) {
             axios.get(`http://localhost:8080/api/${staff_id}/manage-response?managerApproved=true`)
-            .then(
-                reponse => {
-                    toast(response.data);
-                    navigate('/profile/request');
-                }
-            ).catch(
-                error => {
-                    console.log(error);
-                }
-            )
+                .then(
+                    reponse => {
+                        toast(response.data);
+                        navigate('/profile/request');
+                    }
+                ).catch(
+                    error => {
+                        console.log(error);
+                    }
+                )
         } else {
             toast('Logged out');
             navigate('/login');
@@ -32,18 +155,18 @@ const WaitManager = ({ order }) => {
 
     const refuseQuote = () => {
         let staff_id = sessionStorage.getItem('staff_id');
-        if(staff_id !== null) {
+        if (staff_id !== null) {
             axios.get(`http://localhost:8080/api/${staff_id}/manage-response?managerApproved=false`)
-            .then(
-                response => {
-                    toast(response.data);
-                    navigate('/profile/request');
-                }
-            ).catch(
-                error => {
-                    console.log(error);
-                }
-            )
+                .then(
+                    response => {
+                        toast(response.data);
+                        navigate('/profile/request');
+                    }
+                ).catch(
+                    error => {
+                        console.log(error);
+                    }
+                )
         }
     }
 
@@ -103,22 +226,13 @@ const WaitManager = ({ order }) => {
                 </div>
             </div>
         </>
-    )
-}
-
-const WaitSaleStaff = ({ order }) => {
-    return (
-        <>
-
-        </>
-    )
-}
+    );
+};
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
 
     const [order, setOrder] = useState(undefined);
-
     useEffect(() => {
         axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`)
             .then(
@@ -168,7 +282,8 @@ const RequestDetailPage = () => {
                 break;
             default:
         }
-    }
+        toast("Something went wrong...");
+    };
 }
 
 export default RequestDetailPage;
