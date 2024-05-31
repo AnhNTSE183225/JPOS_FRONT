@@ -1,4 +1,4 @@
-import { Link,useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
@@ -24,33 +24,28 @@ const UserComponent = (props) => {
         )
     } else {
         return (
-            <>
-                <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" role="button" aria-expanded="false" onClick={handleDropdown}>
-                        {sessionStorage.getItem('name')}
-                    </a>
-                    <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
-                        <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
-                        <li><Link className="dropdown-item" to='/profile/request'>Your requests</Link></li>
-                        <li><a className="dropdown-item" href="#">Your designs</a></li>
-                        <li><hr className="dropdown-divider" /></li>
-                        <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
-                    </ul>
-                </li>
-            </>
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" role="button" aria-expanded="false" onClick={handleDropdown}>
+                    {sessionStorage.getItem('name')}
+                </a>
+                <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
+                    <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
+                    <li><hr className="dropdown-divider" /></li>
+                    <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
+                </ul>
+            </li>
         )
     }
 }
 
 const NavigationBar = () => {
     console.log("navigation bar renders");
-    // console.log(sessionStorage.getItem('username'));
     const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('username') != null);
     const location = useLocation().pathname.split("/");
 
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem('username') != null);
-    },location);
+    }, location);
 
     return (
         <>
@@ -62,7 +57,7 @@ const NavigationBar = () => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+                            <UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
                             <li className="nav-item">
                                 <Link className='nav-link' to='/'>Home</Link>
                             </li>

@@ -37,6 +37,7 @@ const LoginPage = () => {
                     navigate("/");
                 })
                 .catch((error) => {
+                    
                     console.log(error);
                 });
         } else {
@@ -56,7 +57,7 @@ const LoginPage = () => {
                     sessionStorage.setItem("name", response.data.name);
                     sessionStorage.setItem("phone", response.data.phone);
                     sessionStorage.setItem("staff_type", response.data.staffType);
-                    navigate("/profile");
+                    navigate("/profile/request");
                 })
                 .catch((error) => {
                     toast('Invalid login credentials');
