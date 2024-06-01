@@ -56,11 +56,11 @@ const WaitSaleStaff = ({ order }) => {
         const material = currentMaterial;
         if (material.materialId !== null && materialWeight !== null && materialWeight > 0) {
             setChosenMaterials(oldList => [...oldList, {
-                id: material.materialId,
+                id: currentMaterial,
                 weight: materialWeight,
                 price: 0
             }]);
-            setTotalMaterialPrice(prevPrice => prevPrice + price);
+            // setTotalMaterialPrice(prevPrice => prevPrice + price);
         }
     }
 
@@ -140,6 +140,7 @@ const WaitSaleStaff = ({ order }) => {
     }
 
     const handleMaterial = (event) => {
+        console.log(event.target.value)
         setCurrentMaterial(event.target.value);
     }
 
@@ -277,9 +278,6 @@ const WaitSaleStaff = ({ order }) => {
                                     </form>
                                 </div>
                             </div>
-                            <button type="button" className="btn btn-secondary">
-                                Add
-                            </button>
                         </div>
 
                         <div className='row'>
@@ -364,7 +362,7 @@ const WaitSaleStaff = ({ order }) => {
                                     <option value>Choose material</option>
                                     {materialList.map(
                                         material => (
-                                            <option key={material.materialId} value={material}>{material.materialName}</option>
+                                            <option key={material.materialId} value={material.materialId}>{material.materialName}</option>
                                         )
                                     )}
                                 </select>
@@ -382,6 +380,31 @@ const WaitSaleStaff = ({ order }) => {
                                 />
                                 <label>Weight</label>
                             </form>
+
+                            
+                            <div className='col-10'>
+                                <table className='table table-hover'>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className='table-group-divider'>
+                                        {chosenMaterials.map(
+                                            material => (
+                                                <tr key={material.id}>
+                                                    <td>{material.id}</td>
+                                                    <td>{material.weight}</td>
+                                                    <td>{material.price}</td>
+                                                </tr>
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                             <button onClick={chooseMaterial} type="button" className="btn btn-secondary">
                                 Add
                             </button>
