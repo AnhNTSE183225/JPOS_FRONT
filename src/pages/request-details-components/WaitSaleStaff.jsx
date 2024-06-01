@@ -38,7 +38,27 @@ const WaitSaleStaff = ({ order }) => {
     const [materialList, setMaterialList] = useState([]);
     const [materialWeight, setMaterialWeight] = useState(0);
     const [currentMaterial, setCurrentMaterial] = useState('');
-    const [extraPrice, setExtraPrice] = useState({material:0,diamond:0, production: 0, markupRate: 1.0});
+    const [extraPrice, setExtraPrice] = useState({ material: 0, diamond: 0, production: 0, markupRate: 1.0 });
+
+    // const finalSubmit = () => {
+    //     const finalOrder = {
+    //         ...order
+    //         ,
+    //     }
+    // }
+
+    // const createProduct = () => {
+    //     const product = {
+    //         productName: "Test",
+    //         productionPrice: extraPrice.production,
+    //         markupRate: extraPrice.markupRate,
+    //         productType: "TestType",
+    //         productDesignId: null,
+    //         diamonds: [
+
+    //         ]
+    //     }
+    // }
 
     const removeDiamond = (id, price) => {
         setChosenDiamonds(oldList => oldList.filter(diamond => diamond.id !== id));
@@ -446,30 +466,39 @@ const WaitSaleStaff = ({ order }) => {
                             <p>
                                 <b>Extra</b>
                             </p>
-                            <form className="form-floating col-md-10 mb-2">
+                            <div className="form-floating col-md-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
                                     id="floatingInputValue"
                                     placeholder="1.0"
+                                    value={extraPrice.diamond}
+                                    onChange={(event) => setExtraPrice(
+                                        (prevExtraPrice) => (
+                                            { ...prevExtraPrice, diamond: parseFloat(event.target.value.length === 0 ? '0' : event.target.value) }
+                                        )
+                                    )}
                                 />
                                 <label>Extra Diamond</label>
-                            </form>
-                            <form className="form-floating col-md-10 mb-2">
+                            </div>
+                            <div className="form-floating col-md-10 mb-2">
                                 <input
                                     type="number"
                                     className="form-control"
                                     id="floatingInputValue"
                                     placeholder="1.0"
+                                    value={extraPrice.material}
+                                    onChange={(event) => setExtraPrice(
+                                        (prevExtraPrice) => (
+                                            { ...prevExtraPrice, material: parseFloat(event.target.value.length === 0 ? '0' : event.target.value) }
+                                        )
+                                    )}
                                 />
                                 <label>Extra Material</label>
-                            </form>
-                            <button type="button" className="btn btn-secondary">
-                                Add
-                            </button>
+                            </div>
                             <div className="col-md-10 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>tinh total cc gi day</p>
+                                <p>{extraPrice.diamond + extraPrice.material}</p>
                             </div>
                         </div>
 
@@ -483,6 +512,12 @@ const WaitSaleStaff = ({ order }) => {
                                     className="form-control"
                                     id="floatingInputValue"
                                     placeholder="1.0"
+                                    value={extraPrice.production}
+                                    onChange={(event) => setExtraPrice(
+                                        (prevExtraPrice) => (
+                                            { ...prevExtraPrice, production: parseFloat(event.target.value.length === 0 ? '0' : event.target.value) }
+                                        )
+                                    )}
                                 />
                                 <label>Production price</label>
                             </form>
@@ -497,13 +532,19 @@ const WaitSaleStaff = ({ order }) => {
                                     className="form-control"
                                     id="floatingInputValue"
                                     placeholder="1.0"
-                                />
+                                    step="0.1"
+                                    value={extraPrice.markupRate}
+                                    onChange={(event) => setExtraPrice(
+                                        (prevExtraPrice) => (
+                                            { ...prevExtraPrice, markupRate: parseFloat(event.target.value.length === 0 ? '0' : event.target.value) }
+                                        )
+                                    )}                                />
                                 <label>Rate</label>
                             </form>
                         </div>
                         <div className="col-md-10 d-flex justify-content-between align-items-center">
                             <p className="fw-bold">Total Price</p>
-                            <p>{(totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.production)*extraPrice.markupRate}</p>
+                            <p>{(totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate}</p>
                         </div>
                         <button type="button" className="btn btn-secondary col-md-10">
                             Request Manager
