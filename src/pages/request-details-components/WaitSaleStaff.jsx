@@ -3,12 +3,12 @@ import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const getLatestMaterialPrice = (material) => {
-    const now = new Date();
-    const pastPrices = material.materialPrices.filter(price => new Date(price.id.effectiveDate) <= now);
-    const latestPrice = pastPrices.reduce((prev, current) => (new Date(prev.id.effectiveDate) > new Date(current.id.effectiveDate)) ? prev : current);
-    return latestPrice.price === null ? 0 : latestPrice.price;
-}
+// const getLatestMaterialPrice = (material) => {
+//     const now = new Date();
+//     const pastPrices = material.materialPrices.filter(price => new Date(price.id.effectiveDate) <= now);
+//     const latestPrice = pastPrices.reduce((prev, current) => (new Date(prev.id.effectiveDate) > new Date(current.id.effectiveDate)) ? prev : current);
+//     return latestPrice.price === null ? 0 : latestPrice.price;
+// }
 
 const getLatestPrice = (diamondPrices) => {
     const now = new Date();
@@ -63,10 +63,6 @@ const WaitSaleStaff = ({ order }) => {
             setTotalMaterialPrice(prevPrice => prevPrice + price);
         }
     }
-
-    useEffect(() => {
-
-    })
 
     useEffect(() => {
         if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0) {
