@@ -2,6 +2,7 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Toaster, toast } from 'sonner';
 
 // const getLatestMaterialPrice = (material) => {
 //     const now = new Date();
@@ -36,7 +37,7 @@ const WaitSaleStaff = ({ order }) => {
     const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
     const [materialList, setMaterialList] = useState([]);
     const [materialWeight, setMaterialWeight] = useState(0);
-    const [currentMaterial, setCurrentMaterial] = useState({});
+    const [currentMaterial, setCurrentMaterial] = useState('');
 
     const removeDiamond = (id, price) => {
         setChosenDiamonds(oldList => oldList.filter(diamond => diamond.id !== id));
@@ -53,14 +54,17 @@ const WaitSaleStaff = ({ order }) => {
     }
 
     const chooseMaterial = () => {
-        const material = currentMaterial;
-        if (material.materialId !== null && materialWeight !== null && materialWeight > 0) {
-            setChosenMaterials(oldList => [...oldList, {
-                id: currentMaterial,
-                weight: materialWeight,
-                price: 0
-            }]);
-            // setTotalMaterialPrice(prevPrice => prevPrice + price);
+        if (!chosenMaterials.some(material => material.id === currentMaterial)) {
+            if (currentMaterial.length > 0 && materialWeight > 0) {
+                setChosenMaterials(oldList => [...oldList, {
+                    id: currentMaterial,
+                    weight: materialWeight,
+                    price: 0
+                }]);
+                // setTotalMaterialPrice(prevPrice => prevPrice + price);
+            } 
+        } else {
+            toast.error(`Material already added`);
         }
     }
 
@@ -176,6 +180,7 @@ const WaitSaleStaff = ({ order }) => {
 
     return (
         <>
+            <Toaster position="top-center" richColors expand={true} />
             <div className="container-fluid">
                 <div className="row mt-5">
                     <h3>
@@ -381,7 +386,7 @@ const WaitSaleStaff = ({ order }) => {
                                 <label>Weight</label>
                             </form>
 
-                            
+
                             <div className='col-10'>
                                 <table className='table table-hover'>
                                     <thead>
