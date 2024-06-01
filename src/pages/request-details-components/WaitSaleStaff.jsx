@@ -38,6 +38,7 @@ const WaitSaleStaff = ({ order }) => {
     const [materialList, setMaterialList] = useState([]);
     const [materialWeight, setMaterialWeight] = useState(0);
     const [currentMaterial, setCurrentMaterial] = useState('');
+    const [extraPrice, setExtraPrice] = useState({material:0,diamond:0, production: 0, markupRate: 1.0});
 
     const removeDiamond = (id, price) => {
         setChosenDiamonds(oldList => oldList.filter(diamond => diamond.id !== id));
@@ -58,17 +59,18 @@ const WaitSaleStaff = ({ order }) => {
         setTotalDiamondPrice(prevPrice => prevPrice + price);
     }
 
-    const chooseMaterial = () => {
+    const chooseMaterial = async () => {
         if (!chosenMaterials.some(material => material.id === currentMaterial)) {
             if (currentMaterial.length > 0 && materialWeight > 0) {
+                const price = await fetchMaterialPrice(currentMaterial) * materialWeight;
                 const newMaterial = {
                     id: currentMaterial,
                     weight: materialWeight,
-                    price: 100 * materialWeight
+                    price: price
                 }
                 setChosenMaterials(oldList => [...oldList, newMaterial]);
                 setTotalMaterialPrice(prevPrice => prevPrice + newMaterial.price);
-            } 
+            }
         } else {
             toast.error(`Material already added`);
         }
@@ -88,6 +90,19 @@ const WaitSaleStaff = ({ order }) => {
     useEffect(() => {
         fetchMaterials();
     }, [])
+
+    const fetchMaterialPrice = async (id) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/materialPrices/${id}`);
+            if (response.status === 204) {
+                return 0;
+            } else {
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const fetchMaterials = async () => {
         try {
@@ -410,7 +425,7 @@ const WaitSaleStaff = ({ order }) => {
                                                     <td>{material.id}</td>
                                                     <td>{material.weight}</td>
                                                     <td>{material.price}</td>
-                                                    <td><button onClick={() => removeMaterial(material.id,material.price)} ><b>-</b></button></td>
+                                                    <td><button onClick={() => removeMaterial(material.id, material.price)} ><b>-</b></button></td>
                                                 </tr>
                                             )
                                         )}
@@ -488,7 +503,7 @@ const WaitSaleStaff = ({ order }) => {
                         </div>
                         <div className="col-md-10 d-flex justify-content-between align-items-center">
                             <p className="fw-bold">Total Price</p>
-                            <p>tinh total cc gi day</p>
+                            <p>{(totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.production)*extraPrice.markupRate}</p>
                         </div>
                         <button type="button" className="btn btn-secondary col-md-10">
                             Request Manager
