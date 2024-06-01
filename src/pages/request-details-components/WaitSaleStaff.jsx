@@ -44,6 +44,11 @@ const WaitSaleStaff = ({ order }) => {
         setTotalDiamondPrice(prevPrice => prevPrice - price);
     }
 
+    const removeMaterial = (id, price) => {
+        setChosenMaterials(oldList => oldList.filter(material => material.id !== id));
+        setTotalMaterialPrice(prevPrice => prevPrice - price);
+    }
+
     const chooseDiamond = (id, code, price) => {
         setChosenDiamonds(oldList => [...oldList, {
             id: id,
@@ -56,12 +61,13 @@ const WaitSaleStaff = ({ order }) => {
     const chooseMaterial = () => {
         if (!chosenMaterials.some(material => material.id === currentMaterial)) {
             if (currentMaterial.length > 0 && materialWeight > 0) {
-                setChosenMaterials(oldList => [...oldList, {
+                const newMaterial = {
                     id: currentMaterial,
                     weight: materialWeight,
-                    price: 0
-                }]);
-                // setTotalMaterialPrice(prevPrice => prevPrice + price);
+                    price: 100 * materialWeight
+                }
+                setChosenMaterials(oldList => [...oldList, newMaterial]);
+                setTotalMaterialPrice(prevPrice => prevPrice + newMaterial.price);
             } 
         } else {
             toast.error(`Material already added`);
@@ -404,6 +410,7 @@ const WaitSaleStaff = ({ order }) => {
                                                     <td>{material.id}</td>
                                                     <td>{material.weight}</td>
                                                     <td>{material.price}</td>
+                                                    <td><button onClick={() => removeMaterial(material.id,material.price)} ><b>-</b></button></td>
                                                 </tr>
                                             )
                                         )}
