@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import WaitSaleStaff from './request-details-components/WaitSaleStaff';
 import WaitManager from './request-details-components/WaitManager';
+import ManagerApproved from './ManagerApproved';
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
@@ -43,6 +44,9 @@ const RequestDetailPage = () => {
                     <WaitManager order={order} />
                 );
             case "manager_approved":
+                return(
+                    <ManagerApproved order={order}/>
+                );
                 break;
             case "wait_customer":
                 break;
