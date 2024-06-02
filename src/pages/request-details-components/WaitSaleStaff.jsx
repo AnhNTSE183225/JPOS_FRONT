@@ -4,13 +4,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 
-// const getLatestMaterialPrice = (material) => {
-//     const now = new Date();
-//     const pastPrices = material.materialPrices.filter(price => new Date(price.id.effectiveDate) <= now);
-//     const latestPrice = pastPrices.reduce((prev, current) => (new Date(prev.id.effectiveDate) > new Date(current.id.effectiveDate)) ? prev : current);
-//     return latestPrice.price === null ? 0 : latestPrice.price;
-// }
-
 const getLatestPrice = (diamondPrices) => {
     const now = new Date();
     const pastPrices = diamondPrices.filter(price => {
@@ -29,16 +22,19 @@ const WaitSaleStaff = ({ order }) => {
     const [shape, setShape] = useState('');
     const [fromCaratWeight, setFromCaratWeight] = useState(0.0);
     const [toCaratWeight, setToCaratWeight] = useState(10.0);
+
+    const [materialWeight, setMaterialWeight] = useState(0);
+    const [currentMaterial, setCurrentMaterial] = useState('');
+    const [extraPrice, setExtraPrice] = useState({ material: 0, diamond: 0, production: 0, markupRate: 1.0 });
     const [diamondList, setDiamondList] = useState([]);
+    const [materialList, setMaterialList] = useState([]);
     const [latestPrice, setLatestPrice] = useState(0);
+    
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [chosenMaterials, setChosenMaterials] = useState([]);
     const [totalMaterialPrice, setTotalMaterialPrice] = useState(0);
     const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
-    const [materialList, setMaterialList] = useState([]);
-    const [materialWeight, setMaterialWeight] = useState(0);
-    const [currentMaterial, setCurrentMaterial] = useState('');
-    const [extraPrice, setExtraPrice] = useState({ material: 0, diamond: 0, production: 0, markupRate: 1.0 });
+    
 
     // const finalSubmit = () => {
     //     const finalOrder = {
