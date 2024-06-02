@@ -41,22 +41,15 @@ const TableComponent = ({requests}) => {
 
 const RequestPage = () => {
 
-    //console.log("Is customer? ", sessionStorage.getItem('customer_id') !== null);
-    //console.log("Is staff?", sessionStorage.getItem('staff_id') !== null);
-
     const [requests, setRequests] = useState([]);
 
-    const fetchData = () => {
-        axios.get(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem('staff_id')}`)
-        .then(
-            response => {
-                setRequests(response.data);
-            }
-        ).catch(
-            error => {
-                console.log(error);
-            }
-        )
+    const fetchData = async () => {
+        const response = await axios.get(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem('staff_id')}`)
+        if(response.status === 204) {
+            toast.info(`No available requests`);
+        } else {
+            setRequests(response.data);
+        }
     }
 
     useEffect(() => {

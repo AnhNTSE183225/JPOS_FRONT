@@ -16,6 +16,9 @@ const getLatestPrice = (diamondPrices) => {
 
 const WaitSaleStaff = ({ order }) => {
 
+    const [productName, setProductName] = useState('');
+    const [productType, setProductType] = useState('');
+
     const [cut, setCut] = useState('');
     const [color, setColor] = useState('');
     const [clarity, setClarity] = useState('');
@@ -29,32 +32,40 @@ const WaitSaleStaff = ({ order }) => {
     const [diamondList, setDiamondList] = useState([]);
     const [materialList, setMaterialList] = useState([]);
     const [latestPrice, setLatestPrice] = useState(0);
-    
+
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [chosenMaterials, setChosenMaterials] = useState([]);
     const [totalMaterialPrice, setTotalMaterialPrice] = useState(0);
     const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
-    
 
-    // const finalSubmit = () => {
-    //     const finalOrder = {
-    //         ...order
-    //         ,
-    //     }
-    // }
 
-    // const createProduct = () => {
-    //     const product = {
-    //         productName: "Test",
-    //         productionPrice: extraPrice.production,
-    //         markupRate: extraPrice.markupRate,
-    //         productType: "TestType",
-    //         productDesignId: null,
-    //         diamonds: [
+    const finalSubmit = async () => {
+        const productDTO = {
+            productName: productName,
+            productType: productType,
+            ediamondPrice: extraPrice.diamond,
+            ematerialPrice: extraPrice.material,
+            productionPrice: extraPrice.production,
+            markupRate: extraPrice.markupRate,
+            diamondIds: chosenDiamonds.map(diamond => diamond.id),
+            materialsIds: chosenMaterials.map(material => ({first: material.id, second: material.weight}))
+        }
+        
+        console.log(productDTO);
 
-    //         ]
-    //     }
-    // }
+        const response = await axios.post(`http://localhost:8080/api/product/save`,productDTO);
+        if(response.status === 204) {
+            toast.error(`Something went wrong! Can't send request`);
+        } else {
+            toast.success(`Successfully submitted`);
+            console.log(response.data);
+        }
+
+        // const finalOrder = {
+        //     ...order
+        //     ,
+        // }
+    }
 
     const removeDiamond = (id, price) => {
         setChosenDiamonds(oldList => oldList.filter(diamond => diamond.id !== id));
@@ -162,22 +173,18 @@ const WaitSaleStaff = ({ order }) => {
         )
     }
 
-    const fetchDiamonds = (cut, color, clarity, fromCaratWeight, toCaratWeight, shape) => {
-
-        axios.get(`http://localhost:8080/api/get-diamonds-by-4C?fromCaratWeight=${fromCaratWeight}&toCaratWeight=${toCaratWeight}&cut=${cut}&clarity=${clarity}&color=${color}&shape=${shape}`)
-            .then(
-                response => {
-                    if (response.status === 204) {
-                        console.log("No data");
-                    } else {
-                        setDiamondList(response.data);
-                    }
-                }
-            ).catch(
-                error => {
-                    console.log('no diamonds');
-                }
-            )
+    const fetchDiamonds = async (cut, color, clarity, fromCaratWeight, toCaratWeight, shape) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/get-diamonds-by-4C?fromCaratWeight=${fromCaratWeight}&toCaratWeight=${toCaratWeight}&cut=${cut}&clarity=${clarity}&color=${color}&shape=${shape}`);
+            if (response.status === 204) {
+                toast.info(`No diamonds fit this setting`);
+            } else {
+                //console.log(response.data);
+                setDiamondList(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleMaterial = (event) => {
@@ -217,7 +224,7 @@ const WaitSaleStaff = ({ order }) => {
 
     return (
         <>
-            <Toaster position="top-center" richColors expand={true} />
+            <Toaster position="top-center" richColors expand={false} />
             <div className="container-fluid">
                 <div className="row mt-5">
                     <h3>
@@ -240,6 +247,20 @@ const WaitSaleStaff = ({ order }) => {
 
                     <div className="col-md-5 px-3">
                         <div>
+                            <p>
+                                <b>Basic information</b>
+                            </p>
+                            <div className="form-floating col-10 mb-2">
+                                <input className='form-control' type='text' value={productName} onChange={(e) => setProductName(e.target.value)} />
+                                <label>Product name</label>
+                            </div>
+                            <div className="form-floating col-10 mb-2">
+                                <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
+                                    <option value>Choose product type</option>
+                                    {[`Engagement Ring`,`Wedding Ring`,`Earrings`,`Necklace`,`General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
+                                </select>
+                                <label>Product type</label>
+                            </div>
                             <p>
                                 <b>Main Diamond Quality</b>
                             </p>
@@ -534,7 +555,7 @@ const WaitSaleStaff = ({ order }) => {
                                         (prevExtraPrice) => (
                                             { ...prevExtraPrice, markupRate: parseFloat(event.target.value.length === 0 ? '0' : event.target.value) }
                                         )
-                                    )}                                />
+                                    )} />
                                 <label>Rate</label>
                             </form>
                         </div>
@@ -542,7 +563,7 @@ const WaitSaleStaff = ({ order }) => {
                             <p className="fw-bold">Total Price</p>
                             <p>{(totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate}</p>
                         </div>
-                        <button type="button" className="btn btn-secondary col-md-10">
+                        <button type="button" className="btn btn-secondary col-md-10" onClick={finalSubmit}>
                             Request Manager
                         </button>
 
