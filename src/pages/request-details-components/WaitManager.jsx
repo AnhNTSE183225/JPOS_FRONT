@@ -16,7 +16,6 @@ const WaitManager = ({ order }) => {
             axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`)
                 .then(
                     response => {
-                        toast(response.data);
                         navigate('/profile/request');
                     }
                 ).catch(
@@ -85,7 +84,6 @@ const WaitManager = ({ order }) => {
                                 <li className='list-group-item'>Production price: {order.product.productionPrice}</li>
                                 <li className='list-group-item'>Markup rate: {order.product.markupRate}</li>
                                 <li className='list-group-item'>Product type: {order.product.productType}</li>
-                                <li className='list-group-item'>Product Design ID: {order.product.productDesignId}</li>
                                 <li className='list-group-item'>Extra material price: {order.product.ematerialPrice}</li>
                                 <li className='list-group-item'>Extra diamond price: {order.product.ediamondPrice}</li>
                                 <li className='list-group-item'>
