@@ -7,7 +7,7 @@ import axios from 'axios';
 import WaitSaleStaff from './request-details-components/WaitSaleStaff';
 import WaitManager from './request-details-components/WaitManager';
 import ManagerApproved from './ManagerApproved';
-import WaitForCustomer from './request-details-components/WaitForCustomer';
+import WaitCustomer from './customer-request-details/WaitCustomer';
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
@@ -51,7 +51,7 @@ const RequestDetailPage = () => {
                 break;
             case "wait_customer":
                 return (
-                    <WaitForCustomer order={order}/>
+                    <WaitCustomer order={order}/>
                 )
                 break;
             case "customer_accept":
