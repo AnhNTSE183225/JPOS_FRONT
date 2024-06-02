@@ -40,31 +40,47 @@ const WaitSaleStaff = ({ order }) => {
 
 
     const finalSubmit = async () => {
-        const productDTO = {
-            productName: productName,
-            productType: productType,
-            ediamondPrice: extraPrice.diamond,
-            ematerialPrice: extraPrice.material,
-            productionPrice: extraPrice.production,
-            markupRate: extraPrice.markupRate,
-            diamondIds: chosenDiamonds.map(diamond => diamond.id),
-            materialsIds: chosenMaterials.map(material => ({first: material.id, second: material.weight}))
-        }
-        
-        console.log(productDTO);
+        try {
+            const productDTO = {
+                productName: productName,
+                productType: productType,
+                ediamondPrice: extraPrice.diamond,
+                ematerialPrice: extraPrice.material,
+                productionPrice: extraPrice.production,
+                markupRate: extraPrice.markupRate,
+                diamondIds: chosenDiamonds.map(diamond => diamond.id),
+                materialsIds: chosenMaterials.map(material => ({ first: material.id, second: material.weight }))
+            }
 
-        const response = await axios.post(`http://localhost:8080/api/product/save`,productDTO);
-        if(response.status === 204) {
-            toast.error(`Something went wrong! Can't send request`);
-        } else {
-            toast.success(`Successfully submitted`);
-            console.log(response.data);
-        }
+            const response = await axios.post(`http://localhost:8080/api/product/save`, productDTO);
+            if (!response.data || response.status === 204) {
+                throw new Error(`Product creation failed. Backend did not return id`);
+            }
+            
+            const finalOrder = {
+                ...order,
+                productionPrice: extraPrice.production,
+                markupRate: extraPrice.markupRate,
+                totalAmount: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate,
+                ematerialPrice: extraPrice.material,
+                ediamondPrice: extraPrice.diamond,
+                qdiamondPrice: totalDiamondPrice,
+                qmaterialPrice: totalMaterialPrice
+            }
 
-        // const finalOrder = {
-        //     ...order
-        //     ,
-        // }
+            console.log(finalOrder);
+
+            const response2 = await axios.post(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem(`staff_id`)}/${response.data}`,finalOrder);
+            if(!response.data || response.status === 204) {
+                throw new Error(`Order update failed. Backend did not return order`);
+            }
+            
+            console.log(response2.data);
+
+        } catch (error) {
+            toast.error(`Something went wrong! Can't complete order`);
+            console.log(error);
+        }
     }
 
     const removeDiamond = (id, price) => {
@@ -257,7 +273,7 @@ const WaitSaleStaff = ({ order }) => {
                             <div className="form-floating col-10 mb-2">
                                 <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
                                     <option value>Choose product type</option>
-                                    {[`Engagement Ring`,`Wedding Ring`,`Earrings`,`Necklace`,`General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
+                                    {[`Engagement Ring`, `Wedding Ring`, `Earrings`, `Necklace`, `General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
                                 </select>
                                 <label>Product type</label>
                             </div>
