@@ -3,6 +3,8 @@ import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { formatPrice } from '../../helper_function/ConvertFunction';
 
 const getLatestPrice = (diamondPrices) => {
     const now = new Date();
@@ -15,6 +17,8 @@ const getLatestPrice = (diamondPrices) => {
 };
 
 const WaitSaleStaff = ({ order }) => {
+
+    const navigate = useNavigate();
 
     const [productName, setProductName] = useState('');
     const [productType, setProductType] = useState('');
@@ -38,49 +42,58 @@ const WaitSaleStaff = ({ order }) => {
     const [totalMaterialPrice, setTotalMaterialPrice] = useState(0);
     const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
 
+    const [processing, setProcessing] = useState(false);
 
     const finalSubmit = async () => {
-        try {
-            const productDTO = {
-                productName: productName,
-                productType: productType,
-                ediamondPrice: extraPrice.diamond,
-                ematerialPrice: extraPrice.material,
-                productionPrice: extraPrice.production,
-                markupRate: extraPrice.markupRate,
-                diamondIds: chosenDiamonds.map(diamond => diamond.id),
-                materialsIds: chosenMaterials.map(material => ({ first: material.id, second: material.weight }))
-            }
+        if (productName.length > 0 &&
+            chosenDiamonds.length > 0 &&
+            chosenMaterials.length > 0 &&
+            extraPrice.diamond > 0 &&
+            extraPrice.markupRate > 0 &&
+            extraPrice.material > 0) {
+            try {
+                setProcessing(true);
+                const productDTO = {
+                    productName: productName,
+                    productType: productType,
+                    ediamondPrice: extraPrice.diamond,
+                    ematerialPrice: extraPrice.material,
+                    productionPrice: extraPrice.production,
+                    markupRate: extraPrice.markupRate,
+                    diamondIds: chosenDiamonds.map(diamond => diamond.id),
+                    materialsIds: chosenMaterials.map(material => ({ first: material.id, second: material.weight }))
+                }
 
-            const response = await axios.post(`http://localhost:8080/api/product/save`, productDTO);
-            if (!response.data || response.status === 204) {
-                throw new Error(`Product creation failed. Backend did not return id`);
-            }
-            
-            const finalOrder = {
-                ...order,
-                productionPrice: extraPrice.production,
-                markupRate: extraPrice.markupRate,
-                totalAmount: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate,
-                ematerialPrice: extraPrice.material,
-                ediamondPrice: extraPrice.diamond,
-                qdiamondPrice: totalDiamondPrice,
-                qmaterialPrice: totalMaterialPrice
-            }
+                const response = await axios.post(`http://localhost:8080/api/product/save`, productDTO);
+                if (!response.data || response.status === 204) {
+                    throw new Error(`Product creation failed. Backend did not return id`);
+                }
 
-            console.log(finalOrder);
+                const finalOrder = {
+                    ...order,
+                    productionPrice: extraPrice.production,
+                    markupRate: extraPrice.markupRate,
+                    totalAmount: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate,
+                    ematerialPrice: extraPrice.material,
+                    ediamondPrice: extraPrice.diamond,
+                    qdiamondPrice: totalDiamondPrice,
+                    qmaterialPrice: totalMaterialPrice
+                }
 
-            const response2 = await axios.post(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem(`staff_id`)}/${response.data}`,finalOrder);
-            if(!response.data || response.status === 204) {
-                throw new Error(`Order update failed. Backend did not return order`);
+                const response2 = await axios.post(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem(`staff_id`)}/${response.data}`, finalOrder);
+                if (!response.data || response.status === 204) {
+                    throw new Error(`Order update failed. Backend did not return order`);
+                }
+                navigate("/profile/request");
+
+            } catch (error) {
+                toast.error(`Something went wrong! Can't complete order`);
+                console.log(error);
             }
-            
-            console.log(response2.data);
-
-        } catch (error) {
-            toast.error(`Something went wrong! Can't complete order`);
-            console.log(error);
+        } else {
+            toast.info("Please fill in all forms");
         }
+        setProcessing(false);
     }
 
     const removeDiamond = (id, price) => {
@@ -254,7 +267,7 @@ const WaitSaleStaff = ({ order }) => {
                         <p>
                             <b>Description</b>
                         </p>
-                        <p className="px-3">{order.description}</p>
+                        <textarea maxLength={255} readOnly value={order.description} style={{ resize: "none" }} className="form-control mb-3" rows='5' cols='30' aria-label="description"></textarea>
                         <p>
                             <b>Budget</b>
                         </p>
@@ -394,7 +407,7 @@ const WaitSaleStaff = ({ order }) => {
 
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>{latestPrice}</p>
+                                <p>{formatPrice(latestPrice)}</p>
                             </div>
                         </div>
                         <div className='row'>
@@ -419,7 +432,7 @@ const WaitSaleStaff = ({ order }) => {
                                                 <tr key={diamond.id}>
                                                     <td>{diamond.id}</td>
                                                     <td>{diamond.code}</td>
-                                                    <td>{diamond.price}</td>
+                                                    <td>{formatPrice(diamond.price)}</td>
                                                     <td><button onClick={() => removeDiamond(diamond.id, diamond.price)}><b>-</b></button></td>
                                                 </tr>
                                             )
@@ -430,7 +443,7 @@ const WaitSaleStaff = ({ order }) => {
 
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>{totalDiamondPrice}</p>
+                                <p>{formatPrice(totalDiamondPrice)}</p>
                             </div>
                         </div>
 
@@ -494,7 +507,7 @@ const WaitSaleStaff = ({ order }) => {
                             </button>
                             <div className="col-8 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>{totalMaterialPrice}</p>
+                                <p>{formatPrice(totalMaterialPrice)}</p>
                             </div>
                         </div>
 
@@ -535,7 +548,7 @@ const WaitSaleStaff = ({ order }) => {
                             </div>
                             <div className="col-md-10 d-flex justify-content-between align-items-center">
                                 <p className="fw-semibold">Price</p>
-                                <p>{extraPrice.diamond + extraPrice.material}</p>
+                                <p>{formatPrice(extraPrice.diamond + extraPrice.material)}</p>
                             </div>
                         </div>
 
@@ -581,11 +594,18 @@ const WaitSaleStaff = ({ order }) => {
                         </div>
                         <div className="col-md-10 d-flex justify-content-between align-items-center">
                             <p className="fw-bold">Total Price</p>
-                            <p>{(totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate}</p>
+                            <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate)}</p>
                         </div>
-                        <button type="button" className="btn btn-secondary col-md-10" onClick={finalSubmit}>
-                            Request Manager
-                        </button>
+                        {
+                            processing
+                                ? <button className="btn btn-secondary" type="button" disabled>
+                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span role="status">Loading...</span>
+                                </button>
+                                : <button type="button" className="btn btn-secondary col-md-10" onClick={finalSubmit}>
+                                    Request Manager
+                                </button>
+                        }
 
                     </div>
                 </div>

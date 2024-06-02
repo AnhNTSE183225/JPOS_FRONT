@@ -39,7 +39,6 @@ const UserComponent = (props) => {
 }
 
 const NavigationBar = () => {
-    console.log("navigation bar renders");
     const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('username') != null);
     const location = useLocation().pathname.split("/");
 

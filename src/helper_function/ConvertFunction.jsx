@@ -1,22 +1,18 @@
 
 export const formatPrice = (price) => {
-    if(price === null || price === undefined) {
+    if (price === null || price === undefined) {
         return "";
     }
-    return price.toLocaleString('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+
+    return Number(price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,').replace('₫', '').trim() + ' ₫';;
 };
 
 export const formatDate = (dateString) => {
-    
-    if(dateString === null || dateString === undefined) {
+
+    if (dateString === null || dateString === undefined) {
         return "";
     }
-    
+
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // January is 0!

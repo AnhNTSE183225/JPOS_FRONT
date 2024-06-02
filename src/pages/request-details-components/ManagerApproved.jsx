@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../node_modules/bootstrap/dist/js/bootstrap.bundle";
-import { formatDate, formatPrice } from '../helper_function/ConvertFunction'
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import { formatDate, formatPrice } from '../../helper_function/ConvertFunction'
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
@@ -14,22 +14,22 @@ const ManagerApproved = ({ order }) => {
   const forwardQuotation = () => {
     let staff_id = sessionStorage.getItem('staff_id');
     if (staff_id !== null) {
-        axios.post(`http://localhost:8080/api/${order.id}/forward-quotation`)
-            .then(
-                response => {
-                    toast(response.data);
-                    navigate('/profile/request');
-                }
-            ).catch(
-                error => {
-                    console.log(error);
-                }
-            )
+      axios.post(`http://localhost:8080/api/${order.id}/forward-quotation`)
+        .then(
+          response => {
+            console.log(response.data);
+            navigate('/profile/request');
+          }
+        ).catch(
+          error => {
+            console.log(error);
+          }
+        )
     } else {
-        toast('Logged out');
-        navigate('/login');
+      toast.info('Logged out');
+      navigate('/login');
     }
-}
+  }
 
   return (
     <>
@@ -53,6 +53,10 @@ const ManagerApproved = ({ order }) => {
               <b>Budget</b>
             </p>
             <p className="px-3">{order.budget}</p>
+            <p>
+              <b>Reference image</b>
+            </p>
+            <img crossOrigin="anonymous" src={order.designFile} className="img-fluid" alt="" />
           </div>
           <div className="col-md-6 px-2">
             <div className='row'>
@@ -138,7 +142,7 @@ const ManagerApproved = ({ order }) => {
                 <p><b>Total Price: {formatPrice(order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice + order.productionPrice + ((order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice) * order.markupRate) - (order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice))}</b></p>
               </div>
               <div className='col'>
-                        <button onClick={forwardQuotation} className='btn btn-success w-100'>Forward to {order.customer.name}</button>
+                <button onClick={forwardQuotation} className='btn btn-success w-100'>Forward to {order.customer.name}</button>
               </div>
             </div>
           </div>

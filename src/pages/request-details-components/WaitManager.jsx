@@ -61,10 +61,13 @@ const WaitManager = ({ order }) => {
                             <ul className='list-group'>
                                 <li className='list-group-item'>
                                     Reference image:
-                                    <img className='img-fluid' crossOrigin='anonymous' src={order.designFile} alt=""/>
+                                    <img className='img-fluid' crossOrigin='anonymous' src={order.designFile} alt="" />
                                 </li>
                                 <li className='list-group-item'>Budget: {formatPrice(order.budget)}</li>
-                                <li className='list-group-item'>Description: {order.description}</li>
+                                <li className='list-group-item'>
+                                    Description: <br />
+                                    <textarea readOnly className='form-control' name="" id="" defaultValue={order.description}></textarea>
+                                </li>
                             </ul>
                         </li>
                         <li className='list-group-item'>
@@ -123,11 +126,12 @@ const WaitManager = ({ order }) => {
                             </ul>
                         </li>
                         <li className='list-group-item'>
-                            Quotation
+                            Quotation as of {formatDate(order.qDate)}
                             <ul className='list-group'>
-                                <li className='list-group-item'>Diamond price: {formatPrice(order.qdiamondPrice + order.ediamondPrice)}</li>
-                                <li className='list-group-item'>Material price: {formatPrice(order.qmaterialPrice + order.ematerialPrice)}</li>
+                                <li className='list-group-item'>Diamond price: {formatPrice(order.qdiamondPrice)}</li>
+                                <li className='list-group-item'>Material price: {formatPrice(order.qmaterialPrice)}</li>
                                 <li className='list-group-item'>Production price: {formatPrice(order.productionPrice)}</li>
+                                <li className='list-group-item'>Extra: {formatPrice(order.ediamondPrice + order.ematerialPrice)}</li>
                                 <li className='list-group-item'>Markup rate: {order.markupRate}</li>
                             </ul>
                         </li>

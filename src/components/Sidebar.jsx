@@ -3,7 +3,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 
-const ListComponent = ({location}) => {
+const ListComponent = ({ location }) => {
     let classStyle = {
         home: "nav-link text-white",
         request: "nav-link text-white",
@@ -73,12 +73,10 @@ const Sidebar = () => {
     }
 
     return (
-        <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark w-100">
-            <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <span className="fs-4">Sidebar</span>
-            </a>
+        <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100">
+            <button className='btn btn-outline-primary' onClick={() => navigate("/")}>Go back</button>
             <hr />
-            <ListComponent location={location}/>
+            <ListComponent location={location} />
             <hr />
             <div className="dropdown">
                 <a style={{
