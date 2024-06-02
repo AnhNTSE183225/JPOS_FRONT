@@ -12,6 +12,7 @@ import RequestPage from './pages/RequestPage';
 import FrameSidebar from './pages/FrameSidebar';
 import FrameNavbar from './pages/FrameNavbar';
 import HistoryPage from './pages/HistoryPage';
+import CustomerRequestDetailsPage from './pages/CustomerRequestDetailsPage';
 import './main.css';
 import RequestDetailPage from './pages/RequestDetailsPage';
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([{
     {
       path: '',
       element: <ProfilePage /> //Customer, Staff
+    },
+    {
+      path: 'your-request',
+      element: <CustomerRequestDetailsPage/>
     },
     {
       path: 'request',

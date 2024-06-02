@@ -7,13 +7,16 @@ const ListComponent = ({location}) => {
     let classStyle = {
         home: "nav-link text-white",
         request: "nav-link text-white",
-        history: "nav-link text-white"
+        history: "nav-link text-white",
+        yourRequest: "nav-link text-white"
     }
 
     if (location.includes('request')) {
         classStyle.request = "nav-link active";
     } else if (location.includes('history')) {
         classStyle.history = "nav-link active";
+    } else if (location.includes('your-request')) {
+        classStyle.yourRequest = "nav-link active";
     } else {
         classStyle.home = "nav-link active";
     }
@@ -39,6 +42,9 @@ const ListComponent = ({location}) => {
                 <li className="nav-item">
                     <Link to="/profile" className={classStyle.home} aria-current="page">
                         Home
+                    </Link>
+                    <Link to="/profile/your-request" className={classStyle.yourRequest}>
+                        Your requests
                     </Link>
                 </li>
             </ul>
