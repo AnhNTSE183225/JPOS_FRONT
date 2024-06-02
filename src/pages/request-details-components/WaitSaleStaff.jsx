@@ -259,6 +259,10 @@ const WaitSaleStaff = ({ order }) => {
                             <b>Budget</b>
                         </p>
                         <p className="px-3">{order.budget}</p>
+                        <p>
+                            <b>Reference image</b>
+                        </p>
+                        <p className="px-3"><img crossOrigin='anonymous' className='img-fluid' src={order.designFile} alt="" /></p>
                     </div>
 
                     <div className="col-md-5 px-3">

@@ -55,6 +55,20 @@ const WaitManager = ({ order }) => {
                     <ul className='list-group'>
                         <li className='list-group-item'>Order id: {order.id}</li>
                         <li className='list-group-item'>
+                            Order date: {formatDate(order.orderDate)}
+                        </li>
+                        <li className='list-group-item'>
+                            Customer specification:
+                            <ul className='list-group'>
+                                <li className='list-group-item'>
+                                    Reference image:
+                                    <img className='img-fluid' crossOrigin='anonymous' src={order.designFile} alt=""/>
+                                </li>
+                                <li className='list-group-item'>Budget: {formatPrice(order.budget)}</li>
+                                <li className='list-group-item'>Description: {order.description}</li>
+                            </ul>
+                        </li>
+                        <li className='list-group-item'>
                             Customer information:
                             <ul className='list-group'>
                                 <li className='list-group-item'>ID: {order.customer.customerId}</li>
@@ -71,24 +85,52 @@ const WaitManager = ({ order }) => {
                                 <li className='list-group-item'>Production price: {order.product.productionPrice}</li>
                                 <li className='list-group-item'>Markup rate: {order.product.markupRate}</li>
                                 <li className='list-group-item'>Product type: {order.product.productType}</li>
+                                <li className='list-group-item'>Product Design ID: {order.product.productDesignId}</li>
                                 <li className='list-group-item'>Extra material price: {order.product.ematerialPrice}</li>
                                 <li className='list-group-item'>Extra diamond price: {order.product.ediamondPrice}</li>
+                                <li className='list-group-item'>
+                                    Main diamonds:
+                                    <ul className='list-group'>
+                                        {order.product.diamonds.map(diamond => (
+                                            <li key={diamond.diamondId} className='list-group-item'>
+                                                <ul className='list-group'>
+                                                    <li className='list-group-item'>ID: {diamond.diamondId}</li>
+                                                    <li className='list-group-item'>Code: {diamond.diamondCode}</li>
+                                                    <li className='list-group-item'>Name: {diamond.diamondName}</li>
+                                                    <li className='list-group-item'>Shape: {diamond.shape}</li>
+                                                    <li className='list-group-item'>Origin: {diamond.origin}</li>
+                                                    <li className='list-group-item'>Proportions: {diamond.proportions}</li>
+                                                    <li className='list-group-item'>Fluorescence: {diamond.fluorescence}</li>
+                                                    <li className='list-group-item'>Symmetry: {diamond.symmetry}</li>
+                                                    <li className='list-group-item'>Polish: {diamond.polish} </li>
+                                                    <li className='list-group-item'>Cut: {diamond.cut}</li>
+                                                    <li className='list-group-item'>Color: {diamond.color}</li>
+                                                    <li className='list-group-item'>Clarity: {diamond.clarity}</li>
+                                                    <li className='list-group-item'>Crt. Weight: {diamond.caratWeight}</li>
+                                                    <li className='list-group-item'>Note: {diamond.note}</li>
+                                                </ul>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li className='list-group-item'>
-                            Sale staff: {order.product.saleStaff}
-                        </li>
-                        <li className='list-group-item'>
-                            Order date: {formatDate(order.orderDate)}
-                        </li>
-                        <li className='list-group-item'>
-                            Budget: {formatPrice(order.budget)}
+                            Sale staff:
+                            <ul className='list-group'>
+                                <li className='list-group-item'>ID: {order.saleStaff.staffId}</li>
+                                <li className='list-group-item'>Username: {order.saleStaff.username}</li>
+                                <li className='list-group-item'>Name: {order.saleStaff.name}</li>
+                                <li className='list-group-item'>Phone: {order.saleStaff.phone}</li>
+                            </ul>
                         </li>
                         <li className='list-group-item'>
                             Quotation
                             <ul className='list-group'>
-                                <li className='list-group-item'>Diamond price: {formatPrice(order.qdiamondPrice)}</li>
-                                <li className='list-group-item'>Material price: {formatPrice(order.qmaterialPrice)}</li>
+                                <li className='list-group-item'>Diamond price: {formatPrice(order.qdiamondPrice + order.ediamondPrice)}</li>
+                                <li className='list-group-item'>Material price: {formatPrice(order.qmaterialPrice + order.ematerialPrice)}</li>
+                                <li className='list-group-item'>Production price: {formatPrice(order.productionPrice)}</li>
+                                <li className='list-group-item'>Markup rate: {order.markupRate}</li>
                             </ul>
                         </li>
                     </ul>

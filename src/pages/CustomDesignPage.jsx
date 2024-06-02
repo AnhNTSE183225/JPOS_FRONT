@@ -9,13 +9,10 @@ import axios from 'axios';
 
 const CustomDesignPage = () => {
 
-    const [designFile, setDesignFile] = useState('');
+    const [designFile, setDesignFile] = useState(null);
     const [description, setDescription] = useState('');
     const [budget, setBudget] = useState('');
-
-    const handleDesignFile = (event) => {
-        setDesignFile(event.target.value);
-    }
+    const [imageUrl, setImageUrl] = useState(`Not provided`);
 
     const handleDescription = (event) => {
         setDescription(event.target.value);
@@ -25,12 +22,31 @@ const CustomDesignPage = () => {
         setBudget(event.target.value);
     }
 
+    const uploadImage = async () => {
+        try {
+            if (designFile === null) {
+                toast.info(`Please select a file to upload`);
+            } else {
+                const formData = new FormData();
+                formData.append("file", designFile);
+                const response = await axios.post(`http://localhost:8080/api/upload`, formData);
+                if(!response.data || response.status === 204) {
+                    throw new Error("Upload file failed. Backend fail");
+                }
+                setImageUrl(response.data);
+            }
+        } catch (error) {
+            toast.error(`Something went wrong`);
+            console.log(error);
+        }
+    }
+
     const submitForm = () => {
-        if (designFile.length !== 0 && description.length != 0 && budget.length != 0) {
+        if (description.length != 0 && budget.length != 0) {
             axios.post('http://localhost:8080/api/send-request',
                 {
                     customerId: sessionStorage.getItem('customer_id'),
-                    designFile: designFile,
+                    designFile: imageUrl,
                     description: description,
                     budget: budget
                 }
@@ -48,7 +64,7 @@ const CustomDesignPage = () => {
                 }
             )
         } else {
-            toast.error('Please fill in all fields!');   
+            toast.error('Please fill in all fields!');
         }
     }
 
@@ -62,7 +78,9 @@ const CustomDesignPage = () => {
                         <div>
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
-                                <textarea maxLength={255} className="form-control" value={designFile} onChange={handleDesignFile} rows='1' cols='30'></textarea>
+                                <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
+                                <p>URL: {imageUrl}</p>
+                                <button className="btn btn-primary" onClick={uploadImage} >Upload image</button>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Describe what you want</label>
