@@ -6,6 +6,8 @@ import axios from 'axios';
 
 const Production = ({ order }) => {
 
+    const navigate = useNavigate();
+
     const [processing, setProcessing] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState(`Not provided`);
@@ -15,10 +17,14 @@ const Production = ({ order }) => {
             if(imageUrl == "Not provided") {
                 toast.info("Please upload your completed product's image!");
             } else {
-                const response = await axios.get();
-
+                const response = await axios.post(`http://localhost:8080/api/${order.id}/complete-product?imageUrl=${imageUrl}&productionStaffId=${sessionStorage.getItem("staff_id")}`);
+                if(!response.data || response.status === 204) {
+                    toast.error("Something went wrong, can't submit");
+                } else {
+                    console.log(response.data);
+                    navigate("/profile/request");
+                }
             }
-            
         } catch (error) {
             console.log(error);
         }
@@ -133,7 +139,7 @@ const Production = ({ order }) => {
                         }
                     </div>
                     <div className='row mb-3 p-3'>
-                        <button onClick={handleSubmit}>Submit order</button>
+                        <button className='btn btn-secondary' onClick={handleSubmit}>Submit order</button>
                     </div>
                 </div>
             </div>

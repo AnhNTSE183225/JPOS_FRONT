@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,6 +37,7 @@ const DesignerUploadPage = ({ order }) => {
 
     return (
         <>
+            <Toaster position="top-center" richColors expand={true} />
             <div className="container">
                 <div className="row">
                     <div className="col-md-10 text-center">
