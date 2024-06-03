@@ -10,6 +10,7 @@ import ManagerApproved from './request-details-components/ManagerApproved';
 import WaitCustomer from './customer-request-details/WaitCustomer';
 import CustomerAccept from './request-details-components/CustomerAccept';
 import Production from './request-details-components/Production';
+import DesignerUploadPage from './DesignerUploadPage';
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
@@ -57,6 +58,9 @@ const RequestDetailPage = () => {
                 )
                 break;
             case "designing":
+                return(
+                    <DesignerUploadPage order={order}/>
+                );
                 break;
             case "production":
                 return (
