@@ -15,6 +15,10 @@ import HistoryPage from './pages/HistoryPage';
 import CustomerRequestDetailsPage from './pages/CustomerRequestDetailsPage';
 import './main.css';
 import RequestDetailPage from './pages/RequestDetailsPage';
+import FrameBuildYourOwn from './pages/FrameBuildYourOwn';
+import ChooseSetting from './pages/build-your-own/ChooseSetting';
+import ChooseDiamond from './pages/build-your-own/ChooseDiamond';
+import CompleteProduct from './pages/build-your-own/CompleteProduct';
 
 const router = createBrowserRouter([{
   path: '/',
@@ -41,6 +45,24 @@ const router = createBrowserRouter([{
       path: '/customer-register',
       element: <RegisterPage /> //Customer
     },
+    {
+      path: '/build-your-own',
+      element: <FrameBuildYourOwn />,
+      children: [
+        {
+          path: 'choose-setting',
+          element: <ChooseSetting />
+        },
+        {
+          path: 'choose-diamond',
+          element: <ChooseDiamond />
+        },
+        {
+          path: 'complete-product',
+          element: <CompleteProduct />
+        }
+      ]
+    }
   ]
 },
 {
@@ -53,7 +75,7 @@ const router = createBrowserRouter([{
     },
     {
       path: 'your-request',
-      element: <CustomerRequestDetailsPage/>
+      element: <CustomerRequestDetailsPage />
     },
     {
       path: 'request',
@@ -65,7 +87,7 @@ const router = createBrowserRouter([{
     },
     {
       path: 'request/:orderId',
-      element: <RequestDetailPage/> //Staff
+      element: <RequestDetailPage /> //Staff
     }
   ]
 }]);

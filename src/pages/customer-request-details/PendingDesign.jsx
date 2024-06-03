@@ -35,8 +35,6 @@ const PendingDesign = ({ order }) => {
         }
     }
 
-    console.log(order);
-
     return (
         <>
             {
