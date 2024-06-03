@@ -5,25 +5,45 @@ import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 
 
-const ConfirmPaymentPage = ({order}) => {
+const ConfirmPaymentPage = ({ order }) => {
     const navigate = useNavigate();
 
     const [paymentDate, setPaymentDate] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [paymentStatus, setPaymentStatus] = useState(null);
-    const [amountPaid, setAmountPaid] = useState(null);
+    const [amountPaid, setAmountPaid] = useState(0);
+    const [previousAmountPaid, setPreviousAmountPaid] = useState(0);
+
 
     const [processing, setProcessing] = useState(false);
+
+    const getPaidAmount = async () => {
+
+        try {
+            const response = await axios.get(`http://localhost:8080/api/payment/${order.id}`);
+            if (!response.data || response.status === 204) {
+                toast.error("Cannot fetch previously paid amount");
+            } else {
+                setPreviousAmountPaid(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getPaidAmount();
+    }, [])
 
     const handleSubmit = async () => {
         try {
             if (paymentDate !== null &&
                 paymentMethod !== null &&
                 paymentStatus !== null &&
-                amountPaid != null
+                amountPaid > 0
             ) {
                 setProcessing(true);
-                const response = await axios.put(`http://localhost:8080/api/sales/orders/${order.id}/confirm-deposit`,
+                const response = await axios.post(`http://localhost:8080/api/orders/${order.id}/complete`,
                     {
                         paymentDate: paymentDate,
                         paymentMethod: paymentMethod,
@@ -104,10 +124,14 @@ const ConfirmPaymentPage = ({order}) => {
                                 </option>
                             ))}
                         </select>
+                        <label className='form-label my-3'>Previously paid: {formatPrice(previousAmountPaid)}</label>
                         <label className='form-label'>Amount paid</label>
-                        <input onChange={(e) => setAmountPaid(e.target.value)} className='form-control' type="number" />
+                        <div className='input-group mb-3'>
+                            <button onClick={() => setAmountPaid(order.totalAmount - previousAmountPaid)} className='btn btn-outline-secondary' id="button-addon1">Pay the rest</button>
+                            <input value={amountPaid} onChange={(e) => setAmountPaid(e.target.value)} className='form-control' type="number" />
+                        </div>
                         <label className='form-label'>Total amount</label>
-                        <input className='form-control' type="number" value={order.totalAmount} disabled />
+                        <input className='form-control' type="text" value={formatPrice(order.totalAmount)} disabled />
                     </div>
                 </div>
                 <div className="row p-3">

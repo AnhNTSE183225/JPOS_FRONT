@@ -106,8 +106,7 @@ const CustomerAccept = ({ order }) => {
                         </select>
                         <label className='form-label'>Amount paid</label>
                         <input onChange={(e) => setAmountPaid(e.target.value)} className='form-control' type="number" />
-                        <label className='form-label'>Total amount</label>
-                        <input className='form-control' type="number" value={order.totalAmount} disabled />
+                        <label className='form-label'>Total amount: {formatPrice(order.totalAmount)}</label>
                     </div>
                 </div>
                 <div className="row p-3">
