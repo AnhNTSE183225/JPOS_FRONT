@@ -6,16 +6,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const getLatestPrice = (diamondPrices) => {
-    const now = new Date();
-    const pastPrices = diamondPrices.filter(price => {
-        const effectiveDate = new Date(price.effectiveDate);
-        return effectiveDate <= now;
-    });
-    pastPrices.sort((a, b) => new Date(b.effectiveDate) - new Date(a.effectiveDate));
-    return pastPrices.length > 0 ? pastPrices[0].price : 0;
-};
-
 const WaitCustomer = ({ order }) => {
 
     const navigate = useNavigate();
@@ -58,7 +48,7 @@ const WaitCustomer = ({ order }) => {
         if (!response.data || response.status === 204) {
             console.log("Failed to fetch diamond price");
         }
-        return getLatestPrice(response.data);
+        return response.data;
     };
 
     const getCurrentMaterialPrice = async (materials) => {

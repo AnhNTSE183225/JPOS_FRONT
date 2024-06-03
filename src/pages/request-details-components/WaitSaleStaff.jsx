@@ -6,16 +6,6 @@ import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../helper_function/ConvertFunction';
 
-const getLatestPrice = (diamondPrices) => {
-    const now = new Date();
-    const pastPrices = diamondPrices.filter(price => {
-        const effectiveDate = new Date(price.effectiveDate);
-        return effectiveDate <= now;
-    });
-    pastPrices.sort((a, b) => new Date(b.effectiveDate) - new Date(a.effectiveDate));
-    return pastPrices.length > 0 ? pastPrices[0].price : 0;
-};
-
 const WaitSaleStaff = ({ order }) => {
 
     const navigate = useNavigate();
@@ -191,7 +181,7 @@ const WaitSaleStaff = ({ order }) => {
                 } else {
                     const diamondPrice = response.data;
                     if (diamondPrice !== null) {
-                        setLatestPrice(getLatestPrice(diamondPrice));
+                        setLatestPrice(diamondPrice);
                     }
                 }
             }

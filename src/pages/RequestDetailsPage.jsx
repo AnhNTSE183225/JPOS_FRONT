@@ -9,6 +9,7 @@ import WaitManager from './request-details-components/WaitManager';
 import ManagerApproved from './request-details-components/ManagerApproved';
 import WaitCustomer from './customer-request-details/WaitCustomer';
 import CustomerAccept from './request-details-components/CustomerAccept';
+import Production from './request-details-components/Production';
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
@@ -57,9 +58,10 @@ const RequestDetailPage = () => {
                 break;
             case "designing":
                 break;
-            case "pending_design":
-                break;
             case "production":
+                return (
+                    <Production order={order} />
+                )
                 break;
             case "delivered":
                 break;

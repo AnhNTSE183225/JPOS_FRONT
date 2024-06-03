@@ -15,7 +15,9 @@ const TableComponent = ({ requests }) => {
     } else if(sessionStorage.getItem("staff_type") == "manage") {
         disabledFields = ["wait_sale_staff","manager_approved","wait_customer","customer_accept","designing","pending_design","production","completed","delivered"];
     } else if(sessionStorage.getItem("staff_type") == "design") {
-        disabledFields = [["wait_sale_staff","wait_manager","manager_approved","wait_customer","customer_accept","pending_design","production","completed","delivered"]]
+        disabledFields = ["wait_sale_staff","wait_manager","manager_approved","wait_customer","customer_accept","pending_design","production","completed","delivered"];
+    } else if(sessionStorage.getItem("staff_type") == "produce") {
+        disabledFields = ["wait_sale_staff","wait_manager","manager_approved","wait_customer","customer_accept","designing","pending_design","delivered","completed"];
     }
 
     return (

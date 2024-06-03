@@ -139,7 +139,7 @@ const ManagerApproved = ({ order }) => {
               </div>
               <hr />
               <div>
-                <p><b>Total Price: {formatPrice(order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice + order.productionPrice + ((order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice) * order.markupRate) - (order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice))}</b></p>
+                <p><b>Total Price: {formatPrice(order.totalAmount)}</b></p>
               </div>
               <div className='col'>
                 <button onClick={forwardQuotation} className='btn btn-success w-100'>Forward to {order.customer.name}</button>
