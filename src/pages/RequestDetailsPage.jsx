@@ -11,6 +11,7 @@ import WaitCustomer from './customer-request-details/WaitCustomer';
 import CustomerAccept from './request-details-components/CustomerAccept';
 import Production from './request-details-components/Production';
 import DesignerUploadPage from './request-details-components/DesignerUploadPage';
+import ConfirmPaymentPage from './request-details-components/ConfirmPaymentPage';
 
 const RequestDetailPage = () => {
     const orderId = useParams().orderId;
@@ -68,6 +69,9 @@ const RequestDetailPage = () => {
                 )
                 break;
             case "delivered":
+                return(
+                    <ConfirmPaymentPage order={order} />
+                )
                 break;
             case "completed":
                 break;
