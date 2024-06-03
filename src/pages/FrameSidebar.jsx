@@ -27,7 +27,7 @@ const FrameSidebar = () => {
                     <div className='col-md-2 col-xs-12 px-0'>
                         <Sidebar />
                     </div>
-                    <div className='col-md-10 col-xs-12'>
+                    <div className='col-md-10'>
                         <Outlet />
                     </div>
                 </div>
