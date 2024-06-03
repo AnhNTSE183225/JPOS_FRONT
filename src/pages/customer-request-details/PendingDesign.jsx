@@ -1,7 +1,6 @@
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useState, useEffect } from 'react';
-import img from '../../assets/test-image.jpg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,6 +35,8 @@ const PendingDesign = ({ order }) => {
         }
     }
 
+    console.log(order);
+
     return (
         <>
             {
@@ -50,7 +51,7 @@ const PendingDesign = ({ order }) => {
                 </div>
                 <div className="row justify-content-center mb-3">
                     <div className="col-md-5 ">
-                        <img crossOrigin='anonymous' src={img} className='img-fluid' />
+                        <img crossOrigin='anonymous' src={order.modelFile} alt="" />
                     </div>
                 </div>
                 <div className="row mb-3">

@@ -14,25 +14,26 @@ const DesignerUploadPage = ({ order }) => {
     const navigate = useNavigate();
 
     const uploadImage = async () => {
-        setProcessing(true);
         try {
             if (designFile === null) {
                 toast.info(`Please select a file to upload`);
-            } else if(order && order.designStaff) {
+            } else {
+                setProcessing(true);
                 const formData = new FormData();
                 formData.append("file", designFile);
-                const response = await axios.post(`http://localhost:8080/api/designs/upload/${order.designStaff.staffId}/${order.id}`, formData);
+                const response = await axios.post(`http://localhost:8080/api/designs/upload/${sessionStorage.getItem("staff_id")}/${order.id}`, formData);
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }
                 setImageUrl(response.data);
+                setProcessing(false);
                 navigate('/profile/request');
             }
         } catch (error) {
             toast.error(`Something went wrong`);
             console.log(error);
+            setProcessing(false);
         }
-        setProcessing(false);
     }
 
     return (
@@ -57,7 +58,7 @@ const DesignerUploadPage = ({ order }) => {
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div >
         </>

@@ -6,19 +6,9 @@ import { Toaster, toast } from 'sonner';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const TableComponent = ({ requests }) => {
-    const navigate = useNavigate();
-    let disabledFields = [];
+const TableComponent = ({requests}) => {
 
-    if(sessionStorage.getItem("staff_type") == "sale") {
-        disabledFields = ["wait_manager", "wait_customer", "designing", "pending_design", "production"];
-    } else if(sessionStorage.getItem("staff_type") == "manage") {
-        disabledFields = ["wait_sale_staff","manager_approved","wait_customer","customer_accept","designing","pending_design","production","completed","delivered"];
-    } else if(sessionStorage.getItem("staff_type") == "design") {
-        disabledFields = ["wait_sale_staff","wait_manager","manager_approved","wait_customer","customer_accept","pending_design","production","completed","delivered"];
-    } else if(sessionStorage.getItem("staff_type") == "produce") {
-        disabledFields = ["wait_sale_staff","wait_manager","manager_approved","wait_customer","customer_accept","designing","pending_design","delivered","completed"];
-    }
+    const navigate = useNavigate();
 
     return (
         <table className='table table-hover'>
@@ -41,7 +31,7 @@ const TableComponent = ({ requests }) => {
                         <td>{formatPrice(request.budget)}</td>
                         <td>{request.status}</td>
                         <td>
-                            <button onClick={() => navigate(`/profile/request/${request.id}`)} disabled={disabledFields.includes(request.status)} className='btn btn-primary'>Manage</button>
+                            <button onClick={() => navigate(`/profile/request/${request.id}`)} className='btn btn-primary'>Manage</button>
                         </td>
                     </tr>
                 ))}
@@ -55,8 +45,27 @@ const RequestPage = () => {
     const [requests, setRequests] = useState([]);
 
     const fetchData = async () => {
-        // const response = await axios.get(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem('staff_id')}`)
-        const response = await axios.get(`http://localhost:8080/api/order/all`);
+        
+        let response = null;
+
+        switch(sessionStorage.getItem("staff_type")) {
+            case "sale":
+                console.log(`GET http://localhost:8080/api/sales/orders/${sessionStorage.getItem("staff_id")}`)
+                response = await axios.get(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem("staff_id")}`);
+                break;
+            case "manage":
+                response = await axios.get(`http://localhost:8080/api/manager/orders`);
+                break;
+            case "design":
+                response = await axios.get(`http://localhost:8080/api/designs/orders/${sessionStorage.getItem("staff_id")}`);
+                break;
+            case "produce":
+                response = await axios.get(`http://localhost:8080/api/production/orders/${sessionStorage.getItem("staff_id")}`);
+                break;
+            default:
+                response = axios.get(`http://localhost:8080/api/order/all`);
+        }
+
         if (response.status === 204) {
             toast.info(`No available requests`);
         } else {
@@ -76,7 +85,7 @@ const RequestPage = () => {
                     <h1>Request Screen</h1>
                 </div>
                 <div className='row'>
-                    <TableComponent requests={requests} />
+                    <TableComponent requests={requests}/>
                 </div>
             </div>
         </>
