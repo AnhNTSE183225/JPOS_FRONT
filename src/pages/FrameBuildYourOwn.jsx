@@ -1,13 +1,25 @@
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
 import BuildYourOwnNav from '../components/BuildYourOwnNav';
 
+export const Context = React.createContext();
+
 const FrameBuildYourOwn = () => {
+    const [productSetting, setProductSetting] = useState({
+        diamonds: [],
+        designId: null,
+        shellId: null,
+        diamondQuantity: 0,
+    });
+
     return (
         <>
-            <BuildYourOwnNav/>
-            <Outlet/>
+            <Context.Provider value = {[productSetting,setProductSetting]}>
+                <BuildYourOwnNav />
+                <Outlet />
+            </Context.Provider>
         </>
     )
 }

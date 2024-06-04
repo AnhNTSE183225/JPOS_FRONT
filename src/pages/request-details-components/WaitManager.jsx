@@ -114,6 +114,16 @@ const WaitManager = ({ order }) => {
                                         ))}
                                     </ul>
                                 </li>
+                                <li className='list-group-item'>
+                                    Materials:
+                                    <ul className='list-group'>
+                                        {order.product.materials.map(material => (
+                                            <li className='list-group-item' key={material.material.materialId}>
+                                                {material.material.materialName} - {material.weight} carat
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li className='list-group-item'>
