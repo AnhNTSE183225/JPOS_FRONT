@@ -8,8 +8,8 @@ const BuildYourOwnNav = () => {
     return (
         <>            
         <Link to="/build-your-own/choose-diamond">Choose diamond</Link>
-            <Link to="/build-your-own/choose-setting">Choose diamond</Link>
-            <Link to="/build-your-own/complete-product">Choose diamond</Link>
+            <Link to="/build-your-own/choose-setting">Choose setting</Link>
+            <Link to="/build-your-own/complete-product">Complete product</Link>
             <p>
                 This is navbar
             </p>

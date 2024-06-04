@@ -67,9 +67,6 @@ const NavigationBar = () => {
                                 <Link className='nav-link' to="/build-your-own/choose-diamond">Build your own</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className='nav-link' to='/buid-your-own'>Build Your Own</Link>
-                            </li>
-                            <li className="nav-item">
                                 <Link className='nav-link' to='/custom-design'>Request a custom design</Link>
                             </li>
                         </ul>
