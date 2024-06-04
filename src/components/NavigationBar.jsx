@@ -64,6 +64,9 @@ const NavigationBar = () => {
                                 <Link className='nav-link' to='/diamond-price-list'>Diamond price list</Link>
                             </li>
                             <li className="nav-item">
+                                <Link className='nav-link' to='/buid-your-own'>Build Your Own</Link>
+                            </li>
+                            <li className="nav-item">
                                 <Link className='nav-link' to='/custom-design'>Request a custom design</Link>
                             </li>
                         </ul>
