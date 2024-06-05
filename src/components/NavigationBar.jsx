@@ -2,6 +2,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import logo from "../assets/Bijoux.png";
+import './NavigationBar.css';
 
 const UserComponent = (props) => {
 
@@ -18,9 +20,9 @@ const UserComponent = (props) => {
 
     if (!props.loggedIn) {
         return (
-            <li className="nav-item">
-                <Link className='nav-link' to='/login'>Login/Register</Link>
-            </li>
+            <div className="nav-item">
+                <Link className='nav-login' to='/login'>LOGIN/REGISTER</Link>
+            </div>
         )
     } else {
         return (
@@ -48,9 +50,9 @@ const NavigationBar = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary p-3">
+            {/* <nav className="navbar navbar-expand-lg bg-body-tertiary p-3">
                 <div className="container-fluid">
-                    <Link to='/' className="navbar-brand">LOGO</Link>
+                    <Link to='/' className="navbar-brand"><img src={logo} alt="Logo" /></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -72,7 +74,46 @@ const NavigationBar = () => {
                         </ul>
                     </div>
                 </div>
+            </nav> */}
+            <nav className="navbar navbar-expand-xl fixed-top">
+                <div className="container-fluid">
+                    <Link to='/' className="navbar-brand"><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></Link>
+
+                    <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div className="offcanvas-header">
+                            <h5 className="offcanvas-title" id="offcanvasNavbarLabel"><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div className="offcanvas-body">
+                            <ul className="navbar-nav justify-content-center flex-grow-1 pe-3">
+                                <li className="nav-item">
+                                    <a className="nav-link mx-lg-2 active" aria-current="page" href="/">HOME</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link mx-lg-2" href="/diamond-price-list">DIAMOND PRICE LIST</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link mx-lg-2" href="/custom-design">CUSTOM DESIGN</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link mx-lg-2" href="/build-your-own/choose-setting">BUILD JEWELERY</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link mx-lg-2" href="#">PROFILE</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div className='navbar-bar'>
+                        <div className="login-button"><UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} /></div>
+                    </div>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                </div>
             </nav>
+            {/* END NAVBAR */}
         </>
     )
 

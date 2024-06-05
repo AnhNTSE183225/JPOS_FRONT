@@ -47,20 +47,20 @@ const PendingDesign = ({ order }) => {
                 <div className="row">
                     <h1>A design staff has sent you a design</h1>
                 </div>
-                <div className="row justify-content-center mb-3">
-                    <div className="col-md-5 ">
-                        <img crossOrigin='anonymous' src={order.modelFile} alt="" />
+                <div className="row mb-3">
+                    <div className="col-md-5 mx-auto">
+                        <img crossOrigin='anonymous' className="img-fluid" src={order.modelFile} alt="" />
                     </div>
                 </div>
-                <div className="row mb-3">
+                <div className="col mb-3">
                     <textarea placeholder='Leave notes....' style={{ resize: "none" }} maxLength={255} className="form-control" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
                 </div>
-                <div className='row mb-3'>
+                <div className='row  mb-3'>
                     <div className="col">
-                        <button onClick={() => handleSubmit(true)} className='btn btn-success'>Accept</button>
+                        <button onClick={() => handleSubmit(true)} className='btn btn-success w-100'>Accept</button>
                     </div>
                     <div className="col">
-                        <button onClick={() => handleSubmit(false)} className='btn btn-danger'>Decline</button>
+                        <button onClick={() => handleSubmit(false)} className='btn btn-danger w-100'>Decline</button>
                     </div>
                 </div>
             </div>

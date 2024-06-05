@@ -62,70 +62,66 @@ const HomePage = () => {
 
     return (
         <>
-            <div className="image-container">
-                <img src={img} alt="mrs_indian" />
-                <div className="image-text">
-                    <h2>Embrace the Opulence of Autumn</h2>
-                    <p className="text-break">
-                        As the leaves turn to shades of amber and gold, we unveil our Fall
-                        Collection, a tribute to the timeless elegance of Indian
-                        craftsmanship. Our cover, a portrait of grace, captures the essence
-                        of autumnal beauty-a stunning Indian model, draped in the richness
-                        of traditional attire, her visage framed by exquisite jewelry that
-                        whispers tales of heritage and opulence.
-                    </p>
-                    <button>Learn More</button>
-                </div>
-            </div>
-            <div className="chooseRings">
-                <div className="title">
-                    <h2>Explore Category</h2>
-                </div>
-                <div
-                    className="ringsType"
-                    ref={ringsRef}
-                    onMouseDown={(e) => handleMouseDown(e, ringsRef)}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={(e) => handleMouseMove(e, ringsRef)}
-                >
-                    {rings.map((ring) => (
-                        <div className="ring" key={ring.id}>
-                            <div className="ringImage">
-                                <img src={ring.src} alt={ring.name} />
+            {/* <div className="container">
+                <HeroSection />
+                <div className="chooseRings">
+                    <div className="title">
+                        <h2>Explore Category</h2>
+                    </div>
+                    <div
+                        className="ringsType"
+                        ref={ringsRef}
+                        onMouseDown={(e) => handleMouseDown(e, ringsRef)}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={(e) => handleMouseMove(e, ringsRef)}
+                    >
+                        {rings.map((ring) => (
+                            <div className="ring" key={ring.id}>
+                                <div className="ringImage">
+                                    <img src={ring.src} alt={ring.name} />
+                                </div>
+                                <div className="ringName">{ring.name}</div>
                             </div>
-                            <div className="ringName">{ring.name}</div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
-            <div className="chooseShapes">
-                <div className="title">
-                    <h2>Explore Diamonds</h2>
-                </div>
-                <div
-                    className="shapesType"
-                    ref={shapesRef}
-                    onMouseDown={(e) => handleMouseDown(e, shapesRef)}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={(e) => handleMouseDown(e, shapesRef)}
-                >
-                    {shapes.map((shape) => (
-                        <div className="shape" key={shape.id}>
-                            <div className="shapeImage">
-                                <img src={shape.src} alt={shape.name} />
+                <div className="chooseShapes">
+                    <div className="title">
+                        <h2>Explore Diamonds</h2>
+                    </div>
+                    <div
+                        className="shapesType"
+                        ref={shapesRef}
+                        onMouseDown={(e) => handleMouseDown(e, shapesRef)}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={(e) => handleMouseDown(e, shapesRef)}
+                    >
+                        {shapes.map((shape) => (
+                            <div className="shape" key={shape.id}>
+                                <div className="shapeImage">
+                                    <img src={shape.src} alt={shape.name} />
+                                </div>
+                                <div className="shapeName">{shape.name}</div>
                             </div>
-                            <div className="shapeName">{shape.name}</div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    <div>
+                        <Footer>
+
+                        </Footer>
+                    </div>
                 </div>
-                <div>
-                    <Footer>
-                        
-                    </Footer>
+            </div> */}
+            <section className="home">
+                <div className="container">
+                    <video src="https://media2.bulgari.com/video/upload/f_auto,q_auto/v1716383679/homepage/brand-campaign/2024/bulgari_ER_Heromovie_10s_withoutbands_VI_16-9_4k_1.mp4" autoPlay loop muted playsInline></video>
                 </div>
-            </div>
+                <div className="overlay-text">
+                    <h1>ETERNALLY REBORN</h1>
+                </div>
+            </section>
         </>
     );
 };
