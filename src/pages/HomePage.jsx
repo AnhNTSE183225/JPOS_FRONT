@@ -12,7 +12,7 @@ import shape3 from "../assets/shape3.svg";
 import shape4 from "../assets/shape4.svg";
 import shape5 from "../assets/shape5.svg";
 import img from "../assets/mrs_indian.png";
-
+import Footer from "../components/Footer";
 import { useRef, useState } from "react";
 
 const HomePage = () => {
@@ -119,6 +119,11 @@ const HomePage = () => {
                             <div className="shapeName">{shape.name}</div>
                         </div>
                     ))}
+                </div>
+                <div>
+                    <Footer>
+                        
+                    </Footer>
                 </div>
             </div>
         </>

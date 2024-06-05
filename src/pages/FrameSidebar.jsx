@@ -3,7 +3,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import Sidebar from '../components/Sidebar';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-
+import Footer from '../components/Footer';
 const FrameSidebar = () => {
 
     const navigate = useNavigate();
@@ -14,11 +14,10 @@ const FrameSidebar = () => {
             if (!loggedInUser) {
                 navigate('/login');
             }
-        }, 60000); // checks every 60 seconds
+        }, 60000); 
 
-        return () => clearInterval(intervalId); // Clear interval on component unmount
-    }, []); // Empty dependency array ensures this runs once on mount
-
+        return () => clearInterval(intervalId); 
+    }, []); 
 
     return (
         <>
