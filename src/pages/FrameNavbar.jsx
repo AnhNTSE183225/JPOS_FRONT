@@ -1,12 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
-import styles from '../css/FrameNavbar.module.css';
 
 const FrameNavbar = () => {
     return (
         <>
             <NavigationBar />
-            <main>
+            <main style={{paddingTop: '15vh'}}>
                 <Outlet />
             </main>
         </>
