@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Footer.css'; // Make sure to import your local CSS file
+import './css/Footer.css'
 
 const footerStyles = {
   footer: {

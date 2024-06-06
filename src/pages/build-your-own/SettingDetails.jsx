@@ -43,7 +43,7 @@ const SettingDetails = () => {
                     designFile {productDesign.designFile} <br/>
                     Shells: <br/>
                     {productDesign.productShellDesigns.map(shell => 
-                        <p>
+                        <p key={shell.productShellDesignId}>
                             productShellDesignId: {shell.productShellDesignId} <br/>
                             shellName: {shell.shellName} <br/>
                             diamondQuantity: {shell.diamondQuantity} <br/>

@@ -14,23 +14,15 @@ const FrameSidebar = () => {
             if (!loggedInUser) {
                 navigate('/login');
             }
-        }, 60000); 
+        }, 60000);
 
-        return () => clearInterval(intervalId); 
-    }, []); 
+        return () => clearInterval(intervalId);
+    }, []);
 
     return (
         <>
-            <div className='container-fluid p-0'>
-                <div className='row'>
-                    <div className='col-md-2 col-xs-12 px-0'>
-                        <Sidebar />
-                    </div>
-                    <div className='col-md-10'>
-                        <Outlet />
-                    </div>
-                </div>
-            </div>
+            <Sidebar />
+            <Outlet />
         </>
     )
 }
