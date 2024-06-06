@@ -1,11 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
-import Footer from '../components/Footer';
+import styles from '../css/FrameNavbar.module.css';
+
 const FrameNavbar = () => {
     return (
         <>
             <NavigationBar />
-            <Outlet/>
+            <main>
+                <Outlet />
+            </main>
         </>
     )
 }

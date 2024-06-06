@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import logo from "../assets/Bijoux.png";
-import '/src/css/NavigationBar.css';
+import styles from '/src/css/NavigationBar.module.css';
 
 const UserComponent = (props) => {
 
@@ -19,13 +19,13 @@ const UserComponent = (props) => {
     if (!props.loggedIn) {
         return (
             <div className='nav-item'>
-                <Link className='nav-login' to='/login'>LOGIN/REGISTER</Link>
+                <Link className={`${styles[`nav-login`]} nav-login`} to='/login'>LOGIN/REGISTER</Link>
             </div>
         )
     } else {
         return (
             <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" role="button" aria-expanded="false" onClick={handleDropdown}>
+                <a className={`${styles['nav-link']}  nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={handleDropdown}>
                     {sessionStorage.getItem('name')}
                 </a>
                 <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
@@ -49,9 +49,9 @@ const NavigationBar = () => {
     return (
         <>
             {/* className="navbar navbar-expand-xl fixed-top" */}
-            <nav className="navbar navbar-expand-xl fixed-top">
+            <nav className={`${styles['navbar']} navbar navbar-expand-xl fixed-top`}>
                 <div className="container-fluid">
-                    <Link to='/' className="navbar-brand"><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></Link>
+                    <Link to='/' className={`${styles['navbar-brand']} navbar-brand`}><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></Link>
 
                     <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div className="offcanvas-header">
@@ -61,28 +61,28 @@ const NavigationBar = () => {
                         <div className="offcanvas-body">
                             <ul className="navbar-nav justify-content-center flex-grow-1 pe-3">
                                 <li className="nav-item">
-                                    <Link className="nav-link mx-lg-2 active" aria-current="page" to="/">HOME</Link>
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2 active`} aria-current="page" to="/">HOME</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link mx-lg-2" to="/diamond-price-list">DIAMOND PRICE LIST</Link>
+                                    <Link className={`${styles['nav-link']} nav-link mx-lg-2`} to="/diamond-price-list">DIAMOND PRICE LIST</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link mx-lg-2" to="/custom-design">CUSTOM DESIGN</Link>
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/custom-design">CUSTOM DESIGN</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link mx-lg-2" to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link mx-lg-2" to="#">PROFILE</Link>
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="#">PROFILE</Link>
                                 </li>
 
                             </ul>
                         </div>
                     </div>
                     <div className='navbar-bar'>
-                        <div className="login-button"><UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} /></div>
+                        <div className={`${styles['login-button']} login-button`}><UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} /></div>
                     </div>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <button className={styles['navbar-toggler'] + " navbar-toggler"} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                 </div>
