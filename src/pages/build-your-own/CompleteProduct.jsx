@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Context } from '../FrameBuildYourOwn';
+// import { Context } from '../FrameBuildYourOwn';
 import { Toaster, toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatDate, formatPrice } from '../../helper_function/ConvertFunction';
@@ -8,7 +8,7 @@ import axios from 'axios';
 const CompleteProduct = () => {
 
     const navigate = useNavigate();
-    const [productSetting, setProductSetting] = useContext(Context);
+    // const [productSetting, setProductSetting] = useContext(Context);
 
     const [orderId, setOrderId] = useState(null);
     const [order, setOrder] = useState(null);

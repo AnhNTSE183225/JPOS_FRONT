@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
-import { Context } from '../FrameBuildYourOwn';
+// import { Context } from '../FrameBuildYourOwn';
 import axios from 'axios';
 
 const ChooseSetting = () => {
 
     const navigate = useNavigate();
-    const [productSetting, setProductSetting] = useContext(Context);
+    // const [productSetting, setProductSetting] = useContext(Context);
     const [designList, setDesignList] = useState([]);
 
     useEffect(() => {

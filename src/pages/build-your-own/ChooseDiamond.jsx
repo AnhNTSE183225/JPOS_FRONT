@@ -2,11 +2,11 @@ import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react';
 import { Toaster, toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
-import { Context } from '../FrameBuildYourOwn';
+// import { Context } from '../FrameBuildYourOwn';
 
 const ChooseDiamond = () => {
 
-    const [productSetting, setProductSetting] = useContext(Context);
+    // const [productSetting, setProductSetting] = useContext(Context);
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [diamondList, setDiamondList] = useState([]);
 
