@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import logo from "../assets/Bijoux.png";
-import './css/NavigationBar.css';
+import '../css/NavigationBar.css';
 
 const UserComponent = (props) => {
 
