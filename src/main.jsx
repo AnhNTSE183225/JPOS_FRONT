@@ -13,7 +13,6 @@ import FrameSidebar from './pages/FrameSidebar';
 import FrameNavbar from './pages/FrameNavbar';
 import HistoryPage from './pages/HistoryPage';
 import CustomerRequestDetailsPage from './pages/CustomerRequestDetailsPage';
-import './main.css';
 import RequestDetailPage from './pages/RequestDetailsPage';
 import FrameBuildYourOwn from './pages/FrameBuildYourOwn';
 import ChooseSetting from './pages/build-your-own/ChooseSetting';
@@ -21,6 +20,8 @@ import ChooseDiamond from './pages/build-your-own/ChooseDiamond';
 import CompleteProduct from './pages/build-your-own/CompleteProduct';
 import DiamondDetails from './pages/build-your-own/DiamondDetails';
 import SettingDetails from './pages/build-your-own/SettingDetails';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 
 const router = createBrowserRouter([{
   path: '/',

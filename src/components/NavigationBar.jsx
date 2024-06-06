@@ -1,9 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import logo from "../assets/Bijoux.png";
-import '../css/NavigationBar.css';
+import '/src/css/NavigationBar.css';
 
 const UserComponent = (props) => {
 
@@ -20,7 +18,7 @@ const UserComponent = (props) => {
 
     if (!props.loggedIn) {
         return (
-            <div className="nav-item">
+            <div className='nav-item'>
                 <Link className='nav-login' to='/login'>LOGIN/REGISTER</Link>
             </div>
         )
@@ -50,6 +48,7 @@ const NavigationBar = () => {
 
     return (
         <>
+            {/* className="navbar navbar-expand-xl fixed-top" */}
             <nav className="navbar navbar-expand-xl fixed-top">
                 <div className="container-fluid">
                     <Link to='/' className="navbar-brand"><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></Link>

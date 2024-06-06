@@ -1,5 +1,3 @@
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
 import PendingDesign from './customer-request-details/PendingDesign';

@@ -1,5 +1,3 @@
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';

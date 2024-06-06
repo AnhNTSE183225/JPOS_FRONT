@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import { formatDate, formatPrice } from '../../helper_function/ConvertFunction'
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';

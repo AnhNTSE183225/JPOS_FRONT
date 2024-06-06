@@ -1,5 +1,3 @@
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
 import { Outlet } from 'react-router-dom';
 import React, { useState } from 'react';
 import BuildYourOwnNav from '../components/BuildYourOwnNav';

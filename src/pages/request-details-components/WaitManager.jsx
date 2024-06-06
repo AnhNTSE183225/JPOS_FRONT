@@ -1,5 +1,3 @@
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import { formatDate, formatPrice } from '../../helper_function/ConvertFunction'
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';

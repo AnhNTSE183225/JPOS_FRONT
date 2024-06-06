@@ -1,12 +1,8 @@
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../../node_modules/bootstrap/dist/js/bootstrap.bundle";
-import NavigationBar from "../components/NavigationBar";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
-import Footer from "../components/Footer";
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

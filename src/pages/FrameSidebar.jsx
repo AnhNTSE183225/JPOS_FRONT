@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import '../css/FrameSidebar.css';
+import '../css/Sidebar.css';
 const FrameSidebar = () => {
 
     const navigate = useNavigate();

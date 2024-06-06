@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-// import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
-import '../css/Sidebar.css';
 
 const Sidebar = () => {
 
@@ -20,8 +17,15 @@ const Sidebar = () => {
     }
 
     return (
-        <nav>
+        <nav className='sidebar'>
+            <ul className='sidebar-nav'>
+                <li className='nav-item'>
+                    <a href="" className='nav-link'>
 
+                        <span className='link-text'>Profile</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
     )
 }

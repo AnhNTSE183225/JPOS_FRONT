@@ -1,7 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
-import NavigationBar from '../components/NavigationBar';
-import Sidebar from '../components/Sidebar';
 
 const ProfilePage = () => {
     return (

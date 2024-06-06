@@ -1,7 +1,5 @@
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import { formatDate, formatPrice } from '../helper_function/ConvertFunction'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'sonner';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
