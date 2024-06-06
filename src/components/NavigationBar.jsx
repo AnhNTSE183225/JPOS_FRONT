@@ -50,31 +50,6 @@ const NavigationBar = () => {
 
     return (
         <>
-            {/* <nav className="navbar navbar-expand-lg bg-body-tertiary p-3">
-                <div className="container-fluid">
-                    <Link to='/' className="navbar-brand"><img src={logo} alt="Logo" /></Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-                            <li className="nav-item">
-                                <Link className='nav-link' to='/'>Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className='nav-link' to='/diamond-price-list'>Diamond price list</Link>
-                            </li>
-                            <li className='nav-item'>
-                                <Link className='nav-link' to="/build-your-own/choose-setting">Build your own</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className='nav-link' to='/custom-design'>Request a custom design</Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav> */}
             <nav className="navbar navbar-expand-xl fixed-top">
                 <div className="container-fluid">
                     <Link to='/' className="navbar-brand"><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></Link>
@@ -87,19 +62,19 @@ const NavigationBar = () => {
                         <div className="offcanvas-body">
                             <ul className="navbar-nav justify-content-center flex-grow-1 pe-3">
                                 <li className="nav-item">
-                                    <a className="nav-link mx-lg-2 active" aria-current="page" href="/">HOME</a>
+                                    <Link className="nav-link mx-lg-2 active" aria-current="page" to="/">HOME</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link mx-lg-2" href="/diamond-price-list">DIAMOND PRICE LIST</a>
+                                    <Link className="nav-link mx-lg-2" to="/diamond-price-list">DIAMOND PRICE LIST</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link mx-lg-2" href="/custom-design">CUSTOM DESIGN</a>
+                                    <Link className="nav-link mx-lg-2" to="/custom-design">CUSTOM DESIGN</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link mx-lg-2" href="/build-your-own/choose-setting">BUILD JEWELERY</a>
+                                    <Link className="nav-link mx-lg-2" to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link mx-lg-2" href="#">PROFILE</a>
+                                    <Link className="nav-link mx-lg-2" to="#">PROFILE</Link>
                                 </li>
 
                             </ul>
@@ -113,7 +88,6 @@ const NavigationBar = () => {
                     </button>
                 </div>
             </nav>
-            {/* END NAVBAR */}
         </>
     )
 
