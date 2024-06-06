@@ -16,16 +16,6 @@ const ChooseSetting = () => {
         fetchData();
     }, [])
 
-    const handleChoose = (design_id, shell_id, quantity) => {
-        setProductSetting(ps => ({
-            ...ps,
-            designId: design_id,
-            shellId: shell_id,
-            diamondQuantity: quantity
-        }));
-        navigate("/build-your-own/choose-diamond");
-    }
-
     const fetchData = async () => {
         try {
 
@@ -39,7 +29,6 @@ const ChooseSetting = () => {
 
         } catch (error) {
             toast.error("Error, cannot fetch design list");
-            //console.log(error);
         }
     }
 
@@ -56,17 +45,7 @@ const ChooseSetting = () => {
                                     <img crossOrigin='anonymous' src={design.designFile} className="card-img-top" alt="..." />
                                     <div className="card-body d-flex flex-column">
                                         <h5 className="card-title">{design.designName} - {design.designType}</h5>
-                                        <ul className='list-group'>
-                                            {design.productShellDesigns.map(shell => (
-                                                <li className='list-group-item' key={shell.productShellDesignId}>
-                                                    Name: {shell.shellName} <br />
-                                                    Diamond slots: {shell.diamondQuantity} <br />
-                                                    Extra diamond price: {shell.ediamondPrice} <br />
-                                                    Extra material price: {shell.ematerialPrice} <br />
-                                                    <button onClick={() => handleChoose(design.productDesignId, shell.productShellDesignId, shell.diamondQuantity)} className='btn btn-secondary' >Choose</button>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <button onClick={() => navigate(`/setting-details/${design.productDesignId}`)} className='btn btn-primary'>Click me</button>
                                     </div>
                                 </div>
                             </div>

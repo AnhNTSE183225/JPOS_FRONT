@@ -19,6 +19,8 @@ import FrameBuildYourOwn from './pages/FrameBuildYourOwn';
 import ChooseSetting from './pages/build-your-own/ChooseSetting';
 import ChooseDiamond from './pages/build-your-own/ChooseDiamond';
 import CompleteProduct from './pages/build-your-own/CompleteProduct';
+import DiamondDetails from './pages/build-your-own/DiamondDetails';
+import SettingDetails from './pages/build-your-own/SettingDetails';
 
 const router = createBrowserRouter([{
   path: '/',
@@ -62,6 +64,14 @@ const router = createBrowserRouter([{
           element: <CompleteProduct />
         }
       ]
+    },
+    {
+      path: '/diamond-details/:diamondId',
+      element: <DiamondDetails/>
+    },
+    {
+      path: '/setting-details/:designId',
+      element: <SettingDetails/>
     }
   ]
 },
