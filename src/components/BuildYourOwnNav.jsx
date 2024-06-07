@@ -7,10 +7,9 @@ const BuildYourOwnNav = () => {
     const [productSetting, setProductSetting] = useContext(Context);
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4" style={{ paddingBottom: '5vh' }}>
             <Link to="/build-your-own/choose-setting">
                 <button type="button" className="btn btn-light btn-lg col-4">Choose a Setting</button>
-
             </Link>
             <Link to="/build-your-own/choose-diamond">
                 <button type="button" className="btn btn-light btn-lg col-4">Choose a Diamond</button>
