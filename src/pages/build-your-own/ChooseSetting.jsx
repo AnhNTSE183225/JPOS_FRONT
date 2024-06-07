@@ -32,14 +32,14 @@ const ChooseSetting = () => {
 
     if (designList.length > 0) {
         return (
-            <>      
+            <>
                 <NavigationBar />
                 <Toaster position="top-center" richColors expand={true} />
                 <div className={`${styles.container} container`}>
                     {designList.length > 0 ? (
                         <div className={`${styles.content} row`}>
                             {designList.map(design => (
-                                <div key={design.productDesignId} className="col-md-4 mb-4">
+                                <div key={design.productDesignId} className="col-md-4 col-lg-3 col-xl-2 mb-4">
                                     <ProductCard design={design} />
                                 </div>
                             ))}
