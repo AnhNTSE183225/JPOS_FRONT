@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "/src/css/SettingDetails.module.css"; 
+import styles from "/src/css/SettingDetails.module.css"; 
 
 const SettingDetails = () => {
     const designId = useParams().designId;
@@ -39,18 +39,18 @@ const SettingDetails = () => {
         return <div className="loading">Loading...</div>;
     } else {
         return (
-            <div className="container">
-                <div className="content">
-                    <div className="image-section">
+            <div className={`${styles['container']}`} id={`${styles['setting-details']}`}>
+                <div className={`${styles['content']}`}>
+                    <div  className={`${styles['image-selection']}`}>
                         <img src="path/to/your/ring-image.jpg" alt="Ring" />
                     </div>
-                    <div className="details-section">
-                        <h1 className="title">{productDesign.designName}</h1>
-                        <h2 className="subtitle">{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
-                        <div className="price">$640 (Setting Price)</div>
-                        <div className="metal-type-section">
-                            <h3 className="metal-type-title"></h3>
-                            <div className="shell-list">
+                    <div className={`${styles['details-section']}`}>
+                        <h1 className={`${styles['title']}`}>{productDesign.designName}</h1>
+                        <h2 className={`${styles['subtitle']}`}>{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
+                        <div className={`${styles['price']}`}>$640 (Setting Price)</div>
+                        <div className={`${styles['metal-type-section']}`}>
+                            <h3 className={`${styles['metal-type-title']}`}></h3>
+                            <div className={`${styles['shell-list']}`}>
                                 {productDesign.productShellDesigns.map(shell => (
                                     <div 
                                         key={shell.productShellDesignId}
@@ -61,7 +61,7 @@ const SettingDetails = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="toggle-button" onClick={toggleShellDetails}>
+                            <div className={`${styles['toggle-button']}`} onClick={toggleShellDetails}>
                                 <h3>Shell Details</h3>
                                 <span>{showShellDetails ? '-' : '+'}</span>
                             </div>
@@ -76,28 +76,28 @@ const SettingDetails = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="payment-options">
-                            <div className="option">
+                        <div  className={`${styles['payment-options']}`}>
+                            <div className={`${styles['option']}`}>
                                 <img src="path/to/payment-icon.png" alt="Payment" />
                                 Flexible Payment Options: 3 Interest-Free Payments of $1,333
                             </div>
-                            <div className="option">
+                            <div className={`${styles['option']}`}>
                                 <img src="path/to/return-icon.png" alt="Returns" />
                                 Free Returns: Our commitment to you does not end at delivery. We offer free returns (U.S and Canada) to make your experience as easy as possible.
                             </div>
-                            <div className="option">
+                            <div className={`${styles['option']}`}>
                                 <img src="path/to/shipping-icon.png" alt="Shipping" />
                                 Free Shipping: We're committed to making your entire experience a pleasant one, from shopping to shipping.
                             </div>
                         </div>
-                        <button className="button">Select this setting</button>
-                        <button className="button secondary-button">Consult an expert</button>
-                        <div className="product-details">
+                        <button className={`${styles['button']}`}>Select this setting</button>
+                        <button className={`${styles['button secondary-button']}`}>Consult an expert</button>
+                        <div className={`${styles['product-details']}`} >
                             <h3>Product Details</h3>
-                            <p className="detail-item">productDesignId: {productDesign.productDesignId}</p>
-                            <p className="detail-item">designType: {productDesign.designType}</p>
-                            <p className="detail-item">Width: 1.80mm</p>
-                            <p className="detail-item">Rhodium Finish: Yes</p>
+                            <p className={`${styles['detail-item']}`}>productDesignId: {productDesign.productDesignId}</p>
+                            <p className={`${styles['detail-item']}`}>designType: {productDesign.designType}</p>
+                            <p className={`${styles['detail-item']}`}>Width: 1.80mm</p>
+                            <p className={`${styles['detail-item']}`}>Rhodium Finish: Yes</p>
                         </div>
                     </div>
                 </div>

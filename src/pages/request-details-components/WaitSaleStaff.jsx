@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../helper_function/ConvertFunction';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import styles from '/src/css/WaitSaleStaff.module.css';
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -240,13 +243,14 @@ const WaitSaleStaff = ({ order }) => {
     }
 
     return (
-        <>
+        <div className={`${styles['wait-sale-staff']}`}>
             <Toaster position="top-center" richColors expand={false} />
-            <div className="container-fluid">
+            <div>
                 <div className="row">
-                    <h3>
-                        <b>Request Quotation</b>
-                    </h3>
+                    <h1 className='fw-bold'>
+                        <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
+                        Request Quotation
+                    </h1>
                     <div className="col-md-3 px-3">
                         <p>
                             <b>Full Name</b>
@@ -598,7 +602,7 @@ const WaitSaleStaff = ({ order }) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
