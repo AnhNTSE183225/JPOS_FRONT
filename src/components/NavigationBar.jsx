@@ -1,110 +1,95 @@
-import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styles from '/src/css/SettingDetails.module.css';
+import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import logo from "../assets/textLogo.png";
+import styles from '/src/css/NavigationBar.module.css';
 
+const UserComponent = (props) => {
 
-const SettingDetails = () => {
-    const designId = useParams().designId;
-    const [productDesign, setProductDesign] = useState(null);
-    const [selectedShell, setSelectedShell] = useState(null);
-    const [showShellDetails, setShowShellDetails] = useState(false);
+    const [dropDown, setDropdown] = useState(false);
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/product-designs/${designId}`);
-            if (!response.data || response.status === 204) {
-                console.error('Error, cannot fetch, wrong id or something');
-            } else {
-                setProductDesign(response.data);
-                setSelectedShell(response.data.productShellDesigns[0]);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const handleDropdown = () => {
+        setDropdown(!dropDown);
+    }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const logout = () => {
+        sessionStorage.clear();
+        props.setLoggedIn(false);
+    }
 
-    const handleShellClick = (shell) => {
-        setSelectedShell(shell);
-    };
-
-    const toggleShellDetails = () => {
-        setShowShellDetails(!showShellDetails);
-    };
-
-    if (productDesign === null) {
-        return <div className="loading">Loading...</div>;
+    if (!props.loggedIn) {
+        return (
+            <div className='nav-item'>
+                <Link className={`${styles[`nav-login`]} nav-login`} to='/login'>LOGIN/REGISTER</Link>
+            </div>
+        )
     } else {
         return (
-            <div className="container">
-                <div className="content">
-                    <div className="image-section">
-                        <img src="path/to/your/ring-image.jpg" alt="Ring" />
-                    </div>
-                    <div className="details-section">
-                        <h1 className="title">{productDesign.designName}</h1>
-                        <h2 className="subtitle">{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
-                        <div className="price">$640 (Setting Price)</div>
-                        <div className="metal-type-section">
-                            <h3 className="metal-type-title"></h3>
-                            <div className="shell-list">
-                                {productDesign.productShellDesigns.map(shell => (
-                                    <div 
-                                        key={shell.productShellDesignId}
-                                        className={`shell-item ${selectedShell && selectedShell.productShellDesignId === shell.productShellDesignId ? 'selected' : ''}`}
-                                        onClick={() => handleShellClick(shell)}
-                                    >
-                                        <span className="shell-label">{shell.shellName}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="toggle-button" onClick={toggleShellDetails}>
-                                <h3>Shell Details</h3>
-                                <span>{showShellDetails ? '-' : '+'}</span>
-                            </div>
-                            {showShellDetails && selectedShell && (
-                                <div className="shell-details-section">
-                                    <h3 className="shell-title">{selectedShell.shellName} Details</h3>
-                                    <p className="shell-detail"><strong>ID:</strong> {selectedShell.productShellDesignId}</p>
-                                    <p className="shell-detail"><strong>Diamonds:</strong> {selectedShell.diamondQuantity}</p>
-                                    <p className="shell-detail"><strong>Production Price:</strong> ${selectedShell.productionPrice}</p>
-                                    <p className="shell-detail"><strong>Diamond Price:</strong> ${selectedShell.ediamondPrice}</p>
-                                    <p className="shell-detail"><strong>Material Price:</strong> ${selectedShell.ematerialPrice}</p>
-                                </div>
-                            )}
-                        </div>
-                        <div className="payment-options">
-                            <div className="option">
-                                <img src="path/to/payment-icon.png" alt="Payment" />
-                                Flexible Payment Options: 3 Interest-Free Payments of $1,333
-                            </div>
-                            <div className="option">
-                                <img src="path/to/return-icon.png" alt="Returns" />
-                                Free Returns: Our commitment to you does not end at delivery. We offer free returns (U.S and Canada) to make your experience as easy as possible.
-                            </div>
-                            <div className="option">
-                                <img src="path/to/shipping-icon.png" alt="Shipping" />
-                                Free Shipping: We're committed to making your entire experience a pleasant one, from shopping to shipping.
-                            </div>
-                        </div>
-                        <button className="button">Select this setting</button>
-                        <button className="button secondary-button">Consult an expert</button>
-                        <div className="product-details">
-                            <h3>Product Details</h3>
-                            <p className="detail-item">productDesignId: {productDesign.productDesignId}</p>
-                            <p className="detail-item">designType: {productDesign.designType}</p>
-                            <p className="detail-item">Width: 1.80mm</p>
-                            <p className="detail-item">Rhodium Finish: Yes</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+            <li className="nav-item dropdown">
+                <a className={`${styles['nav-link']}  nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={handleDropdown}>
+                    {sessionStorage.getItem('name')}
+                </a>
+                <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
+                    <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
+                    <li><hr className="dropdown-divider" /></li>
+                    <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
+                </ul>
+            </li>
+        )
     }
-};
+}
 
-export default SettingDetails;
+const NavigationBar = () => {
+    const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('username') != null);
+    const location = useLocation().pathname.split("/");
+
+    useEffect(() => {
+        setLoggedIn(sessionStorage.getItem('username') != null);
+    }, [location]);
+
+    return (
+        <>
+            {/* className="navbar navbar-expand-xl fixed-top" */}
+            <nav className={`${styles['navbar']} navbar navbar-expand-xl fixed-top`}>
+                <div className="container-fluid">
+                    <Link to='/' className={`${styles['navbar-brand']} navbar-brand`}><img src={logo} alt="Logo" style={{ width: '16vw', height: 'auto' }} /></Link>
+
+                    <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div className="offcanvas-header">
+                            <h5 className="offcanvas-title" id="offcanvasNavbarLabel"><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div className="offcanvas-body">
+                            <ul className="navbar-nav justify-content-center flex-grow-1 pe-3">
+                                <li className="nav-item">
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2 active`} aria-current="page" to="/">HOME</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={`${styles['nav-link']} nav-link mx-lg-2`} to="/diamond-price-list">DIAMOND PRICE LIST</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/custom-design">CUSTOM DESIGN</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="#">PROFILE</Link>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div className='navbar-bar'>
+                        <div className={`${styles['login-button']} login-button`}><UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} /></div>
+                    </div>
+                    <button className={styles['navbar-toggler'] + " navbar-toggler"} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+        </>
+    )
+
+}
+
+export default NavigationBar;

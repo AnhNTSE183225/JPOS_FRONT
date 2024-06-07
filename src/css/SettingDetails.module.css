@@ -99,7 +99,7 @@
     cursor: pointer;
     text-align: center;
     min-width: 50px;
-    flex: 1 0 auto; /* Flex item to grow and shrink as needed */
+    flex: 1 0 auto; 
     display: flex;
     align-items: center;
     justify-content: center;
