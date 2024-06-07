@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import logo from "../assets/Bijoux.png";
+import logo from "../assets/textLogo.png";
 import styles from '/src/css/NavigationBar.module.css';
 
 const UserComponent = (props) => {
@@ -51,7 +51,7 @@ const NavigationBar = () => {
             {/* className="navbar navbar-expand-xl fixed-top" */}
             <nav className={`${styles['navbar']} navbar navbar-expand-xl fixed-top`}>
                 <div className="container-fluid">
-                    <Link to='/' className={`${styles['navbar-brand']} navbar-brand`}><img src={logo} alt="Logo" style={{ width: '95px', height: 'auto' }} /></Link>
+                    <Link to='/' className={`${styles['navbar-brand']} navbar-brand`}><img src={logo} alt="Logo" style={{ width: '16vw', height: 'auto' }} /></Link>
 
                     <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div className="offcanvas-header">

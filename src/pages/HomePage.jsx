@@ -1,25 +1,31 @@
 import '../css/HomePage.css';
 import NavigationBar from '../components/NavigationBar';
+import Logo from '../assets/Logo.png';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 const HomePage = () => {
 
+
     return (
         <>
-            <NavigationBar/>
+            <NavigationBar />
+            <div style={{width: '100vw'}}>
             <section className="home">
-                <div className="overlay"></div>
                 <video src="https://media2.bulgari.com/video/upload/f_auto,q_auto/v1716383679/homepage/brand-campaign/2024/bulgari_ER_Heromovie_10s_withoutbands_VI_16-9_4k_1.mp4" autoPlay loop muted playsInline></video>
-                <div className="homeContent container">
-                    <div className="textDiv">
-                        <span className="smallText">
-                            Our campaign
-                        </span>
-                        <h1 className='homeTitle'>
-                            Reborn
-                        </h1>
-                    </div>
+
+            </section>
+            <section className="image-section row">
+                <img className='img-slide' src="https://ecommo--ion.bluenile.com/static-dyo-bn/DYO_Banner.dde8f.jpg" alt="choose_settings" />
+                <div className="overlay-content col-xl-5">
+                    <img src={Logo} alt="Logo" style={{ width: '6vw', height: 'auto' }} />
+                    <h2>Design Your Own Engagement Ring</h2>
+                    <p>Bring your love to life with a handcrafted design that perfectly suits your relationship, budget and style. 
+                        Our expert artisans will pour their passion into every detail of your beautiful custom engagement ring.</p>
+                    <a href="/build-your-own/choose-setting"><button>Shop Settings</button></a>
+                    <button>Shop Diamonds</button>
                 </div>
             </section>
+            </div>
         </>
     );
 };
