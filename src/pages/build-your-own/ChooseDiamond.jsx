@@ -3,17 +3,18 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Toaster, toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
 // import { Context } from '../FrameBuildYourOwn';
+import { Context } from '../frame/BuildYourOwnFrame';
 
 const ChooseDiamond = () => {
 
-    // const [productSetting, setProductSetting] = useContext(Context);
+    const [productSetting, setProductSetting] = useContext(Context);
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [diamondList, setDiamondList] = useState([]);
 
     const navigate = useNavigate();
 
     const completeProduct = () => {
-        if(chosenDiamonds.length !== productSetting.diamondQuantity) {
+        if (chosenDiamonds.length !== productSetting.quantity) {
             toast.info(`You haven't chosen all the neccessary diamonds, you need to choose ${productSetting.diamondQuantity - chosenDiamonds.length} more!`);
         } else {
             setProductSetting(p => ({
@@ -29,7 +30,7 @@ const ChooseDiamond = () => {
             toast.info("Please select a design first!");
         } else {
             if (isAdd) {
-                if (chosenDiamonds.length < productSetting.diamondQuantity) {
+                if (chosenDiamonds.length < productSetting.quantity) {
                     setChosenDiamonds(list => [
                         ...list,
                         id

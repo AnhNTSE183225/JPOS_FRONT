@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavigationBar from '../../components/NavigationBar';
 import { Toaster, toast } from 'sonner';
-// import { Context } from '/FrameBuildYourOwn';
 import axios from 'axios';
 import ProductCard from './ProductCard';
 import styles from '/src/css/ChooseSettings.module.css';
@@ -10,7 +9,6 @@ import styles from '/src/css/ChooseSettings.module.css';
 const ChooseSetting = () => {
 
     const navigate = useNavigate();
-    // const [productSetting, setProductSetting] = useContext(Context);
     const [designList, setDesignList] = useState([]);
 
     useEffect(() => {
@@ -19,7 +17,6 @@ const ChooseSetting = () => {
 
     const fetchData = async () => {
         try {
-
             const response = await axios.get(`http://localhost:8080/api/product-designs/all`);
             if (!response.data || response.status === 204) {
                 toast.error("NO items in database");

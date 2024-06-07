@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { Context } from '../pages/FrameBuildYourOwn';
+import { Context } from '../pages/frame/BuildYourOwnFrame';
 
 const BuildYourOwnNav = () => {
 

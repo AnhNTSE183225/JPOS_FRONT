@@ -18,50 +18,65 @@ import CompleteProduct from './pages/build-your-own/CompleteProduct';
 import DiamondDetails from './pages/build-your-own/DiamondDetails';
 import SettingDetails from './pages/build-your-own/SettingDetails';
 import StaffFrame from './pages/frame/StaffFrame';
+import CustomerFrame from './pages/frame/CustomerFrame';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
+import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />, //Customer exclusive
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: '/custom-design',
-    element: <CustomDesignPage /> //Customer exclusive
-  },
-  {
-    path: '/diamond-price-list',
-    element: <DiamondPriceListPage /> //Customer exclusive
-  },
-  {
-    path: '/login',
-    element: <LoginPage /> //Customer, Staff
-  },
-  {
-    path: '/register',
-    element: <RegisterPage /> //Customer
-  },
-  {
-    path: '/build-your-own/choose-setting',
-    element: <ChooseSetting />
-  },
-  {
-    path: '/build-your-own/choose-diamond',
-    element: <ChooseDiamond />
-  },
-  {
-    path: '/build-your-own/complete-product',
-    element: <CompleteProduct />
-  },
-  {
-    path: '/diamond-details/:diamondId',
-    element: <DiamondDetails />
-  },
-  {
-    path: '/setting-details/:designId',
-    element: <SettingDetails />
+    element: <CustomerFrame />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: '',
+        element: <HomePage />, //Customer exclusive
+        errorElement: <NotFoundPage />
+      },
+      {
+        path: 'custom-design',
+        element: <CustomDesignPage /> //Customer exclusive
+      },
+      {
+        path: 'diamond-price-list',
+        element: <DiamondPriceListPage /> //Customer exclusive
+      },
+      {
+        path: 'login',
+        element: <LoginPage /> //Customer, Staff
+      },
+      {
+        path: 'register',
+        element: <RegisterPage /> //Customer
+      },
+      {
+        path: 'build-your-own',
+        element: <BuildYourOwnFrame />,
+        children: [
+          {
+            path: 'choose-setting',
+            element: <ChooseSetting />
+          },
+          {
+            path: 'choose-diamond',
+            element: <ChooseDiamond />
+          },
+          {
+            path: 'complete-product',
+            element: <CompleteProduct />
+          },
+          {
+            path: 'diamond-details/:diamondId',
+            element: <DiamondDetails />
+          },
+          {
+            path: 'setting-details/:designId',
+            element: <SettingDetails />
+          }
+        ]
+      }
+    ]
   },
   {
     path: '/staff',
@@ -77,7 +92,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'request/select/:orderId',
-        element: <RequestDetailPage/>
+        element: <RequestDetailPage />
       }
     ]
   },

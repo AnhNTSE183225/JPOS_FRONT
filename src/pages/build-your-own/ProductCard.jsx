@@ -6,7 +6,7 @@ const ProductCard = ({ design }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/setting-details/${design.productDesignId}`);
+        navigate(`/build-your-own/setting-details/${design.productDesignId}`);
     };
 
     return (
