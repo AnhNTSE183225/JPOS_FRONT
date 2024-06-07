@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import NavigationBar from '../../components/NavigationBar';
 import { Toaster, toast } from 'sonner';
-// import { Context } from '../FrameBuildYourOwn';
+// import { Context } from '/FrameBuildYourOwn';
 import axios from 'axios';
+import ProductCard from './ProductCard';
+import styles from '/src/css/ChooseSettings.module.css';
 
 const ChooseSetting = () => {
 
@@ -32,23 +35,21 @@ const ChooseSetting = () => {
 
     if (designList.length > 0) {
         return (
-            <>
+            <>      
+                <NavigationBar />
                 <Toaster position="top-center" richColors expand={true} />
-                <div className='container-fluid'>
-                    <Toaster position="top-center" richColors expand={true} />
-                    <div className='row my-3 px-5'>
-                        {designList.map(design => (
-                            <div key={design.productDesignId} className="col-md-3 mb-4">
-                                <div className="card h-100 d-flex flex-column">
-                                    <img crossOrigin='anonymous' src={design.designFile} className="card-img-top" alt="..." />
-                                    <div className="card-body d-flex flex-column">
-                                        <h5 className="card-title">{design.designName} - {design.designType}</h5>
-                                        <button onClick={() => navigate(`/setting-details/${design.productDesignId}`)} className='btn btn-primary'>Click me</button>
-                                    </div>
+                <div className={`${styles.container} container`}>
+                    {designList.length > 0 ? (
+                        <div className={`${styles.content} row`}>
+                            {designList.map(design => (
+                                <div key={design.productDesignId} className="col-md-4 mb-4">
+                                    <ProductCard design={design} />
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div>Loading...</div>
+                    )}
                 </div>
             </>
         )

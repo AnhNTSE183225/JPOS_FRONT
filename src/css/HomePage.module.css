@@ -8,12 +8,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 15vh;
   margin-bottom: 3vw;
 }
 video {
+  margin-top: 15vh;
   position: relative;
-  width: 100vw;
+  width: 100%;
   object-fit: cover;
 }
 img {
@@ -43,7 +43,7 @@ img {
 @media screen and (max-width: 1199px) {
   .overlay-content {
     position: inherit;
-    text-align: center;
+    text-align: center  ;
   }
 }
 

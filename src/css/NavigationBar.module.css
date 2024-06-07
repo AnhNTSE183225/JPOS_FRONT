@@ -1,7 +1,7 @@
 .navbar {
     background-color: #fff;
     height: 15vh;
-    position: relative;
+    position: fixed;
 }
 
 .navbar-brand {
