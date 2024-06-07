@@ -17,8 +17,8 @@ const ChooseDiamond = () => {
     const navigate = useNavigate();
 
     const completeProduct = () => {
-        if(chosenDiamonds.length !== productSetting.diamondQuantity) {
-            toast.info(`You haven't chosen all the necessary diamonds, you need to choose ${productSetting.diamondQuantity - chosenDiamonds.length} more!`);
+        if(chosenDiamonds.length !== productSetting.quantity) {
+            toast.info(`You haven't chosen all the necessary diamonds, you need to choose ${productSetting.quantity - chosenDiamonds.length} more!`);
         } else {
             setProductSetting(p => ({
                 ...p,
