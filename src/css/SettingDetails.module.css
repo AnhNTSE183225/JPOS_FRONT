@@ -1,0 +1,180 @@
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.content {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.image-section img {
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.details-section {
+    flex: 1.5;
+    padding: 20px;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.payment-options {
+    background-color: #e9f8f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.option {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.option img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.product-details {
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    margin: 5px 0;
+}
+
+.metal-type-section {
+    margin-bottom: 20px;
+}
+
+.metal-type-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.shell-list {
+    display: flex;
+    gap: 10px;
+}
+
+.shell-item {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    text-align: center;
+    min-width: 50px;
+    flex: 1 0 auto; /* Flex item to grow and shrink as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shell-item.selected {
+    border-color: #007BFF;
+    background-color: #e9f8f9;
+}
+
+.shell-item:hover {
+    border-color: #007BFF;
+}
+
+.shell-label {
+    font-size: 16px;
+}
+
+.shell-details-section {
+    margin-top: 20px;
+}
+
+.shell-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.shell-detail {
+    margin: 5px 0;
+}
+
+.loading {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.button {
+    padding: 10px 20px;
+    margin: 10px 10px 10px 0;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.secondary-button {
+    background-color: #6c757d;
+}
+
+.secondary-button:hover {
+    background-color: #5a6268;
+}
+
+.toggle-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.toggle-button h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.toggle-button span {
+    font-size: 24px;
+    color: #333;
+}
