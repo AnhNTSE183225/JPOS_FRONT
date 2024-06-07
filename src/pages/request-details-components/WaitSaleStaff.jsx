@@ -243,7 +243,7 @@ const WaitSaleStaff = ({ order }) => {
         <>
             <Toaster position="top-center" richColors expand={false} />
             <div className="container-fluid">
-                <div className="row mt-5">
+                <div className="row">
                     <h3>
                         <b>Request Quotation</b>
                     </h3>

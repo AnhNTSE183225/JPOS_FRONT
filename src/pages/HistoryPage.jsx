@@ -1,6 +1,8 @@
-import {formatDate, formatPrice} from '../helper_function/ConvertFunction'
-import {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom'
+import { formatDate, formatPrice } from '../helper_function/ConvertFunction'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import {Toaster, toast} from 'sonner';
+import styles from '/src/css/HistoryPage.module.css';
 import axios from 'axios';
 
 const TableComponent = () => {
@@ -10,7 +12,7 @@ const TableComponent = () => {
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/order/all`);
-            if(!response.data || response.status === 204) {
+            if (!response.data || response.status === 204) {
                 console.log("Can't fetch data");
             } else {
                 setOrders(response.data.filter(order => order.status === 'completed'));
@@ -22,12 +24,12 @@ const TableComponent = () => {
 
     useEffect(() => {
         fetchData();
-    },[])
+    }, [])
 
     return (
-        <table className='table table-hover'>
+        <table>
             <thead>
-                <tr>
+                <tr className={`${styles['table-head']}`}>
                     <th>Order ID</th>
                     <th>Customer Name</th>
                     <th>Date</th>
@@ -52,16 +54,11 @@ const TableComponent = () => {
 
 const HistoryPage = () => {
     return (
-        <>
-            <div className='container-fluid'>
-                <div className='row'>
-                    <h1>History</h1>
-                </div>
-                <div className='row'>
-                    <TableComponent />
-                </div>
-            </div>
-        </>
+        <div className={`${styles['history-page']}`}>
+            <Toaster position='top-center' richColors expand={true} />
+            <h1 className='fw-bold'>History</h1>
+            <TableComponent />
+        </div>
     );
 }
 

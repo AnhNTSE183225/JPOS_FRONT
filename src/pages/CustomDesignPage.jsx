@@ -73,7 +73,8 @@ const CustomDesignPage = () => {
     return (
         <>
             <Toaster position='top-center' richColors expand={true} />
-            <div className="container">
+            <NavigationBar/>
+            <div className="container" style={{paddingTop: '15vh'}}>
                 <div className="row">
                     <div className="col-md-4">
                         <h1>Design your own</h1>

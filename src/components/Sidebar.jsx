@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faInbox, faClockRotateLeft, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faInbox, faClockRotateLeft, faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import img from '../assets/FullLogo.png';
+import styles from '../css/Sidebar.module.css';
 
 const Sidebar = () => {
 
     const navigate = useNavigate();
     const location = useLocation().pathname.split('/');
-    const [dropdown, setDropdown] = useState(false);
 
     const handleDropdown = () => {
         setDropdown(!dropdown);
@@ -20,38 +21,34 @@ const Sidebar = () => {
 
     return (
         <>
-            <aside id='sidebar'>
-                <div className='d-flex'>
-                    <button id="toggle-btn" type='button'>
-                        <FontAwesomeIcon icon={faBars} />
-                    </button>
-                    <div className='sidebar-logo'>
-                        <a href="#">
-                            BIJOUX
-                        </a>
-                    </div>
-                </div>
-                <ul className="sidebar-nav">
-                    <li className="sidebar-item">
-                        <a href="" className="sidebar-link">
-                            <FontAwesomeIcon icon={faUser} />
-                            <span>Profile</span>
-                        </a>
+            <div className="d-flex flex-column flex-shrink-0 p-3 position-fixed min-vh-100" style={{width: '18rem',backgroundColor: '#e3e3e3', color: '#48AAAD'}}>
+                <Link to="/" className="d-flex align-items-center mb-4 text-decoration-none w-100">
+                    <img src={img} className='img-fluid mx-auto mt-3' style={{width: '100px'}} />
+                </Link>
+                <ul className="nav nav-pills flex-column mb-auto">
+                    <li className="nav-item">
+                        <Link to="/staff/request" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('request') ? styles['active'] : ''}`}>
+                            <FontAwesomeIcon className='me-3' icon={faInbox}/>
+                            Requests
+                        </Link>
                     </li>
-                    <li className="sidebar-item">
-                        <a href="" className="sidebar-link">
-                            <FontAwesomeIcon icon={faInbox} />
-                            <span>Requests</span>
-                        </a>
-                    </li>
-                    <li className="sidebar-item">
-                        <a href="" className="sidebar-link">
-                            <FontAwesomeIcon icon={faClockRotateLeft} />
-                            <span>History</span>
-                        </a>
+                    <li>
+                        <Link to="/staff/history" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('history') ? styles['active'] : ''}`}>
+                            <FontAwesomeIcon className='me-3' icon={faClockRotateLeft}/>
+                            History
+                        </Link>
                     </li>
                 </ul>
-            </aside>
+                <div className="dropdown">
+                    <a href="#" className={`${styles['user']} d-flex align-items-center text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
+                        <strong>{sessionStorage.getItem('name')}</strong>
+                    </a>
+                    <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a onClick={logout} className="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
         </>
     )
 }

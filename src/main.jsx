@@ -17,6 +17,7 @@ import ChooseDiamond from './pages/build-your-own/ChooseDiamond';
 import CompleteProduct from './pages/build-your-own/CompleteProduct';
 import DiamondDetails from './pages/build-your-own/DiamondDetails';
 import SettingDetails from './pages/build-your-own/SettingDetails';
+import StaffFrame from './pages/frame/StaffFrame';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <HomePage />, //Customer exclusive
-    errorElement: <NotFoundPage/>
+    errorElement: <NotFoundPage />
   },
   {
     path: '/custom-design',
@@ -63,24 +64,30 @@ const router = createBrowserRouter([
     element: <SettingDetails />
   },
   {
+    path: '/staff',
+    element: <StaffFrame />,
+    children: [
+      {
+        path: 'request',
+        element: <RequestPage /> //Staff
+      },
+      {
+        path: 'history',
+        element: <HistoryPage /> //Staff
+      },
+      {
+        path: 'request/select/:orderId',
+        element: <RequestDetailPage/>
+      }
+    ]
+  },
+  {
     path: '/profile',
     element: <ProfilePage /> //Customer, Staff
   },
   {
     path: '/profile/your-request',
     element: <CustomerRequestDetailsPage />
-  },
-  {
-    path: '/profile/request',
-    element: <RequestPage /> //Staff
-  },
-  {
-    path: '/profile/history',
-    element: <HistoryPage /> //Staff
-  },
-  {
-    path: '/profile/request/:orderId',
-    element: <RequestDetailPage /> //Staff
   }]
 );
 

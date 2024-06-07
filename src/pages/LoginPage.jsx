@@ -53,7 +53,7 @@ const LoginPage = () => {
                     sessionStorage.setItem("name", response.data.name);
                     sessionStorage.setItem("phone", response.data.phone);
                     sessionStorage.setItem("staff_type", response.data.staffType);
-                    navigate("/profile/request");
+                    navigate("/staff/request");
                 })
                 .catch((error) => {
                     toast('Invalid login credentials');
