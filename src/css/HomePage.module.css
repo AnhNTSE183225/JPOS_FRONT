@@ -1,6 +1,12 @@
 /* body {
     overflow-x: hidden;
 } */
+.row {
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1* var(--bs-gutter-y));
+}
 
 .home {
   width: 100%;
@@ -10,21 +16,25 @@
   justify-content: center;
   margin-bottom: 3vw;
 }
-video {
+
+.home-page video {
   margin-top: 15vh;
   position: relative;
   width: 100%;
   object-fit: cover;
 }
-img {
+
+.home-page img {
   position: relative;
   object-fit: cover;
 }
+
 .overlay-content {
   padding-top: 5%;
   position: absolute;
   left: 3%;
   color: #264646;
+
   button {
     margin-right: 2vw;
     border-radius: 10px;
@@ -36,14 +46,15 @@ img {
     transition: 0.3s background-color;
     border: none;
   }
+
   button:hover {
     background-color: #264646;
   }
 }
+
 @media screen and (max-width: 1199px) {
   .overlay-content {
     position: inherit;
-    text-align: center  ;
+    text-align: center;
   }
 }
-

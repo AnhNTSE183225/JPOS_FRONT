@@ -24,16 +24,16 @@ const UserComponent = (props) => {
         )
     } else {
         return (
-            <li className="nav-item dropdown">
-                <a className={`${styles['nav-link']}  nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={handleDropdown}>
+            <div className="nav-item dropdown">
+                <div className={`${styles['nav-link']} nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={handleDropdown}>
                     {sessionStorage.getItem('name')}
-                </a>
+                </div>
                 <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
                     <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
                     <li><hr className="dropdown-divider" /></li>
                     <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
                 </ul>
-            </li>
+            </div>
         )
     }
 }
@@ -80,7 +80,9 @@ const NavigationBar = () => {
                         </div>
                     </div>
                     <div className='navbar-bar'>
-                        <div className={`${styles['login-button']} login-button`}><UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} /></div>
+                        <div className={`${styles['login-button']} login-button`}>
+                            <UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                        </div>
                     </div>
                     <button className={styles['navbar-toggler'] + " navbar-toggler"} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
