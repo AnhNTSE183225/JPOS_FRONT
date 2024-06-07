@@ -6,7 +6,7 @@ const StaffFrame = () => {
         <div style={{ fontSize: '20px' }}>
             <Sidebar />
             <div className="container-fluid" style={{ paddingLeft: '19rem', paddingTop: '1rem' }}>
-                <Outlet/>
+                <Outlet />
             </div>
         </div>
     )

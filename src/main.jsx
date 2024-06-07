@@ -75,6 +75,14 @@ const router = createBrowserRouter([
             element: <SettingDetails />
           }
         ]
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage /> //Customer
+      },
+      {
+        path: '/profile/your-request',
+        element: <CustomerRequestDetailsPage />
       }
     ]
   },
@@ -95,16 +103,8 @@ const router = createBrowserRouter([
         element: <RequestDetailPage />
       }
     ]
-  },
-  {
-    path: '/profile',
-    element: <ProfilePage /> //Customer, Staff
-  },
-  {
-    path: '/profile/your-request',
-    element: <CustomerRequestDetailsPage />
-  }]
-);
+  }
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterProvider router={router} />

@@ -75,7 +75,7 @@ const WaitSaleStaff = ({ order }) => {
                 if (!response.data || response.status === 204) {
                     throw new Error(`Order update failed. Backend did not return order`);
                 }
-                navigate("/profile/request");
+                navigate("/staff/request");
 
             } catch (error) {
                 toast.error(`Something went wrong! Can't complete order`);

@@ -29,8 +29,6 @@ const UserComponent = (props) => {
                     {sessionStorage.getItem('name')}
                 </div>
                 <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
-                    <li><Link className="dropdown-item" to='/profile'>View profile</Link></li>
-                    <li><hr className="dropdown-divider" /></li>
                     <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
                 </ul>
             </div>
@@ -73,7 +71,7 @@ const NavigationBar = () => {
                                     <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="#">PROFILE</Link>
+                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/profile">PROFILE</Link>
                                 </li>
 
                             </ul>

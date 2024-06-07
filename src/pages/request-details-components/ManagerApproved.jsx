@@ -15,7 +15,7 @@ const ManagerApproved = ({ order }) => {
         .then(
           response => {
             console.log(response.data);
-            navigate('/profile/request');
+            navigate('/staff/request');
           }
         ).catch(
           error => {

@@ -2,7 +2,9 @@ import { Toaster, toast } from 'sonner';
 import { formatPrice, formatDate } from '../../helper_function/ConvertFunction';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import empty_image from '/src/assets/empty_image.jpg';
 import { useNavigate } from 'react-router-dom';
+import styles from '/src/css/WaitCustomer.module.css';
 
 const WaitCustomer = ({ order }) => {
 
@@ -89,106 +91,65 @@ const WaitCustomer = ({ order }) => {
     return (
         <>
             <Toaster position="top-center" richColors expand={true} />
-            <div className='container'>
-                <div className='row p-3'>
-                    <ul className='list-group'>
-                        <li className='list-group-item'>Order id: {order.id}</li>
-                        <li className='list-group-item'>
-                            Order date: {formatDate(order.orderDate)}
-                        </li>
-                        <li className='list-group-item'>
-                            Customer specification:
-                            <ul className='list-group'>
-                                <li className='list-group-item'>
-                                    Reference image:
-                                    <img className='img-fluid' crossOrigin='anonymous' src={order.designFile} alt="" />
-                                </li>
-                                <li className='list-group-item'>Budget: {formatPrice(order.budget)}</li>
-                                <li className='list-group-item'>
-                                    Description: <br />
-                                    <textarea readOnly className='form-control' name="" id="" defaultValue={order.description}></textarea>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className='list-group-item'>
-                            Customer information:
-                            <ul className='list-group'>
-                                <li className='list-group-item'>ID: {order.customer.customerId}</li>
-                                <li className='list-group-item'>Username: {order.customer.username}</li>
-                                <li className='list-group-item'>name: {order.customer.name}</li>
-                                <li className='list-group-item'>Address: {order.customer.address}</li>
-                            </ul>
-                        </li>
-                        <li className='list-group-item'>
-                            Product:
-                            <ul className='list-group'>
-                                <li className='list-group-item'>ID: {order.product.productId}</li>
-                                <li className='list-group-item'>Name: {order.product.productName}</li>
-                                <li className='list-group-item'>Production price: {order.product.productionPrice}</li>
-                                <li className='list-group-item'>Markup rate: {order.product.markupRate}</li>
-                                <li className='list-group-item'>Product type: {order.product.productType}</li>
-                                <li className='list-group-item'>Extra material price: {order.product.ematerialPrice}</li>
-                                <li className='list-group-item'>Extra diamond price: {order.product.ediamondPrice}</li>
-                                <li className='list-group-item'>
-                                    Main diamonds:
-                                    <ul className='list-group'>
-                                        {order.product.diamonds.map(diamond => (
-                                            <li key={diamond.diamondId} className='list-group-item'>
-                                                <ul className='list-group'>
-                                                    <li className='list-group-item'>ID: {diamond.diamondId}</li>
-                                                    <li className='list-group-item'>Code: {diamond.diamondCode}</li>
-                                                    <li className='list-group-item'>Name: {diamond.diamondName}</li>
-                                                    <li className='list-group-item'>Shape: {diamond.shape}</li>
-                                                    <li className='list-group-item'>Origin: {diamond.origin}</li>
-                                                    <li className='list-group-item'>Proportions: {diamond.proportions}</li>
-                                                    <li className='list-group-item'>Fluorescence: {diamond.fluorescence}</li>
-                                                    <li className='list-group-item'>Symmetry: {diamond.symmetry}</li>
-                                                    <li className='list-group-item'>Polish: {diamond.polish} </li>
-                                                    <li className='list-group-item'>Cut: {diamond.cut}</li>
-                                                    <li className='list-group-item'>Color: {diamond.color}</li>
-                                                    <li className='list-group-item'>Clarity: {diamond.clarity}</li>
-                                                    <li className='list-group-item'>Crt. Weight: {diamond.caratWeight}</li>
-                                                    <li className='list-group-item'>Note: {diamond.note}</li>
-                                                </ul>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li className='list-group-item'>
-                            Sale staff:
-                            <ul className='list-group'>
-                                <li className='list-group-item'>ID: {order.saleStaff.staffId}</li>
-                                <li className='list-group-item'>Username: {order.saleStaff.username}</li>
-                                <li className='list-group-item'>Name: {order.saleStaff.name}</li>
-                                <li className='list-group-item'>Phone: {order.saleStaff.phone}</li>
-                            </ul>
-                        </li>
-                        <li className='list-group-item'>
-                            Quotation as of {formatDate(order.qdate)}
-                            <ul className='list-group'>
-                                <li className='text-warning list-group-item'>Quote Diamond price: {formatPrice(order.qdiamondPrice)}</li>
-                                <li className='text-success list-group-item'>Current Diamond price: {formatPrice(currentDiamondPrice)}</li>
-                                <li className='text-warning list-group-item'>Quote Material price: {formatPrice(order.qmaterialPrice)}</li>
-                                <li className='text-success list-group-item'>Current Material price: {formatPrice(currentMaterialPrice)}</li>
-                                <li className='list-group-item'>Production price: {formatPrice(order.productionPrice + (order.totalAmount * order.markupRate - order.totalAmount))}</li>
-                                <li className='list-group-item'>Extra: {formatPrice(order.ediamondPrice + order.ematerialPrice)}</li>
-                                <li className='list-group-item'>Total amount: {formatPrice(order.totalAmount)}</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div className="row p-3">
-                    {processing
-                        ? <button className="btn btn-primary w-100" type="button" disabled>
-                            <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span role="status">Loading...</span>
-                        </button>
-                        : <button onClick={handleSubmit} className='btn btn-primary w-100'>
-                            Accept price
-                        </button>
-                    }
+            <div className="container px-5" id={`${styles['wait-customer']}`}>
+                <div className="row">
+                    <div className="col">
+                        <h1 className='fw-bold' style={{ color: '#48AAAD' }}>Your Request</h1>
+                        <h4 className='fw-bold'>Customer name</h4>
+                        <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
+                        <h4 className='fw-bold'>Customer address</h4>
+                        <p>{order.customer.address}</p>
+                        <h4 className='fw-bold'>Customer budget</h4>
+                        <p>{formatPrice(order.budget)}</p>
+                        <h4 className='fw-bold'>Description</h4>
+                        <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
+                        <h4 className='fw-bold'>Reference image</h4>
+                        <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
+                    </div>
+                    <div className="col">
+                        <h1 className='fw-bold' style={{ color: '#48AAAD' }}>Staff Response</h1>
+                        {order.product.diamonds.map(diamond =>
+                            <>
+                                <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
+                                <ul>
+                                    <li>Shape: {diamond.shape}</li>
+                                    <li>Clarity: {diamond.clarity}</li>
+                                    <li>Color: {diamond.color}</li>
+                                    <li>Cut: {diamond.cut}</li>
+                                </ul>
+                            </>
+                        )}
+                        <h4>Quote: <span className='text-danger'>{formatPrice(order.qdiamondPrice)}</span></h4>
+                        <h4>Current: <span className='text-success'>{formatPrice(currentDiamondPrice)}</span></h4>
+                        {order.product.materials.map(material =>
+                            <>
+                                <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
+                                <ul>
+                                    <li>Name: {material.material.materialName}</li>
+                                    <li>Weight: {material.weight} karat</li>
+                                </ul>
+                            </>
+                        )}
+                        <h4>Quote: <span className='text-danger'>{formatPrice(order.qmaterialPrice)}</span></h4>
+                        <h4>Current: <span className='text-success'>{formatPrice(currentMaterialPrice)}</span></h4>
+                        <h4 className='fw-bold'>Extra</h4>
+                        <ul>
+                            <li>Extra diamonds: {formatPrice(order.ediamondPrice)}</li>
+                            <li>Extra materials: {formatPrice(order.ematerialPrice)}</li>
+                            <li>Production price: {formatPrice(order.productionPrice + (order.totalAmount * order.markupRate - order.totalAmount))}</li>
+                        </ul>
+                        <h4>Total price as of {formatDate(order.qdate)}: <span className='text-danger'>{formatPrice(order.totalAmount)}</span></h4>
+                        <h4>Total price as of today: <span className='text-success'>{formatPrice((currentDiamondPrice + currentMaterialPrice + order.ematerialPrice + order.ediamondPrice + order.productionPrice) * order.markupRate)}</span></h4>
+                        {processing
+                            ? <button className="btn btn-primary w-100" type="button" disabled>
+                                <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                <span role="status">Loading...</span>
+                            </button>
+                            : <button onClick={handleSubmit} className={`btn w-100 ${styles['submit-button']}`}>
+                                Accept price
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
         </>
