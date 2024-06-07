@@ -26,6 +26,7 @@ const DiamondPriceListPage = () => {
 
     return (
         <>
+            <NavigationBar/>
             <div>
                 <div className="container">
                     <div className="row mt-3">

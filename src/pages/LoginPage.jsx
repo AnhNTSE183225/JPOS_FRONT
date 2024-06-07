@@ -104,7 +104,7 @@ const LoginPage = () => {
                                     </button>
                                 </div>
                                 <div className="col">
-                                    <Link to="/customer-register">
+                                    <Link to="/register">
                                         <button className="btn btn-light w-100">Register</button>
                                     </Link>
                                 </div>

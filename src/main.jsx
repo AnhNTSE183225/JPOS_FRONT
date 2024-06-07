@@ -23,7 +23,8 @@ import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage /> //Customer exclusive
+    element: <HomePage />, //Customer exclusive
+    errorElement: <NotFoundPage/>
   },
   {
     path: '/custom-design',
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
     element: <LoginPage /> //Customer, Staff
   },
   {
-    path: '/customer-register',
+    path: '/register',
     element: <RegisterPage /> //Customer
   },
   {
