@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import empty_image from '/src/assets/empty_image.jpg';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import styles from '/src/css/WaitManager.module.css';
 
 const WaitManager = ({ order }) => {
 
@@ -15,7 +18,7 @@ const WaitManager = ({ order }) => {
             axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`)
                 .then(
                     response => {
-                        navigate('/profile/request');
+                        navigate('/staff/request');
                     }
                 ).catch(
                     error => {
@@ -48,8 +51,13 @@ const WaitManager = ({ order }) => {
     return (
         <>
             <Toaster position="top-center" richColors expand={true} />
-            <div className='container-fluid'>
-                <h1 className='fw-bold mb-3'>Quotation Request</h1>
+            <div className='container-fluid' id={`${styles['wait-manager']}`}>
+                <div className="row">
+                    <h1 className='fw-bold'>
+                        <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
+                        Quotation Request
+                    </h1>
+                </div>
                 <div className="row">
                     <div className="col-6">
                         <h4 className='fw-bold'>Customer name</h4>

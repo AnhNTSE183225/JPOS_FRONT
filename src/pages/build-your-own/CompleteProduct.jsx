@@ -11,8 +11,16 @@ const CompleteProduct = () => {
     const navigate = useNavigate();
     const [productSetting, setProductSetting] = useContext(Context);
 
+    const [productDesign, setProductDesign] = useState(null);
+    const [shell, setShell] = useState(null);
+    const [diamonds, setDiamonds] = useState([]);
+
     const [orderId, setOrderId] = useState(null);
     const [order, setOrder] = useState(null);
+
+    useEffect(() => {
+        getDesign();
+    },[])
 
     const createOrder = async () => {
 
@@ -54,95 +62,83 @@ const CompleteProduct = () => {
     }
 
     useEffect(() => {
-        fetchOrder();
-    }, [orderId])
+        createOrder();
+    },[])
 
     useEffect(() => {
-        createOrder();
-    }, [])
+        fetchOrder();
+    },[orderId])
 
-    if (order === null) {
+    const getDesign = async () => {
+        try { 
+            //console.log(`GET http://localhost:8080/api/product-designs/${productSetting.designId}`);
+            const response = await axios.get(`http://localhost:8080/api/product-designs/${productSetting.designId}`);
+            if(!response.data || response.status === 204) {
+                console.log('error, cannot fetch, wrong id');
+            } else {
+                setProductDesign(response.data);
+                setShell(response.data.productShellDesigns.find(val => val.productShellDesignId === productSetting.shellId));
+                getDiamonds();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getDiamonds = async () => {
+        try {
+
+            const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
+            if(!response.data || response.status === 204) {
+                console.log('no data found for diamonds');
+            } else {
+                setDiamonds(response.data.filter(v => productSetting.diamonds.includes(v.diamondId)));
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    } 
+
+    if (order === null || productDesign === null || shell === null || diamonds.length == 0) {
         return (
             <>
                 Processing order
             </>
         )
     } else {
-        console.log(order);
         return (
             <>
-                <Toaster position="top-center" richColors expand={true} />
-                <div className='container'>
-                    <div className='row p-3'>
-                        <ul className='list-group'>
-                            <li className='list-group-item'>Order id: {order.id}</li>
-                            <li className='list-group-item'>
-                                Order date: {formatDate(order.orderDate)}
-                            </li>
-                            <li className='list-group-item'>
-                                Customer information:
-                                <ul className='list-group'>
-                                    <li className='list-group-item'>ID: {order.customer.customerId}</li>
-                                    <li className='list-group-item'>Username: {order.customer.username}</li>
-                                    <li className='list-group-item'>name: {order.customer.name}</li>
-                                    <li className='list-group-item'>Address: {order.customer.address}</li>
-                                </ul>
-                            </li>
-                            <li className='list-group-item'>
-                                Product:
-                                <ul className='list-group'>
-                                    <li className='list-group-item'>ID: {order.product.productId}</li>
-                                    <li className='list-group-item'>Name: {order.product.productName}</li>
-                                    <li className='list-group-item'>Production price: {order.product.productionPrice}</li>
-                                    <li className='list-group-item'>Markup rate: {order.product.markupRate}</li>
-                                    <li className='list-group-item'>Product type: {order.product.productType}</li>
-                                    <li className='list-group-item'>Extra material price: {order.product.ematerialPrice}</li>
-                                    <li className='list-group-item'>Extra diamond price: {order.product.ediamondPrice}</li>
-                                    <li className='list-group-item'>
-                                        Main diamonds:
-                                        <ul className='list-group'>
-                                            {order.product.diamonds.map(diamond => (
-                                                <li key={diamond.diamondId} className='list-group-item'>
-                                                    <ul className='list-group'>
-                                                        <li className='list-group-item'>ID: {diamond.diamondId}</li>
-                                                        <li className='list-group-item'>Code: {diamond.diamondCode}</li>
-                                                        <li className='list-group-item'>Name: {diamond.diamondName}</li>
-                                                        <li className='list-group-item'>Shape: {diamond.shape}</li>
-                                                        <li className='list-group-item'>Origin: {diamond.origin}</li>
-                                                        <li className='list-group-item'>Proportions: {diamond.proportions}</li>
-                                                        <li className='list-group-item'>Fluorescence: {diamond.fluorescence}</li>
-                                                        <li className='list-group-item'>Symmetry: {diamond.symmetry}</li>
-                                                        <li className='list-group-item'>Polish: {diamond.polish} </li>
-                                                        <li className='list-group-item'>Cut: {diamond.cut}</li>
-                                                        <li className='list-group-item'>Color: {diamond.color}</li>
-                                                        <li className='list-group-item'>Clarity: {diamond.clarity}</li>
-                                                        <li className='list-group-item'>Crt. Weight: {diamond.caratWeight}</li>
-                                                        <li className='list-group-item'>Note: {diamond.note}</li>
-                                                    </ul>
-                                                </li>
-                                            ))}
-                                        </ul>
+                <div className="container">
+                    <div className="row">
+                        <div className="col">
+                            <img src={productDesign.designFile} className='img-fluid mx-auto'/>
+                        </div>
+                        <div className="col">
+                            <h1 className='display-1'>Product preview</h1>
+                            <h4 className='fw-bold'>{productDesign.designName} - {shell.shellName}</h4>
+                            <h4>Diamonds</h4>
+                            <ul>
+                                {diamonds.map(d => 
+                                    <li key={d.diamondId}>
+                                        {d.diamondCode} - {d.diamondName} - {d.shape} - {d.cut} - {d.clarity} - {d.color} - {d.caratWeight}
                                     </li>
-                                    <li className='list-group-item'>
-                                        Materials:
-                                        <ul className='list-group'>
-                                            {order.product.materials.map(material => (
-                                                <li key={material.material.materialId}>
-                                                    {material.material.materialName} - {material.weight} carat
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li className='list-group-item'>
-                                <ul className='list-group'>
-                                    <li className='list-group-item'>Diamond price: {formatPrice(order.odiamondPrice)}</li>
-                                    <li className='list-group-item'>Material price: {formatPrice(order.omaterialPrice)}</li>
-                                    <li className='list-group-item'>Total price: {formatPrice(order.totalAmount)}</li>
-                                </ul>
-                            </li>
-                        </ul>
+                                )}
+                            </ul>
+                            <h4>Materials</h4>
+                            <ul>
+                                {
+                                    order.product.materials.map(m =>
+                                        <li key={m.material.materialId}>
+                                            {m.material.materialName} - {m.weight} karat
+                                        </li>
+                                    )
+                                }
+                            </ul>
+                            <h1 className='fw-bold'>Total price</h1>
+                            <h1 className='fw-bold text-success'>{formatPrice(order.totalAmount)}</h1>
+                            <button className='btn btn-success'>Check out</button>
+                        </div>
                     </div>
                 </div>
             </>

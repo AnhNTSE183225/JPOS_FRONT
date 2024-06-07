@@ -17,7 +17,7 @@ const BuildYourOwnNav = () => {
             <Link to="/build-your-own/complete-product" >
                 <button type="button" className="btn btn-light btn-lg col-4" disabled={productSetting.designId === null || productSetting.diamonds.length === 0 || productSetting.shellId === null}>Complete Ring</button>
             </Link>
-            <div>
+            {/* <div>
                 {
                     productSetting.designId !== null && productSetting.shellId !== null
                         ? <>
@@ -27,7 +27,7 @@ const BuildYourOwnNav = () => {
                         </>
                         : <></>
                 }
-            </div>
+            </div> */}
         </div>
     );
 }

@@ -38,7 +38,7 @@ const CustomerRequestDetailsPage = () => {
 
     return (
         <>
-            <div className='container-fluid'>
+            <div className='container'>
                 <div className="row p-3">
                     <div className='col-md-6'>
                         <button onClick={() => setCurrentIndex(val => val - 1)} disabled={currentIndex <= 0} className='btn btn-primary w-100'>

@@ -39,7 +39,7 @@ const CustomerAccept = ({ order }) => {
                 } else {
                     console.log(response.data);
                     setProcessing(false);
-                    navigate("/profile/request");
+                    navigate("/staff/request");
                 }
             } else {
                 toast.info("Please fill in all fields");

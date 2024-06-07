@@ -3,16 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { formatPrice, formatDate } from '../../helper_function/ConvertFunction';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import styles from '/src/css/ConfirmPaymentPage.module.css';
+import empty_image from '/src/assets/empty_image.jpg';
 
 const ConfirmPaymentPage = ({ order }) => {
     const navigate = useNavigate();
 
     const [paymentDate, setPaymentDate] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
-    const [paymentStatus, setPaymentStatus] = useState(null);
     const [amountPaid, setAmountPaid] = useState(0);
-    const [previousAmountPaid, setPreviousAmountPaid] = useState(0);
 
 
     const [processing, setProcessing] = useState(false);
@@ -24,7 +25,7 @@ const ConfirmPaymentPage = ({ order }) => {
             if (!response.data || response.status === 204) {
                 toast.error("Cannot fetch previously paid amount");
             } else {
-                setPreviousAmountPaid(response.data);
+                setAmountPaid(order.totalAmount - response.data);
             }
         } catch (error) {
             console.log(error);
@@ -39,7 +40,6 @@ const ConfirmPaymentPage = ({ order }) => {
         try {
             if (paymentDate !== null &&
                 paymentMethod !== null &&
-                paymentStatus !== null &&
                 amountPaid > 0
             ) {
                 setProcessing(true);
@@ -47,7 +47,7 @@ const ConfirmPaymentPage = ({ order }) => {
                     {
                         paymentDate: paymentDate,
                         paymentMethod: paymentMethod,
-                        paymentStatus: paymentStatus,
+                        paymentStatus: 'completed',
                         amountPaid: amountPaid,
                         amountTotal: order.totalAmount
                     }
@@ -57,7 +57,7 @@ const ConfirmPaymentPage = ({ order }) => {
                 } else {
                     console.log(response.data);
                     setProcessing(false);
-                    navigate("/profile/request");
+                    navigate("/staff/request");
                 }
             } else {
                 toast.info("Please fill in all fields");
@@ -71,79 +71,103 @@ const ConfirmPaymentPage = ({ order }) => {
     return (
         <>
             <Toaster position="top-center" richColors expand={true} />
-            <div className='container'>
-                <h1>Order information</h1>
-                <div className='row p-3'>
-                    <ul className='list-group'>
-                        <li className='list-group-item'>Order id: {order.id}</li>
-                        <li className='list-group-item'>
-                            Order date: {formatDate(order.orderDate)}
-                        </li>
-                        <li className='list-group-item'>
-                            Customer information:
-                            <ul className='list-group'>
-                                <li className='list-group-item'>ID: {order.customer.customerId}</li>
-                                <li className='list-group-item'>Username: {order.customer.username}</li>
-                                <li className='list-group-item'>name: {order.customer.name}</li>
-                                <li className='list-group-item'>Address: {order.customer.address}</li>
-                            </ul>
-                        </li>
-                        <li className='list-group-item'>
-                            Finalized price - {formatDate(order.odate)}
-                            <ul className='list-group'>
-                                <li className='list-group-item'>Diamond price: {formatPrice(order.odiamondPrice)}</li>
-                                <li className='list-group-item'>Material price: {formatPrice(order.omaterialPrice)}</li>
-                                <li className='list-group-item'>Production price: {formatPrice(order.productionPrice)}</li>
-                                <li className='list-group-item'>Extra: {formatPrice(order.ediamondPrice + order.ematerialPrice)}</li>
-                                <li className='list-group-item'>Markup rate: {order.markupRate}</li>
-                                <li className='list-group-item'>Total: {formatPrice(order.totalAmount)}</li>
-                            </ul>
-                        </li>
-                    </ul>
+            <div className='container-fluid' id={`${styles['confirm-payment']}`}>
+                <div className="row">
+                    <h1 className='fw-bold'>
+                        <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
+                        Confirm Payment
+                    </h1>
                 </div>
-                <h1>Payment information</h1>
-                <div className='row p-3'>
-                    <div className="card p-3">
-                        <label className='form-label'>Payment date</label>
-                        <input onChange={(e) => setPaymentDate(e.target.value)} className='form-control' type="date" />
-                        <label className='form-label'>Payment method</label>
-                        <select onChange={(e) => setPaymentMethod(e.target.value)} className='form-control'>
-                            <option value>Select payment method</option>
-                            {["VISA", "Cash", "Credit/Debit"].map(value => (
-                                <option key={value} value={value}>
-                                    {value}
-                                </option>
-                            ))}
-                        </select>
-                        <label className='form-label'>Payment status</label>
-                        <select onChange={(e) => setPaymentStatus(e.target.value)} className='form-control'>
-                            <option value>Select payment status</option>
-                            {["Full pay", "10% deposit", "25% deposit", "50% deposit"].map(value => (
-                                <option key={value} value={value}>
-                                    {value}
-                                </option>
-                            ))}
-                        </select>
-                        <label className='form-label my-3'>Previously paid: {formatPrice(previousAmountPaid)}</label>
-                        <label className='form-label'>Amount paid</label>
-                        <div className='input-group mb-3'>
-                            <button onClick={() => setAmountPaid(order.totalAmount - previousAmountPaid)} className='btn btn-outline-secondary' id="button-addon1">Pay the rest</button>
-                            <input value={amountPaid} onChange={(e) => setAmountPaid(e.target.value)} className='form-control' type="number" />
-                        </div>
-                        <label className='form-label'>Total amount</label>
-                        <input className='form-control' type="text" value={formatPrice(order.totalAmount)} disabled />
+
+                <div className="row">
+                    <div className="col">
+                        <h4 className='fw-bold'>Customer name</h4>
+                        <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
+                        <h4 className='fw-bold'>Customer address</h4>
+                        <p>{order.customer.address}</p>
+                        <h4 className='fw-bold'>Customer budget</h4>
+                        <p>{formatPrice(order.budget)}</p>
+                        <h4 className='fw-bold'>Description</h4>
+                        <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
+                        <h4 className='fw-bold'>Reference image</h4>
+                        <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
                     </div>
-                </div>
-                <div className="row p-3">
-                    {
-                        processing
-                            ? <button className="btn btn-secondary" type="button" disabled>
-                                <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                <span role="status">Loading...</span>
-                            </button>
-                            :
-                            <button className='btn btn-primary' onClick={handleSubmit} >Confirm customer complete payment</button>
-                    }
+                    <div className='col'>
+                        {order.product.diamonds.map(diamond =>
+                            <>
+                                <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
+                                <ul>
+                                    <li>Shape: {diamond.shape}</li>
+                                    <li>Clarity: {diamond.clarity}</li>
+                                    <li>Color: {diamond.color}</li>
+                                    <li>Cut: {diamond.cut}</li>
+                                </ul>
+                            </>
+                        )}
+                        <h4>Total: <span className='text-success'>{formatPrice(order.odiamondPrice)}</span></h4>
+                        {order.product.materials.map(material =>
+                            <>
+                                <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
+                                <ul>
+                                    <li>Name: {material.material.materialName}</li>
+                                    <li>Weight: {material.weight} karat</li>
+                                </ul>
+                            </>
+                        )}
+                        <h4>Total: <span className='text-success'>{formatPrice(order.omaterialPrice)}</span></h4>
+                        <h4 className='fw-bold'>Extra</h4>
+                        <ul>
+                            <li>Extra diamonds: {formatPrice(order.ediamondPrice)}</li>
+                            <li>Extra materials: {formatPrice(order.ematerialPrice)}</li>
+                            <li>Production price: {formatPrice(order.productionPrice)}</li>
+                        </ul>
+                        <h4>Accepted price as of {formatDate(order.odate)}: <span className='text-success'>{formatPrice(order.totalAmount)}</span></h4>
+                        <h4 className='fw-bold'>Payment</h4>
+                        <div className="row mb-2">
+                            <div className="col">Payment method</div>
+                            <div className="col">
+                                <select onChange={(e) => setPaymentMethod(e.target.value)} className='form-control'>
+                                    <option value>Select payment method</option>
+                                    {["VISA", "Cash", "Credit/Debit"].map(value => (
+                                        <option key={value} value={value}>
+                                            {value}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col">Payment date</div>
+                            <div className="col">
+                                <input onChange={(e) => setPaymentDate(e.target.value)} className='form-control' type="date" />
+                            </div>
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col">Amount have to pay</div>
+                            <div className="col">
+                                <input value={formatPrice(amountPaid)} placeholder='0.00' className='form-control' type="text" disabled/>
+                            </div>
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col">
+                                Total amount
+                            </div>
+                            <div className="col">
+                                {formatPrice(order.totalAmount)}
+                            </div>
+                        </div>
+                        {
+                            processing
+                                ? <button className="btn btn-secondary w-100" type="button" disabled>
+                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span role="status">Loading...</span>
+                                </button>
+                                :
+                                <button className={`btn w-100 ${styles['submit-button']}`} onClick={handleSubmit}>
+                                    Confirm final payment
+                                </button>
+                        }
+                    </div>
                 </div>
             </div>
         </>

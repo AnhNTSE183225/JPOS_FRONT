@@ -6,6 +6,7 @@ import { formatPrice } from '../../helper_function/ConvertFunction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/WaitSaleStaff.module.css';
+import empty_image from '/src/assets/empty_image.jpg';
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -252,6 +253,9 @@ const WaitSaleStaff = ({ order }) => {
                 </h1>
             </div>
             <div className="row">
+
+
+
                 <div className="col-4">
                     <p>
                         <b>Full Name</b>
@@ -268,7 +272,7 @@ const WaitSaleStaff = ({ order }) => {
                     <p>
                         <b>Reference image</b>
                     </p>
-                    <p className="px-3"><img crossOrigin='anonymous' className='img-fluid' src={order.designFile} alt="" /></p>
+                    <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
                 </div>
 
                 <div className="col-4">

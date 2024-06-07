@@ -5,6 +5,7 @@ import styles from "/src/css/SettingDetails.module.css";
 import { Context } from "../frame/BuildYourOwnFrame";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faTruckFast } from '@fortawesome/free-solid-svg-icons';
+import { formatPrice } from "../../helper_function/ConvertFunction";
 
 const SettingDetails = () => {
     const navigate = useNavigate();
@@ -66,7 +67,7 @@ const SettingDetails = () => {
                     <div className={styles["details-section"]}>
                         <h1 className={styles.title}>{productDesign.designName}</h1>
                         <h2 className={styles.subtitle}>{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
-                        <div className={styles.price}>$640 (Setting Price)</div>
+                        <div className={styles.price}>{formatPrice(selectedShell.ediamondPrice + selectedShell.ematerialPrice + selectedShell.productionPrice)} (Setting Price)</div>
                         <div className={styles["metal-type-section"]}>
                             <h3 className={styles["metal-type-title"]}></h3>
                             <div className={styles["shell-list"]}>
@@ -89,9 +90,9 @@ const SettingDetails = () => {
                                     <h3 className={styles["shell-title"]}>{selectedShell.shellName} Details</h3>
                                     <p className={styles["shell-detail"]}><strong>ID:</strong> {selectedShell.productShellDesignId}</p>
                                     <p className={styles["shell-detail"]}><strong>Diamonds:</strong> {selectedShell.diamondQuantity}</p>
-                                    <p className={styles["shell-detail"]}><strong>Production Price:</strong> ${selectedShell.productionPrice}</p>
-                                    <p className={styles["shell-detail"]}><strong>Diamond Price:</strong> ${selectedShell.ediamondPrice}</p>
-                                    <p className={styles["shell-detail"]}><strong>Material Price:</strong> ${selectedShell.ematerialPrice}</p>
+                                    <p className={styles["shell-detail"]}><strong>Production Price:</strong> {formatPrice(selectedShell.productionPrice)}</p>
+                                    <p className={styles["shell-detail"]}><strong>Diamond Price:</strong> {formatPrice(selectedShell.ediamondPrice)}</p>
+                                    <p className={styles["shell-detail"]}><strong>Material Price:</strong> {formatPrice(selectedShell.ematerialPrice)}</p>
                                 </div>
                             )}
                         </div>
@@ -113,13 +114,6 @@ const SettingDetails = () => {
                         </div>
                         <button className={styles.button} onClick={handleChoose}>Select this setting</button>
                         <button className={`${styles.button} ${styles["secondary-button"]}`}>Consult an expert</button>
-                        <div className={styles["product-details"]}>
-                            <h3>Product Details</h3>
-                            <p className={styles["detail-item"]}>productDesignId: {productDesign.productDesignId}</p>
-                            <p className={styles["detail-item"]}>designType: {productDesign.designType}</p>
-                            <p className={styles["detail-item"]}>Width: 1.80mm</p>
-                            <p className={styles["detail-item"]}>Rhodium Finish: Yes</p>
-                        </div>
                     </div>
                 </div>
             </div>

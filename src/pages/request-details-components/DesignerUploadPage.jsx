@@ -25,7 +25,7 @@ const DesignerUploadPage = ({ order }) => {
                 }
                 setImageUrl(response.data);
                 setProcessing(false);
-                navigate('/profile/request');
+                navigate('/staff/request');
             }
         } catch (error) {
             toast.error(`Something went wrong`);
