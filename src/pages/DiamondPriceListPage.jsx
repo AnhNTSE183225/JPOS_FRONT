@@ -27,7 +27,7 @@ const DiamondPriceListPage = () => {
     return (
         <>
             <div>
-                <div className="container">
+                <div className="container" style={{paddingTop: '15vh'}}>
                     <div className="row mt-3">
                         <h1>Diamond price list</h1>
                     </div>
