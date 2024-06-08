@@ -62,7 +62,7 @@ const SettingDetails = () => {
             <div className={styles.container} id={styles["setting-details"]}>
                 <div className={styles.content}>
                     <div className={styles["image-section"]}>
-                        <img src="https://ion.bluenile.com/sets/Jewelry-bn/194386/RND/Images/LS_stage_0.jpg" alt="Ring" />
+                        <img src={productDesign.designFile} alt="Ring" />
                     </div>
                     <div className={styles["details-section"]}>
                         <h1 className={styles.title}>{productDesign.designName}</h1>
