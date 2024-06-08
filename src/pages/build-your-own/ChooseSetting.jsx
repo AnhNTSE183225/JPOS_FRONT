@@ -39,7 +39,7 @@ const ChooseSetting = () => {
                     {designList.length > 0 ? (
                         <div className={`${styles.content} row`}>
                             {designList.map(design => (
-                                <div key={design.productDesignId} className="col-md-4 col-lg-3 col-xl-2 mb-4">
+                                <div key={design.productDesignId} className="col-md-4 col-lg-3 mb-4">
                                     <ProductCard design={design} />
                                 </div>
                             ))}
