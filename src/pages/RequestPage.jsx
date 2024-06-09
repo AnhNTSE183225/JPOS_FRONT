@@ -74,7 +74,6 @@ const RequestPage = () => {
 
     return (
         <div>
-            <Toaster position='top-center' richColors expand={true} />
             <h1 className='fw-bold'>Custom Requests</h1>
             <TableComponent requests={requests} />
         </div>

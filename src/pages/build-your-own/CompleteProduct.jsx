@@ -14,6 +14,7 @@ const CompleteProduct = () => {
     const [productDesign, setProductDesign] = useState(null);
     const [shell, setShell] = useState(null);
     const [diamonds, setDiamonds] = useState([]);
+    const [materials, setMaterials] = useState([]);
 
     const [orderId, setOrderId] = useState(null);
     const [order, setOrder] = useState(null);
@@ -61,14 +62,6 @@ const CompleteProduct = () => {
         }
     }
 
-    useEffect(() => {
-        createOrder();
-    },[])
-
-    useEffect(() => {
-        fetchOrder();
-    },[orderId])
-
     const getDesign = async () => {
         try { 
             //console.log(`GET http://localhost:8080/api/product-designs/${productSetting.designId}`);
@@ -79,6 +72,7 @@ const CompleteProduct = () => {
                 setProductDesign(response.data);
                 setShell(response.data.productShellDesigns.find(val => val.productShellDesignId === productSetting.shellId));
                 getDiamonds();
+                getMaterials();
             }
         } catch (error) {
             console.log(error);
@@ -100,7 +94,20 @@ const CompleteProduct = () => {
         }
     } 
 
-    if (order === null || productDesign === null || shell === null || diamonds.length == 0) {
+    const getMaterials = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/product-shell-material/${productSetting.shellId}`);
+            if(!response.data || response.status === 204) {
+                
+            } else {
+                setMaterials(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    if (materials.length == 0 || productDesign === null || shell === null || diamonds.length == 0) {
         return (
             <>
                 Processing order
@@ -128,7 +135,7 @@ const CompleteProduct = () => {
                             <h4>Materials</h4>
                             <ul>
                                 {
-                                    order.product.materials.map(m =>
+                                    materials.map(m =>
                                         <li key={m.material.materialId}>
                                             {m.material.materialName} - {m.weight} karat
                                         </li>
@@ -136,7 +143,7 @@ const CompleteProduct = () => {
                                 }
                             </ul>
                             <h1 className='fw-bold'>Total price</h1>
-                            <h1 className='fw-bold text-success'>{formatPrice(order.totalAmount)}</h1>
+                            <h1 className='fw-bold text-success'>XXX,XXX,XXX VND</h1>
                             <button className='btn btn-success'>Check out</button>
                         </div>
                     </div>

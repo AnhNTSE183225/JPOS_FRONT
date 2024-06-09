@@ -36,7 +36,6 @@ const DiamondDetails = () => {
     } else {
         return (
             <>
-                <Toaster position="top-center" richColors expand={true} />
                 <div id={`${styles['diamond-details']}`}>
                     <p>Diamond id: {diamond.diamondId}</p>
                 </div>

@@ -34,7 +34,6 @@ const ChooseSetting = () => {
         return (
             <>
                 <NavigationBar />
-                <Toaster position="top-center" richColors expand={true} />
                 <div className={`${styles.container} container`}>
                     {designList.length > 0 ? (
                         <div className={`${styles.content} row`}>

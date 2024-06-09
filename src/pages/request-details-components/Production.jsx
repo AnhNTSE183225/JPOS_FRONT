@@ -59,8 +59,6 @@ const Production = ({ order }) => {
     return (
         <>
             <div className='container-fluid' id={`${styles['production']}`}>
-                <Toaster position="top-center" richColors expand={true} />
-
                 <div className="row">
                     <h1 className='fw-bold'>
                         <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
@@ -74,12 +72,18 @@ const Production = ({ order }) => {
                         <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h4 className='fw-bold'>Customer address</h4>
                         <p>{order.customer.address}</p>
-                        <h4 className='fw-bold'>Customer budget</h4>
-                        <p>{formatPrice(order.budget)}</p>
-                        <h4 className='fw-bold'>Description</h4>
-                        <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
-                        <h4 className='fw-bold'>Model - by [ID: {order.designStaff.staffId}]{order.designStaff.name}</h4>
-                        <img className='img-fluid' src={order.modelFile == 'Not provided' ? empty_image : order.modelFile} alt="" style={{ width: '500px', height: '500px' }} />
+                        {order.orderType !== "from_design"
+                            ? <>
+                                <h4 className='fw-bold'>Customer budget</h4>
+                                <p>{formatPrice(order.budget)}</p>
+                                <h4 className='fw-bold'>Description</h4>
+                                <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
+                                <h4 className='fw-bold'>Model - by [ID: {order.designStaff.staffId}]{order.designStaff.name}</h4>
+                                <img className='img-fluid' src={order.modelFile == 'Not provided' ? empty_image : order.modelFile} alt="" style={{ width: '500px', height: '500px' }} />
+                            </>
+                            : <>
+                            </>
+                        }
                     </div>
                     <div className="col-6">
                         {order.product.diamonds.map(diamond =>

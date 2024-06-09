@@ -50,7 +50,6 @@ const WaitManager = ({ order }) => {
 
     return (
         <>
-            <Toaster position="top-center" richColors expand={true} />
             <div className='container-fluid' id={`${styles['wait-manager']}`}>
                 <div className="row">
                     <h1 className='fw-bold'>

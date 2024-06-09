@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/WaitSaleStaff.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
+import { fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -139,19 +140,6 @@ const WaitSaleStaff = ({ order }) => {
         fetchMaterials();
     }, [])
 
-    const fetchMaterialPrice = async (id) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/materialPrices/${id}`);
-            if (response.status === 204) {
-                return 0;
-            } else {
-                return response.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     const fetchMaterials = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/material/all`);
@@ -253,8 +241,6 @@ const WaitSaleStaff = ({ order }) => {
                 </h1>
             </div>
             <div className="row">
-
-
 
                 <div className="col-4">
                     <p>

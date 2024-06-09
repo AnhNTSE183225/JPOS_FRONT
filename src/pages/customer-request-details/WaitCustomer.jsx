@@ -5,6 +5,7 @@ import axios from 'axios';
 import empty_image from '/src/assets/empty_image.jpg';
 import { useNavigate } from 'react-router-dom';
 import styles from '/src/css/WaitCustomer.module.css';
+import { fetchDiamondPrice,fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 
 const WaitCustomer = ({ order }) => {
 
@@ -20,37 +21,6 @@ const WaitCustomer = ({ order }) => {
         getCurrentMaterialPrice(order.product.materials);
     }, [])
 
-    const fetchMaterialPrice = async (id) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/materialPrices/${id}`);
-            if (response.status === 204) {
-                return 0;
-            } else {
-                return response.data;
-            }
-        } catch (error) {
-            console.error(error);
-            return 0; // Return 0 in case of error to not break the total calculation
-        }
-    };
-
-    const fetchPrices = async (cut, color, clarity, fromCaratWeight, toCaratWeight) => {
-
-        const response = await axios.post(`http://localhost:8080/api/get-price-by-4C`,
-            {
-                cut: cut,
-                clarity: clarity,
-                fromCaratWeight: fromCaratWeight,
-                toCaratWeight: toCaratWeight,
-                color: color
-            }
-        )
-        if (!response.data || response.status === 204) {
-            console.log("Failed to fetch diamond price");
-        }
-        return response.data;
-    };
-
     const getCurrentMaterialPrice = async (materials) => {
         let total = 0;
         for (const material of materials) {
@@ -62,7 +32,7 @@ const WaitCustomer = ({ order }) => {
     const getCurrentDiamondPrice = async (diamonds) => {
         let totalDiamondPrice = 0;
         for (const diamond of diamonds) {
-            totalDiamondPrice += await fetchPrices(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.caratWeight);
+            totalDiamondPrice += await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.caratWeight);
         }
         setCurrentDiamondPrice(totalDiamondPrice);
     };
@@ -90,7 +60,6 @@ const WaitCustomer = ({ order }) => {
 
     return (
         <>
-            <Toaster position="top-center" richColors expand={true} />
             <div className="container px-5" id={`${styles['wait-customer']}`}>
                 <div className="row">
                     <div className="col">

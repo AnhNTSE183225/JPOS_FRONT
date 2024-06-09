@@ -36,7 +36,6 @@ const DesignerUploadPage = ({ order }) => {
 
     return (
         <>
-            <Toaster position="top-center" richColors expand={true} />
             <div className="container">
                 <div className="row">
                     <div className="col-md-10 text-center">

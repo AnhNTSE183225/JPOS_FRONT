@@ -1,7 +1,5 @@
 import { formatDate, formatPrice } from '../helper_function/ConvertFunction'
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {Toaster, toast} from 'sonner';
 import styles from '/src/css/HistoryPage.module.css';
 import axios from 'axios';
 
@@ -55,7 +53,6 @@ const TableComponent = () => {
 const HistoryPage = () => {
     return (
         <div className={`${styles['history-page']}`}>
-            <Toaster position='top-center' richColors expand={true} />
             <h1 className='fw-bold'>History</h1>
             <TableComponent />
         </div>
