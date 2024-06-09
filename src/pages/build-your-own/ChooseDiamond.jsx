@@ -17,7 +17,7 @@ const ChooseDiamond = () => {
     const navigate = useNavigate();
 
     const completeProduct = () => {
-        if(chosenDiamonds.length !== productSetting.quantity) {
+        if (chosenDiamonds.length !== productSetting.quantity) {
             toast.info(`You haven't chosen all the necessary diamonds, you need to choose ${productSetting.quantity - chosenDiamonds.length} more!`);
         } else {
             setProductSetting(p => ({
@@ -29,26 +29,27 @@ const ChooseDiamond = () => {
     }
 
     const handleChoose = (id, isAdd) => {
-        if (productSetting.designId === null) {
-            toast.info("Please select a design first!");
-        } else {
-            if (isAdd) {
-                if (chosenDiamonds.length < productSetting.quantity) {
-                    setChosenDiamonds(list => [
-                        ...list,
-                        id
-                    ]);
-                } else {
-                    toast.info(`You have chosen ${chosenDiamonds.length} out of ${chosenDiamonds.length} diamonds`);
-                }
-            } else {
-                if (chosenDiamonds.length > 0) {
-                    setChosenDiamonds(list => list.filter(diamondId => diamondId !== id));
-                } else {
-                    toast.error("Error, no diamonds chosen yet");
-                }
-            }
-        }
+        // if (productSetting.designId === null) {
+        //     toast.info("Please select a design first!");
+        // } else {
+        //     if (isAdd) {
+        //         if (chosenDiamonds.length < productSetting.quantity) {
+        //             setChosenDiamonds(list => [
+        //                 ...list,
+        //                 id
+        //             ]);
+        //         } else {
+        //             toast.info(`You have chosen ${chosenDiamonds.length} out of ${chosenDiamonds.length} diamonds`);
+        //         }
+        //     } else {
+        //         if (chosenDiamonds.length > 0) {
+        //             setChosenDiamonds(list => list.filter(diamondId => diamondId !== id));
+        //         } else {
+        //             toast.error("Error, no diamonds chosen yet");
+        //         }
+        //     }
+        // }
+        navigate(`/build-your-own/diamond-details/${id}`);
     }
 
     const fetchData = async () => {
@@ -70,14 +71,8 @@ const ChooseDiamond = () => {
 
     return (
         <>
-        <NavigationBar />
             <div className={`${styles.container} container`}>
                 <Toaster position="top-center" richColors expand={true} />
-                <div className="row my-3 px-5 align-items-center">
-                    <div className="col-md-4 mx-auto">
-                        <button onClick={completeProduct} className='btn btn-primary w-100'>Proceed</button>
-                    </div>
-                </div>
                 <div className='row my-3 px-5'>
                     {diamondList.length > 0 ? (
                         diamondList.map(diamond => (
