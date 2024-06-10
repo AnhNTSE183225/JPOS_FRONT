@@ -10,7 +10,7 @@ const DiamondCard = ({ diamond, isSelected, onClick }) => {
     };
     return (
         <div className={`${styles.card} ${isSelected ? styles.selected : ''}`} onClick={() => onClick(diamond.diamondId, !isSelected)}>
-            <img src="https://ion.bluenile.com/sgmdirect/photoID/31377337/Diamond/21512301/nl/Diamond-round-1.02-Carat_3_first_.jpg" className={styles.cardImgTop} alt="diamond" />
+            <img src={diamond.image} className={styles.cardImgTop} alt="diamond" />
             <div className={styles.cardBody}>
                 <h5 className={styles.cardTitle}>{diamond.diamondCode} - {diamond.diamondName}</h5>
                 <p className={styles.cardText}>
