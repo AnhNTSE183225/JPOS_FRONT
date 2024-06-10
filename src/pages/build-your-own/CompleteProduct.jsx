@@ -15,9 +15,6 @@ const CompleteProduct = () => {
     const [materials, setMaterials] = useState([]);
     const [estimatedPrice, setEstimatedPrice] = useState(null);
 
-    const [orderId, setOrderId] = useState(null);
-    const [order, setOrder] = useState(null);
-
     useEffect(() => {
         const getDesign = async () => {
             if (sessionStorage.getItem('designId') === null) {
@@ -30,7 +27,7 @@ const CompleteProduct = () => {
                     if (!response.data || response.status === 204) {
                         console.log('error, cannot fetch, wrong id');
                     } else {
-                        const shell = response.data.productShellDesigns.find(val => val.productShellDesignId === sessionStorage.getItem('shellId'));
+                        const shell = response.data.productShellDesigns.find(val => val.productShellDesignId === Number(sessionStorage.getItem('shellId')));
                         const diamonds = await getDiamonds();
                         const materials = await getMaterials();
                         const price = await getEstimatePrice(shell, diamonds, materials);
@@ -66,7 +63,7 @@ const CompleteProduct = () => {
         for (const material of materials) {
             const material_price = await fetchMaterialPrice(material.material.materialId);
             //console.log(`Material: ${material_price}`);
-            totalPrice += material_price;
+            totalPrice += material_price * material.weight;
         }
         //console.log(`Markup rate: ${shell.markupRate}`);
         totalPrice = totalPrice * shell.markupRate;
@@ -75,7 +72,7 @@ const CompleteProduct = () => {
 
     const createOrder = async () => {
 
-        if (sessionStorage.getItem("customer_id") === null || sessionStorage.getItem('designId') == null || sessionStorage.getItem('shellId') == null || sessionStorage.getItem('diamonds') == null) {
+        if (sessionStorage.getItem("customer_id") === null) {
             toast.info(`You need to be logged in to place the order!`);
         } else {
             try {
@@ -89,22 +86,8 @@ const CompleteProduct = () => {
                 if (!response.data || response.status === 204) {
                     toast.error("Failed to fetch order");
                 } else {
-                    setOrderId(response.data);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }
-
-    const fetchOrder = async () => {
-        if (orderId !== null) {
-            try {
-                const response = await axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`);
-                if (!response.data || response.status === 204) {
-                    console.log("ERROR");
-                } else {
-                    setOrder(response.data);
+                    const orderId = response.data;
+                    navigate("")
                 }
             } catch (error) {
                 console.log(error);
@@ -120,7 +103,7 @@ const CompleteProduct = () => {
                 console.log('no data found for diamonds');
             } else {
                 const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
-                const diamonds = response.data.filter(v => chosenDiamonds.includes(v.diamondId));
+                const diamonds = response.data.filter(v => chosenDiamonds.includes(v.diamondId.toString()));
                 return diamonds;
             }
 
@@ -133,7 +116,7 @@ const CompleteProduct = () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product-shell-material/${sessionStorage.getItem('shellId')}`);
             if (!response.data || response.status === 204) {
-
+                toast.error("ERror cannot fetch materials");
             } else {
                 return response.data;
             }
@@ -184,7 +167,7 @@ const CompleteProduct = () => {
                                     : formatPrice(estimatedPrice)
                                 }
                             </h1>
-                            <button className='btn btn-success'>Check out</button>
+                            <button onClick={createOrder} className='btn btn-success'>Check out</button>
                         </div>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ const DiamondCard = ({ diamond, isSelected, onClick }) => {
                 <p className={styles.cardText}>
                     {diamond.shape}, {diamond.origin}, {diamond.cut}, {diamond.color}, {diamond.clarity}, {diamond.caratWeight}
                 </p>
+                
                 <div className={styles.cardStatus}>
                     {isSelected ? 'Selected' : 'Select'}
                 </div>

@@ -8,44 +8,11 @@ import styles from '/src/css/ChooseDiamonds.module.css';
 
 const ChooseDiamond = () => {
 
-    const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [diamondList, setDiamondList] = useState([]);
 
     const navigate = useNavigate();
 
-    // const completeProduct = () => {
-    //     if (chosenDiamonds.length !== productSetting.quantity) {
-    //         toast.info(`You haven't chosen all the necessary diamonds, you need to choose ${productSetting.quantity - chosenDiamonds.length} more!`);
-    //     } else {
-    //         setProductSetting(p => ({
-    //             ...p,
-    //             diamonds: chosenDiamonds
-    //         }))
-    //         navigate("/build-your-own/complete-product");
-    //     }
-    // }
-
-    const handleChoose = (id, isAdd) => {
-        // if (productSetting.designId === null) {
-        //     toast.info("Please select a design first!");
-        // } else {
-        //     if (isAdd) {
-        //         if (chosenDiamonds.length < productSetting.quantity) {
-        //             setChosenDiamonds(list => [
-        //                 ...list,
-        //                 id
-        //             ]);
-        //         } else {
-        //             toast.info(`You have chosen ${chosenDiamonds.length} out of ${chosenDiamonds.length} diamonds`);
-        //         }
-        //     } else {
-        //         if (chosenDiamonds.length > 0) {
-        //             setChosenDiamonds(list => list.filter(diamondId => diamondId !== id));
-        //         } else {
-        //             toast.error("Error, no diamonds chosen yet");
-        //         }
-        //     }
-        // }
+    const handleChoose = (id) => {
         navigate(`/build-your-own/diamond-details/${id}`);
     }
 
@@ -63,8 +30,22 @@ const ChooseDiamond = () => {
     }
 
     useEffect(() => {
-        fetchData();
+        if (sessionStorage.getItem('designId') === null) {
+            toast.info(`Please pick a setting first`);
+            navigate('/build-your-own/choose-setting');
+        } else {
+            fetchData();
+        }
     }, [])
+
+    const isSelected = (id) => {
+
+        if (sessionStorage.getItem('diamonds') === null || sessionStorage.getItem('diamonds').length === 0) {
+            return false;
+        } else {
+            return sessionStorage.getItem('diamonds').split(',').includes(id.toString());
+        }
+    }
 
     return (
         <>
@@ -75,8 +56,8 @@ const ChooseDiamond = () => {
                             <div key={diamond.diamondId} className="col-md-3 mb-4">
                                 <DiamondCard
                                     diamond={diamond}
-                                    isSelected={chosenDiamonds.includes(diamond.diamondId)}
-                                    onClick={handleChoose}
+                                    isSelected={isSelected(diamond.diamondId)}
+                                    onClick={() => handleChoose(diamond.diamondId)}
                                 />
                             </div>
                         ))

@@ -1,16 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '/src/css/DiamondDetails.module.css';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faTruckFast } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'sonner';
+import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
+import { formatPrice } from '../../helper_function/ConvertFunction';
 
 const DiamondDetails = () => {
     const { diamondId } = useParams();
     const [diamond, setDiamond] = useState(null);
+    const [diamondPrice, setDiamondPrice] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchDiamond();
+        if (sessionStorage.getItem('designId') === null) {
+            toast.info(`Please pick a setting first`);
+            navigate('/build-your-own/choose-setting');
+        } else {
+            fetchDiamond();
+        }
     }, [diamondId]);
 
     const fetchDiamond = async () => {
@@ -19,39 +29,96 @@ const DiamondDetails = () => {
             if (!response.data || response.status === 204) {
                 console.error(`Cannot find diamond with ID ${diamondId}`);
             } else {
-                console.log('Fetched Diamond Data:', response.data);
+                const result = response.data;
+                const diamondPrice = await fetchDiamondPrice(result.cut, result.color, result.clarity, result.caratWeight, result.caratWeight);
+                //console.log('Fetched Diamond Data:', response.data);
                 setDiamond(response.data);
+                setDiamondPrice(diamondPrice);
             }
         } catch (error) {
             console.error('An error occurred while fetching the diamond data:', error);
         }
     };
 
-    if (diamond === null) {
+    const isSelected = () => {
+        if (sessionStorage.getItem('diamonds') == null) {
+            return false;
+        } else {
+            return sessionStorage.getItem('diamonds').includes(diamondId.toString());
+        }
+    }
+
+    const selectDiamond = () => {
+        if (sessionStorage.getItem('diamonds') === null || sessionStorage.getItem('diamonds').length === 0) {
+            sessionStorage.setItem('diamonds', diamondId);
+            sessionStorage.setItem('diamondImages', diamond.image);
+            sessionStorage.setItem('diamondPrices', diamondPrice);
+        } else if (Number(sessionStorage.getItem('quantity')) > sessionStorage.getItem('diamonds').split(',').length) {
+            sessionStorage.setItem('diamonds', sessionStorage.getItem('diamonds').concat(`,${diamondId}`));
+            sessionStorage.setItem('diamondImages', sessionStorage.getItem('diamondImages').concat(`,${diamond.image}`));
+            sessionStorage.setItem('diamondPrices', sessionStorage.getItem('diamondPrices').concat(`,${diamondPrice}`));
+        }
+        toast.info(`You have selected ${sessionStorage.getItem('diamonds').split(',').length} diamonds out of ${sessionStorage.getItem('quantity')} slots`);
+
+        // console.log(sessionStorage.getItem('diamonds'));
+        // console.log(sessionStorage.getItem('diamondImages'));
+        // console.log(sessionStorage.getItem('diamondPrices'));
+
+        navigate("/build-your-own/choose-diamond");
+    }
+
+    const removeSelection = () => {
+        let diamonds = sessionStorage.getItem('diamonds').split(',');
+        let images = sessionStorage.getItem('diamondImages').split(',');
+        let prices = sessionStorage.getItem('diamondPrices').split(',');
+
+        // Get the index of the diamond to be removed
+        let index = diamonds.indexOf(diamondId.toString());
+
+        if (index !== -1) {
+            // Remove the diamond, image, and price from their respective lists
+            diamonds.splice(index, 1);
+            images.splice(index, 1);
+            prices.splice(index, 1);
+        }
+
+        // Update the session storage
+        sessionStorage.setItem('diamonds', diamonds.join(','));
+        sessionStorage.setItem('diamondImages', images.join(','));
+        sessionStorage.setItem('diamondPrices', prices.join(','));
+
+        // console.log(sessionStorage.getItem('diamonds'));
+        // console.log(sessionStorage.getItem('diamondImages'));
+        // console.log(sessionStorage.getItem('diamondPrices'));
+
+        navigate("/build-your-own/choose-diamond");
+    }
+
+
+    if (diamond === null || diamondPrice == null) {
         return <div>Loading...</div>;
     } else {
-        console.log('Diamond:', diamond);
         return (
             <div className={styles.container}>
                 <div className={styles.imageSection}>
-                    <img src={diamond.image } alt="Diamond" className={styles.diamondImage} />
+                    <img src={diamond.image} alt="Diamond" className={styles.diamondImage} />
                 </div>
                 <div className={styles.detailsSection}>
-                    <h1 className={styles.diamondTitle}>{diamond.caratWeight } Carat Round Diamond</h1>
+                    <h1 className={styles.diamondTitle}>{diamond.caratWeight} Carat Round Diamond</h1>
                     <div className={styles.priceSection}>
-                        <p className={styles.price}>1000${diamond.price }</p>
+                        <p className={styles.price}>{formatPrice(diamondPrice)}</p>
                     </div>
                     <div className={styles.specs}>
                         <h4>Diamond Details</h4>
-                        <p><strong>Shape:</strong> {diamond.shape }</p>
-                        <p><strong>Cut:</strong> {diamond.cut }</p>
-                        <p><strong>Color:</strong> {diamond.color }</p>
-                        <p><strong>Clarity:</strong> {diamond.clarity }</p>
-                        <p><strong>Carat Weight:</strong> {diamond.caratWeight }</p>
+                        <p><strong>Shape:</strong> {diamond.shape}</p>
+                        <p><strong>Cut:</strong> {diamond.cut}</p>
+                        <p><strong>Color:</strong> {diamond.color}</p>
+                        <p><strong>Clarity:</strong> {diamond.clarity}</p>
+                        <p><strong>Carat Weight:</strong> {diamond.caratWeight}</p>
                     </div>
                     <div className={styles["payment-options"]}>
                         <div className={styles.option}>
-                            Flexible Payment Options: 3 Interest-Free Payments of ${(diamond.price / 3).toFixed(2)}
+                            Flexible Payment Options: 3 Interest-Free Payments of {formatPrice(diamondPrice / 3)}
                         </div>
                         <div className={styles.option}>
                             <FontAwesomeIcon icon={faRightLeft} style={{ marginRight: '8px' }} />
@@ -63,10 +130,13 @@ const DiamondDetails = () => {
                         </div>
                     </div>
                     <div className={styles.buttonsSection}>
-                        <button className={styles.primaryButton}>Select this diamond</button>
+                        {
+                            isSelected()
+                                ? <button onClick={removeSelection} className={styles.removeButton}>Remove selection</button>
+                                : <button onClick={selectDiamond} className={styles.primaryButton}>Select this diamond</button>
+                        }
                         <button className={styles.secondaryButton}>Consult an expert</button>
                     </div>
-                 
                 </div>
             </div>
         );

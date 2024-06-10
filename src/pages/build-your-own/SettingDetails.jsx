@@ -5,6 +5,7 @@ import styles from "/src/css/SettingDetails.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faTruckFast } from '@fortawesome/free-solid-svg-icons';
 import { formatPrice } from "../../helper_function/ConvertFunction";
+import { fetchMaterialPrice } from "../../helper_function/FetchPriceFunctions";
 
 const SettingDetails = () => {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ const SettingDetails = () => {
     const [productDesign, setProductDesign] = useState(null);
     const [selectedShell, setSelectedShell] = useState(null);
     const [showShellDetails, setShowShellDetails] = useState(false);
+    const [settingPrice, setSettingPrice] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -19,24 +21,56 @@ const SettingDetails = () => {
             if (!response.data || response.status === 204) {
                 console.error('Error, cannot fetch, wrong id or something');
             } else {
-                setProductDesign(response.data);
-                setSelectedShell(response.data.productShellDesigns[0]);
+                const product_design = response.data;
+                const selected_shell = response.data.productShellDesigns[0];
+                const materials = await getMaterials(selected_shell);
+                const setting_price = await fetchSettingPrice(selected_shell, materials);
+
+
+                setProductDesign(product_design);
+                setSettingPrice(setting_price);
+                setSelectedShell(selected_shell);
             }
         } catch (error) {
             console.error(error);
         }
     };
 
+    const getMaterials = async (shell) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/product-shell-material/${shell.productShellDesignId}`);
+            if (!response.data || response.status === 204) {
+                toast.error("ERror cannot fetch materials");
+            } else {
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const fetchSettingPrice = async (shell, materials) => {
+        let total = shell.ediamondPrice + shell.ematerialPrice + (shell.productionPrice * shell.markupRate);
+        for (const material of materials) {
+            const price = await fetchMaterialPrice(material.material.materialId);
+            total += price*material.weight;
+        }
+        return total;
+    }
+
     const handleChoose = () => {
-        if (designId !== null && selectedShell.productShellDesignId !== null && selectedShell.diamondQuantity > 0) {
+        if (designId !== null && selectedShell.productShellDesignId !== null && selectedShell.diamondQuantity > 0 && settingPrice !== null) {
             //Cosmetic
-            sessionStorage.setItem('designImage',productDesign.designFile);
-            sessionStorage.setItem('designName',productDesign.designName);
-            sessionStorage.setItem('designPrice',formatPrice(selectedShell.ediamondPrice + selectedShell.ematerialPrice + selectedShell.productionPrice));
+            sessionStorage.setItem('designImage', productDesign.designFile);
+            sessionStorage.setItem('designName', productDesign.designName);
+            sessionStorage.setItem('designPrice', formatPrice(settingPrice));
             //Functional
-            sessionStorage.setItem('designId',designId);
-            sessionStorage.setItem('shellId',selectedShell.productShellDesignId);
-            sessionStorage.setItem('quantity',selectedShell.diamondQuantity);
+            sessionStorage.setItem('designId', designId);
+            sessionStorage.setItem('shellId', selectedShell.productShellDesignId);
+            sessionStorage.setItem('quantity', selectedShell.diamondQuantity);
+            sessionStorage.setItem('diamonds', '');
+            sessionStorage.setItem('diamondImages', '');
+            sessionStorage.setItem('diamondPrices', '');
             navigate("/build-your-own/choose-diamond");
         } else {
             console.log("ERROR CHOOSING");
@@ -46,6 +80,17 @@ const SettingDetails = () => {
     useEffect(() => {
         fetchData();
     }, [designId]);
+
+    useEffect(() => {
+        if (selectedShell !== null) {
+            const updatePrice = async () => {
+                const materials = await getMaterials(selectedShell);
+                const setting_price = await fetchSettingPrice(selectedShell, materials);
+                setSettingPrice(setting_price);
+            }
+            updatePrice();
+        }
+    }, [selectedShell])
 
     const handleShellClick = (shell) => {
         setSelectedShell(shell);
@@ -67,7 +112,7 @@ const SettingDetails = () => {
                     <div className={styles["details-section"]}>
                         <h1 className={styles.title}>{productDesign.designName}</h1>
                         <h2 className={styles.subtitle}>{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
-                        <div className={styles.price}>{formatPrice(selectedShell.ediamondPrice + selectedShell.ematerialPrice + selectedShell.productionPrice)} (Setting Price)</div>
+                        <div className={styles.price}>{formatPrice(settingPrice)} (Setting Price)</div>
                         <div className={styles["metal-type-section"]}>
                             <h3 className={styles["metal-type-title"]}></h3>
                             <div className={styles["shell-list"]}>
