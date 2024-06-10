@@ -40,7 +40,6 @@ const DiamondPriceListPage = () => {
 
     return (
         <>
-            <NavigationBar />
             <div className="container">
                 <div className="row mt-3">
                     <h1>Diamond Price List</h1>

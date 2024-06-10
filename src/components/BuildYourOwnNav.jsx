@@ -1,33 +1,65 @@
-import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { Context } from '../pages/frame/BuildYourOwnFrame';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from '/src/css/BuildYourOwnNav.module.css';
+import { useState, useEffect } from 'react';
 
 const BuildYourOwnNav = () => {
 
-    const [productSetting, setProductSetting] = useContext(Context);
+    const navigate = useNavigate();
+    const [designId, setDesignId] = useState(null);
+    const [diamonds, setDiamonds] = useState(null);
+
+    useEffect(() => {
+        setDesignId(sessionStorage.getItem('designId'));
+    }, [sessionStorage.getItem('designId')]);
+
+    useEffect(() => {
+        setDiamonds(sessionStorage.getItem('diamonds'));
+    }, [sessionStorage.getItem('diamonds')]);
 
     return (
-        <div className="container mt-4" style={{ paddingBottom: '5vh' }}>
-            <Link to="/build-your-own/choose-setting">
-                <button type="button" className="btn btn-light btn-lg col-4">Choose a Setting</button>
-            </Link>
-            <Link to="/build-your-own/choose-diamond">
-                <button type="button" className="btn btn-light btn-lg col-4">Choose a Diamond</button>
-            </Link>
-            <Link to="/build-your-own/complete-product" >
-                <button type="button" className="btn btn-light btn-lg col-4" disabled={productSetting.designId === null || productSetting.diamonds.length === 0 || productSetting.shellId === null}>Complete Ring</button>
-            </Link>
-            {/* <div>
-                {
-                    productSetting.designId !== null && productSetting.shellId !== null
-                        ? <>
-                            <p>
-                                Selected design: {productSetting.designId}/{productSetting.shellId}
-                            </p>
-                        </>
-                        : <></>
-                }
-            </div> */}
+        <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
+            <button onClick={() => sessionStorage.clear()}>Clear</button>
+            <div className="row">
+                <div className={`col ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
+                    <div className="col-1">
+                        <h3>1.</h3>
+                    </div>
+                    {
+                        designId == null
+                            ? <>
+                                Choose a setting
+                            </>
+                            : <>
+                                <div className={`col`}>
+                                    <div className="container-fluid">
+                                        <div className="row">
+                                            {sessionStorage.getItem('designName')}
+                                        </div>
+                                        <div className="row">
+                                            <b>{sessionStorage.getItem('designPrice')}</b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-2">
+                                    <img className='img-fluid' src={sessionStorage.getItem('designImage')} alt="" />
+                                </div>
+                            </>
+                    }
+                </div>
+                <div className={`col ${styles['col']}`}>
+                    {
+                        diamonds == null
+                            ? <>
+                                2. Choose diamonds
+                            </>
+                            : <>
+                            </>
+                    }
+                </div>
+                <div className={`col ${styles['col']}`}>
+
+                </div>
+            </div>
         </div>
     );
 }
