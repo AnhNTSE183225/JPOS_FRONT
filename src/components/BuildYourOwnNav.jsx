@@ -2,7 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from '/src/css/BuildYourOwnNav.module.css';
 import { useState, useEffect } from 'react';
 import { formatPrice } from '../helper_function/ConvertFunction';
-import {toast} from 'sonner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightLong } from '@fortawesome/free-solid-svg-icons';
 
 const BuildYourOwnNav = () => {
 
@@ -22,18 +23,15 @@ const BuildYourOwnNav = () => {
         }
     }
 
-    const handleComplete = () => {
+    const checkCompletion = () => {
         if (sessionStorage.getItem('designId') == null) {
-            toast.error(`You haven't selected a design!`);
-            navigate("/build-your-own/choose-setting");
+            return false;
         } else if (sessionStorage.getItem('diamonds') == null || sessionStorage.getItem('diamonds').length == 0) {
-            toast.error(`You haven't chosen any diamonds!`);
-            navigate("/build-your-own/choose-diamond");
+            return false;
         } else if (sessionStorage.getItem('diamonds').split(',').length !== Number(sessionStorage.getItem('quantity'))) {
-            toast.error(`You haven't chosen enough diamonds!`);
-            navigate("/build-your-own/choose-diamond");
+            return false;
         } else {
-            navigate("/build-your-own/complete-product");
+            return true;
         }
     }
 
@@ -55,7 +53,6 @@ const BuildYourOwnNav = () => {
 
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
-            <button onClick={() => sessionStorage.clear()}>Clear</button>
             <div className="row">
                 <div className={`col ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
                     <div className="col-1">
@@ -111,14 +108,21 @@ const BuildYourOwnNav = () => {
                             </>
                     }
                 </div>
-                <div className={`col ${styles['col']}`} onClick={handleComplete}>
-                    <div className="col-1">
-                        <h3>3.</h3>
-                    </div>
-                    <div className="col fw-bold fs-4">
-                        Complete product
-                    </div>
-                </div>
+                {
+                    checkCompletion()
+                        ? <div className={`col ${styles['col']} ${styles['final-button']}`} onClick={() => navigate("/build-your-own/complete-product")}>
+                            <p className='fw-bolder m-0 fs-4' >Proceed to checkout</p>
+                            <FontAwesomeIcon icon={faRightLong} id={`${styles['icon']}`}/>
+                        </div>
+                        : <div className={`col ${styles['col']}`}>
+                            <div className="col-1">
+                                <h3>3.</h3>
+                            </div>
+                            <div className="col">
+                                Complete product
+                            </div>
+                        </div>
+                }
             </div>
         </div>
     );
