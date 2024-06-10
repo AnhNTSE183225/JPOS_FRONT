@@ -87,7 +87,6 @@ const CompleteProduct = () => {
                     toast.error("Failed to fetch order");
                 } else {
                     const orderId = response.data;
-                    navigate("")
                 }
             } catch (error) {
                 console.log(error);
@@ -97,7 +96,6 @@ const CompleteProduct = () => {
 
     const getDiamonds = async () => {
         try {
-
             const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
             if (!response.data || response.status === 204) {
                 console.log('no data found for diamonds');
@@ -106,7 +104,6 @@ const CompleteProduct = () => {
                 const diamonds = response.data.filter(v => chosenDiamonds.includes(v.diamondId.toString()));
                 return diamonds;
             }
-
         } catch (error) {
             console.log(error);
         }
