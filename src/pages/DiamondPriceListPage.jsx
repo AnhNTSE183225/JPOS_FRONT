@@ -1,11 +1,11 @@
-import NavigationBar from "../components/NavigationBar"
+import NavigationBar from "../components/NavigationBar";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 
 const DiamondPriceListPage = () => {
-
     const [diamondPriceList, setDiamondPriceList] = useState([]);
+    const [groupedDiamonds, setGroupedDiamonds] = useState({});
 
     const fetchDiamondList = async () => {
         try {
@@ -13,12 +13,26 @@ const DiamondPriceListPage = () => {
             if (response.status === 204) {
                 console.log("No data");
             } else {
-                setDiamondPriceList(response.data);
+                const data = response.data;
+                setDiamondPriceList(data);
+                groupByOrigin(data);
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    const groupByOrigin = (data) => {
+        const grouped = data.reduce((acc, diamond) => {
+            const { origin } = diamond;
+            if (!acc[origin]) {
+                acc[origin] = [];
+            }
+            acc[origin].push(diamond);
+            return acc;
+        }, {});
+        setGroupedDiamonds(grouped);
+    };
 
     useEffect(() => {
         fetchDiamondList();
@@ -26,32 +40,33 @@ const DiamondPriceListPage = () => {
 
     return (
         <>
-            <div>
-                <div className="container">
-                    <div className="row mt-3">
-                        <h1>Diamond price list</h1>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <table className="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Origin</th>
-                                        <th>Carat weight</th>
-                                        <th>Color</th>
-                                        <th>Clarity</th>
-                                        <th>Cut</th>
-                                        <th>Effective date</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="table-group-divider">
-                                    {diamondPriceList.map(
-                                        (entry) => (
+            <div className="container">
+                <div className="row mt-3">
+                    <h1>Diamond Price List</h1>
+                </div>
+                {Object.keys(groupedDiamonds).length === 0 ? (
+                    <p>No diamond data available.</p>
+                ) : (
+                    Object.keys(groupedDiamonds).map((origin) => (
+                        <div key={origin} className="row mt-4">
+                            <div className="col">
+                                <h2>{origin}</h2>
+                                <table className="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Carat Weight</th>
+                                            <th>Color</th>
+                                            <th>Clarity</th>
+                                            <th>Cut</th>
+                                            <th>Effective Date</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="table-group-divider">
+                                        {groupedDiamonds[origin].map((entry, index) => (
                                             <tr key={entry.diamondPriceId}>
-                                                <td>{entry.diamondPriceId}</td>
-                                                <td>{entry.origin}</td>
+                                                <td>{index + 1}</td>
                                                 <td>{entry.caratWeight}</td>
                                                 <td>{entry.color}</td>
                                                 <td>{entry.clarity}</td>
@@ -59,16 +74,16 @@ const DiamondPriceListPage = () => {
                                                 <td>{formatDate(entry.effectiveDate)}</td>
                                                 <td>{formatPrice(entry.price)}</td>
                                             </tr>
-                                        )
-                                    )}
-                                </tbody>
-                            </table>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    ))
+                )}
             </div>
         </>
-    )
-}
+    );
+};
 
-export default DiamondPriceListPage
+export default DiamondPriceListPage;

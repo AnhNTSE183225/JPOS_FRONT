@@ -2,14 +2,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styles from "/src/css/SettingDetails.module.css";
-import { Context } from "../frame/BuildYourOwnFrame";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faTruckFast } from '@fortawesome/free-solid-svg-icons';
 import { formatPrice } from "../../helper_function/ConvertFunction";
 
 const SettingDetails = () => {
     const navigate = useNavigate();
-    const [productSetting, setProductSetting] = useContext(Context);
     const { designId } = useParams();
     const [productDesign, setProductDesign] = useState(null);
     const [selectedShell, setSelectedShell] = useState(null);
@@ -31,12 +29,14 @@ const SettingDetails = () => {
 
     const handleChoose = () => {
         if (designId !== null && selectedShell.productShellDesignId !== null && selectedShell.diamondQuantity > 0) {
-            setProductSetting(o => ({
-                ...o,
-                designId: designId,
-                shellId: selectedShell.productShellDesignId,
-                quantity: selectedShell.diamondQuantity
-            }));
+            //Cosmetic
+            sessionStorage.setItem('designImage',productDesign.designFile);
+            sessionStorage.setItem('designName',productDesign.designName);
+            sessionStorage.setItem('designPrice',formatPrice(selectedShell.ediamondPrice + selectedShell.ematerialPrice + selectedShell.productionPrice));
+            //Functional
+            sessionStorage.setItem('designId',designId);
+            sessionStorage.setItem('shellId',selectedShell.productShellDesignId);
+            sessionStorage.setItem('quantity',selectedShell.diamondQuantity);
             navigate("/build-your-own/choose-diamond");
         } else {
             console.log("ERROR CHOOSING");

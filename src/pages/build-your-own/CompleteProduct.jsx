@@ -1,16 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
-// import { Context } from '../FrameBuildYourOwn';
-import { Context } from '../frame/BuildYourOwnFrame';
-import { Toaster, toast } from 'sonner';
-import { Link, useNavigate } from 'react-router-dom';
-import { formatDate, formatPrice } from '../../helper_function/ConvertFunction';
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { formatPrice } from '../../helper_function/ConvertFunction';
 import axios from 'axios';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 
 const CompleteProduct = () => {
 
     const navigate = useNavigate();
-    const [productSetting, setProductSetting] = useContext(Context);
 
     const [productDesign, setProductDesign] = useState(null);
     const [shell, setShell] = useState(null);
@@ -23,17 +20,17 @@ const CompleteProduct = () => {
 
     useEffect(() => {
         const getDesign = async () => {
-            if (productSetting.designId === null) {
+            if (sessionStorage.getItem('designId') === null) {
                 toast.info(`Please return for selection`);
                 navigate("/build-your-own/choose-setting");
             } else {
                 try {
-                    //console.log(`GET http://localhost:8080/api/product-designs/${productSetting.designId}`);
-                    const response = await axios.get(`http://localhost:8080/api/product-designs/${productSetting.designId}`);
+                    //console.log(`GET http://localhost:8080/api/product-designs/${sessionStorage.getItem('designId')}`);
+                    const response = await axios.get(`http://localhost:8080/api/product-designs/${sessionStorage.getItem('designId')}`);
                     if (!response.data || response.status === 204) {
                         console.log('error, cannot fetch, wrong id');
                     } else {
-                        const shell = response.data.productShellDesigns.find(val => val.productShellDesignId === productSetting.shellId)
+                        const shell = response.data.productShellDesigns.find(val => val.productShellDesignId === sessionStorage.getItem('shellId'));
                         const diamonds = await getDiamonds();
                         const materials = await getMaterials();
                         const price = await getEstimatePrice(shell, diamonds, materials);
@@ -78,14 +75,14 @@ const CompleteProduct = () => {
 
     const createOrder = async () => {
 
-        if (sessionStorage.getItem("customer_id") === null || productSetting.designId == null || productSetting.shellId == null || productSetting.diamonds.length == 0) {
+        if (sessionStorage.getItem("customer_id") === null || sessionStorage.getItem('designId') == null || sessionStorage.getItem('shellId') == null || sessionStorage.getItem('diamonds') == null) {
             toast.info(`You need to be logged in to place the order!`);
         } else {
             try {
                 const object = {
-                    productDesignId: productSetting.designId,
-                    productShellId: productSetting.shellId,
-                    diamondIds: productSetting.diamonds,
+                    productDesignId: sessionStorage.getItem('designId'),
+                    productShellId: sessionStorage.getItem('shellId'),
+                    diamondIds: sessionStorage.getItem('diamonds').split(','),
                     customerId: sessionStorage.getItem("customer_id")
                 };
                 const response = await axios.post(`http://localhost:8080/api/create-order-from-design`, object);
@@ -122,7 +119,8 @@ const CompleteProduct = () => {
             if (!response.data || response.status === 204) {
                 console.log('no data found for diamonds');
             } else {
-                const diamonds = response.data.filter(v => productSetting.diamonds.includes(v.diamondId));
+                const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
+                const diamonds = response.data.filter(v => chosenDiamonds.includes(v.diamondId));
                 return diamonds;
             }
 
@@ -133,7 +131,7 @@ const CompleteProduct = () => {
 
     const getMaterials = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product-shell-material/${productSetting.shellId}`);
+            const response = await axios.get(`http://localhost:8080/api/product-shell-material/${sessionStorage.getItem('shellId')}`);
             if (!response.data || response.status === 204) {
 
             } else {
@@ -174,7 +172,7 @@ const CompleteProduct = () => {
                                 {
                                     materials.map(m =>
                                         <li key={m.material.materialId}>
-                                            {m.material.materialName} - {m.weight} karat
+                                            {m.material.materialName} - {m.weight} carat
                                         </li>
                                     )
                                 }

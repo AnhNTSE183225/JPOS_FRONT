@@ -1,0 +1,25 @@
+#build-your-own-nav .col {
+    height: 6rem;
+    border: 1px solid black;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    cursor: pointer;
+}
+
+#build-your-own-nav .col:first-child {
+    border-radius: 50px 0 0 50px;
+    padding-left: 40px;
+}
+
+#build-your-own-nav .col:last-child {
+    border-radius: 0 50px 50px 0;
+}
+
+#build-your-own-nav img {
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    border: 1px solid black;
+}
