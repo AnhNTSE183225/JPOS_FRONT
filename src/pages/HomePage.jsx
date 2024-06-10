@@ -1,5 +1,4 @@
 import styles from '/src/css/HomePage.module.css';
-import NavigationBar from '../components/NavigationBar';
 import Logo from '../assets/Logo.png';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
