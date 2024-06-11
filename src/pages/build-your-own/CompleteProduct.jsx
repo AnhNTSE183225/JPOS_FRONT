@@ -5,6 +5,8 @@ import { formatPrice } from '../../helper_function/ConvertFunction';
 import axios from 'axios';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 import styles from '/src/css/CompleteProduct.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 
 const CompleteProduct = () => {
 
@@ -149,18 +151,18 @@ const CompleteProduct = () => {
                             <img src={productDesign.designFile} className='img-fluid mx-auto' />
                         </div>
                         <div className="col">
-                            <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}><i>MY BIJOUX ORDER</i></h1>
-                            <h4 className='fw-semibold'>{productDesign.designName} in {shell.shellName}</h4>
-                            <h4 className='fw-semibold'></h4>
-                            <h4>Diamonds</h4>
+                            <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
+                            <h4 className='fw-semibold' style={{ color: '#48AAAD' }}><i>{productDesign.designName} in {shell.shellName}</i></h4>
+                            <br />
+                            <h5><FontAwesomeIcon icon={faGem}/> <i>Diamonds</i></h5>
                             <ul>
                                 {diamonds.map(d =>
                                     <li key={d.diamondId} style={{ listStyle: 'none' }}>
-                                        {d.diamondCode} - {d.diamondName} - {d.shape} - {d.cut} - {d.clarity} - {d.color} - {d.caratWeight}
+                                        {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode} 
                                     </li>
                                 )}
                             </ul>
-                            <h4>Materials</h4>
+                            <h5><FontAwesomeIcon icon={faRing}/> <i>Materials</i></h5>
                             <ul>
                                 {
                                     materials.map(m =>
@@ -170,21 +172,23 @@ const CompleteProduct = () => {
                                     )
                                 }
                             </ul>
-                            <h3 className='fw-bold'>Product price</h3>
-                            <h3 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
+                            <h3 className='fw-semibold'>Product price: </h3>
+                            <h4 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
                                 {estimatedPrice === null
                                     ? 'Estimating price...'
                                     : formatPrice(estimatedPrice)
                                 }
-                            </h3>
+                            </h4>
+                            <br />
                             <div className="col">
-                                <h5 className="fst-italic fw-bold ">SUMMARY</h5>
+                                <h3 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h3>
+                                <br />
                                 <div className="summary-card">
                                     <div className="content">
                                         <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
                                         <p>US & Int. Shipping: Free</p>
-                                        <p>Taxes/Duties Estimate: TBD</p>
-                                        <h5>Total: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</h5>
+                                        <p>Taxes/Duties Estimate: 10% VAT</p>
+                                        <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw'}}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
                                         <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff'}}>Pay with cash</button>
                                         <button onClick={handleOnlinePayment} className='btn btn-secondary w-100 my-2'>Pay online</button>
                                     </div>
