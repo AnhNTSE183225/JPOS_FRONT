@@ -53,7 +53,7 @@ const BuildYourOwnNav = () => {
 
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
-            <div className="row">
+            <div className="row flex-nowrap">
                 <div className={`col ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
                     <div className="col-1">
                         <h3>1.</h3>

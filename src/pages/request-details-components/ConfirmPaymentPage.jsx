@@ -70,7 +70,6 @@ const ConfirmPaymentPage = ({ order }) => {
 
     return (
         <>
-            <Toaster position="top-center" richColors expand={true} />
             <div className='container-fluid' id={`${styles['confirm-payment']}`}>
                 <div className="row">
                     <h1 className='fw-bold'>

@@ -1,11 +1,21 @@
 
-export const formatPrice = (price) => {
-    if (price === null || price === undefined) {
-        return "";
-    }
+// export const formatPrice = (price) => {
+//     if (price === null || price === undefined) {
+//         return "";
+//     }
 
-    return Number(price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,').replace('₫', '').trim() + ' ₫';;
-};
+//     return Number(price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,').replace('₫', '').trim() + ' ₫';;
+// };
+
+export const formatPrice = (str) => {
+    const num = parseFloat(str);
+    if (isNaN(num)) {
+        return '$NaN';
+    } else {
+        return '$' + num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+}
+
 
 export const formatDate = (dateString) => {
 

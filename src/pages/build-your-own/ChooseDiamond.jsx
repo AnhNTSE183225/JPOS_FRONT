@@ -4,11 +4,76 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import DiamondCard from './DiamondCard';
 import styles from '/src/css/ChooseDiamonds.module.css';
+import { formatPrice } from '../../helper_function/ConvertFunction';
 // import { Context } from '../FrameBuildYourOwn';
 
 const ChooseDiamond = () => {
 
     const [diamondList, setDiamondList] = useState([]);
+    const [queryList, setQueryList] = useState([]);
+    const [activeShape, setActiveShape] = useState(null);
+    const [minPrice, setMinPrice] = useState(200);
+    const [minCarat, setMinCarat] = useState(0.05);
+    const [color, setColor] = useState(1);
+    const [clarity, setClarity] = useState(1);
+    const [cut, setCut] = useState(1);
+
+    const resetFilters = () => {
+        setMinCarat(0.05);
+        setMinPrice(200);
+        setClarity(1);
+        setCut(1);
+        setActiveShape(null);
+        setColor(1);
+    }
+
+    useEffect(() => {
+        if (diamondList.length > 0) {
+            let list = diamondList;
+            if(activeShape !== null) {
+                list = list.filter(diamond => diamond.shape.toLowerCase() == activeShape.toLowerCase());
+            }
+            list = list.filter(diamond => diamond.caratWeight > minCarat);
+            list = list.filter(diamond => reverseConvertColor(diamond.color) >= color);
+            list = list.filter(diamond => reverseConvertClarity(diamond.clarity) >= clarity);
+            list = list.filter(diamond => reverseConvertCut(diamond.cut) >= cut);
+            setQueryList(list);
+        }
+    }, [activeShape, minPrice, minCarat, color, clarity, cut])
+
+    const convertColor = (int) => {
+        const chars = ['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
+        return chars[int - 1] || 'Invalid input';
+    }
+
+    const convertClarity = (int) => {
+        const clarity = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+        return clarity[int - 1] || 'Invalid input';
+    }
+
+    const convertCut = (int) => {
+        const quality = ['Poor', 'Fair', 'Good', 'Very_Good', 'Excellent'];
+        return quality[int - 1] || 'Invalid input';
+    }
+
+    const reverseConvertColor = (char) => {
+        const chars = ['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
+        const index = chars.indexOf(char);
+        return index !== -1 ? index + 1 : 'Invalid input';
+    }
+    
+    const reverseConvertClarity = (clarityStr) => {
+        const clarity = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+        const index = clarity.indexOf(clarityStr);
+        return index !== -1 ? index + 1 : 'Invalid input';
+    }
+    
+    const reverseConvertCut = (qualityStr) => {
+        const quality = ['Poor', 'Fair', 'Good', 'Very_Good', 'Excellent'];
+        const index = quality.indexOf(qualityStr);
+        return index !== -1 ? index + 1 : 'Invalid input';
+    }
+    
 
     const navigate = useNavigate();
 
@@ -23,6 +88,7 @@ const ChooseDiamond = () => {
                 toast.error("Error fetching the diamonds from the server");
             } else {
                 setDiamondList(response.data);
+                setQueryList(response.data);
             }
         } catch (error) {
             console.log(error);
@@ -50,9 +116,86 @@ const ChooseDiamond = () => {
     return (
         <>
             <div className={`${styles.container} container`}>
-                <div className='row my-3 px-5'>
-                    {diamondList.length > 0 ? (
-                        diamondList.map(diamond => (
+                <div className="row">
+                    <div className="col-4">
+                        <b>Shape</b>
+                        <div className="container-fluid my-3">
+                            <div className="row">
+                                {['Round', 'Princess', 'Cushion', 'Emerald', 'Oval', 'Radiant', 'Asscher', 'Marquise', 'Heart', 'Pear'].map(value =>
+                                    <div key={value} className={`col-3 ${styles['shape']} d-flex flex-column justify-content-center align-items-center ${activeShape == value ? styles['active'] : ''} `} onClick={() => setActiveShape(value)}>
+                                        <img className='img-fluid' src={`/src/assets/svg/${value}.svg`} alt="" />
+                                        <span className='mt-2'>{value}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <b>Minimum price</b>
+                        <div className="container-fluid my-3">
+                            <div className="row">
+                                <div className="col text-start">{formatPrice(200)}</div>
+                                <div className="col text-end">{formatPrice(5000000)}</div>
+                            </div>
+                            <input type="range" className='form-range' min={200} max={5000000} step={200} value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
+                            <input type="number" min={200} max={5000000} className='form-control' step="0.01" onChange={(e) => setMinPrice(e.target.value)} value={minPrice} />
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <b>Min Carat</b>
+                        <div className="container-fluid my-3">
+                            <div className="row">
+                                <div className="col text-start">0.05</div>
+                                <div className="col text-end">30.0</div>
+                            </div>
+                            <input type="range" className='form-range' min={0.05} max={30.0} step={0.05} value={minCarat} onChange={(e) => setMinCarat(e.target.value)} />
+                            <input type="number" min={0.05} max={30.0} className='form-control' step="0.01" onChange={(e) => setMinCarat(e.target.value)} value={minCarat} />
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <b>Min Color</b>
+                        <div className="container-fluid my-3">
+                            <div className="row">
+                                <div className="col text-start">Z</div>
+                                <div className="col text-end">D</div>
+                            </div>
+                            <input type="range" className='form-range' min={1} max={23} step={1} value={color} onChange={(e) => setColor(e.target.value)} />
+                            <div className='text-start'><b>Color:</b> {convertColor(color)}</div>
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <b>Min Clarity</b>
+                        <div className="container-fluid my-3">
+                            <div className="row">
+                                <div className="col text-start">I3</div>
+                                <div className="col text-end">FL</div>
+                            </div>
+                            <input type="range" className='form-range' min={1} max={11} step={1} value={clarity} onChange={(e) => setClarity(e.target.value)} />
+                            <div className='text-start'><b>Clarity:</b> {convertClarity(clarity)}</div>
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <b>Cut</b>
+                        <div className="container-fluid my-3">
+                            <div className="row">
+                                <div className="col text-start">Poor</div>
+                                <div className="col text-end">Excellent</div>
+                            </div>
+                            <input type="range" className='form-range' min={1} max={5} step={1} value={cut} onChange={(e) => setCut(e.target.value)} />
+                            <div className='text-start'><b>Cut:</b> {convertCut(cut)}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col text-end">
+                        <button className='btn btn-primary' onClick={resetFilters}>Reset filters</button>
+                    </div>
+                </div>
+                <div className='row my-3'>
+                    {queryList.length > 0 ? (
+                        queryList.map(diamond => (
                             <div key={diamond.diamondId} className="col-md-3 mb-4">
                                 <DiamondCard
                                     diamond={diamond}
