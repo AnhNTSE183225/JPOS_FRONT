@@ -19,7 +19,8 @@ import DiamondDetails from './pages/build-your-own/DiamondDetails';
 import SettingDetails from './pages/build-your-own/SettingDetails';
 import StaffFrame from './pages/frame/StaffFrame';
 import CustomerFrame from './pages/frame/CustomerFrame';
-import ThanksPage from './pages/ThanksPage';
+import CashThanksPage from './pages/CashThanksPage';
+import OnlineThanksPage from './pages/OnlineThanksPage';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
@@ -52,10 +53,13 @@ const router = createBrowserRouter([
         element: <RegisterPage /> //Customer
       },
       {
-        path: 'completed',
-        element: <ThanksPage />
+        path: 'cash-completed',
+        element: <CashThanksPage />
       },
-      
+      {
+        path: 'online-completed',
+        element: <OnlineThanksPage />
+      },
       {
         path: 'build-your-own',
         element: <BuildYourOwnFrame />,

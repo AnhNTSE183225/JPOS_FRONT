@@ -49,12 +49,12 @@ const Footer = () => {
               <li><Link to="#"><i className="fab fa-instagram"></i> Instagram</Link></li>
             </ul>
           </div>
+          <hr />
+          <p className='fw-semibold text-center'><i>&copy; 2024 Bijoux Inc.</i></p>
         </div>
-        <hr />
-        <div className={`text-center mt-5 ${styles.textCenter}`}>
-          <p className='fw-semibold'><i>&copy; 2024 Bijoux Inc.</i></p>
-
-          <img src={textLogo} alt="Text Logo" style={{ width: '70vw', height: 'auto' }} />
+        
+        <div className={`d-flex justify-content-center align-items-center ${styles.textCenter}`}>
+          <img src={textLogo} alt="Text Logo" className="mx-auto d-block" style={{ width: '70vw', height: 'auto', objectFit: 'contain' }} />
         </div>
       </div>
     </footer>

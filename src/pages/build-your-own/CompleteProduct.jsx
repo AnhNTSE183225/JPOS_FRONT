@@ -96,6 +96,16 @@ const CompleteProduct = () => {
         }
     }
 
+    const handleCashPayment = () => {
+        createOrder(false)
+        navigate("/cash-completed");
+    }
+
+    const handleOnlinePayment = () => {
+        createOrder(true)
+        navigate("/online-completed")
+    }
+
     const getDiamonds = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
@@ -175,8 +185,8 @@ const CompleteProduct = () => {
                                         <p>US & Int. Shipping: Free</p>
                                         <p>Taxes/Duties Estimate: TBD</p>
                                         <h5>Total: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</h5>
-                                        <button onClick={() => createOrder(false)} className='btn btn-success w-100 my-2'>Pay with cash</button>
-                                        <button onClick={() => createOrder(true)} className='btn btn-secondary w-100 my-2'>PayPal</button>
+                                        <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff'}}>Pay with cash</button>
+                                        <button onClick={handleOnlinePayment} className='btn btn-secondary w-100 my-2'>Pay online</button>
                                     </div>
                                 </div>
                             </div>
