@@ -24,6 +24,7 @@ import OnlineThanksPage from './pages/OnlineThanksPage';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
+import CustomerOrdersPage from './pages/CustomerOrdersPage';
 
 const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/your-request',
         element: <CustomerRequestDetailsPage />
+      },
+      {
+        path: '/profile/your-orders',
+        element: <CustomerOrdersPage />
       }
     ]
   },
