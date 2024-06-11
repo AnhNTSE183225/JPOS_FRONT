@@ -74,8 +74,8 @@ const CustomDesignPage = () => {
         <>
             <div className="container">
                 <div className="row">
-                    <div className="col-md-4">
-                        <h1>Design your own</h1>
+                    <div className="col" style={{marginLeft: '5vw'}}>
+                        <h1 className="text-center">Design your own</h1>
                         <div>
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
@@ -87,12 +87,12 @@ const CustomDesignPage = () => {
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn btn-primary" onClick={uploadImage} >Upload image</button>
+                                        : <button className="btn w-100" style={{backgroundColor: '#48AAAD'}} onClick={uploadImage} >Upload image</button>
                                 }
 
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Describe what you want</label>
+                                <label className="form-label">Describe details what you want</label>
                                 <textarea style={{ resize: "none" }} maxLength={255} className="form-control" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
                             </div>
                             <div className="mb-3">
@@ -106,7 +106,7 @@ const CustomDesignPage = () => {
 
                         </div>
                     </div>
-                    <div className="col-md-8">
+                    <div className="col" style={{marginRight: '5vw'}}>
                         <img src={img} className="img-fluid" />
                     </div>
                 </div>

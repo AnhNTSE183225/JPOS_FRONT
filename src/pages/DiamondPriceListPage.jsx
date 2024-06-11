@@ -42,7 +42,7 @@ const DiamondPriceListPage = () => {
         <>
             <div className="container">
                 <div className="row mt-3">
-                    <h1>Diamond Price List</h1>
+                    <h1 className="text-center">Diamond Price List</h1>
                 </div>
                 {Object.keys(groupedDiamonds).length === 0 ? (
                     <p>No diamond data available.</p>
@@ -54,7 +54,7 @@ const DiamondPriceListPage = () => {
                                 <table className="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>Num</th>
                                             <th>Carat Weight</th>
                                             <th>Color</th>
                                             <th>Clarity</th>
