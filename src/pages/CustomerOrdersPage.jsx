@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
 import { toast } from 'sonner';
+import { formatDate, formatPrice } from '/src/helper_function/ConvertFunction.jsx'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { fetchDiamondPrice, fetchMaterialPrice } from '../helper_function/FetchPriceFunctions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import styles from '/src/css/RequestPage.module.css';
 
 const CustomerOrdersPage = () => {
 
@@ -33,7 +39,24 @@ const CustomerOrdersPage = () => {
         return (
             <>
                 <div>
-                    {orders[0].id}
+                <table className={`${styles['request-table']}`}>
+            <tr id={`${styles['table-head']}`}>
+                <th>Order ID</th>
+                <th>Product Name</th>
+                <th>Product Type</th>
+                <th>Order Date</th>
+                <th>Total Price</th>
+            </tr>
+            {orders.map(order => (
+                <tr key={order.id}>
+                    <td>{order.id}</td>
+                    <td>{order.product.productName}</td>
+                    <td>{order.product.productType}</td>
+                    <td>{formatDate(order.orderDate)}</td>
+                    <td>{formatPrice(order.totalAmount)}</td>
+                </tr>
+            ))}
+        </table>
                 </div>
             </>
         )

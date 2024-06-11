@@ -20,7 +20,7 @@ const ProfilePage = () => {
                             type="button" 
                             className="btn btn-lg mb-2" 
                             style={{ backgroundColor: '#48AAAD', color: '#fff' }}
-                            onClick={() => navigate("/profile/order-details")}
+                            onClick={() => navigate("/profile/your-orders")}
                         >
                             View Order Detail
                         </button>
