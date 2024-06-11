@@ -28,14 +28,14 @@
 .actionButton {
     padding: 8px 12px;
     border: none;
-    background-color: #007bff;
+    background-color: #48AAAD;
     color: white;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .actionButton:hover {
-    background-color: #0056b3;
+    background-color: #48AAAD;
 }
 
 .detailsSection {
@@ -72,20 +72,20 @@
 .primaryButton {
     padding: 10px 20px;
     border: none;
-    background-color: #28a745;
+    background-color: #48AAAD;
     color: white;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .primaryButton:hover {
-    background-color: #218838;
+    background-color: #308285;
 }
 
 .removeButton {
     padding: 10px 20px;
     border: none;
-    background-color: #ff0000;
+    background-color: #880808;
     color: white;
     border-radius: 4px;
     cursor: pointer;

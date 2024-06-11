@@ -215,7 +215,7 @@ const ChooseDiamond = () => {
                 </div>
                 <div className="row">
                     <div className="col text-end">
-                        <button className='btn btn-primary' onClick={resetFilters}>Reset filters</button>
+                        <button className='btn' style={{backgroundColor: '#48AAAD'}} onClick={resetFilters}>Reset filters</button>
                     </div>
                 </div>
                 <div className='row my-3'>

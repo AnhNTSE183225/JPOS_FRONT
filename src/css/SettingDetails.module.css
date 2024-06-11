@@ -107,12 +107,12 @@
 }
 
 .shell-item.selected {
-    border-color: #007BFF;
+    border-color: #48AAAD;
     background-color: #e9f8f9;
 }
 
 .shell-item:hover {
-    border-color: #007BFF;
+    border-color: #327c7f;
 }
 
 .shell-label {
@@ -141,7 +141,7 @@
 .button {
     padding: 10px 20px;
     margin: 10px 10px 10px 0;
-    background-color: #007BFF;
+    background-color: #48AAAD;
     color: white;
     border: none;
     border-radius: 5px;
@@ -150,7 +150,7 @@
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #327c7f;
 }
 
 .secondary-button {
