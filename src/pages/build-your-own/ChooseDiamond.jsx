@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DiamondCard from './DiamondCard';
 import styles from '/src/css/ChooseDiamonds.module.css';
 import { formatPrice } from '../../helper_function/ConvertFunction';
-// import { Context } from '../FrameBuildYourOwn';
+import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
 
 const ChooseDiamond = () => {
 
@@ -17,6 +17,68 @@ const ChooseDiamond = () => {
     const [color, setColor] = useState(1);
     const [clarity, setClarity] = useState(1);
     const [cut, setCut] = useState(1);
+    const [diamondPrices, setDiamondPrices] = useState([]);
+
+    useEffect(() => {
+        const setup = async () => {
+            if (sessionStorage.getItem('designId') === null) {
+                toast.info(`Please pick a setting first`);
+                navigate('/build-your-own/choose-setting');
+            } else {
+                const diamond_list = await fetchData();
+                const diamond_prices = await getPrice(diamond_list);
+
+                setDiamondPrices(diamond_prices);
+                setDiamondList(diamond_list);
+                setQueryList(diamond_list);
+            }
+        }
+
+        setup();
+    }, [])
+
+    useEffect(() => {
+        if (diamondList.length > 0) {
+            let list = diamondList;
+            if (activeShape !== null) {
+                list = list.filter(diamond => diamond.shape.toLowerCase() == activeShape.toLowerCase());
+            }
+            list = list.filter(diamond => diamond.caratWeight > minCarat);
+            list = list.filter(diamond => reverseConvertColor(diamond.color) >= color);
+            list = list.filter(diamond => reverseConvertClarity(diamond.clarity) >= clarity);
+            list = list.filter(diamond => reverseConvertCut(diamond.cut) >= cut);
+            list = list.filter(diamond => diamondPrices.find(d => d.id === diamond.diamondId).price >= minPrice);
+            setQueryList(list);
+        }
+    }, [activeShape, minPrice, minCarat, color, clarity, cut])
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
+            if (!response.data || response.status === 204) {
+                toast.error("Error fetching the diamonds from the server");
+            } else {
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getPrice = async (list) => {
+        let result = []
+        for (const diamond of list) {
+            const single_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.caratWeight);
+            result = [
+                ...result,
+                {
+                    id: diamond.diamondId,
+                    price: single_price
+                }
+            ]
+        }
+        return result;
+    }
 
     const resetFilters = () => {
         setMinCarat(0.05);
@@ -26,20 +88,6 @@ const ChooseDiamond = () => {
         setActiveShape(null);
         setColor(1);
     }
-
-    useEffect(() => {
-        if (diamondList.length > 0) {
-            let list = diamondList;
-            if(activeShape !== null) {
-                list = list.filter(diamond => diamond.shape.toLowerCase() == activeShape.toLowerCase());
-            }
-            list = list.filter(diamond => diamond.caratWeight > minCarat);
-            list = list.filter(diamond => reverseConvertColor(diamond.color) >= color);
-            list = list.filter(diamond => reverseConvertClarity(diamond.clarity) >= clarity);
-            list = list.filter(diamond => reverseConvertCut(diamond.cut) >= cut);
-            setQueryList(list);
-        }
-    }, [activeShape, minPrice, minCarat, color, clarity, cut])
 
     const convertColor = (int) => {
         const chars = ['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
@@ -61,48 +109,25 @@ const ChooseDiamond = () => {
         const index = chars.indexOf(char);
         return index !== -1 ? index + 1 : 'Invalid input';
     }
-    
+
     const reverseConvertClarity = (clarityStr) => {
         const clarity = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
         const index = clarity.indexOf(clarityStr);
         return index !== -1 ? index + 1 : 'Invalid input';
     }
-    
+
     const reverseConvertCut = (qualityStr) => {
         const quality = ['Poor', 'Fair', 'Good', 'Very_Good', 'Excellent'];
         const index = quality.indexOf(qualityStr);
         return index !== -1 ? index + 1 : 'Invalid input';
     }
-    
+
 
     const navigate = useNavigate();
 
     const handleChoose = (id) => {
         navigate(`/build-your-own/diamond-details/${id}`);
     }
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
-            if (!response.data || response.status === 204) {
-                toast.error("Error fetching the diamonds from the server");
-            } else {
-                setDiamondList(response.data);
-                setQueryList(response.data);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        if (sessionStorage.getItem('designId') === null) {
-            toast.info(`Please pick a setting first`);
-            navigate('/build-your-own/choose-setting');
-        } else {
-            fetchData();
-        }
-    }, [])
 
     const isSelected = (id) => {
 
@@ -194,13 +219,14 @@ const ChooseDiamond = () => {
                     </div>
                 </div>
                 <div className='row my-3'>
-                    {queryList.length > 0 ? (
+                    {queryList.length > 0 && diamondPrices.length > 0 ? (
                         queryList.map(diamond => (
                             <div key={diamond.diamondId} className="col-md-3 mb-4">
                                 <DiamondCard
                                     diamond={diamond}
                                     isSelected={isSelected(diamond.diamondId)}
                                     onClick={() => handleChoose(diamond.diamondId)}
+                                    price={diamondPrices.find(d => d.id == diamond.diamondId).price}
                                 />
                             </div>
                         ))

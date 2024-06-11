@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '/src/css/DiamondCard.module.css';
+import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
+import { formatPrice } from '../../helper_function/ConvertFunction';
 
-const DiamondCard = ({ diamond, isSelected, onClick }) => {
+const DiamondCard = ({ diamond, isSelected, onClick, price }) => {
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate(`/setting-details/${design.productDesignId}`);
-    };
     return (
         <div className={`${styles.card} ${isSelected ? styles.selected : ''}`} onClick={() => onClick(diamond.diamondId, !isSelected)}>
             <img src={diamond.image} className={styles.cardImgTop} alt="diamond" />
             <div className={styles.cardBody}>
                 <h5 className={styles.cardTitle}>{diamond.diamondCode} - {diamond.diamondName}</h5>
-                <p className={styles.cardText}>
-                    {diamond.shape}, {diamond.origin}, {diamond.cut}, {diamond.color}, {diamond.clarity}, {diamond.caratWeight}
-                </p>
                 
+                <div className="row" style={{textTransform: 'capitalize'}}>
+                    <div className="col">
+                        <b>Shape:</b> {diamond.shape} <br />
+                        <b>Og:</b> {diamond.origin} <br />
+                        <b>Color:</b> {diamond.color} <br />
+                    </div>
+                    <div className="col">
+                        <b>Clarity:</b> {diamond.clarity} <br />
+                        <b>Cut:</b> {diamond.cut} <br />
+                        <b>Carat:</b> {diamond.caratWeight}
+                    </div>
+                </div>
+
                 <div className={styles.cardStatus}>
                     {isSelected ? 'Selected' : 'Select'}
                 </div>
