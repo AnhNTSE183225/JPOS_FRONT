@@ -10,7 +10,6 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/Profile';
 import RequestPage from './pages/RequestPage';
 import HistoryPage from './pages/HistoryPage';
-import Payment from './pages/Payment';
 import CustomerRequestDetailsPage from './pages/CustomerRequestDetailsPage';
 import RequestDetailPage from './pages/RequestDetailsPage';
 import ChooseSetting from './pages/build-your-own/ChooseSetting';
@@ -46,10 +45,6 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage /> //Customer, Staff
-      },
-      {
-        path: 'checkout',
-        element: <Payment/>
       },
       {
         path: 'register',
