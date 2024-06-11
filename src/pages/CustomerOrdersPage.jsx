@@ -39,24 +39,30 @@ const CustomerOrdersPage = () => {
         return (
             <>
                 <div>
-                <table className={`${styles['request-table']}`}>
-            <tr id={`${styles['table-head']}`}>
-                <th>Order ID</th>
-                <th>Product Name</th>
-                <th>Product Type</th>
-                <th>Order Date</th>
-                <th>Total Price</th>
-            </tr>
-            {orders.map(order => (
-                <tr key={order.id}>
-                    <td>{order.id}</td>
-                    <td>{order.product.productName}</td>
-                    <td>{order.product.productType}</td>
-                    <td>{formatDate(order.orderDate)}</td>
-                    <td>{formatPrice(order.totalAmount)}</td>
-                </tr>
-            ))}
-        </table>
+                    <table className={`${styles['request-table']}`}>
+                        <thead>
+                            <tr id={`${styles['table-head']}`}>
+                                <th>Order ID</th>
+                                <th>Product Name</th>
+                                <th>Product Type</th>
+                                <th>Order Date</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map(order => (
+                                <tr key={order.id}>
+                                    <td>{order.id}</td>
+                                    <td>{order.product.productName}</td>
+                                    <td>{order.product.productType}</td>
+                                    <td>{formatDate(order.orderDate)}</td>
+                                    <td>{formatPrice(order.totalAmount)}</td>
+                                    <td>{order.status}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </>
         )
