@@ -1,0 +1,23 @@
+.fullHeight {
+    height: 110%;
+}
+
+.centerCard {
+    max-width: 800px;
+    width: 400%;
+}
+
+.customLink {
+    color: #48AAAD;
+}
+
+.btn-dark {
+    background-color: #000;
+    border-color: #000; 
+    color: white; 
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}

@@ -1,0 +1,11 @@
+.fullHeight {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centerCard {
+    max-width: 800px;
+    width: 100%;
+}
