@@ -52,7 +52,7 @@ const Footer = () => {
         </div>
         <hr />
         <div className={`text-center mt-5 ${styles.textCenter}`}>
-          <p><i>&copy; 2024 Bijoux Inc.</i></p>
+          <p className='fw-semibold'><i>&copy; 2024 Bijoux Inc.</i></p>
 
           <img src={textLogo} alt="Text Logo" style={{ width: '80vw', height: 'auto' }} />
         </div>

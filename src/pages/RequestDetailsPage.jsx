@@ -40,7 +40,7 @@ const RequestDetailPage = () => {
                 return (
                     <WaitSaleStaff order={order} />
                 )
-                break;
+                
             case "wait_manager":
                 return (
                     <WaitManager order={order} />
@@ -49,27 +49,27 @@ const RequestDetailPage = () => {
                 return (
                     <ManagerApproved order={order} />
                 );
-                break;
+                
             case "customer_accept":
                 return (
                     <CustomerAccept order={order} />
                 )
-                break;
+                
             case "designing":
                 return(
                     <DesignerUploadPage order={order}/>
                 );
-                break;
+                
             case "production":
                 return (
                     <Production order={order} />
                 )
-                break;
+                
             case "delivered":
                 return(
                     <ConfirmPaymentPage order={order} />
                 )
-                break;
+                
             case "completed":
                 break;
             default:
