@@ -164,7 +164,19 @@ const CompleteProduct = () => {
                                     : formatPrice(estimatedPrice)
                                 }
                             </h1>
-                            <button onClick={createOrder} className='btn btn-success'>Check out</button>
+                            <div className="col">
+                                <h5 className="fst-italic fw-bold ">SUMMARY</h5>
+                                <div className="summary-card">
+                                    <div className="content">
+                                        <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
+                                        <p>US & Int. Shipping: Free</p>
+                                        <p>Taxes/Duties Estimate: TBD</p>
+                                        <h5>Total: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</h5>
+                                        <button onClick={createOrder} className='btn btn-success w-100 my-2'>Check out</button>
+                                        <button className='btn btn-secondary w-100 my-2'>PayPal</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
