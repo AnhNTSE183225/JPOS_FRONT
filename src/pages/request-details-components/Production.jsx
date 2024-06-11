@@ -82,12 +82,14 @@ const Production = ({ order }) => {
                                 <img className='img-fluid' src={order.modelFile == 'Not provided' ? empty_image : order.modelFile} alt="" style={{ width: '500px', height: '500px' }} />
                             </>
                             : <>
+                                <h4 className='fw-bold'>Design model</h4>
+                                <img className='img-fluid' src={order.designFile == 'Not provided' ? emptyImage : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
                             </>
                         }
                     </div>
                     <div className="col-6">
                         {order.product.diamonds.map(diamond =>
-                            <>
+                            <div key={diamond.diamondId}>
                                 <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
                                 <ul>
                                     <li>Shape: {diamond.shape}</li>
@@ -95,17 +97,17 @@ const Production = ({ order }) => {
                                     <li>Color: {diamond.color}</li>
                                     <li>Cut: {diamond.cut}</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-success'>{formatPrice(order.odiamondPrice)}</span></h4>
                         {order.product.materials.map(material =>
-                            <>
+                            <div key={material.material.materialId}>
                                 <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
                                 <ul>
                                     <li>Name: {material.material.materialName}</li>
                                     <li>Weight: {material.weight} karat</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-success'>{formatPrice(order.omaterialPrice)}</span></h4>
                         <h4 className='fw-bold'>Extra</h4>

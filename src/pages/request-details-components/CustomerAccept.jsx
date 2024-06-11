@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/CustomerAccept.module.css';
 import axios from 'axios';
-import empty_image from '/src/assets/empty_image.jpg';
+import emptyImage from '/src/assets/empty_image.jpg';
 
 const CustomerAccept = ({ order }) => {
 
@@ -68,16 +68,25 @@ const CustomerAccept = ({ order }) => {
                         <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h4 className='fw-bold'>Customer address</h4>
                         <p>{order.customer.address}</p>
-                        <h4 className='fw-bold'>Customer budget</h4>
-                        <p>{formatPrice(order.budget)}</p>
-                        <h4 className='fw-bold'>Description</h4>
-                        <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
-                        <h4 className='fw-bold'>Reference image</h4>
-                        <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
+                        {
+                            order.orderType !== 'from_design'
+                                ? <>
+                                    <h4 className='fw-bold'>Customer budget</h4>
+                                    <p>{formatPrice(order.budget)}</p>
+                                    <h4 className='fw-bold'>Description</h4>
+                                    <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
+                                    <h4 className='fw-bold'>Reference image</h4>
+                                    <img className='img-fluid' src={order.designFile == 'Not provided' ? emptyImage : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
+                                </>
+                                : <>
+                                    <h4 className='fw-bold'>Design model</h4>
+                                    <img className='img-fluid' src={order.designFile == 'Not provided' ? emptyImage : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
+                                </>
+                        }
                     </div>
                     <div className='col'>
                         {order.product.diamonds.map(diamond =>
-                            <>
+                            <div key={diamond.diamondId}>
                                 <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
                                 <ul>
                                     <li>Shape: {diamond.shape}</li>
@@ -85,17 +94,17 @@ const CustomerAccept = ({ order }) => {
                                     <li>Color: {diamond.color}</li>
                                     <li>Cut: {diamond.cut}</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-success'>{formatPrice(order.odiamondPrice)}</span></h4>
                         {order.product.materials.map(material =>
-                            <>
+                            <div key={material.material.materialId}>
                                 <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
                                 <ul>
                                     <li>Name: {material.material.materialName}</li>
                                     <li>Weight: {material.weight} karat</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-success'>{formatPrice(order.omaterialPrice)}</span></h4>
                         <h4 className='fw-bold'>Extra</h4>

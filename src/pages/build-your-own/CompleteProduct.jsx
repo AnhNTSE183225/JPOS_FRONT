@@ -70,7 +70,7 @@ const CompleteProduct = () => {
         return totalPrice;
     }
 
-    const createOrder = async () => {
+    const createOrder = async (havePaid) => {
 
         if (sessionStorage.getItem("customer_id") === null) {
             toast.info(`You need to be logged in to place the order!`);
@@ -80,7 +80,8 @@ const CompleteProduct = () => {
                     productDesignId: sessionStorage.getItem('designId'),
                     productShellId: sessionStorage.getItem('shellId'),
                     diamondIds: sessionStorage.getItem('diamonds').split(','),
-                    customerId: sessionStorage.getItem("customer_id")
+                    customerId: sessionStorage.getItem("customer_id"),
+                    havePaid: havePaid
                 };
                 const response = await axios.post(`http://localhost:8080/api/create-order-from-design`, object);
                 if (!response.data || response.status === 204) {
@@ -172,8 +173,8 @@ const CompleteProduct = () => {
                                         <p>US & Int. Shipping: Free</p>
                                         <p>Taxes/Duties Estimate: TBD</p>
                                         <h5>Total: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</h5>
-                                        <button onClick={createOrder} className='btn btn-success w-100 my-2'>Check out</button>
-                                        <button className='btn btn-secondary w-100 my-2'>PayPal</button>
+                                        <button onClick={() => createOrder(false)} className='btn btn-success w-100 my-2'>Pay with cash</button>
+                                        <button onClick={() => createOrder(true)} className='btn btn-secondary w-100 my-2'>PayPal</button>
                                     </div>
                                 </div>
                             </div>
