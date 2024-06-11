@@ -1,97 +1,60 @@
 import React from 'react';
+import styles from '/src/css/Footer.module.css';
+import textLogo from '/src/assets/textLogo.png';
 import { Link } from 'react-router-dom';
-import '../css/Footer.css';
-
-const footerStyles = {
-  footer: {
-    backgroundColor: '#343a40',
-    color: '#ffffff',
-    padding: '40px 0',
-    fontFamily: 'Arial, sans-serif',
-  },
-  h5: {
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: '20px',
-  },
-  ul: {
-    listStyle: 'none',
-    padding: 0,
-  },
-  li: {
-    marginBottom: '10px',
-  },
-  a: {
-    color: '#d1d1d1',
-    textDecoration: 'none',
-    transition: 'color 0.3s ease',
-  },
-  socialIcons: {
-    marginRight: '15px',
-    color: '#d1d1d1',
-    fontSize: '18px',
-    transition: 'color 0.3s ease',
-  },
-  textCenter: {
-    color: '#d1d1d1',
-    margin: '20px 0 0',
-  },
-};
 
 const Footer = () => {
   return (
-    <footer style={footerStyles.footer} className="footer mt-auto">
+    <footer className={styles.footer}>
+
       <div className="container">
-        <div className="row">
+        <hr />
+        <div className="row mb-5">
           <div className="col-md-3">
-            <h5 style={footerStyles.h5}>Why La Bijoux</h5>
-            <ul style={footerStyles.ul}>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Returns Are Free</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Conflict Free Diamonds</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Diamond Price Matching</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Diamond Upgrade Program</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Free Lifetime Warranty</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Material Price List</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Diamond Price List</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Jewelry Insurance</Link></li>
+            <p className='fst-italic'>HELP</p>
+            <ul>
+              <li>You can <a href="tel:your-phone-number"><u>call</u></a> or <a href="mailto:your-email@example.com"><u>email us</u>.</a></li>
+              <li><a href="#">FAQ's</a></li>
+              <li><a href="#">Product Care</a></li>
+              <li><a href="#">Stores</a></li>
             </ul>
           </div>
           <div className="col-md-3">
-            <h5 style={footerStyles.h5}>Diamond Shapes</h5>
-            <ul style={footerStyles.ul}>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Round</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Princess</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Cushion</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Oval</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Emerald</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Pear</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Asscher</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Heart</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Radiant</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Marquise</Link></li>
+            <p className='fst-italic'>SERVICES</p>
+            <ul>
+              <li><a href="#">Repairs</a></li>
+              <li><a href="#">Personalization</a></li>
+              <li><a href="#">Art of Gifting</a></li>
             </ul>
           </div>
           <div className="col-md-3">
-            <h5 style={footerStyles.h5}>About Red Nile</h5>
-            <ul style={footerStyles.ul}>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Quality & Value</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Diamond Sustainability</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Locations</Link></li>
-              <li style={footerStyles.li}><Link to="#" style={footerStyles.a}>Careers</Link></li>
+            <p className='fst-italic'>ABOUT BIJOUX</p>
+            <ul>
+              <li><a href="#">Fashion Show</a></li>
+              <li><a href="#">Arts & Culture</a></li>
+              <li><a href="#">Sustainability</a></li>
+              <li><a href="#">Latest News</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Foundation Bijoux</a></li>
             </ul>
           </div>
           <div className="col-md-3">
-            <h5 style={footerStyles.h5}>Connect with Us</h5>
-            <ul style={footerStyles.ul} className="social-icons">
-              <li style={footerStyles.li}><Link to="#"><i className="fab fa-facebook-f" style={footerStyles.socialIcons}></i> Facebook</Link></li>
-              <li style={footerStyles.li}><Link to="#"><i className="fab fa-linkedin-in" style={footerStyles.socialIcons}></i> LinkedIn</Link></li>
-              <li style={footerStyles.li}><Link to="#"><i className="fab fa-youtube" style={footerStyles.socialIcons}></i> YouTube</Link></li>
-              <li style={footerStyles.li}><Link to="#"><i className="fab fa-instagram" style={footerStyles.socialIcons}></i> Instagram</Link></li>
+            <p className='fst-italic'>EMAIL SIGN-UP</p>
+            <ul>
+              <li><a href="#"><u>Sign up</u></a> for Bijoux emails and receive the latest news from the Maison, including exclusive online pre-launches and new collections</li>
+              <li>Follow Us</li>
+              <li><Link to="#"><i className="fab fa-facebook-f"></i> Facebook</Link></li>
+              <li><Link to="#"><i className="fab fa-linkedin-in"></i> LinkedIn</Link></li>
+              <li><Link to="#"><i className="fab fa-youtube"></i> YouTube</Link></li>
+              <li><Link to="#"><i className="fab fa-instagram"></i> Instagram</Link></li>
             </ul>
           </div>
         </div>
-        <div className="text-center mt-4" style={footerStyles.textCenter}>
-          <p>&copy; 2024 Red Nile Inc.</p>
+        <hr />
+        <div className={`text-center mt-5 ${styles.textCenter}`}>
+          <p><i>&copy; 2024 Bijoux Inc.</i></p>
+
+          <img src={textLogo} alt="Text Logo" style={{ width: '80vw', height: 'auto' }} />
         </div>
       </div>
     </footer>
