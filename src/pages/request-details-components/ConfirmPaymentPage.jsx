@@ -93,7 +93,7 @@ const ConfirmPaymentPage = ({ order }) => {
                     </div>
                     <div className='col'>
                         {order.product.diamonds.map(diamond =>
-                            <>
+                            <div key={diamond.diamondId}>
                                 <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
                                 <ul>
                                     <li>Shape: {diamond.shape}</li>
@@ -101,17 +101,17 @@ const ConfirmPaymentPage = ({ order }) => {
                                     <li>Color: {diamond.color}</li>
                                     <li>Cut: {diamond.cut}</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-success'>{formatPrice(order.odiamondPrice)}</span></h4>
                         {order.product.materials.map(material =>
-                            <>
+                            <div key={material.material.materialId}>
                                 <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
                                 <ul>
                                     <li>Name: {material.material.materialName}</li>
                                     <li>Weight: {material.weight} karat</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-success'>{formatPrice(order.omaterialPrice)}</span></h4>
                         <h4 className='fw-bold'>Extra</h4>

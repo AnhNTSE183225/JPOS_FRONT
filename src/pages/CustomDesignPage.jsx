@@ -3,9 +3,12 @@ import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
 import img from '../assets/jewelry_manufacturing_process.png';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const CustomDesignPage = () => {
 
+
+    const navigate = useNavigate();
     const [designFile, setDesignFile] = useState(null);
     const [description, setDescription] = useState('');
     const [budget, setBudget] = useState('');
@@ -43,30 +46,35 @@ const CustomDesignPage = () => {
     }
 
     const submitForm = () => {
-        if (description.length != 0 && budget.length != 0) {
-            axios.post('http://localhost:8080/api/send-request',
-                {
-                    customerId: sessionStorage.getItem('customer_id'),
-                    designFile: imageUrl,
-                    description: description,
-                    budget: budget
-                }
-            ).then(
-                response => {
-                    toast.success('Form submitted successfully!');
-                    setDesignFile(null);
-                    setDescription('');
-                    setBudget('');
-                    setImageUrl(`Not provided`);
-                }
-            ).catch(
-                error => {
-                    console.log(error);
-                    toast.error("Something went wrong! Please try again");
-                }
-            )
+        if (sessionStorage.getItem('customer_id') == null) {
+            toast.info(`Please log in to continue!`);
+            navigate("/login");
         } else {
-            toast.error('Please fill in all fields!');
+            if (description.length != 0 && budget.length != 0) {
+                axios.post('http://localhost:8080/api/send-request',
+                    {
+                        customerId: sessionStorage.getItem('customer_id'),
+                        designFile: imageUrl,
+                        description: description,
+                        budget: budget
+                    }
+                ).then(
+                    response => {
+                        toast.success('Form submitted successfully!');
+                        setDesignFile(null);
+                        setDescription('');
+                        setBudget('');
+                        setImageUrl(`Not provided`);
+                    }
+                ).catch(
+                    error => {
+                        console.log(error);
+                        toast.error("Something went wrong! Please try again");
+                    }
+                )
+            } else {
+                toast.error('Please fill in all fields!');
+            }
         }
     }
 
@@ -74,7 +82,7 @@ const CustomDesignPage = () => {
         <>
             <div className="container">
                 <div className="row">
-                    <div className="col" style={{marginLeft: '5vw'}}>
+                    <div className="col" style={{ marginLeft: '5vw' }}>
                         <h1 className="text-center">Design your own</h1>
                         <div>
                             <div className="mb-3">
@@ -87,7 +95,7 @@ const CustomDesignPage = () => {
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn w-100" style={{backgroundColor: '#48AAAD'}} onClick={uploadImage} >Upload image</button>
+                                        : <button className="btn w-100" style={{ backgroundColor: '#48AAAD' }} onClick={uploadImage} >Upload image</button>
                                 }
 
                             </div>
@@ -106,7 +114,7 @@ const CustomDesignPage = () => {
 
                         </div>
                     </div>
-                    <div className="col" style={{marginRight: '5vw'}}>
+                    <div className="col" style={{ marginRight: '5vw' }}>
                         <img src={img} className="img-fluid" />
                     </div>
                 </div>

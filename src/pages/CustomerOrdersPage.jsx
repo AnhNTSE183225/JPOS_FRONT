@@ -54,10 +54,10 @@ const CustomerOrdersPage = () => {
                             {orders.map(order => (
                                 <tr key={order.id}>
                                     <td>{order.id}</td>
-                                    <td>{order.product.productName}</td>
-                                    <td>{order.product.productType}</td>
+                                    <td>{order.product !== null && order.product.productName !== null ? order.product.productName : `Description: ${order.description}`}</td>
+                                    <td>{order.product !== null && order.product.productType != null ? order.product.productType : 'TBD'}</td>
                                     <td>{formatDate(order.orderDate)}</td>
-                                    <td>{formatPrice(order.totalAmount)}</td>
+                                    <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
                                     <td>{order.status}</td>
                                 </tr>
                             ))}

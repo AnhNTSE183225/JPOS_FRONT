@@ -29,7 +29,7 @@ const CashThanksPage = () => {
                     <p className="mb-4">Our staff will contact you shortly to complete the payment process.</p>
                     <Link onClick={clear} to="/build-your-own/choose-setting" className={`btn btn-lg mb-3 ${styles.continueShoppingButton}`}>Continue Shopping</Link>
                     <br />
-                    <Link to="/profile/your-request" className="btn btn-secondary btn-lg">View Order Details</Link>
+                    <Link to="/profile/your-orders" className="btn btn-secondary btn-lg">View Order Details</Link>
                 </div>
             </div>
         </div>

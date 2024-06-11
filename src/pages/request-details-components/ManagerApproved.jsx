@@ -132,7 +132,8 @@ const ManagerApproved = ({ order }) => {
                 <p className="fw-semibold">Extra material: {formatPrice(order.ematerialPrice)}</p>
               </div>
               <div>
-                <p className="fw-semibold">Production: {formatPrice(order.productionPrice + ((order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice) * order.markupRate) - (order.qdiamondPrice + order.ediamondPrice + order.qmaterialPrice + order.ematerialPrice + order.ediamondPrice + order.ematerialPrice))}</p>
+                <p className="fw-semibold">Production: {formatPrice(order.productionPrice)}</p>
+                <p className="fw-semibold">Markup rate: {order.markupRate}</p>
               </div>
               <hr />
               <div>

@@ -31,7 +31,7 @@ const OnlineThanksPage = () => {
                         <p className="lead">Your order has been placed successfully.</p>
                         <Link to="/build-your-own/choose-setting" onClick={clear} className={`btn btn-lg mb-3 ${styles.continueShoppingButton}`}>Continue Shopping</Link>
                         <br />
-                        <Link to="/profile/your-request" className="btn btn-secondary btn-lg">View Order Details</Link>
+                        <Link to="/profile/your-orders" className="btn btn-secondary btn-lg">View Order Details</Link>
                     </div>
                 </div>
             </div>

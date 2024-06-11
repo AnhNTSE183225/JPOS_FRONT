@@ -11,26 +11,30 @@ const TableComponent = ({ requests }) => {
 
     return (
         <table className={`${styles['request-table']}`}>
-            <tr id={`${styles['table-head']}`}>
-                <th>Order ID</th>
-                <th>Customer Name</th>
-                <th>Date</th>
-                <th>Budget</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            {requests.map(request => (
-                <tr key={request.id}>
-                    <td>{request.id}</td>
-                    <td>{request.customer.name}</td>
-                    <td>{formatDate(request.orderDate)}</td>
-                    <td>{formatPrice(request.budget)}</td>
-                    <td>{request.status}</td>
-                    <td>
-                        <button onClick={() => navigate(`/staff/request/select/${request.id}`)} className='btn'>Manage</button>
-                    </td>
+            <thead>
+                <tr id={`${styles['table-head']}`}>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Date</th>
+                    <th>Budget/Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
-            ))}
+            </thead>
+            <tbody>
+                {requests.map(request => (
+                    <tr key={request.id}>
+                        <td>{request.id}</td>
+                        <td>{request.customer.name}</td>
+                        <td>{formatDate(request.orderDate)}</td>
+                        <td>{request.totalAmount !== null ? `Price: ${formatPrice(request.totalAmount)}` : `Budget: ${formatPrice(request.budget)}`}</td>
+                        <td>{request.status}</td>
+                        <td>
+                            <button onClick={() => navigate(`/staff/request/select/${request.id}`)} className='btn'>Manage</button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
         </table>
     )
 }

@@ -11,13 +11,21 @@ import styles from '/src/css/WaitManager.module.css';
 const WaitManager = ({ order }) => {
 
     const navigate = useNavigate();
+    const [markupRate, setMarkupRate] = useState(order.markupRate);
+    const [totalAmount, setTotalAmount] = useState(order.totalAmount);
 
     const acceptQuote = () => {
         let staff_id = sessionStorage.getItem('staff_id');
         if (staff_id !== null) {
-            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`)
+            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`,
+                {
+                    markupRate: markupRate,
+                    totalAmount: totalAmount
+                }
+            )
                 .then(
                     response => {
+                        toast.success(`Form submitted`);
                         navigate('/staff/request');
                     }
                 ).catch(
@@ -29,6 +37,11 @@ const WaitManager = ({ order }) => {
             toast('Logged out');
             navigate('/login');
         }
+    }
+
+    const updatePrice = (e) => {
+        setMarkupRate(e.target.value);
+        setTotalAmount((order.totalAmount / order.markupRate) * e.target.value);
     }
 
     const refuseQuote = () => {
@@ -72,7 +85,7 @@ const WaitManager = ({ order }) => {
                     </div>
                     <div className="col-6">
                         {order.product.diamonds.map(diamond =>
-                            <>
+                            <div key={diamond.diamondId}>
                                 <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
                                 <ul>
                                     <li>Shape: {diamond.shape}</li>
@@ -80,17 +93,17 @@ const WaitManager = ({ order }) => {
                                     <li>Color: {diamond.color}</li>
                                     <li>Cut: {diamond.cut}</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-danger'>{formatPrice(order.qdiamondPrice)}</span></h4>
                         {order.product.materials.map(material =>
-                            <>
+                            <div key={material.material.materialId}>
                                 <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
                                 <ul>
                                     <li>Name: {material.material.materialName}</li>
                                     <li>Weight: {material.weight} karat</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Total: <span className='text-danger'>{formatPrice(order.qmaterialPrice)}</span></h4>
                         <h4 className='fw-bold'>Extra</h4>
@@ -101,13 +114,14 @@ const WaitManager = ({ order }) => {
                         </ul>
                         <h4>Total price as of {formatDate(order.qdate)}: <span className='text-danger'>{formatPrice(order.totalAmount)}</span></h4>
                         <h4 className='fw-bold'>Markup rate</h4>
-                        <input className='form-control mb-3' type="text" value={order.markupRate} disabled />
+                        <input step={0.1} min={0.1} max={10} className='form-control mb-3' type="number" onChange={updatePrice} value={markupRate} />
+                        <h4>Total: <span className='text-danger'>{formatPrice(totalAmount)}</span></h4>
                         <div className="row">
                             <div className="col">
                                 <button onClick={acceptQuote} className='btn btn-success w-100'>Accept</button>
                             </div>
                             <div className="col">
-                                <button onClick={refuseQuote} className='btn btn-danger w-100'>Refuse</button>
+                                <button onClick={refuseQuote} className='btn btn-danger w-100'>Refuse &#40;ignores Markup Rate value&#41;</button>
                             </div>
                         </div>
                     </div>

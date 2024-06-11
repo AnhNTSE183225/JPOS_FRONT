@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../helper_function/ConvertFunction';
 import axios from 'axios';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
-import styles from '/src/css/CompleteProduct.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 
@@ -74,38 +73,43 @@ const CompleteProduct = () => {
     }
 
     const createOrder = async (havePaid) => {
-
-        if (sessionStorage.getItem("customer_id") === null) {
-            toast.info(`You need to be logged in to place the order!`);
-        } else {
-            try {
-                const object = {
-                    productDesignId: sessionStorage.getItem('designId'),
-                    productShellId: sessionStorage.getItem('shellId'),
-                    diamondIds: sessionStorage.getItem('diamonds').split(','),
-                    customerId: sessionStorage.getItem("customer_id"),
-                    havePaid: havePaid
-                };
-                const response = await axios.post(`http://localhost:8080/api/create-order-from-design`, object);
-                if (!response.data || response.status === 204) {
-                    toast.error("Failed to fetch order");
-                } else {
-                    const orderId = response.data;
-                }
-            } catch (error) {
-                console.log(error);
+        try {
+            const object = {
+                productDesignId: sessionStorage.getItem('designId'),
+                productShellId: sessionStorage.getItem('shellId'),
+                diamondIds: sessionStorage.getItem('diamonds').split(','),
+                customerId: sessionStorage.getItem("customer_id"),
+                havePaid: havePaid
+            };
+            const response = await axios.post(`http://localhost:8080/api/create-order-from-design`, object);
+            if (!response.data || response.status === 204) {
+                toast.error("Failed to fetch order");
+            } else {
+                const order = response.data;
             }
+        } catch (error) {
+            console.log(error);
         }
     }
 
     const handleCashPayment = () => {
-        createOrder(false)
-        navigate("/cash-completed");
+        if (sessionStorage.getItem('customer_id') == null) {
+            toast.info(`You need to log in to place an order!`);
+            navigate("/login")
+        } else {
+            createOrder(false);
+            navigate('/cash-completed');
+        }
     }
 
     const handleOnlinePayment = () => {
-        createOrder(true)
-        navigate("/online-completed")
+        if (sessionStorage.getItem('customer_id') == null) {
+            toast.info(`You need to log in to place an order!`);
+            navigate("/login");
+        } else {
+            createOrder(true);
+            navigate('/online-completed');
+        }
     }
 
     const getDiamonds = async () => {
@@ -154,15 +158,15 @@ const CompleteProduct = () => {
                             <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
                             <h4 className='fw-semibold' style={{ color: '#48AAAD' }}><i>{productDesign.designName} in {shell.shellName}</i></h4>
                             <br />
-                            <h5><FontAwesomeIcon icon={faGem}/> <i>Diamonds</i></h5>
+                            <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
                             <ul>
                                 {diamonds.map(d =>
                                     <li key={d.diamondId} style={{ listStyle: 'none' }}>
-                                        {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode} 
+                                        {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
                                     </li>
                                 )}
                             </ul>
-                            <h5><FontAwesomeIcon icon={faRing}/> <i>Materials</i></h5>
+                            <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
                             <ul>
                                 {
                                     materials.map(m =>
@@ -188,8 +192,8 @@ const CompleteProduct = () => {
                                         <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
                                         <p>US & Int. Shipping: Free</p>
                                         <p>Taxes/Duties Estimate: 10% VAT</p>
-                                        <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw'}}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
-                                        <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff'}}>Pay with cash</button>
+                                        <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
+                                        <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff' }}>Pay with cash</button>
                                         <button onClick={handleOnlinePayment} className='btn btn-secondary w-100 my-2'>Pay online</button>
                                     </div>
                                 </div>

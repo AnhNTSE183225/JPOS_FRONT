@@ -66,7 +66,7 @@ const WaitSaleStaff = ({ order }) => {
                     ...order,
                     productionPrice: extraPrice.production,
                     markupRate: extraPrice.markupRate,
-                    totalAmount: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate,
+                    totalAmount: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate * 1.1,
                     ematerialPrice: extraPrice.material,
                     ediamondPrice: extraPrice.diamond,
                     qdiamondPrice: totalDiamondPrice,
@@ -585,8 +585,12 @@ const WaitSaleStaff = ({ order }) => {
                         </form>
                     </div>
                     <div className="col-md-10 d-flex justify-content-between align-items-center">
-                        <p className="fw-bold">Total Price</p>
+                        <p className="fw-bold">Product price</p>
                         <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate)}</p>
+                    </div>
+                    <div className="col-md-10 d-flex justify-content-between align-items-center">
+                        <p className="fw-bold">Total amount &#40;10% tax&#41;</p>
+                        <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate*1.1)}</p>
                     </div>
                     {
                         processing

@@ -70,9 +70,14 @@ const NavigationBar = () => {
                                 <li className="nav-item">
                                     <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/profile">PROFILE</Link>
-                                </li>
+                                {
+                                    sessionStorage.getItem('customer_id') !== null
+                                        ? <li className="nav-item">
+                                            <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/profile">PROFILE</Link>
+                                        </li>
+                                        : <>
+                                        </>
+                                }
 
                             </ul>
                         </div>

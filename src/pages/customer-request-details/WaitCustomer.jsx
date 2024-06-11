@@ -5,7 +5,7 @@ import axios from 'axios';
 import empty_image from '/src/assets/empty_image.jpg';
 import { useNavigate } from 'react-router-dom';
 import styles from '/src/css/WaitCustomer.module.css';
-import { fetchDiamondPrice,fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
+import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 
 const WaitCustomer = ({ order }) => {
 
@@ -47,11 +47,12 @@ const WaitCustomer = ({ order }) => {
                     omaterialPrice: currentMaterialPrice
                 }
             )
-            if (response.data || response.status === 204) {
+            if (!response.data || response.status === 204) {
                 toast.error("Something went wrong, saving failed");
+            } else {
+                toast.success(`Submitted successfully`);
+                navigate("/profile");
             }
-            console.log(response.data);
-            navigate("/profile");
         } catch (error) {
             console.log(error);
         }
@@ -78,7 +79,7 @@ const WaitCustomer = ({ order }) => {
                     <div className="col">
                         <h1 className='fw-bold' style={{ color: '#48AAAD' }}>Staff Response</h1>
                         {order.product.diamonds.map(diamond =>
-                            <>
+                            <div key={diamond.diamondId}>
                                 <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
                                 <ul>
                                     <li>Shape: {diamond.shape}</li>
@@ -86,18 +87,18 @@ const WaitCustomer = ({ order }) => {
                                     <li>Color: {diamond.color}</li>
                                     <li>Cut: {diamond.cut}</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Quote: <span className='text-danger'>{formatPrice(order.qdiamondPrice)}</span></h4>
                         <h4>Current: <span className='text-success'>{formatPrice(currentDiamondPrice)}</span></h4>
                         {order.product.materials.map(material =>
-                            <>
+                            <div key={material.material.materialId}>
                                 <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
                                 <ul>
                                     <li>Name: {material.material.materialName}</li>
                                     <li>Weight: {material.weight} karat</li>
                                 </ul>
-                            </>
+                            </div>
                         )}
                         <h4>Quote: <span className='text-danger'>{formatPrice(order.qmaterialPrice)}</span></h4>
                         <h4>Current: <span className='text-success'>{formatPrice(currentMaterialPrice)}</span></h4>
