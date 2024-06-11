@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../helper_function/ConvertFunction';
 import axios from 'axios';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
+import styles from '/src/css/CompleteProduct.module.css';
 
 const CompleteProduct = () => {
 
@@ -138,12 +139,13 @@ const CompleteProduct = () => {
                             <img src={productDesign.designFile} className='img-fluid mx-auto' />
                         </div>
                         <div className="col">
-                            <h1 className='display-1'>Product preview</h1>
-                            <h4 className='fw-bold'>{productDesign.designName} - {shell.shellName}</h4>
+                            <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}><i>MY BIJOUX ORDER</i></h1>
+                            <h4 className='fw-semibold'>{productDesign.designName} in {shell.shellName}</h4>
+                            <h4 className='fw-semibold'></h4>
                             <h4>Diamonds</h4>
                             <ul>
                                 {diamonds.map(d =>
-                                    <li key={d.diamondId}>
+                                    <li key={d.diamondId} style={{ listStyle: 'none' }}>
                                         {d.diamondCode} - {d.diamondName} - {d.shape} - {d.cut} - {d.clarity} - {d.color} - {d.caratWeight}
                                     </li>
                                 )}
@@ -152,19 +154,19 @@ const CompleteProduct = () => {
                             <ul>
                                 {
                                     materials.map(m =>
-                                        <li key={m.material.materialId}>
+                                        <li key={m.material.materialId} style={{ listStyle: 'none' }}>
                                             {m.material.materialName} - {m.weight} carat
                                         </li>
                                     )
                                 }
                             </ul>
-                            <h1 className='fw-bold'>Total price</h1>
-                            <h1 className='fw-bold text-success'>
+                            <h3 className='fw-bold'>Product price</h3>
+                            <h3 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
                                 {estimatedPrice === null
                                     ? 'Estimating price...'
                                     : formatPrice(estimatedPrice)
                                 }
-                            </h1>
+                            </h3>
                             <div className="col">
                                 <h5 className="fst-italic fw-bold ">SUMMARY</h5>
                                 <div className="summary-card">

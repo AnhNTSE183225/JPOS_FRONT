@@ -54,7 +54,7 @@ const BuildYourOwnNav = () => {
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
             <div className="row flex-nowrap">
-                <div className={`col ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
+                <div className={`col-lg-4 ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
                     <div className="col-1">
                         <h3>1.</h3>
                     </div>
@@ -70,7 +70,7 @@ const BuildYourOwnNav = () => {
                                             {sessionStorage.getItem('designName')}
                                         </div>
                                         <div className="row">
-                                            <b className='text-danger'>{sessionStorage.getItem('designPrice')}</b>
+                                            <b className='text' style={{color: '#48AAAD'}}>{sessionStorage.getItem('designPrice')}</b>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@ const BuildYourOwnNav = () => {
                             </>
                     }
                 </div>
-                <div className={`col ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-diamond")}>
+                <div className={`col-lg-4 ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-diamond")}>
                     <div className="col-1">
                         <h3>2.</h3>
                     </div>
@@ -98,10 +98,10 @@ const BuildYourOwnNav = () => {
                                 <div className="col">
                                     <div className="container-fluid">
                                         <div className="row">
-                                            <b>Q: {sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
+                                            <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
                                         </div>
                                         <div className="row">
-                                            <b>Total: <span className='text-danger'>{formatPrice(calculateTotal())}</span></b>
+                                            <b>Total: <span className='text' style={{color: '#48AAAD'}}>{formatPrice(calculateTotal())}</span></b>
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +110,7 @@ const BuildYourOwnNav = () => {
                 </div>
                 {
                     checkCompletion()
-                        ? <div className={`col ${styles['col']} ${styles['final-button']}`} onClick={() => navigate("/build-your-own/complete-product")}>
+                        ? <div className={`col-lg-4 ${styles['col']} ${styles['final-button']}`} onClick={() => navigate("/build-your-own/complete-product")}>
                             <p className='fw-bolder m-0 fs-4' >Proceed to checkout</p>
                             <FontAwesomeIcon icon={faRightLong} id={`${styles['icon']}`}/>
                         </div>
