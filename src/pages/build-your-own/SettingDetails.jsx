@@ -144,7 +144,7 @@ const SettingDetails = () => {
                         <div className={styles["payment-options"]}>
                             <div className={styles.option}>
 
-                                Flexible Payment Options: 3 Interest-Free Payments of $1,333
+                                Flexible Payment Options: 3 Interest-Free Payments of {formatPrice(settingPrice/3)}
                             </div>
                             <div className={styles.option}>
 
