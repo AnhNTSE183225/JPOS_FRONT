@@ -117,10 +117,10 @@ const WaitManager = ({ order }) => {
                         <input step={0.1} min={0.1} max={10} className='form-control mb-3' type="number" onChange={updatePrice} value={markupRate} />
                         <h4>Total: <span className='text-danger'>{formatPrice(totalAmount)}</span></h4>
                         <div className="row">
-                            <div className="col">
+                            <div className="col d-flex">
                                 <button onClick={acceptQuote} className='btn btn-success w-100'>Accept</button>
                             </div>
-                            <div className="col">
+                            <div className="col d-flex">
                                 <button onClick={refuseQuote} className='btn btn-danger w-100'>Refuse &#40;ignores Markup Rate value&#41;</button>
                             </div>
                         </div>

@@ -109,7 +109,7 @@ const WaitCustomer = ({ order }) => {
                             <li>Production price: {formatPrice(order.productionPrice + (order.totalAmount * order.markupRate - order.totalAmount))}</li>
                         </ul>
                         <h4>Total price as of {formatDate(order.qdate)}: <span className='text-danger'>{formatPrice(order.totalAmount)}</span></h4>
-                        <h4>Total price as of today: <span className='text-success'>{formatPrice((currentDiamondPrice + currentMaterialPrice + order.ematerialPrice + order.ediamondPrice + order.productionPrice) * order.markupRate)}</span></h4>
+                        <h4>Total price as of today: <span className='text-success'>{formatPrice((currentDiamondPrice + currentMaterialPrice + order.ematerialPrice + order.ediamondPrice + order.productionPrice) * order.markupRate * 1.1)}</span></h4>
                         {processing
                             ? <button className="btn btn-primary w-100" type="button" disabled>
                                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>

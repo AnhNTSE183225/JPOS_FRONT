@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import image from '/src/assets/profile.jpg';
+import image from '/src/assets/logoProfile.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProfilePage = () => {

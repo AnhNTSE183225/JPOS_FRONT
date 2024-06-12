@@ -176,7 +176,7 @@ const CompleteProduct = () => {
                                     )
                                 }
                             </ul>
-                            <h3 className='fw-semibold'>Product price: </h3>
+                            <h3 className='fw-semibold fst-italic'>Product price: </h3>
                             <h4 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
                                 {estimatedPrice === null
                                     ? 'Estimating price...'
@@ -189,10 +189,12 @@ const CompleteProduct = () => {
                                 <br />
                                 <div className="summary-card">
                                     <div className="content">
+                                        <div style={{marginLeft: '1vw'}}>
                                         <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
                                         <p>US & Int. Shipping: Free</p>
                                         <p>Taxes/Duties Estimate: 10% VAT</p>
-                                        <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
+                                        </div>
+                                        <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
                                         <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff' }}>Pay with cash</button>
                                         <button onClick={handleOnlinePayment} className='btn btn-secondary w-100 my-2'>Pay online</button>
                                     </div>

@@ -69,7 +69,7 @@ const CustomerOrdersPage = () => {
     } else {
         return (
             <>
-                <div>No orders.</div>
+                <div className='text-center'>You currently have no orders.</div>
             </>
         )
     }

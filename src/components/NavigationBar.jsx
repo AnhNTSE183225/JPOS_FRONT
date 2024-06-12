@@ -29,7 +29,7 @@ const UserComponent = (props) => {
                     {sessionStorage.getItem('name')}
                 </div>
                 <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
-                    <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
+                    <li><a className="dropdown-item" onClick={logout} style={{cursor: 'pointer'}}>Logout</a></li>
                 </ul>
             </div>
         )
