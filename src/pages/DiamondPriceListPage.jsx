@@ -67,7 +67,7 @@ const DiamondPriceListPage = () => {
                                         {groupedDiamonds[origin].map((entry, index) => (
                                             <tr key={entry.diamondPriceId}>
                                                 <td>{index + 1}</td>
-                                                <td>{entry.caratWeight}</td>
+                                                <td>{entry.caratWeightFrom} - {entry.caratWeightTo}</td>
                                                 <td>{entry.color}</td>
                                                 <td>{entry.clarity}</td>
                                                 <td>{entry.cut}</td>
