@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '/src/css/DiamondCard.module.css';
-import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
-import { formatPrice } from '../../helper_function/ConvertFunction';
 
 const DiamondCard = ({ diamond, isSelected, onClick, price }) => {
     const navigate = useNavigate();

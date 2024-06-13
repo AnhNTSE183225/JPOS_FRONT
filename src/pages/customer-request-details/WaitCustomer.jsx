@@ -32,7 +32,7 @@ const WaitCustomer = ({ order }) => {
     const getCurrentDiamondPrice = async (diamonds) => {
         let totalDiamondPrice = 0;
         for (const diamond of diamonds) {
-            totalDiamondPrice += await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.caratWeight);
+            totalDiamondPrice += await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
         }
         setCurrentDiamondPrice(totalDiamondPrice);
     };

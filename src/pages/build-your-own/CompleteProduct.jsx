@@ -58,7 +58,7 @@ const CompleteProduct = () => {
         //console.log(`Extra diamond: ${shell.ediamondPrice}`);
         totalPrice += shell.ediamondPrice;
         for (const diamond of diamonds) {
-            const diamond_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.caratWeight);
+            const diamond_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
             //console.log(`Diamond: ${diamond_price}`);
             totalPrice += diamond_price;
         }

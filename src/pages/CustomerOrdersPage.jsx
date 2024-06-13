@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from 'sonner';
 import { formatDate, formatPrice } from '/src/helper_function/ConvertFunction.jsx'
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { fetchDiamondPrice, fetchMaterialPrice } from '../helper_function/FetchPriceFunctions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/RequestPage.module.css';
 
 const CustomerOrdersPage = () => {
