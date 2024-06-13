@@ -54,7 +54,7 @@ const ChooseDiamond = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
+            const response = await axios.get(`http://localhost:8080/api/diamonds`);
             if (!response.data || response.status === 204) {
                 toast.error("Error fetching the diamonds from the server");
             } else {
@@ -68,7 +68,7 @@ const ChooseDiamond = () => {
     const getPrice = async (list) => {
         let result = []
         for (const diamond of list) {
-            const single_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.caratWeight);
+            const single_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
             result = [
                 ...result,
                 {

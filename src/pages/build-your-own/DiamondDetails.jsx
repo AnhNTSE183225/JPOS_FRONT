@@ -30,7 +30,7 @@ const DiamondDetails = () => {
                 console.error(`Cannot find diamond with ID ${diamondId}`);
             } else {
                 const result = response.data;
-                const diamondPrice = await fetchDiamondPrice(result.cut, result.color, result.clarity, result.caratWeight, result.caratWeight);
+                const diamondPrice = await fetchDiamondPrice(result.cut, result.color, result.clarity, result.caratWeight, result.shape);
                 //console.log('Fetched Diamond Data:', response.data);
                 setDiamond(response.data);
                 setDiamondPrice(diamondPrice);

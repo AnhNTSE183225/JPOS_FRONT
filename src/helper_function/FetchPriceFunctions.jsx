@@ -14,15 +14,15 @@ export const fetchMaterialPrice = async (id) => {
     }
 };
 
-export const fetchDiamondPrice = async (cut, color, clarity, fromCaratWeight, toCaratWeight) => {
+export const fetchDiamondPrice = async (cut, color, clarity, caratWeight, shape) => {
 
     const response = await axios.post(`http://localhost:8080/api/get-price-by-4C`,
         {
             cut: cut,
             clarity: clarity,
-            fromCaratWeight: fromCaratWeight,
-            toCaratWeight: toCaratWeight,
-            color: color
+            caratWeight: caratWeight,
+            color: color,
+            shape: shape
         }
     )
     if (!response.data || response.status === 204) {
