@@ -114,7 +114,7 @@ const CompleteProduct = () => {
 
     const getDiamonds = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamonds/all`);
+            const response = await axios.get(`http://localhost:8080/api/diamonds`);
             if (!response.data || response.status === 204) {
                 console.log('no data found for diamonds');
             } else {
