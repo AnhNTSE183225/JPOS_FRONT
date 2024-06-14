@@ -57,9 +57,9 @@ const ChooseDiamond = () => {
         setProcessing(false);
     }
 
-    // useEffect(() => {
-    //     updateQuery();
-    // }, [activeShape, minPrice, minCarat, color, clarity, cut])
+    useEffect(() => {
+        updateQuery();
+    }, [pageNo, pageSize])
 
     const fetchData = async (pageNo, pageSize) => {
         try {
@@ -253,11 +253,27 @@ const ChooseDiamond = () => {
                                     <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                     <span role="status">Loading...</span>
                                 </button>
-                                : <button className='btn btn-dark' onClick={updateQuery}>Query</button>
+                                : <button className='btn btn-dark' onClick={() => {
+                                    setPageNo(0);
+                                    setPageSize(40);
+                                    updateQuery();
+                                }}>Query</button>
                         }
                     </div>
                     <div className="col text-end">
                         <button className='btn' style={{ backgroundColor: '#48AAAD' }} onClick={resetFilters}>Reset filters</button>
+                    </div>
+                </div>
+                <div className="row mt-3">
+                    <div className="col-1 ms-auto">
+                        <span>Page size</span>
+                        <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
+                    </div>
+                </div>
+                <div className="row mt-3">
+                    <div className="col-1 ms-auto">
+                        <span>Page No</span>
+                        <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo+1} onChange={(e) => setPageNo(e.target.value-1)} />
                     </div>
                 </div>
                 <div className='row my-3'>
