@@ -12,8 +12,9 @@ const ConfirmPaymentPage = ({ order }) => {
     const navigate = useNavigate();
 
     const [paymentDate, setPaymentDate] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('');
     const [amountPaid, setAmountPaid] = useState(0);
+    const [maxDate, setMaxDate] = useState('');
 
 
     const [processing, setProcessing] = useState(false);
@@ -33,13 +34,26 @@ const ConfirmPaymentPage = ({ order }) => {
     }
 
     useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1; // JavaScript months are 0-based
+        let day = today.getDate();
+
+        // Pad month and day with leading zeros if necessary
+        month = month < 10 ? `0${month}` : month;
+        day = day < 10 ? `0${day}` : day;
+
+        setMaxDate(`${year}-${month}-${day}`);
+    }, []);
+
+    useEffect(() => {
         getPaidAmount();
     }, [])
 
     const handleSubmit = async () => {
         try {
             if (paymentDate !== null &&
-                paymentMethod !== null &&
+                paymentMethod.trim().length > 0 &&
                 amountPaid > 0
             ) {
                 setProcessing(true);
@@ -60,7 +74,12 @@ const ConfirmPaymentPage = ({ order }) => {
                     navigate("/staff/request");
                 }
             } else {
-                toast.info("Please fill in all fields");
+                if(paymentMethod.trim().length <= 0) {
+                    toast.info(`Please select a payment method!`);
+                }
+                if(paymentDate == null) {
+                    toast.info(`Please select a payment date!`);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -126,7 +145,7 @@ const ConfirmPaymentPage = ({ order }) => {
                             <div className="col">Payment method</div>
                             <div className="col">
                                 <select onChange={(e) => setPaymentMethod(e.target.value)} className='form-control'>
-                                    <option value>Select payment method</option>
+                                    <option value=''>Select payment method</option>
                                     {["VISA", "Cash", "Credit/Debit"].map(value => (
                                         <option key={value} value={value}>
                                             {value}
@@ -138,7 +157,7 @@ const ConfirmPaymentPage = ({ order }) => {
                         <div className="row mb-2">
                             <div className="col">Payment date</div>
                             <div className="col">
-                                <input onChange={(e) => setPaymentDate(e.target.value)} className='form-control' type="date" />
+                                <input max={maxDate} onChange={(e) => setPaymentDate(e.target.value)} className='form-control' type="date" />
                             </div>
                         </div>
                         <div className="row mb-2">

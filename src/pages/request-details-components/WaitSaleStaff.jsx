@@ -37,13 +37,40 @@ const WaitSaleStaff = ({ order }) => {
 
     const [processing, setProcessing] = useState(false);
 
+    useEffect(() => {
+        const update = async () => {
+            if (
+                cut.trim().length > 0 &&
+                clarity.trim().length > 0 &&
+                color.trim().length > 0 &&
+                shape.trim().length > 0
+            ) {
+                let diamond_list = await fetchDiamonds(cut, color, clarity, fromCaratWeight, toCaratWeight, shape);
+                let diamond_prices = [];
+                if (diamond_list != null && diamond_list.length > 0) {
+                    diamond_prices = await fetchPrice(diamond_list);
+                }
+
+                setDiamondList(diamond_list);
+                setDiamondPrices(diamond_prices);
+            }
+        }
+        update();
+    }, [cut, color, clarity, fromCaratWeight, toCaratWeight, shape])
+
+    useEffect(() => {
+        fetchMaterials();
+    }, [])
+
     const finalSubmit = async () => {
-        if (productName.length > 0 &&
+        if (productName.trim().length > 0 &&
+            productType.trim().length > 0 &&
             chosenDiamonds.length > 0 &&
             chosenMaterials.length > 0 &&
-            extraPrice.diamond > 0 &&
+            extraPrice.production >= 0 &&
+            extraPrice.diamond >= 0 &&
             extraPrice.markupRate > 0 &&
-            extraPrice.material > 0) {
+            extraPrice.material >= 0) {
             try {
                 setProcessing(true);
                 const productDTO = {
@@ -84,7 +111,21 @@ const WaitSaleStaff = ({ order }) => {
                 console.log(error);
             }
         } else {
-            toast.info("Please fill in all forms");
+            if (productName.trim().length <= 0) {
+                toast.info(`Product needs a name!`);
+            }
+            if (productType.trim().length <= 0) {
+                toast.info(`You haven't selected any product type`);
+            }
+            if(extraPrice.markupRate <= 0) {
+                toast.info(`Markup rate cannot be below 0`);
+            }
+            if(chosenDiamonds.length <= 0) {
+                toast.info(`You haven't chosen any diamonds`);
+            }
+            if(chosenMaterials.length <= 0) {
+                toast.info(`You haven't chosen any materials`);
+            }
         }
         setProcessing(false);
     }
@@ -119,34 +160,13 @@ const WaitSaleStaff = ({ order }) => {
                 }
                 setChosenMaterials(oldList => [...oldList, newMaterial]);
                 setTotalMaterialPrice(prevPrice => prevPrice + newMaterial.price);
+            } else {
+                toast.info(`Please fill in material and weight`);
             }
         } else {
             toast.error(`Material already added`);
         }
     }
-
-    useEffect(() => {
-        const update = async () => {
-            if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0 && shape.length != 0) {
-                const diamond_list = await fetchDiamonds(cut, color, clarity, fromCaratWeight, toCaratWeight, shape);
-                let diamond_prices = [];
-                if(diamond_list != null && diamond_list.length > 0) {
-                    diamond_prices = await fetchPrice(diamond_list);
-                } 
-
-                console.log(diamond_list);
-                console.log(diamond_prices);
-
-                setDiamondList(diamond_list);
-                setDiamondPrices(diamond_prices);
-            }
-        }
-        update();
-    }, [cut, color, clarity, fromCaratWeight, toCaratWeight, shape])
-
-    useEffect(() => {
-        fetchMaterials();
-    }, [])
 
     const fetchMaterials = async () => {
         try {
@@ -182,6 +202,7 @@ const WaitSaleStaff = ({ order }) => {
             const response = await axios.get(`http://localhost:8080/api/get-diamonds-by-4C?fromCaratWeight=${fromCaratWeight}&toCaratWeight=${toCaratWeight}&cut=${cut}&clarity=${clarity}&color=${color}&shape=${shape}`);
             if (response.status === 204) {
                 toast.info(`No diamonds fit this setting`);
+                return [];
             } else {
                 return response.data;
             }
@@ -191,7 +212,6 @@ const WaitSaleStaff = ({ order }) => {
     }
 
     const handleMaterial = (event) => {
-        console.log(event.target.value)
         setCurrentMaterial(event.target.value);
     }
 
@@ -222,7 +242,6 @@ const WaitSaleStaff = ({ order }) => {
 
     return (
         <div className={`${styles['wait-sale-staff']}`}>
-            <Toaster position="top-center" richColors expand={false} />
             <div className="row">
                 <h1 className='fw-bold'>
                     <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
@@ -260,7 +279,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="col">Product type</div>
                         <div className="col">
                             <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
-                                <option value>Choose product type</option>
+                                <option value=''>Choose product type</option>
                                 {[`Engagement Ring`, `Wedding Ring`, `Earrings`, `Necklace`, `General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
                             </select>
                         </div>
@@ -271,7 +290,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="col-3">Shape</div>
                         <div className="col">
                             <select value={shape} onChange={handleShape} className="form-select">
-                                <option value>Choose shape</option>
+                                <option value=''>Choose shape</option>
                                 <option value="round">Round</option>
                                 <option value="princess">Princess</option>
                                 <option value="cushion">Cushion</option>
@@ -290,7 +309,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="col-3">Cut</div>
                         <div className="col">
                             <select value={cut} onChange={handleCut} className="form-select">
-                                <option value>Choose cut</option>
+                                <option value=''>Choose cut</option>
                                 <option value="Excellent">Excellent</option>
                                 <option value="Very_Good">Very Good</option>
                                 <option value="Good">Good</option>
@@ -304,7 +323,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="col-3">Color</div>
                         <div className="col">
                             <select value={color} onChange={handleColor} className="form-select">
-                                <option value>Choose color</option>
+                                <option value=''>Choose color</option>
                                 {['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'].map(
                                     value => (
                                         <option key={value} value={value}>{value}</option>
@@ -318,7 +337,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="col-3">Clarity</div>
                         <div className="col">
                             <select value={clarity} onChange={handleClarity} className="form-select">
-                                <option value>Choose clarity</option>
+                                <option value=''>Choose clarity</option>
                                 {['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'].map(
                                     value => (
                                         <option key={value} value={value}>{value}</option>
@@ -389,61 +408,66 @@ const WaitSaleStaff = ({ order }) => {
                         </table>
                     </div>
 
-                    <h4 className='fw-bold'>Chosen diamonds</h4>
-                    <div className='row mb-2'>
-                        <table className='table table-hover'>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Code</th>
-                                    <th>Price</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody className='table-group-divider'>
-                                {chosenDiamonds.map(
-                                    diamond => (
-                                        <tr key={diamond.id}>
-                                            <td>{diamond.id}</td>
-                                            <td>{diamond.code}</td>
-                                            <td>{formatPrice(diamond.price)}</td>
-                                            <td><button onClick={() => removeDiamond(diamond.id, diamond.price)}><b>-</b></button></td>
-                                        </tr>
-                                    )
-                                )}
-                            </tbody>
-                        </table>
 
-
-                    </div>
-                    <div className="row mb-2">
-                        <div className="col fw-semibold">
-                            Price
-                        </div>
-                        <div className="col">
-                            {formatPrice(totalDiamondPrice)}
-                        </div>
-                    </div>
 
                 </div>
 
                 <div className="col-4">
+                    <div className='col-10'>
+                        <h4 className='fw-bold'>Chosen diamonds</h4>
+                        <div className='row mb-2'>
+                            <table className='table table-bordered'>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Code</th>
+                                        <th>Price</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                <tbody className='table-group-divider'>
+                                    {chosenDiamonds.map(
+                                        diamond => (
+                                            <tr key={diamond.id}>
+                                                <td>{diamond.id}</td>
+                                                <td>{diamond.code}</td>
+                                                <td>{formatPrice(diamond.price)}</td>
+                                                <td><button onClick={() => removeDiamond(diamond.id, diamond.price)}><b>-</b></button></td>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col-10 fw-semibold">
+                                Price
+                            </div>
+                            <div className="col-10">
+                                {formatPrice(totalDiamondPrice)}
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <p>
                             <b>Material</b>
                         </p>
-                        <div className="form-floating col-10 mb-2">
+                        <div className="col-10 mb-2">
                             <select value={currentMaterial} onChange={handleMaterial} className="form-select">
-                                <option value>Choose material</option>
+                                <option value=''>Choose material</option>
                                 {materialList.map(
                                     material => (
                                         <option key={material.materialId} value={material.materialId}>{material.materialName}</option>
                                     )
                                 )}
                             </select>
-                            <label>Material</label>
                         </div>
-                        <form className="form-floating col-10 mb-2">
+                        <p>
+                            <b>Carat weight</b>
+                        </p>
+                        <div className="col-10 mb-2">
                             <input
                                 value={materialWeight}
                                 onChange={handleMaterialWeight}
@@ -453,12 +477,11 @@ const WaitSaleStaff = ({ order }) => {
                                 placeholder="0.0"
                                 step="0.1"
                             />
-                            <label>Weight</label>
-                        </form>
+                        </div>
 
 
                         <div className='col-10'>
-                            <table className='table table-hover'>
+                            <table className='table table-bordered'>
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -473,7 +496,7 @@ const WaitSaleStaff = ({ order }) => {
                                             <tr key={material.id}>
                                                 <td>{material.id}</td>
                                                 <td>{material.weight}</td>
-                                                <td>{material.price}</td>
+                                                <td>{formatPrice(material.price)}</td>
                                                 <td><button onClick={() => removeMaterial(material.id, material.price)} ><b>-</b></button></td>
                                             </tr>
                                         )

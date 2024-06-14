@@ -17,22 +17,26 @@ const WaitManager = ({ order }) => {
     const acceptQuote = () => {
         let staff_id = sessionStorage.getItem('staff_id');
         if (staff_id !== null) {
-            axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`,
-                {
-                    markupRate: markupRate,
-                    totalAmount: totalAmount
-                }
-            )
-                .then(
-                    response => {
-                        toast.success(`Form submitted`);
-                        navigate('/staff/request');
-                    }
-                ).catch(
-                    error => {
-                        console.log(error);
+            if (markupRate <= 0 || totalAmount <= 0) {
+                toast.info(`Markup rate cannot be 0 or below`);
+            } else {
+                axios.post(`http://localhost:8080/api/${order.id}/manager-response?managerApproval=true`,
+                    {
+                        markupRate: markupRate,
+                        totalAmount: totalAmount
                     }
                 )
+                    .then(
+                        response => {
+                            toast.success(`Form submitted`);
+                            navigate('/staff/request');
+                        }
+                    ).catch(
+                        error => {
+                            console.log(error);
+                        }
+                    )
+            }
         } else {
             toast('Logged out');
             navigate('/login');

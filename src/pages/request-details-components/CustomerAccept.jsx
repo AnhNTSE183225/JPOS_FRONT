@@ -13,16 +13,31 @@ const CustomerAccept = ({ order }) => {
     const navigate = useNavigate();
 
     const [paymentDate, setPaymentDate] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(null);
-    const [amountPaid, setAmountPaid] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [amountPaid, setAmountPaid] = useState(0);
+    const [maxDate, setMaxDate] = useState('');
 
     const [processing, setProcessing] = useState(false);
+
+    useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1; // JavaScript months are 0-based
+        let day = today.getDate();
+
+        // Pad month and day with leading zeros if necessary
+        month = month < 10 ? `0${month}` : month;
+        day = day < 10 ? `0${day}` : day;
+
+        setMaxDate(`${year}-${month}-${day}`);
+    }, []);
+
 
     const handleSubmit = async () => {
         try {
             if (paymentDate !== null &&
-                paymentMethod !== null &&
-                amountPaid != null
+                paymentMethod.trim().length > 0 &&
+                amountPaid >= order.totalAmount * 0.3
             ) {
                 setProcessing(true);
                 const response = await axios.put(`http://localhost:8080/api/sales/orders/${order.id}/confirm-deposit`,
@@ -42,7 +57,15 @@ const CustomerAccept = ({ order }) => {
                     navigate("/staff/request");
                 }
             } else {
-                toast.info("Please fill in all fields");
+                if (paymentMethod.trim().length <= 0) {
+                    toast.info(`Please select a payment method`);
+                }
+                if (paymentDate == null) {
+                    toast.info(`Please select a date`);
+                }
+                if (amountPaid < order.totalAmount * 0.3) {
+                    toast.info(`Amount paid must be at least 30% of the product's price: ${formatPrice(order.totalAmount*0.3)}`);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -52,9 +75,7 @@ const CustomerAccept = ({ order }) => {
 
     return (
         <>
-            <Toaster position="top-center" richColors expand={true} />
             <div className='container-fluid' id={`${styles['customer-accept']}`}>
-                <Toaster position="top-center" richColors expand={false} />
                 <div className="row">
                     <h1 className='fw-bold'>
                         <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
@@ -119,7 +140,7 @@ const CustomerAccept = ({ order }) => {
                             <div className="col">Payment method</div>
                             <div className="col">
                                 <select onChange={(e) => setPaymentMethod(e.target.value)} className='form-control'>
-                                    <option value>Select payment method</option>
+                                    <option value=''>Select payment method</option>
                                     {["VISA", "Cash", "Credit/Debit"].map(value => (
                                         <option key={value} value={value}>
                                             {value}
@@ -131,7 +152,7 @@ const CustomerAccept = ({ order }) => {
                         <div className="row mb-2">
                             <div className="col">Payment date</div>
                             <div className="col">
-                                <input onChange={(e) => setPaymentDate(e.target.value)} className='form-control' type="date" />
+                                <input onChange={(e) => setPaymentDate(e.target.value)} className='form-control' max={maxDate} type="date" />
                             </div>
                         </div>
                         <div className="row mb-2">

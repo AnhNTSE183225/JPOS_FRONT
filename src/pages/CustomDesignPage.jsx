@@ -11,17 +11,13 @@ const CustomDesignPage = () => {
     const navigate = useNavigate();
     const [designFile, setDesignFile] = useState(null);
     const [description, setDescription] = useState('');
-    const [budget, setBudget] = useState('');
+    const [budget, setBudget] = useState(500);
     const [imageUrl, setImageUrl] = useState(`Not provided`);
 
     const [processing, setProcessing] = useState(false);
 
     const handleDescription = (event) => {
         setDescription(event.target.value);
-    }
-
-    const handleBudget = (event) => {
-        setBudget(event.target.value);
     }
 
     const uploadImage = async () => {
@@ -50,7 +46,9 @@ const CustomDesignPage = () => {
             toast.info(`Please log in to continue!`);
             navigate("/login");
         } else {
-            if (description.length != 0 && budget.length != 0) {
+            if (description.trim().length > 0 &&
+                budget >= 500
+            ) {
                 axios.post('http://localhost:8080/api/send-request',
                     {
                         customerId: sessionStorage.getItem('customer_id'),
@@ -63,7 +61,7 @@ const CustomDesignPage = () => {
                         toast.success('Form submitted successfully!');
                         setDesignFile(null);
                         setDescription('');
-                        setBudget('');
+                        setBudget(500);
                         setImageUrl(`Not provided`);
                     }
                 ).catch(
@@ -73,7 +71,12 @@ const CustomDesignPage = () => {
                     }
                 )
             } else {
-                toast.error('Please fill in all fields!');
+                if(description.trim().length <= 0) {
+                    toast.error(`Description cannot be empty! You need to describe your product`);
+                }
+                if(budget < 500) {
+                    toast.error(`Budget must be minimum $500 (We don't make custom models for under)`);
+                }
             }
         }
     }
@@ -104,8 +107,8 @@ const CustomDesignPage = () => {
                                 <textarea style={{ resize: "none" }} maxLength={255} className="form-control" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">What's your budget?</label>
-                                <textarea style={{ resize: "none" }} maxLength={255} className="form-control" value={budget} onChange={handleBudget} rows='1' cols='30'></textarea>
+                                <label className="form-label">What's your budget? Minimum value: $500</label>
+                                <input className="form-control" type="number" min={500} value={budget} onChange={(e) => setBudget(e.target.value)} />
                             </div>
 
                             <div>
