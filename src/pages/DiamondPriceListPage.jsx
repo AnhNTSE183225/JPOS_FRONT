@@ -10,7 +10,7 @@ const DiamondPriceListPage = () => {
 
     const fetchDiamondList = async (pageNo, pageSize) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamond-prices?pageNo=${pageNo}&pageSize=${pageSize}`);
+            const response = await axios.get(`http://localhost:8080/api/prices`);
             if (response.status === 204) {
                 console.log("No data");
             } else {
@@ -36,7 +36,7 @@ const DiamondPriceListPage = () => {
                 <div className="row mt-3">
                     <h1 className="text-center">Diamond Price List</h1>
                 </div>
-                <div className="row mt-3">
+                {/* <div className="row mt-3">
                     <div className="col-1 ms-auto">
                         <span>Page size</span>
                         <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
@@ -47,22 +47,21 @@ const DiamondPriceListPage = () => {
                         <span>Page No</span>
                         <input className="form-control" type="number" min="0" max="100" step="1" value={pageNo} onChange={(e) => setPageNo(e.target.value)} />
                     </div>
-                </div>
+                </div> */}
                 <div className="row mt-3">
                     <table className="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Origin</th>
-                                <th>Carat Weight</th>
-                                <th>Shape</th>
-                                <th>Color</th>
                                 <th>Clarity</th>
+                                <th>Color</th>
                                 <th>Cut</th>
+                                <th>Carat weight</th>
                                 <th>Price</th>
                                 <th>Effective Date</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {
                                 diamondPriceList.length === 0
                                     ? <tr>
@@ -70,15 +69,14 @@ const DiamondPriceListPage = () => {
                                             Loading...
                                         </td>
                                     </tr>
-                                    : diamondPriceList.map(price =>
-                                        <tr key={price.diamondPriceId}>
+                                    : diamondPriceList.map((price, index) =>
+                                        <tr key={index}>
                                             <td>{price.origin}</td>
-                                            <td>{price.caratWeight}</td>
-                                            <td>{price.shape}</td>
-                                            <td>{price.color}</td>
                                             <td>{price.clarity}</td>
+                                            <td>{price.color}</td>
                                             <td>{price.cut}</td>
-                                            <td>{formatPrice(price.price)}</td>
+                                            <td>{price.caratWeightGroup}</td>
+                                            <td>{formatPrice(price.averagePrice)}</td>
                                             <td>{formatDate(price.effectiveDate)}</td>
                                         </tr>
                                     )

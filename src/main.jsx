@@ -26,16 +26,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
 import CustomerOrdersPage from './pages/CustomerOrdersPage';
 
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
 
-  useEffect(() => {
-    console.log(`Hello`);
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
 
 const router = createBrowserRouter([
   {
