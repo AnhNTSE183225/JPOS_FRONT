@@ -15,6 +15,21 @@ const SettingDetails = () => {
     const [showShellDetails, setShowShellDetails] = useState(false);
     const [settingPrice, setSettingPrice] = useState(null);
 
+    useEffect(() => {
+        fetchData();
+    }, [designId]);
+
+    useEffect(() => {
+        if (selectedShell !== null) {
+            const updatePrice = async () => {
+                const materials = await getMaterials(selectedShell);
+                const setting_price = await fetchSettingPrice(selectedShell, materials);
+                setSettingPrice(setting_price);
+            }
+            updatePrice();
+        }
+    }, [selectedShell])
+    
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product-designs/${designId}`);
@@ -76,21 +91,6 @@ const SettingDetails = () => {
             console.log("ERROR CHOOSING");
         }
     }
-
-    useEffect(() => {
-        fetchData();
-    }, [designId]);
-
-    useEffect(() => {
-        if (selectedShell !== null) {
-            const updatePrice = async () => {
-                const materials = await getMaterials(selectedShell);
-                const setting_price = await fetchSettingPrice(selectedShell, materials);
-                setSettingPrice(setting_price);
-            }
-            updatePrice();
-        }
-    }, [selectedShell])
 
     const handleShellClick = (shell) => {
         setSelectedShell(shell);

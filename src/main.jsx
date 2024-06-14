@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CustomDesignPage from './pages/CustomDesignPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -25,6 +25,17 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
 import CustomerOrdersPage from './pages/CustomerOrdersPage';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    console.log(`Hello`);
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 const router = createBrowserRouter([
   {
