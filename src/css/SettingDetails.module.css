@@ -2,12 +2,11 @@
     display: flex;
     justify-content: center;
     padding: 20px;
-    font-family: Arial, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
 }
 
 .content {
     display: flex;
-    max-width: 1200px;
     width: 100%;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -16,16 +15,14 @@
 }
 
 .image-section {
-    flex: 1;
     padding: 20px;
     text-align: center;
-    background-color: #f9f9f9;
 }
 
 .image-section img {
     width: 100%;
-    max-width: 1000px; 
-    max-height: 1000px; 
+    /* max-width: 1000px; 
+    max-height: 1000px;  */
     border: 1px solid #ddd;
     border-radius: 8px;
 }
@@ -51,23 +48,49 @@
     margin-bottom: 20px;
 }
 
-.payment-options {
-    background-color: #e9f8f9;
+.paymentOptions {
+    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.option {
-    margin-bottom: 10px;
+.optionBox {
     display: flex;
     align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 3px;
+    border: 1px solid #ddd;
 }
 
-.option img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+.iconContainer {
+    background-color: #e9f8f9;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
 }
 
 .product-details {
@@ -140,13 +163,13 @@
 
 .button {
     padding: 10px 20px;
-    margin: 10px 10px 10px 0;
+    /* margin: 10px 10px 10px 0; */
     background-color: #48AAAD;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    display: inline-block;
+    width: 100%;
 }
 
 .button:hover {
@@ -172,10 +195,39 @@
 .toggle-button h3 {
     margin: 0;
     font-size: 18px;
-    color: #333;
+    color: #000;
 }
 
 .toggle-button span {
     font-size: 24px;
-    color: #333;
+    color: #000;
+}
+
+/* Media query to switch to single column layout at 991px or less */
+@media (max-width: 991px) {
+    .content {
+        flex-direction: column;
+    }
+
+    .image-section, .details-section {
+        flex: none;
+        width: 100%;
+    }
+
+    .paymentOptions {
+        gap: 10px;
+    }
+
+    .optionBox {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .iconContainer {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .button {
+        width: 100%;
+    }
 }
