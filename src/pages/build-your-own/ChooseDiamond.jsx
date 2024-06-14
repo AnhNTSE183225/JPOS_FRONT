@@ -17,6 +17,7 @@ const ChooseDiamond = () => {
     const [color, setColor] = useState(0);
     const [clarity, setClarity] = useState(0);
     const [cut, setCut] = useState(0);
+    const [origin, setOrigin] = useState('NATURAL')
 
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(40);
@@ -48,7 +49,7 @@ const ChooseDiamond = () => {
         const colorList = ['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'].splice(color);
 
         //const newList = await fetchQuery(pageNo, pageSize, caratWeight, colorList, clarityList, cutList, shapeList);
-        const newList = await fetchQuery(pageNo, pageSize, caratWeight, minPrice, "LAB_GROWN", colorList, clarityList, cutList, shapeList);
+        const newList = await fetchQuery(pageNo, pageSize, caratWeight, minPrice, origin, colorList, clarityList, cutList, shapeList);
 
         setDiamondList(newList);
         setProcessing(false);
@@ -116,6 +117,7 @@ const ChooseDiamond = () => {
         setCut(0);
         setActiveShape(null);
         setColor(0);
+        setOrigin("NATURAL");
         setup();
     }
 
@@ -150,6 +152,18 @@ const ChooseDiamond = () => {
     return (
         <>
             <div className={`${styles.container} container`}>
+                <div className="row">
+                    <div className="col mx-auto">
+                        <div className="form-check">
+                            <input type="radio" className='form-check-input' value={origin == "NATURAL"} onChange={() => setOrigin("NATURAL")} name="origin" defaultChecked/>
+                            <label className='form-check-label'>Natural</label>
+                        </div>
+                        <div className="form-check">
+                            <input type="radio" className='form-check-input' value={origin == "LAB_GROWN"} onChange={() => setOrigin("LAB_GROWN")} name="origin" />
+                            <label className='form-check-label'>Lab grown</label>
+                        </div>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-4">
                         <b>Shape</b>
