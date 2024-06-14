@@ -90,8 +90,8 @@ const BuildYourOwnNav = () => {
                                 Choose diamonds
                             </>
                             : <>
-                                {sessionStorage.getItem('diamondImages').split(',').map(image => (
-                                    <div key={image} className={`col-2 me-2 ${styles['image-col']}`}>
+                                {sessionStorage.getItem('diamondImages').split(',').map((image,index) => (
+                                    <div key={index} className={`col-2 me-2 ${styles['image-col']}`}>
                                         <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
                                     </div>
                                 ))}

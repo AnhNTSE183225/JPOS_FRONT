@@ -113,15 +113,17 @@ const CompleteProduct = () => {
     }
 
     const getDiamonds = async () => {
+        const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
+        const chosenDiamondsInt = chosenDiamonds.map(Number);
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamonds`);
+
+            const response = await axios.post(`http://localhost:8080/api/get-multiple-diamonds-by-id`, chosenDiamondsInt);
             if (!response.data || response.status === 204) {
-                console.log('no data found for diamonds');
+                toast.error("CANNOT FETCH Diamonds");
             } else {
-                const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
-                const diamonds = response.data.filter(v => chosenDiamonds.includes(v.diamondId.toString()));
-                return diamonds;
+                return response.data;
             }
+
         } catch (error) {
             console.log(error);
         }
@@ -189,10 +191,10 @@ const CompleteProduct = () => {
                                 <br />
                                 <div className="summary-card">
                                     <div className="content">
-                                        <div style={{marginLeft: '1vw'}}>
-                                        <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
-                                        <p>US & Int. Shipping: Free</p>
-                                        <p>Taxes/Duties Estimate: 10% VAT</p>
+                                        <div style={{ marginLeft: '1vw' }}>
+                                            <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
+                                            <p>US & Int. Shipping: Free</p>
+                                            <p>Taxes/Duties Estimate: 10% VAT</p>
                                         </div>
                                         <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
                                         <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff' }}>Pay with cash</button>
