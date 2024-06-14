@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "/src/css/SettingDetails.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,7 @@ const SettingDetails = () => {
     const [selectedShell, setSelectedShell] = useState(null);
     const [showShellDetails, setShowShellDetails] = useState(false);
     const [settingPrice, setSettingPrice] = useState(null);
-    const [showMoreInfo, setShowMoreInfo] = useState(false); // New state for more/less information
+    const [showMoreInfo, setShowMoreInfo] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -26,11 +26,11 @@ const SettingDetails = () => {
                 const materials = await getMaterials(selectedShell);
                 const setting_price = await fetchSettingPrice(selectedShell, materials);
                 setSettingPrice(setting_price);
-            }
+            };
             updatePrice();
         }
-    }, [selectedShell])
-    
+    }, [selectedShell]);
+
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product-designs/${designId}`);
@@ -55,14 +55,14 @@ const SettingDetails = () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product-shell-material/${shell.productShellDesignId}`);
             if (!response.data || response.status === 204) {
-                toast.error("ERror cannot fetch materials");
+                toast.error("Error cannot fetch materials");
             } else {
                 return response.data;
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     const fetchSettingPrice = async (shell, materials) => {
         let total = shell.ediamondPrice + shell.ematerialPrice + (shell.productionPrice * shell.markupRate);
@@ -71,15 +71,13 @@ const SettingDetails = () => {
             total += price * material.weight;
         }
         return total;
-    }
+    };
 
     const handleChoose = () => {
         if (designId !== null && selectedShell.productShellDesignId !== null && selectedShell.diamondQuantity > 0 && settingPrice !== null) {
-            //Cosmetic
             sessionStorage.setItem('designImage', productDesign.designFile);
             sessionStorage.setItem('designName', productDesign.designName);
             sessionStorage.setItem('designPrice', formatPrice(settingPrice));
-            //Functional
             sessionStorage.setItem('designId', designId);
             sessionStorage.setItem('shellId', selectedShell.productShellDesignId);
             sessionStorage.setItem('quantity', selectedShell.diamondQuantity);
@@ -90,7 +88,7 @@ const SettingDetails = () => {
         } else {
             console.log("ERROR CHOOSING");
         }
-    }
+    };
 
     const handleShellClick = (shell) => {
         setSelectedShell(shell);
@@ -122,17 +120,18 @@ const SettingDetails = () => {
                                     <div className={styles["more-info-content"]}>
                                         <h3>Can Be Set With:</h3>
                                         <ul>
-                                            <li>Round 0.20 - 8.00 Carat</li>
-                                            <li>Princess 0.20 - 8.00 Carat</li>
-                                            <li>Cushion 0.20 - 8.00 Carat</li>
-                                            <li>Emerald 0.20 - 8.00 Carat</li>
-                                            <li>Oval 0.20 - 8.00 Carat</li>
-                                            <li>Radiant 0.20 - 8.00 Carat</li>
-                                            <li>Asscher 0.20 - 8.00 Carat</li>
-                                            <li>Marquise 0.20 - 8.00 Carat</li>
-                                            <li>Heart 0.20 - 8.00 Carat</li>
-                                            <li>Pear 0.20 - 8.00 Carat</li>
-                                            <li>Square Emerald 0.20 - 8.00 Carat</li>
+                                            {['Round', 'Princess', 'Cushion', 'Emerald', 'Oval', 'Radiant', 'Asscher', 'Marquise', 'Heart', 'Pear'].map(shape => (
+                                                <div key={shape}>
+                                                    <div className="d-flex align-items-center">
+                                                        <img
+                                                            src={`/src/assets/svg/${shape}.svg`}
+                                                            alt={shape}
+                                                            style={{ maxWidth: '20px', maxHeight: '20px', marginRight: '5px' }} 
+                                                        />
+                                                        <span>{shape} 0.20 - 8.00 Carat</span>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </ul>
                                     </div>
                                 )}
@@ -143,7 +142,6 @@ const SettingDetails = () => {
                             <h2 className={styles.subtitle}>{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
                             <div className={styles.price}>{formatPrice(settingPrice)} (Setting Price)</div>
                             <div className={styles.option}>
-
                                 Flexible Payment Options: 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
                             </div>
                             <div className={styles["metal-type-section"]}>
@@ -174,10 +172,8 @@ const SettingDetails = () => {
                                     </div>
                                 )}
                             </div>
-                            
-
                             <div className={styles.paymentOptions}>
-                                <h3>Your order included: </h3>
+                                <h3>Your order includes: </h3>
                                 <div className={styles.optionBox}>
                                     <div className={styles.iconContainer}>
                                         <FontAwesomeIcon icon={faTruckFast} />
