@@ -73,7 +73,7 @@ const ChooseDiamond = () => {
 
     const fetchQuery = async (pageNo, pageSize, caratWeight, price, origin, colorList, clarityList, cutList, shapeList) => {
         try {
-            const response = await axios.post(`http://localhost:8080/api/diamonds/query2?pageNo=${pageNo}&pageSize=${pageSize}`,
+            const response = await axios.post(`http://localhost:8080/api/diamonds/query?pageNo=${pageNo}&pageSize=${pageSize}`,
                 {
                     caratWeight: caratWeight,
                     price: price,
