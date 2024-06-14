@@ -76,7 +76,7 @@ const BuildYourOwnNav = () => {
                                 </div>
                                 <div className={`col-2 ${styles['image-col']} `}>
                                     <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/setting-details/${sessionStorage.getItem('designId')}`}>
-                                        <img src={sessionStorage.getItem('designImage')} alt="" />
+                                        <img crossOrigin='anonymous' src={sessionStorage.getItem('designImage')} alt="" />
                                     </Link>
                                 </div>
                             </>

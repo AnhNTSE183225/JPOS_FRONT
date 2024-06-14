@@ -116,7 +116,7 @@ const DiamondDetails = () => {
 
                 </div>
                 <div className={`${styles[`detailsSection`]} col-md-7`}>
-                    <h1 className={styles.diamondTitle}>{diamond.caratWeight} Carat Round Diamond</h1>
+                    <h1 className={styles.diamondTitle}>{diamond.diamondName}</h1>
                     <div>
                         <p className={styles.price}>{formatPrice(diamondPrice)} (Diamond Price)</p>
 

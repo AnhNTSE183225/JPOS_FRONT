@@ -36,24 +36,32 @@ const ChooseDiamond = () => {
         }
     }
 
-    useEffect(() => {
-        setup();
-    }, [])
-
     const updateQuery = async () => {
         setProcessing(true);
         const caratWeight = minCarat;
         const shapeList = activeShape === null ? ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'] : [activeShape]
         const clarityList = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'].splice(clarity);
         const cutList = ['Poor', 'Fair', 'Good', 'Very_Good', 'Excellent'].splice(cut);
-        const colorList = ['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'].splice(color);
+        const colorList = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'].splice(color);
 
         //const newList = await fetchQuery(pageNo, pageSize, caratWeight, colorList, clarityList, cutList, shapeList);
         const newList = await fetchQuery(pageNo, pageSize, caratWeight, minPrice, origin, colorList, clarityList, cutList, shapeList);
+        
+        // console.log(`Carat weight: ${caratWeight}`);
+        // console.log(`minPrice: ${minPrice}`);
+        // console.log(`origin ${origin}`);
+        // console.log(`colorList ${colorList}`);
+        // console.log(`clarityList ${clarityList}`)
+        // console.log(`cutList ${cutList}`)
+        // console.log(`shapeList ${shapeList}`)
 
         setDiamondList(newList);
         setProcessing(false);
     }
+
+    useEffect(() => {
+        setup();
+    }, [])
 
     useEffect(() => {
         updateQuery();
@@ -73,6 +81,13 @@ const ChooseDiamond = () => {
     }
 
     const fetchQuery = async (pageNo, pageSize, caratWeight, price, origin, colorList, clarityList, cutList, shapeList) => {
+        // console.log(`Carat weight: ${caratWeight}`);
+        // console.log(`minPrice: ${minPrice}`);
+        // console.log(`origin ${origin}`);
+        // console.log(`colorList ${colorList}`);
+        // console.log(`clarityList ${clarityList}`)
+        // console.log(`cutList ${cutList}`)
+        // console.log(`shapeList ${shapeList}`)
         try {
             const response = await axios.post(`http://localhost:8080/api/diamonds/query?pageNo=${pageNo}&pageSize=${pageSize}`,
                 {
@@ -95,21 +110,6 @@ const ChooseDiamond = () => {
         }
     }
 
-    const getPrice = async (list) => {
-        let result = []
-        for (const diamond of list) {
-            const single_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
-            result = [
-                ...result,
-                {
-                    id: diamond.diamondId,
-                    price: single_price
-                }
-            ]
-        }
-        return result;
-    }
-
     const resetFilters = () => {
         setMinCarat(0.05);
         setMinPrice(200);
@@ -122,7 +122,7 @@ const ChooseDiamond = () => {
     }
 
     const convertColor = (int) => {
-        const chars = ['Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R', 'Q', 'P', 'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
+        const chars = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
         return chars[int] || 'Invalid input';
     }
 
@@ -171,7 +171,7 @@ const ChooseDiamond = () => {
                             <div className="row">
                                 {['Round', 'Princess', 'Cushion', 'Emerald', 'Oval', 'Radiant', 'Asscher', 'Marquise', 'Heart', 'Pear'].map(value =>
                                     <div key={value} className={`col-3 ${styles['shape']} d-flex flex-column justify-content-center align-items-center ${activeShape == value ? styles['active'] : ''} `} onClick={() => setActiveShape(value)}>
-                                        <img className='img-fluid' src={`/src/assets/svg/${value}.svg`} alt="" />
+                                        <img crossOrigin='anonymous' className='img-fluid' src={`/src/assets/svg/${value}.svg`} alt="" />
                                         <span className='mt-2'>{value}</span>
                                     </div>
                                 )}
@@ -183,9 +183,9 @@ const ChooseDiamond = () => {
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">0.05</div>
-                                <div className="col text-end">30.0</div>
+                                <div className="col text-end">5.0</div>
                             </div>
-                            <input type="range" className='form-range' min={0.05} max={30.0} step={0.05} value={minCarat} onChange={(e) => setMinCarat(e.target.value)} />
+                            <input type="range" className='form-range' min={0.05} max={5.0} step={0.05} value={minCarat} onChange={(e) => setMinCarat(e.target.value)} />
                             <input type="number" min={0.05} max={30.0} className='form-control' step="0.01" onChange={(e) => setMinCarat(e.target.value)} value={minCarat} />
                         </div>
                     </div>
@@ -193,10 +193,10 @@ const ChooseDiamond = () => {
                         <b>Min Color</b>
                         <div className="container-fluid my-3">
                             <div className="row">
-                                <div className="col text-start">Z</div>
+                                <div className="col text-start">K</div>
                                 <div className="col text-end">D</div>
                             </div>
-                            <input type="range" className='form-range' min={0} max={22} step={1} value={color} onChange={(e) => setColor(e.target.value)} />
+                            <input type="range" className='form-range' min={0} max={7} step={1} value={color} onChange={(e) => setColor(e.target.value)} />
                             <div className='text-start'><b>Color:</b> {convertColor(color)}</div>
                         </div>
                     </div>
@@ -271,8 +271,8 @@ const ChooseDiamond = () => {
                 </div>
                 <div className='row my-3'>
                     {diamondList !== undefined && diamondList !== null ? (
-                        diamondList.map(diamond => (
-                            <div key={diamond.diamondId} className="col-md-3 mb-4">
+                        diamondList.map((diamond, index) => (
+                            <div key={index} className="col-md-3 mb-4">
                                 <DiamondCard
                                     diamond={diamond}
                                     isSelected={isSelected(diamond.diamondId)}

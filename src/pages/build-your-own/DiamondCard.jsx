@@ -8,9 +8,9 @@ const DiamondCard = ({ diamond, isSelected, onClick }) => {
 
     return (
         <div className={`${styles.card} ${isSelected ? styles.selected : ''}`} onClick={() => onClick(diamond.diamondId, !isSelected)}>
-            <img src={diamond.image} className={styles.cardImgTop} alt="diamond" />
+            <img crossOrigin='anonymous' src={diamond.image} className={styles.cardImgTop} alt="diamond" />
             <div className={styles.cardBody}>
-                <h5 className={styles.cardTitle}>{diamond.diamondCode} - {diamond.diamondName}</h5>
+                <h5 className={styles.cardTitle}>{diamond.diamondName}</h5>
                 
                 <div className="row" style={{textTransform: 'capitalize'}}>
                     <div className="col">
