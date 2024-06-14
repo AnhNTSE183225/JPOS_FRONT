@@ -14,6 +14,7 @@ const SettingDetails = () => {
     const [selectedShell, setSelectedShell] = useState(null);
     const [showShellDetails, setShowShellDetails] = useState(false);
     const [settingPrice, setSettingPrice] = useState(null);
+    const [showMoreInfo, setShowMoreInfo] = useState(false); // New state for more/less information
 
     const fetchData = async () => {
         try {
@@ -25,7 +26,6 @@ const SettingDetails = () => {
                 const selected_shell = response.data.productShellDesigns[0];
                 const materials = await getMaterials(selected_shell);
                 const setting_price = await fetchSettingPrice(selected_shell, materials);
-
 
                 setProductDesign(product_design);
                 setSettingPrice(setting_price);
@@ -100,6 +100,10 @@ const SettingDetails = () => {
         setShowShellDetails(!showShellDetails);
     };
 
+    const toggleMoreInfo = () => {
+        setShowMoreInfo(!showMoreInfo);
+    };
+
     if (productDesign === null) {
         return <div className={styles.loading}>Loading...</div>;
     } else {
@@ -145,6 +149,31 @@ const SettingDetails = () => {
                                 </div>
                             )}
                         </div>
+                        <div className={styles["more-info-section"]}>
+                            <div className={styles["toggle-button"]} onClick={toggleMoreInfo}>
+                                <h3>{showMoreInfo ? 'Less Information' : 'More Information'}</h3>
+                                <span>{showMoreInfo ? '-' : '+'}</span>
+                            </div>
+                            {showMoreInfo && (
+                                <div className={styles["more-info-content"]}>
+                                    <h3>Can Be Set With:</h3>
+                                    <ul>
+                                        <li>Round 0.20 - 8.00 Carat</li>
+                                        <li>Princess 0.20 - 8.00 Carat</li>
+                                        <li>Cushion 0.20 - 8.00 Carat</li>
+                                        <li>Emerald 0.20 - 8.00 Carat</li>
+                                        <li>Oval 0.20 - 8.00 Carat</li>
+                                        <li>Radiant 0.20 - 8.00 Carat</li>
+                                        <li>Asscher 0.20 - 8.00 Carat</li>
+                                        <li>Marquise 0.20 - 8.00 Carat</li>
+                                        <li>Heart 0.20 - 8.00 Carat</li>
+                                        <li>Pear 0.20 - 8.00 Carat</li>
+                                        <li>Square Emerald 0.20 - 8.00 Carat</li>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+
                         <div className={styles.paymentOptions}>
                             <div className={styles.optionBox}>
                                 <div className={styles.iconContainer}>
@@ -175,12 +204,12 @@ const SettingDetails = () => {
                             </div>
                         </div>
                         <div className="row">
-                        <div className="col">
-                        <button className={styles.button} onClick={handleChoose}>Select this setting</button>
-                        </div>
-                        <div className="col">
-                        <button className={`${styles.button} ${styles["secondary-button"]}`}>Consult an expert</button>
-                        </div>
+                            <div className="col">
+                                <button className={styles.button} onClick={handleChoose}>Select this setting</button>
+                            </div>
+                            <div className="col">
+                                <button className={`${styles.button} ${styles["secondary-button"]}`}>Consult an expert</button>
+                            </div>
                         </div>
                     </div>
                 </div>

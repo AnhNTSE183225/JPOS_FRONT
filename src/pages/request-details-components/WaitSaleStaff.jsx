@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/WaitSaleStaff.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
-import { fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
+import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -21,14 +21,14 @@ const WaitSaleStaff = ({ order }) => {
     const [clarity, setClarity] = useState('');
     const [shape, setShape] = useState('');
     const [fromCaratWeight, setFromCaratWeight] = useState(0.0);
-    const [toCaratWeight, setToCaratWeight] = useState(10.0);
+    const [toCaratWeight, setToCaratWeight] = useState(5.0);
 
     const [materialWeight, setMaterialWeight] = useState(0);
     const [currentMaterial, setCurrentMaterial] = useState('');
     const [extraPrice, setExtraPrice] = useState({ material: 0, diamond: 0, production: 0, markupRate: 1.0 });
     const [diamondList, setDiamondList] = useState([]);
+    const [diamondPrices, setDiamondPrices] = useState([]);
     const [materialList, setMaterialList] = useState([]);
-    const [latestPrice, setLatestPrice] = useState(0);
 
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [chosenMaterials, setChosenMaterials] = useState([]);
@@ -126,14 +126,22 @@ const WaitSaleStaff = ({ order }) => {
     }
 
     useEffect(() => {
-        if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0) {
-            setLatestPrice(0);
-            fetchPrice(cut, color, clarity, fromCaratWeight, toCaratWeight);
+        const update = async () => {
+            if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0 && shape.length != 0) {
+                const diamond_list = await fetchDiamonds(cut, color, clarity, fromCaratWeight, toCaratWeight, shape);
+                let diamond_prices = [];
+                if(diamond_list != null && diamond_list.length > 0) {
+                    diamond_prices = await fetchPrice(diamond_list);
+                } 
+
+                console.log(diamond_list);
+                console.log(diamond_prices);
+
+                setDiamondList(diamond_list);
+                setDiamondPrices(diamond_prices);
+            }
         }
-        if (cut.length !== 0 && clarity.length !== 0 && color.length !== 0 && shape.length != 0) {
-            setDiamondList([]);
-            fetchDiamonds(cut, color, clarity, fromCaratWeight, toCaratWeight, shape);
-        }
+        update();
     }, [cut, color, clarity, fromCaratWeight, toCaratWeight, shape])
 
     useEffect(() => {
@@ -154,32 +162,19 @@ const WaitSaleStaff = ({ order }) => {
 
     }
 
-    const fetchPrice = (cut, color, clarity, fromCaratWeight, toCaratWeight) => {
-
-        axios.post(`http://localhost:8080/api/get-price-by-4C`,
-            {
-                cut: cut,
-                clarity: clarity,
-                fromCaratWeight: fromCaratWeight,
-                toCaratWeight: toCaratWeight,
-                color: color
-            }
-        ).then(
-            response => {
-                if (response.status === 204) {
-                    console.log("No data");
-                } else {
-                    const diamondPrice = response.data;
-                    if (diamondPrice !== null) {
-                        setLatestPrice(diamondPrice);
-                    }
+    const fetchPrice = async (diamondList) => {
+        let diamond_prices = []
+        for (const diamond of diamondList) {
+            const response = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
+            diamond_prices = [
+                ...diamond_prices,
+                {
+                    id: diamond.diamondId,
+                    price: response
                 }
-            }
-        ).catch(
-            error => {
-                console.log(error);
-            }
-        )
+            ]
+        }
+        return diamond_prices;
     }
 
     const fetchDiamonds = async (cut, color, clarity, fromCaratWeight, toCaratWeight, shape) => {
@@ -188,8 +183,7 @@ const WaitSaleStaff = ({ order }) => {
             if (response.status === 204) {
                 toast.info(`No diamonds fit this setting`);
             } else {
-                //console.log(response.data);
-                setDiamondList(response.data);
+                return response.data;
             }
         } catch (error) {
             console.log(error);
@@ -224,11 +218,6 @@ const WaitSaleStaff = ({ order }) => {
     const handleFromCaratWeight = (event) => {
         const value = parseFloat(event.target.value);
         setFromCaratWeight(isNaN(value) ? 0 : value);
-    }
-
-    const handleToCaratWeight = (event) => {
-        const value = parseFloat(event.target.value);
-        setToCaratWeight(isNaN(value) ? 0 : value);
     }
 
     return (
@@ -355,12 +344,13 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="col">
                             <input
                                 value={toCaratWeight}
-                                onChange={handleToCaratWeight}
+                                onChange={(e) => setToCaratWeight(e.target.value)}
                                 type="number"
                                 className="form-control"
                                 step='0.1'
-                                placeholder='10.0'
+                                placeholder='0.0'
                             />
+
                         </div>
                     </div>
 
@@ -371,6 +361,7 @@ const WaitSaleStaff = ({ order }) => {
                                     <th>ID</th>
                                     <th>Code</th>
                                     <th>Ct.W</th>
+                                    <th>Price</th>
                                     <th>#</th>
                                 </tr>
                             </thead>
@@ -381,9 +372,10 @@ const WaitSaleStaff = ({ order }) => {
                                             <td>{diamond.diamondId}</td>
                                             <td>{diamond.diamondCode}</td>
                                             <td>{diamond.caratWeight}</td>
+                                            <td>{formatPrice(diamondPrices.find(price => diamond.diamondId == price.id).price)}</td>
                                             <td>
                                                 <button
-                                                    onClick={() => chooseDiamond(diamond.diamondId, diamond.diamondCode, latestPrice)}
+                                                    onClick={() => chooseDiamond(diamond.diamondId, diamond.diamondCode, diamondPrices.find(price => diamond.diamondId == price.id).price)}
                                                     disabled={chosenDiamonds.some(chosenDiamond => chosenDiamond.id === diamond.diamondId)}
                                                     className='btn'
                                                 >
@@ -395,11 +387,6 @@ const WaitSaleStaff = ({ order }) => {
                                 )}
                             </tbody>
                         </table>
-
-                        <div className="col-8 d-flex justify-content-between align-items-center">
-                            <p className="fw-semibold">Price</p>
-                            <p>{formatPrice(latestPrice)}</p>
-                        </div>
                     </div>
 
                     <h4 className='fw-bold'>Chosen diamonds</h4>
@@ -590,7 +577,7 @@ const WaitSaleStaff = ({ order }) => {
                     </div>
                     <div className="col-md-10 d-flex justify-content-between align-items-center">
                         <p className="fw-bold">Total amount &#40;10% tax&#41;</p>
-                        <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate*1.1)}</p>
+                        <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate * 1.1)}</p>
                     </div>
                     {
                         processing
