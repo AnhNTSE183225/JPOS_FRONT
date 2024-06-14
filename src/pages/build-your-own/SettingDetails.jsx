@@ -113,6 +113,30 @@ const SettingDetails = () => {
                     <div className={styles.content}>
                         <div className={styles["image-section"]}>
                             <img src={productDesign.designFile} alt="Ring" />
+                            <div className={styles["more-info-section"]}>
+                                <div className={styles["toggle-button"]} onClick={toggleMoreInfo}>
+                                    <h3>{showMoreInfo ? 'Less Information' : 'More Information'}</h3>
+                                    <span>{showMoreInfo ? '-' : '+'}</span>
+                                </div>
+                                {showMoreInfo && (
+                                    <div className={styles["more-info-content"]}>
+                                        <h3>Can Be Set With:</h3>
+                                        <ul>
+                                            <li>Round 0.20 - 8.00 Carat</li>
+                                            <li>Princess 0.20 - 8.00 Carat</li>
+                                            <li>Cushion 0.20 - 8.00 Carat</li>
+                                            <li>Emerald 0.20 - 8.00 Carat</li>
+                                            <li>Oval 0.20 - 8.00 Carat</li>
+                                            <li>Radiant 0.20 - 8.00 Carat</li>
+                                            <li>Asscher 0.20 - 8.00 Carat</li>
+                                            <li>Marquise 0.20 - 8.00 Carat</li>
+                                            <li>Heart 0.20 - 8.00 Carat</li>
+                                            <li>Pear 0.20 - 8.00 Carat</li>
+                                            <li>Square Emerald 0.20 - 8.00 Carat</li>
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className={styles["details-section"]}>
                             <h1 className={styles.title}>{productDesign.designName}</h1>
@@ -150,30 +174,7 @@ const SettingDetails = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className={styles["more-info-section"]}>
-                                <div className={styles["toggle-button"]} onClick={toggleMoreInfo}>
-                                    <h3>{showMoreInfo ? 'Less Information' : 'More Information'}</h3>
-                                    <span>{showMoreInfo ? '-' : '+'}</span>
-                                </div>
-                                {showMoreInfo && (
-                                    <div className={styles["more-info-content"]}>
-                                        <h3>Can Be Set With:</h3>
-                                        <ul>
-                                            <li>Round 0.20 - 8.00 Carat</li>
-                                            <li>Princess 0.20 - 8.00 Carat</li>
-                                            <li>Cushion 0.20 - 8.00 Carat</li>
-                                            <li>Emerald 0.20 - 8.00 Carat</li>
-                                            <li>Oval 0.20 - 8.00 Carat</li>
-                                            <li>Radiant 0.20 - 8.00 Carat</li>
-                                            <li>Asscher 0.20 - 8.00 Carat</li>
-                                            <li>Marquise 0.20 - 8.00 Carat</li>
-                                            <li>Heart 0.20 - 8.00 Carat</li>
-                                            <li>Pear 0.20 - 8.00 Carat</li>
-                                            <li>Square Emerald 0.20 - 8.00 Carat</li>
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
+                            
 
                             <div className={styles.paymentOptions}>
                                 <h3>Your order included: </h3>

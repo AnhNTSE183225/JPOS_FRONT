@@ -24,8 +24,8 @@ const DiamondDetails = () => {
     }, [diamondId]);
 
     useEffect(() => {
-        window.scrollTo(0,0);
-    },[])
+        window.scrollTo(0, 0);
+    }, [])
 
     const fetchDiamond = async () => {
         try {
@@ -104,21 +104,25 @@ const DiamondDetails = () => {
     } else {
         return (
             <div className={styles.container}>
-                <div className={styles.imageSection}>
+                <div className={`${styles[`imageSection`]} col-md-5`}>
                     <img src={diamond.image} alt="Diamond" className={styles.diamondImage} />
-                </div>
-                <div className={styles.detailsSection}>
-                    <h1 className={styles.diamondTitle}>{diamond.caratWeight} Carat Round Diamond</h1>
-                    <div className={styles.priceSection}>
-                        <p className={styles.price}>{formatPrice(diamondPrice)}</p>
-                    </div>
                     <div className={styles.specs}>
-                        <h4>Diamond Details</h4>
-                        <p><strong>Shape:</strong> {diamond.shape}</p>
-                        <p><strong>Cut:</strong> {diamond.cut}</p>
-                        <p><strong>Color:</strong> {diamond.color}</p>
-                        <p><strong>Clarity:</strong> {diamond.clarity}</p>
-                        <p><strong>Carat Weight:</strong> {diamond.caratWeight}</p>
+                        <p className={styles.specItem}><span>Shape:</span><span>{diamond.shape}</span></p>
+                        <p className={styles.specItem}><span>Cut:</span><span>{diamond.cut}</span></p>
+                        <p className={styles.specItem}><span>Color:</span><span>{diamond.color}</span></p>
+                        <p className={styles.specItem}><span>Clarity:</span><span>{diamond.clarity}</span></p>
+                        <p className={styles.specItem}><span>Carat Weight:</span><span>{diamond.caratWeight}</span></p>
+                    </div>
+
+                </div>
+                <div className={`${styles[`detailsSection`]} col-md-7`}>
+                    <h1 className={styles.diamondTitle}>{diamond.caratWeight} Carat Round Diamond</h1>
+                    <div>
+                        <p className={styles.price}>{formatPrice(diamondPrice)} (Diamond Price)</p>
+
+                    </div>
+                    <div className='mt-3 ms-3'>
+                        <p>Flexible Payment Options: 3 Interest-Free Payments of {formatPrice(diamondPrice / 3)}</p>
                     </div>
                     <div className={styles.paymentOptions}>
                         <h3>Your order included: </h3>
@@ -151,12 +155,18 @@ const DiamondDetails = () => {
                         </div>
                     </div>
                     <div className={styles.buttonsSection}>
-                        {
-                            isSelected()
-                                ? <button onClick={removeSelection} className={styles.removeButton}>Remove selection</button>
-                                : <button onClick={selectDiamond} className={styles.primaryButton}>Select this diamond</button>
-                        }
-                        <button className={styles.secondaryButton}>Consult an expert</button>
+                        <div className='row'>
+                            <div className='col'>
+                                {
+                                    isSelected()
+                                        ? <button onClick={removeSelection} className={styles.removeButton}>Remove selection</button>
+                                        : <button onClick={selectDiamond} className={styles.primaryButton}>Select this diamond</button>
+                                }
+                            </div>
+                            <div className='col'>
+                                <button className={styles.secondaryButton}>Consult an expert</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
