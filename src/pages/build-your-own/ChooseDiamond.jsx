@@ -61,6 +61,7 @@ const ChooseDiamond = () => {
 
     useEffect(() => {
         setup();
+        //updateQuery();
     }, [])
 
     useEffect(() => {
@@ -119,6 +120,7 @@ const ChooseDiamond = () => {
         setColor(0);
         setOrigin("NATURAL");
         setup();
+        //updateQuery();
     }
 
     const convertColor = (int) => {
