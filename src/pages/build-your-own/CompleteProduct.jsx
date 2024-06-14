@@ -6,9 +6,9 @@ import axios from 'axios';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import styles from '/src/css/CompleteProduct.module.css';
 
 const CompleteProduct = () => {
-
     const navigate = useNavigate();
 
     const [productDesign, setProductDesign] = useState(null);
@@ -24,7 +24,6 @@ const CompleteProduct = () => {
                 navigate("/build-your-own/choose-setting");
             } else {
                 try {
-                    //console.log(`GET http://localhost:8080/api/product-designs/${sessionStorage.getItem('designId')}`);
                     const response = await axios.get(`http://localhost:8080/api/product-designs/${sessionStorage.getItem('designId')}`);
                     if (!response.data || response.status === 204) {
                         console.log('error, cannot fetch, wrong id');
@@ -47,27 +46,21 @@ const CompleteProduct = () => {
         }
 
         getDesign();
-    }, [])
+    }, []);
 
     const getEstimatePrice = async (shell, diamonds, materials) => {
         let totalPrice = 0;
-        //console.log(`Material price: ${shell.ematerialPrice}`);
         totalPrice += shell.ematerialPrice;
-        //console.log(`Production price: ${shell.productionPrice}`);
         totalPrice += shell.productionPrice;
-        //console.log(`Extra diamond: ${shell.ediamondPrice}`);
         totalPrice += shell.ediamondPrice;
         for (const diamond of diamonds) {
             const diamond_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
-            //console.log(`Diamond: ${diamond_price}`);
             totalPrice += diamond_price;
         }
         for (const material of materials) {
             const material_price = await fetchMaterialPrice(material.material.materialId);
-            //console.log(`Material: ${material_price}`);
             totalPrice += material_price * material.weight;
         }
-        //console.log(`Markup rate: ${shell.markupRate}`);
         totalPrice = totalPrice * shell.markupRate;
         return totalPrice;
     }
@@ -116,14 +109,12 @@ const CompleteProduct = () => {
         const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
         const chosenDiamondsInt = chosenDiamonds.map(Number);
         try {
-
             const response = await axios.post(`http://localhost:8080/api/get-multiple-diamonds-by-id`, chosenDiamondsInt);
             if (!response.data || response.status === 204) {
                 toast.error("CANNOT FETCH Diamonds");
             } else {
                 return response.data;
             }
-
         } catch (error) {
             console.log(error);
         }
@@ -142,7 +133,7 @@ const CompleteProduct = () => {
         }
     }
 
-    if (materials.length == 0 || productDesign === null || shell === null || diamonds.length == 0) {
+    if (materials.length === 0 || productDesign === null || shell === null || diamonds.length === 0) {
         return (
             <>
                 Processing order
@@ -151,63 +142,65 @@ const CompleteProduct = () => {
     } else {
         return (
             <>
-                <div className="container">
-                    <div className="row">
-                        <div className="col">
-                            <img src={productDesign.designFile} className='img-fluid mx-auto' />
-                        </div>
-                        <div className="col">
-                            <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
-                            <h4 className='fw-semibold' style={{ color: '#48AAAD' }}><i>{productDesign.designName} in {shell.shellName}</i></h4>
-                            <br />
-                            <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
-                            <ul>
-                                {diamonds.map(d =>
-                                    <li key={d.diamondId} style={{ listStyle: 'none' }}>
-                                        {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
+                <div className='container'> 
+                <div className={styles.container}>
+                    <div className={styles.imageSection}>
+                        <img src={productDesign.designFile} className={styles.diamondImage} alt="Product Design" />
+                    </div>
+                    <div className={styles.detailsSection}>
+                        <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
+                        <h4 className='fw-semibold' style={{ color: '#48AAAD' }}><i>{productDesign.designName} in {shell.shellName}</i></h4>
+                        <br />
+                        <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
+                        <ul>
+                            {diamonds.map(d =>
+                                <li key={d.diamondId} style={{ listStyle: 'none' }}>
+                                    {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
+                                </li>
+                            )}
+                        </ul>
+                        <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
+                        <ul>
+                            {
+                                materials.map(m =>
+                                    <li key={m.material.materialId} style={{ listStyle: 'none' }}>
+                                        {m.material.materialName} - {m.weight} carat
                                     </li>
-                                )}
-                            </ul>
-                            <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
-                            <ul>
-                                {
-                                    materials.map(m =>
-                                        <li key={m.material.materialId} style={{ listStyle: 'none' }}>
-                                            {m.material.materialName} - {m.weight} carat
-                                        </li>
-                                    )
-                                }
-                            </ul>
-                            <h3 className='fw-semibold fst-italic'>Product price: </h3>
-                            <h4 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
-                                {estimatedPrice === null
-                                    ? 'Estimating price...'
-                                    : formatPrice(estimatedPrice)
-                                }
-                            </h4>
+                                )
+                            }
+                        </ul>
+                        <h3 className='fw-semibold fst-italic'>Product price: </h3>
+                        <h5 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
+                            {estimatedPrice === null
+                                ? 'Estimating price...'
+                                : formatPrice(estimatedPrice)
+                            }
+                        </h5>
+                        <br />
+                        <div className="col">
+                            <h3 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h3>
                             <br />
-                            <div className="col">
-                                <h3 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h3>
-                                <br />
-                                <div className="summary-card">
-                                    <div className="content">
-                                        <div style={{ marginLeft: '1vw' }}>
-                                            <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
-                                            <p>US & Int. Shipping: Free</p>
-                                            <p>Taxes/Duties Estimate: 10% VAT</p>
-                                        </div>
-                                        <h3>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h3>
-                                        <button onClick={handleCashPayment} className='btn w-100 my-2' style={{ backgroundColor: '#48AAAD', color: '#fff' }}>Pay with cash</button>
-                                        <button onClick={handleOnlinePayment} className='btn btn-secondary w-100 my-2'>Pay online</button>
+                            <div className="summary-card">
+                                <div className="content">
+                                    <div style={{ marginLeft: '1vw' }}>
+                                        <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
+                                        <p>US & Int. Shipping: Free</p>
+                                        <p>Taxes/Duties Estimate: 10% VAT</p>
+                                    </div>
+                                    <h2>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h2>
+                                    <div className='row'>
+                                        <div className='col d-flex'><button onClick={handleCashPayment} className={styles.button}>Pay with cash</button></div>
+                                        <div className='col d-flex'><button onClick={handleOnlinePayment} className={`${styles.button} ${styles["secondary-button"]}`}>Pay online</button></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                </div>
             </>
         )
     }
-
 }
+
 export default CompleteProduct;

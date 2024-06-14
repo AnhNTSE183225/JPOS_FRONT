@@ -6,6 +6,7 @@
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
 }
 
 .imageSection {
@@ -24,15 +25,15 @@
 }
 
 .diamondTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 2vw;
 }
 
 .price {
-    font-size: 20px;
-    color: #d9534f;
+    font-size: 26px;
+    font-weight: 500;
+    color: #2d9596;
     margin-bottom: 10px;
+    margin-left: 1vw;
 }
 
 .paymentOptions {
@@ -53,7 +54,7 @@
 }
 
 .iconContainer {
-    background-color: #e9f8f9;
+    background-color: #b9eddd;
     padding: 10px;
     display: flex;
     align-items: center;
@@ -68,39 +69,33 @@
     flex-direction: column;
 }
 
-h3 {
-    margin: 0 0 10px 0;
-    font-size: 18px;
-    color: #333;
-}
-
-p {
-    margin: 0;
-    font-size: 14px;
-    color: #666;
-}
-
-.specs p {
-    margin: 5px 0;
-}
-
-.buttonsSection {
+.specItem {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.specItem span:first-child {
+    text-align: left;
+}
+
+.specItem span:last-child {
+    text-align: right;
 }
 
 .primaryButton {
     padding: 10px 20px;
-    border: none;
     background-color: #48AAAD;
     color: white;
-    border-radius: 4px;
+    border: none;   
     cursor: pointer;
+    width: 100%;
 }
 
 .primaryButton:hover {
-    background-color: #308285;
+    background-color: #2d9596;
 }
 
 .removeButton {
@@ -108,8 +103,8 @@ p {
     border: none;
     background-color: #880808;
     color: white;
-    border-radius: 4px;
     cursor: pointer;
+    width: 100%;
 }
 
 .removeButton:hover {
@@ -118,19 +113,38 @@ p {
 
 .secondaryButton {
     padding: 10px 20px;
-    border: 1px solid #6c757d;
-    background-color: white;
-    color: #6c757d;
-    border-radius: 4px;
+    border: none;
+    background-color: #b9eddd;
+    color: black;
     cursor: pointer;
+    width: 100%;
 }
 
 .secondaryButton:hover {
-    background-color: #e2e6ea;
+    background-color: #87cbb9;
 }
 
 .additionalInfo {
     margin-top: 20px;
     font-size: 14px;
     color: #6c757d;
+}
+
+@media (max-width: 991px) {
+    .container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .imageSection {
+        padding: 10px 0;
+    }
+
+    .detailsSection {
+        padding: 10px 0;
+    }
+
+    .paymentOptions {
+        padding: 10px 0;
+    }
 }
