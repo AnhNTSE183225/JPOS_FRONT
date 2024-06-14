@@ -21,8 +21,6 @@
 
 .image-section img {
     width: 100%;
-    /* max-width: 1000px; 
-    max-height: 1000px;  */
     border: 1px solid #ddd;
     border-radius: 8px;
 }
@@ -112,13 +110,14 @@ p {
 
 .shell-list {
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .shell-item {
+    text-transform: uppercase;
     padding: 10px;
     border: 2px solid #ddd;
-    border-radius: 20px;
+    border-radius: 5px;
     background-color: #f9f9f9;
     cursor: pointer;
     text-align: center;

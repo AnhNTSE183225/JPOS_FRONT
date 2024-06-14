@@ -9,33 +9,14 @@
 }
 
 .imageSection {
-    flex: 1;
-    margin-right: 20px;
+    padding: 20px;
+    text-align: center;
 }
 
 .diamondImage {
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
-}
-
-.imageActions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.actionButton {
-    padding: 8px 12px;
-    border: none;
-    background-color: #48AAAD;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.actionButton:hover {
-    background-color: #48AAAD;
 }
 
 .detailsSection {
@@ -55,8 +36,48 @@
 }
 
 .paymentOptions {
-    font-size: 16px;
-    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.optionBox {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+.iconContainer {
+    background-color: #e9f8f9;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
 }
 
 .specs p {

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styles from '/src/css/DiamondDetails.module.css';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightLeft, faTruckFast } from '@fortawesome/free-solid-svg-icons';
+import { faRightLeft, faTruckFast, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'sonner';
 import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
 import { formatPrice } from '../../helper_function/ConvertFunction';
@@ -116,17 +116,34 @@ const DiamondDetails = () => {
                         <p><strong>Clarity:</strong> {diamond.clarity}</p>
                         <p><strong>Carat Weight:</strong> {diamond.caratWeight}</p>
                     </div>
-                    <div className={styles["payment-options"]}>
-                        <div className={styles.option}>
-                            Flexible Payment Options: 3 Interest-Free Payments of {formatPrice(diamondPrice / 3)}
+                    <div className={styles.paymentOptions}>
+                        <h3>Your order included: </h3>
+                        <div className={styles.optionBox}>
+                            <div className={styles.iconContainer}>
+                                <FontAwesomeIcon icon={faTruckFast} />
+                            </div>
+                            <div className={styles.textContainer}>
+                                <h3>Free Shipping</h3>
+                                <p>We're committed to making your entire experience a pleasant one, from shopping to shipping.</p>
+                            </div>
                         </div>
-                        <div className={styles.option}>
-                            <FontAwesomeIcon icon={faRightLeft} style={{ marginRight: '8px' }} />
-                            Free Returns: Our commitment to you does not end at delivery. We offer free returns (U.S and Canada) to make your experience as easy as possible.
+                        <div className={styles.optionBox}>
+                            <div className={styles.iconContainer}>
+                                <FontAwesomeIcon icon={faChartBar} />
+                            </div>
+                            <div className={styles.textContainer}>
+                                <h3>Appraisal Included</h3>
+                                <p>An appraisal is a document stating the approximate monetary value of your item. It is only available for items over $800.</p>
+                            </div>
                         </div>
-                        <div className={styles.option}>
-                            <FontAwesomeIcon icon={faTruckFast} style={{ marginRight: '8px' }} />
-                            Free Shipping: We're committed to making your entire experience a pleasant one, from shopping to shipping.
+                        <div className={styles.optionBox}>
+                            <div className={styles.iconContainer}>
+                                <FontAwesomeIcon icon={faRightLeft} />
+                            </div>
+                            <div className={styles.textContainer}>
+                                <h3>Free Returns</h3>
+                                <p>Our commitment to you does not end at delivery. We offer free returns (U.S and Canada) to make your experience as easy as possible.</p>
+                            </div>
                         </div>
                     </div>
                     <div className={styles.buttonsSection}>
