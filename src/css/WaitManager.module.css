@@ -13,3 +13,26 @@
 #go-back-icon:hover {
     left: -5px;
 }
+.button {
+    padding: 10px 20px;
+    background-color: #48AAAD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.button:hover {
+    background-color: #327c7f;
+}
+
+.secondary-button {
+    color: black;
+    background-color: #b9eddd;
+    border: none;
+}
+
+.secondary-button:hover {
+    background-color: #87cbb9;
+}

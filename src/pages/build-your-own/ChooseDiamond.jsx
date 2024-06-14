@@ -250,7 +250,7 @@ const ChooseDiamond = () => {
                                     setPageNo(0);
                                     setPageSize(40);
                                     updateQuery();
-                                }}>Query</button>
+                                }}>Search</button>
                         }
                     </div>
                     <div className="col text-end">

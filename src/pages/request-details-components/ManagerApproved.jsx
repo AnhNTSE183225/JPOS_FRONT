@@ -33,11 +33,11 @@ const ManagerApproved = ({ order }) => {
       <div className="container-fluid">
         <div className="row mt-3">
           <div className="mb-2">
-            <h3>
+            <p>
               <b>Forward Quotation</b>
-            </h3>
+            </p>
           </div>
-          <div className="col-md-4 px-3">
+          <div className="col-md-6 px-3">
             <p>
               <b>Full Name</b>
             </p>
@@ -140,7 +140,7 @@ const ManagerApproved = ({ order }) => {
                 <p><b>Total Price: {formatPrice(order.totalAmount)}</b></p>
               </div>
               <div className='col'>
-                <button onClick={forwardQuotation} className='btn btn-success w-100'>Forward to {order.customer.name}</button>
+                <button onClick={forwardQuotation} className='btn w-100' style={{ backgroundColor: '#48AAAD', color: 'white' }}>Forward to {order.customer.name}</button>
               </div>
             </div>
           </div>

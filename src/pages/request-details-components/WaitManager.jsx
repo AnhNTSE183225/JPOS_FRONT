@@ -77,13 +77,13 @@ const WaitManager = ({ order }) => {
                 <div className="row">
                     <div className="col-6">
                         <h4 className='fw-bold'>Customer name</h4>
-                        <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
+                        <p className='fs-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h4 className='fw-bold'>Customer address</h4>
-                        <p>{order.customer.address}</p>
+                        <p className='fs-4'>{order.customer.address}</p>
                         <h4 className='fw-bold'>Customer budget</h4>
-                        <p>{formatPrice(order.budget)}</p>
+                        <p className='fs-4'>{formatPrice(order.budget)}</p>
                         <h4 className='fw-bold'>Description</h4>
-                        <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
+                        <p className='fs-4' style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
                         <h4 className='fw-bold'>Reference image</h4>
                         <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
                     </div>
@@ -99,7 +99,7 @@ const WaitManager = ({ order }) => {
                                 </ul>
                             </div>
                         )}
-                        <h4>Total: <span className='text-danger'>{formatPrice(order.qdiamondPrice)}</span></h4>
+                        <h4>Total: <span style={{color: '#48AAAD'}}>{formatPrice(order.qdiamondPrice)}</span></h4>
                         {order.product.materials.map(material =>
                             <div key={material.material.materialId}>
                                 <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
@@ -109,23 +109,23 @@ const WaitManager = ({ order }) => {
                                 </ul>
                             </div>
                         )}
-                        <h4>Total: <span className='text-danger'>{formatPrice(order.qmaterialPrice)}</span></h4>
+                        <h4>Total: <span style={{color: '#48AAAD'}}>{formatPrice(order.qmaterialPrice)}</span></h4>
                         <h4 className='fw-bold'>Extra</h4>
                         <ul>
                             <li>Extra diamonds: {formatPrice(order.ediamondPrice)}</li>
                             <li>Extra materials: {formatPrice(order.ematerialPrice)}</li>
                             <li>Production price: {formatPrice(order.productionPrice)}</li>
                         </ul>
-                        <h4>Total price as of {formatDate(order.qdate)}: <span className='text-danger'>{formatPrice(order.totalAmount)}</span></h4>
+                        <h4>Total price as of {formatDate(order.qdate)}: <span style={{color: '#48AAAD'}}>{formatPrice(order.totalAmount)}</span></h4>
                         <h4 className='fw-bold'>Markup rate</h4>
                         <input step={0.1} min={0.1} max={10} className='form-control mb-3' type="number" onChange={updatePrice} value={markupRate} />
-                        <h4>Total: <span className='text-danger'>{formatPrice(totalAmount)}</span></h4>
+                        <h4>Total: <span style={{color: '#48AAAD'}}>{formatPrice(totalAmount)}</span></h4>
                         <div className="row">
                             <div className="col d-flex">
-                                <button onClick={acceptQuote} className='btn btn-success w-100'>Accept</button>
+                                <button onClick={acceptQuote} className={styles.button}>Accept</button>
                             </div>
                             <div className="col d-flex">
-                                <button onClick={refuseQuote} className='btn btn-danger w-100'>Refuse &#40;ignores Markup Rate value&#41;</button>
+                                <button onClick={refuseQuote} className={`${styles.button} ${styles["secondary-button"]}`}>Refuse &#40;ignores Markup Rate value&#41;</button>
                             </div>
                         </div>
                     </div>

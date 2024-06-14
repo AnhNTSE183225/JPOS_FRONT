@@ -180,8 +180,8 @@ const CompleteProduct = () => {
                         <div className="col">
                             <h3 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h3>
                             <br />
-                            <div className="summary-card">
-                                <div className="content">
+                            <div>
+                                <div>
                                     <div style={{ marginLeft: '1vw' }}>
                                         <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
                                         <p>US & Int. Shipping: Free</p>

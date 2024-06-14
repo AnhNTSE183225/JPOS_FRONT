@@ -69,15 +69,15 @@ const Production = ({ order }) => {
                 <div className="row mb-2">
                     <div className="col-6">
                         <h4 className='fw-bold'>Customer name</h4>
-                        <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
+                        <p  className='fs-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h4 className='fw-bold'>Customer address</h4>
-                        <p>{order.customer.address}</p>
+                        <p  className='fs-4'>{order.customer.address}</p>
                         {order.orderType !== "from_design"
                             ? <>
                                 <h4 className='fw-bold'>Customer budget</h4>
-                                <p>{formatPrice(order.budget)}</p>
+                                <p className='fs-4'>{formatPrice(order.budget)}</p>
                                 <h4 className='fw-bold'>Description</h4>
-                                <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
+                                <p className='fs-4' style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
                                 <h4 className='fw-bold'>Model - by [ID: {order.designStaff.staffId}]{order.designStaff.name}</h4>
                                 <img className='img-fluid' src={order.modelFile == 'Not provided' ? empty_image : order.modelFile} alt="" style={{ width: '500px', height: '500px' }} />
                             </>

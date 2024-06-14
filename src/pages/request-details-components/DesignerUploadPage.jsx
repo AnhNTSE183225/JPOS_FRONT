@@ -44,7 +44,7 @@ const DesignerUploadPage = ({ order }) => {
                             <b>Design order</b>
                         </h3>
                     </div>
-                    <div className="col-md-4 px-3">
+                    <div className="col-md-6 px-3">
                         <p>
                             <b>Full Name</b>
                         </p>
@@ -150,7 +150,7 @@ const DesignerUploadPage = ({ order }) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-10 text-center">
+                    <div className="col-md-12 text-center">
                         <h1>Upload design file</h1>
                         <div>
                             <div className="mb-3">
