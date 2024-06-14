@@ -23,6 +23,10 @@ const DiamondDetails = () => {
         }
     }, [diamondId]);
 
+    useEffect(() => {
+        window.scrollTo(0,0);
+    },[])
+
     const fetchDiamond = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/diamonds/${diamondId}`);
