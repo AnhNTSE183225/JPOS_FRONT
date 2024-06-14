@@ -70,12 +70,14 @@ const BuildYourOwnNav = () => {
                                             {sessionStorage.getItem('designName')}
                                         </div>
                                         <div className="row">
-                                            <b className='text' style={{color: '#48AAAD'}}>{sessionStorage.getItem('designPrice')}</b>
+                                            <b className='text' style={{ color: '#48AAAD' }}>{sessionStorage.getItem('designPrice')}</b>
                                         </div>
                                     </div>
                                 </div>
                                 <div className={`col-2 ${styles['image-col']} `}>
-                                    <img src={sessionStorage.getItem('designImage')} alt="" />
+                                    <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/setting-details/${sessionStorage.getItem('designId')}`}>
+                                        <img src={sessionStorage.getItem('designImage')} alt="" />
+                                    </Link>
                                 </div>
                             </>
                     }
@@ -90,9 +92,11 @@ const BuildYourOwnNav = () => {
                                 Choose diamonds
                             </>
                             : <>
-                                {sessionStorage.getItem('diamondImages').split(',').map((image,index) => (
+                                {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
                                     <div key={index} className={`col-2 me-2 ${styles['image-col']}`}>
-                                        <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
+                                        <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
+                                            <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
+                                        </Link>
                                     </div>
                                 ))}
                                 <div className="col">
@@ -101,7 +105,7 @@ const BuildYourOwnNav = () => {
                                             <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
                                         </div>
                                         <div className="row">
-                                            <b>Total: <span className='text' style={{color: '#48AAAD'}}>{formatPrice(calculateTotal())}</span></b>
+                                            <b>Total: <span className='text' style={{ color: '#48AAAD' }}>{formatPrice(calculateTotal())}</span></b>
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +116,7 @@ const BuildYourOwnNav = () => {
                     checkCompletion()
                         ? <div className={`col-lg-4 ${styles['col']} ${styles['final-button']}`} onClick={() => navigate("/build-your-own/complete-product")}>
                             <p className='fw-bolder m-0 fs-4' >Proceed to checkout</p>
-                            <FontAwesomeIcon icon={faRightLong} id={`${styles['icon']}`}/>
+                            <FontAwesomeIcon icon={faRightLong} id={`${styles['icon']}`} />
                         </div>
                         : <div className={`col ${styles['col']}`}>
                             <div className="col-1">
