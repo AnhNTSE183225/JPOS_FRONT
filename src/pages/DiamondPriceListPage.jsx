@@ -8,6 +8,16 @@ const DiamondPriceListPage = () => {
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(10);
 
+    const pay = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/payment/vn-pay?amount=${20000000}`);
+            console.log(response.data.data.paymentUrl);
+            window.open(response.data.data.paymentUrl,'_blank').focus();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const fetchDiamondList = async (pageNo, pageSize) => {
         try {
             const response = await axios.get(`http://localhost:8080/api/prices`);
@@ -49,6 +59,9 @@ const DiamondPriceListPage = () => {
                     </div>
                 </div> */}
                 <div className="row mt-3">
+                    <button onClick={pay}>
+                        Click me
+                    </button>
                     <table className="table table-bordered">
                         <thead>
                             <tr>

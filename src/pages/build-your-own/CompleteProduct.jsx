@@ -7,6 +7,7 @@ import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/Fet
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/CompleteProduct.module.css';
+import { makePayment } from '../../helper_function/Pay';
 
 const CompleteProduct = () => {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ const CompleteProduct = () => {
     const [diamonds, setDiamonds] = useState([]);
     const [materials, setMaterials] = useState([]);
     const [estimatedPrice, setEstimatedPrice] = useState(null);
+    const [processing, setProcessing] = useState(false);
 
     useEffect(() => {
         const getDesign = async () => {
@@ -65,43 +67,27 @@ const CompleteProduct = () => {
         return totalPrice;
     }
 
-    const createOrder = async (havePaid) => {
+    const clickPay = async () => {
+        const orderId = await createOrder();
+        const makePayment = await makePayment();
+    }
+
+    const createOrder = async () => {
         try {
             const object = {
                 productDesignId: sessionStorage.getItem('designId'),
                 productShellId: sessionStorage.getItem('shellId'),
                 diamondIds: sessionStorage.getItem('diamonds').split(','),
-                customerId: sessionStorage.getItem("customer_id"),
-                havePaid: havePaid
+                customerId: sessionStorage.getItem("customer_id")
             };
             const response = await axios.post(`http://localhost:8080/api/create-order-from-design`, object);
             if (!response.data || response.status === 204) {
                 toast.error("Failed to fetch order");
             } else {
-                const order = response.data;
+                return response.data;
             }
         } catch (error) {
             console.log(error);
-        }
-    }
-
-    const handleCashPayment = () => {
-        if (sessionStorage.getItem('customer_id') == null) {
-            toast.info(`You need to log in to place an order!`);
-            navigate("/login")
-        } else {
-            createOrder(false);
-            navigate('/cash-completed');
-        }
-    }
-
-    const handleOnlinePayment = () => {
-        if (sessionStorage.getItem('customer_id') == null) {
-            toast.info(`You need to log in to place an order!`);
-            navigate("/login");
-        } else {
-            createOrder(true);
-            navigate('/online-completed');
         }
     }
 
@@ -189,8 +175,11 @@ const CompleteProduct = () => {
                                     </div>
                                     <h2>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h2>
                                     <div className='row'>
-                                        <div className='col d-flex'><button onClick={handleCashPayment} className={styles.button}>Pay with cash</button></div>
-                                        <div className='col d-flex'><button onClick={handleOnlinePayment} className={`${styles.button} ${styles["secondary-button"]}`}>Pay online</button></div>
+                                        {
+                                            processing
+                                            ? <div className='col d-flex'><button className={styles.button} disabled>Processing...</button></div>
+                                            : <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay</button></div>
+                                        }
                                     </div>
                                 </div>
                             </div>

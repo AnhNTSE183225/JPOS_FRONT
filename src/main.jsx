@@ -25,6 +25,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
 import CustomerOrdersPage from './pages/CustomerOrdersPage';
+import PaymentHandler from './PaymentHandler';
 
 
 
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
         element: <RequestDetailPage />
       }
     ]
+  },
+  {
+    path: '/payment-callback',
+    element: <PaymentHandler/>
   }
 ]);
 

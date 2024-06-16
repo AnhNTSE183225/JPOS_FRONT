@@ -35,7 +35,7 @@ const LoginPage = () => {
                     console.log(error);
                 });
         } else {
-            alert("Please fill in all forms!");
+            toast.info(`Please fill in the required fields: username, password`);
         }
     };
 
