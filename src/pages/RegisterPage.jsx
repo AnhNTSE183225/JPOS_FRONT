@@ -76,7 +76,7 @@ const RegisterPage = () => {
                         <button onClick={customerRegister} className='btn btn-dark w-100'>Create account</button>
                     </div>
                     <div className='col'>
-                        <Link to='/customer-login'><button className='btn btn-light w-100'>Go to login</button></Link>
+                        <Link to='/login'><button className='btn btn-light w-100'>Go to login</button></Link>
                     </div>
                 </div>
             </div>
