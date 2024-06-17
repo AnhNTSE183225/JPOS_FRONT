@@ -1,46 +1,31 @@
-.request-page .table-container {
-    max-height: 23rem;
-    overflow-y: auto;
-}
-
-.request-page table {
-    font-size: 1.3rem;
-    text-align: center;
-    width: 100%;
-}
-
-.request-page .table-head {
+.request-table #table-head {
+    border-radius: 10px 10px 0 0;
     background-color: #48AAAD;
     color: white;
 }
-
-.request-page th:first-child {
-    border-radius: 10px 0 0 0;
+.request-table {
+    font-size: 1.3rem;
+    text-align: center;
+    box-shadow: 0px 1.908px 19.078px 0px rgba(0, 0, 0, 0.10);
+    width: 100%;
 }
 
-.request-page th:last-child {
-    border-radius: 0 10px 0 0;
-}
-
-.request-page thead {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-.request-page .table-head th, .request-page td {
+.request-table #table-head th,td {
     background-clip: padding-box;
     padding: 1rem;
 }
 
-.request-page button {
-    font-weight: 400;
-    text-transform: uppercase;
-    color: white;
-    background-color: #48AAAD;
-    border-radius: 10px;
+.request-table thead {
+    background-color: green;
 }
 
-.detail {
-    margin-left: 20vw;
+.request-table button {
+    font-weight: bold;
+    color: white;
+    background-color: #48AAAD;
+    border-radius: 20px;
+}
+.request-table button:hover {
+    background-color: #63d0d4;
+    color: white;
 }
