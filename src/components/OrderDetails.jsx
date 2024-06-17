@@ -52,7 +52,7 @@ const OrderDetails = ({ order }) => {
                             </div>
                         )}
                         <h4>Quotation price: <span style={{ color: 'red' }}>{order.qmaterialPrice === null ? 'None' : formatPrice(order.qmaterialPrice)}</span></h4>
-                        <h4>Order price: <span style={{ color: '#48AAAD' }}>{formatPrice(order.omaterialPrice)}</span></h4>
+                        <h4>Order price: <span style={{ color: '#48AAAD' }}>{order.omaterialPrice === null ? 'None' : formatPrice(order.omaterialPrice)}</span></h4>
                         <h4 className='fw-bold'>Extra</h4>
                         <ul>
                             <li>Extra diamonds: {formatPrice(order.ediamondPrice)}</li>
