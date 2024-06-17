@@ -26,6 +26,8 @@ import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import BuildYourOwnFrame from './pages/frame/BuildYourOwnFrame';
 import CustomerOrdersPage from './pages/CustomerOrdersPage';
 import PaymentHandler from './PaymentHandler';
+import ManageRequestsPage from './pages/ManageRequestsPage';
+import ManageStaffPage from './pages/ManageStaffPage';
 
 
 
@@ -120,6 +122,14 @@ const router = createBrowserRouter([
       {
         path: 'request/select/:orderId',
         element: <RequestDetailPage />
+      },
+      {
+        path: 'manage-requests',
+        element: <ManageRequestsPage/>
+      },
+      {
+        path: 'manage-staff',
+        element: <ManageStaffPage/>
       }
     ]
   },
