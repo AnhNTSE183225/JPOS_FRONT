@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from 'sonner';
 import { formatDate, formatPrice } from '/src/helper_function/ConvertFunction.jsx';
 import axios from 'axios';
-import styles from '/src/css/RequestPage.module.css';
+import styles from '/src/css/CustomerOrdersPage.module.css';
 import OrderDetails from '../components/OrderDetails';
 
 const CustomerOrdersPage = () => {
