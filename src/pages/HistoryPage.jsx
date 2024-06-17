@@ -1,4 +1,4 @@
-import { formatDate, formatPrice } from '../helper_function/ConvertFunction'
+import { formatDate, formatPrice } from '../helper_function/ConvertFunction';
 import { useState, useEffect } from 'react';
 import styles from '/src/css/HistoryPage.module.css';
 import axios from 'axios';
@@ -20,58 +20,62 @@ const HistoryPage = () => {
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
         fetchData();
-    }, [])
+    }, []);
 
     return (
         <div className={`${styles['history-page']}`}>
             <h1 className='fw-bold'>History</h1>
             <div className='container-fluid'>
                 <div className="row">
-                    <table>
-                        <thead>
-                            <tr className={`${styles['table-head']}`}>
-                                <th>Order ID</th>
-                                <th>Customer Name</th>
-                                <th>Date</th>
-                                <th>Paid</th>
-                                <th>Status</th>
-                                <th>#</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.length <= 0
-                                ? <tr>
-                                    <td>You have no orders.</td>
+                    <div className={`${styles['table-container']}`}>
+                        <table>
+                            <thead>
+                                <tr className={`${styles['table-head']}`}>
+                                    <th>Order ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Date</th>
+                                    <th>Paid</th>
+                                    <th>Status</th>
+                                    <th>#</th>
                                 </tr>
-                                : orders.map(order => (
-                                    <tr key={order.id}>
-                                        <td>{order.id}</td>
-                                        <td>{order.customer.name}</td>
-                                        <td>{formatDate(order.orderDate)}</td>
-                                        <td>{formatPrice(order.totalAmount)}</td>
-                                        <td>Completed</td>
-                                        <td>
-                                            <button onClick={() => setCurrentOrder(order)}>
-                                                View details
-                                            </button>
-                                        </td>
+                            </thead>
+                            <tbody>
+                                {orders.length <= 0 ? (
+                                    <tr>
+                                        <td colSpan="6">You have no orders.</td>
                                     </tr>
-                                ))}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    orders.map(order => (
+                                        <tr key={order.id}>
+                                            <td>{order.id}</td>
+                                            <td>{order.customer.name}</td>
+                                            <td>{formatDate(order.orderDate)}</td>
+                                            <td>{formatPrice(order.totalAmount)}</td>
+                                            <td>Completed</td>
+                                            <td>
+                                                <button onClick={() => setCurrentOrder(order)} className='fs-6'>
+                                                    View details
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div className="row">
-                    {
-                        currentOrder == null
-                        ? <h1>Please select an order to view it's details</h1>
-                        : <OrderDetails order={currentOrder}/>
-                    }
+                    {currentOrder == null ? (
+                        <h1>Please select an order to view its details</h1>
+                    ) : (
+                        <OrderDetails order={currentOrder} />
+                    )}
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default HistoryPage;
