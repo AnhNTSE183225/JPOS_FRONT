@@ -1,10 +1,11 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import logo from "../assets/textLogo.png";
 import styles from '/src/css/NavigationBar.module.css';
 
 const UserComponent = (props) => {
 
+    const navigate = useNavigate();
     const [dropDown, setDropdown] = useState(false);
 
     const handleDropdown = () => {
@@ -14,6 +15,7 @@ const UserComponent = (props) => {
     const logout = () => {
         sessionStorage.clear();
         props.setLoggedIn(false);
+        navigate("/");
     }
 
     if (!props.loggedIn) {
@@ -29,7 +31,7 @@ const UserComponent = (props) => {
                     {sessionStorage.getItem('name')}
                 </div>
                 <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
-                    <li><a className="dropdown-item" onClick={logout} style={{cursor: 'pointer'}}>Logout</a></li>
+                    <li><a className="dropdown-item" onClick={logout} style={{ cursor: 'pointer' }}>Logout</a></li>
                 </ul>
             </div>
         )
