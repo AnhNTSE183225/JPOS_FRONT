@@ -3,12 +3,14 @@ import { toast } from "sonner";
 import axios from 'axios';
 import styles from '/src/css/ManageRequestsPage.module.css';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
+import OrderDetails from "../components/OrderDetails";
 
 const ManageRequestsPage = () => {
 
     const [orders, setOrders] = useState([]);
     const [queryOrders, setQueryOrders] = useState([]);
     const [activeStatus, setActiveStatus] = useState(null);
+    const [activeOrder, setActiveOrder] = useState(null);
     const orderStatus = [
         'Waiting for Sales Staff',
         'Waiting for Manager',
@@ -121,7 +123,7 @@ const ManageRequestsPage = () => {
                                     <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
                                     <td>{order.status}</td>
                                     <td>
-                                        <button>
+                                        <button onClick={() => setActiveOrder(order)}>
                                             View details
                                         </button>
                                     </td>
@@ -129,6 +131,13 @@ const ManageRequestsPage = () => {
                             ))}
                     </tbody>
                 </table>
+            </div>
+            <div className="row mb-3">
+                {activeOrder == null ? (
+                    <h1>Please select an order to view its details</h1>
+                ) : (
+                    <OrderDetails order={activeOrder} />
+                )}
             </div>
         </div>
     )
