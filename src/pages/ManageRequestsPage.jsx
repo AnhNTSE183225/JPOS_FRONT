@@ -84,8 +84,10 @@ const ManageRequestsPage = () => {
         if (status !== null) {
             const query_orders = orders.filter(order => order.status == status);
             setQueryOrders(query_orders);
+            setActiveOrder(null);
         } else {
             setQueryOrders(orders);
+            setActiveOrder(null);
         }
     }, [activeStatus])
 
