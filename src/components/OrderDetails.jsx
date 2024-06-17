@@ -66,6 +66,7 @@ const OrderDetails = ({ order }) => {
                                 <li>Extra materials: {formatPrice(order.ematerialPrice)}</li>
                                 <li>Production price: {formatPrice(order.productionPrice)}</li>
                             </ul>
+                            <h5>Tax fee (10% VAT): {formatPrice(order.taxFee)}</h5>
                             <h4><b>TOTAL PRICE {formatDate(order.qdate)}: <span style={{ color: '#48AAAD' }}>{formatPrice(order.totalAmount)}</span></b></h4>
 
                         </div>
