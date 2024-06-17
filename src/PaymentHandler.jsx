@@ -1,26 +1,29 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { makePayment } from "./helper_function/Pay";
 
 const PaymentHandler = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const callback = async () => {
-            console.log(`GET http://localhost:8080/api/payment/vn-pay-callback?${location.search}`);
-            const response = await axios.get(`http://localhost:8080/api/payment/vn-pay-callback?${location.search}`);
-            console.log(response.data);
+            console.log(`GET http://localhost:8080/api/payment/vn-pay-callback?${location.search}&orderId=${sessionStorage.getItem('currentOrderId')}&orderType=${sessionStorage.getItem('currentOrderType')}`);
+            const response = await axios.get(`http://localhost:8080/api/payment/vn-pay-callback?${location.search}&orderId=${sessionStorage.getItem('currentOrderId')}&orderType=${sessionStorage.getItem('currentOrderType')}`);
+            if(response.data.data.code == '00') {
+                navigate("/online-completed");
+            } else {
+                toast.error(`Order cancelled`);
+            }
         }
 
         callback();
+        sessionStorage.removeItem('currentOrderId');
+        sessionStorage.removeItem('currentOrderType');
     }, [])
 
     return (
         <>
-            <button onClick={makePayment}>
-                Click me
-            </button>
             <h1>Payment processing</h1>
         </>
     )

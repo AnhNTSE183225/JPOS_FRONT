@@ -6,6 +6,7 @@ import empty_image from '/src/assets/empty_image.jpg';
 import { useNavigate } from 'react-router-dom';
 import styles from '/src/css/WaitCustomer.module.css';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
+import { makePayment } from '../../helper_function/Pay';
 
 const WaitCustomer = ({ order }) => {
 
@@ -37,24 +38,34 @@ const WaitCustomer = ({ order }) => {
         setCurrentDiamondPrice(totalDiamondPrice);
     };
 
-    const handleSubmit = async () => {
-        setProcessing(true);
+    const createOrder = async () => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/accept-order`,
-                {
-                    ...order,
-                    odiamondPrice: currentDiamondPrice,
-                    omaterialPrice: currentMaterialPrice
-                }
-            )
+            const response = await axios.put(`http://localhost:8080/api/accept-quotation?orderId=${order.id}`);
             if (!response.data || response.status === 204) {
                 toast.error("Something went wrong, saving failed");
             } else {
-                toast.success(`Submitted successfully`);
-                navigate("/profile");
+                return response.data;
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const clickPay = async () => {
+        setProcessing(true);
+        try {
+            const orderId = await createOrder();
+            const orderAmount = await axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`);
+            if (!orderAmount || orderAmount.status === 204) {
+                console.log(`Can't find totalAmount of that order`);
+            } else {
+                console.log(orderAmount);
+                sessionStorage.setItem('currentOrderId', orderAmount.data.id);
+                sessionStorage.setItem('currentOrderType', orderAmount.data.orderType);
+                makePayment(orderAmount.data.totalAmount * 0.3);
+            }
+        } catch (error) {
+            toast.error(`Payment process failed: ${error}`);
         }
         setProcessing(false);
     }
@@ -110,13 +121,15 @@ const WaitCustomer = ({ order }) => {
                         </ul>
                         <h4>Total price as of {formatDate(order.qdate)}: <span className='text-danger'>{formatPrice(order.totalAmount)}</span></h4>
                         <h4>Total price as of today: <span className='text-success'>{formatPrice((currentDiamondPrice + currentMaterialPrice + order.ematerialPrice + order.ediamondPrice + order.productionPrice) * order.markupRate * 1.1)}</span></h4>
+                        <div className='my-3'>
+                        </div>
                         {processing
                             ? <button className="btn btn-primary w-100" type="button" disabled>
                                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                 <span role="status">Loading...</span>
                             </button>
-                            : <button onClick={handleSubmit} className={`btn w-100 ${styles['submit-button']}`}>
-                                Accept price
+                            : <button onClick={clickPay} className={`btn w-100 ${styles['submit-button']}`}>
+                                Accept quotation & pay {formatPrice((currentDiamondPrice + currentMaterialPrice + order.ematerialPrice + order.ediamondPrice + order.productionPrice) * order.markupRate * 1.1 * 0.3)} (30% price)
                             </button>
                         }
                     </div>

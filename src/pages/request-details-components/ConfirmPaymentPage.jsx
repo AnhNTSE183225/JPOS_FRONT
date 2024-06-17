@@ -11,12 +11,7 @@ import empty_image from '/src/assets/empty_image.jpg';
 const ConfirmPaymentPage = ({ order }) => {
     const navigate = useNavigate();
 
-    const [paymentDate, setPaymentDate] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState('');
     const [amountPaid, setAmountPaid] = useState(0);
-    const [maxDate, setMaxDate] = useState('');
-
-
     const [processing, setProcessing] = useState(false);
 
     const getPaidAmount = async () => {
@@ -34,52 +29,19 @@ const ConfirmPaymentPage = ({ order }) => {
     }
 
     useEffect(() => {
-        const today = new Date();
-        const year = today.getFullYear();
-        let month = today.getMonth() + 1; // JavaScript months are 0-based
-        let day = today.getDate();
-
-        // Pad month and day with leading zeros if necessary
-        month = month < 10 ? `0${month}` : month;
-        day = day < 10 ? `0${day}` : day;
-
-        setMaxDate(`${year}-${month}-${day}`);
-    }, []);
-
-    useEffect(() => {
         getPaidAmount();
     }, [])
 
     const handleSubmit = async () => {
         try {
-            if (paymentDate !== null &&
-                paymentMethod.trim().length > 0 &&
-                amountPaid > 0
-            ) {
-                setProcessing(true);
-                const response = await axios.post(`http://localhost:8080/api/orders/${order.id}/complete`,
-                    {
-                        paymentDate: paymentDate,
-                        paymentMethod: paymentMethod,
-                        paymentStatus: 'completed',
-                        amountPaid: amountPaid,
-                        amountTotal: order.totalAmount
-                    }
-                )
-                if (!response.data || response.status === 204) {
-                    toast.error("Something happened, failed to confirm deposit");
-                } else {
-                    console.log(response.data);
-                    setProcessing(false);
-                    navigate("/staff/request");
-                }
+            setProcessing(true);
+            const response = await axios.post(`http://localhost:8080/api/orders/${order.id}/complete`);
+            if (!response.data || response.status === 204) {
+                toast.error("Something happened, failed to confirm deposit");
             } else {
-                if(paymentMethod.trim().length <= 0) {
-                    toast.info(`Please select a payment method!`);
-                }
-                if(paymentDate == null) {
-                    toast.info(`Please select a payment date!`);
-                }
+                console.log(response.data);
+                setProcessing(false);
+                navigate("/staff/request");
             }
         } catch (error) {
             console.log(error);
@@ -142,28 +104,11 @@ const ConfirmPaymentPage = ({ order }) => {
                         <h4>Accepted price as of {formatDate(order.odate)}: <span className='text-success'>{formatPrice(order.totalAmount)}</span></h4>
                         <h4 className='fw-bold'>Payment</h4>
                         <div className="row mb-2">
-                            <div className="col">Payment method</div>
                             <div className="col">
-                                <select onChange={(e) => setPaymentMethod(e.target.value)} className='form-control'>
-                                    <option value=''>Select payment method</option>
-                                    {["VISA", "Cash", "Credit/Debit"].map(value => (
-                                        <option key={value} value={value}>
-                                            {value}
-                                        </option>
-                                    ))}
-                                </select>
+                                70% Payment
                             </div>
-                        </div>
-                        <div className="row mb-2">
-                            <div className="col">Payment date</div>
                             <div className="col">
-                                <input max={maxDate} onChange={(e) => setPaymentDate(e.target.value)} className='form-control' type="date" />
-                            </div>
-                        </div>
-                        <div className="row mb-2">
-                            <div className="col">Amount have to pay</div>
-                            <div className="col">
-                                <input value={formatPrice(amountPaid)} placeholder='0.00' className='form-control' type="text" disabled/>
+                                {formatPrice(amountPaid)}
                             </div>
                         </div>
                         <div className="row mb-2">
@@ -182,7 +127,7 @@ const ConfirmPaymentPage = ({ order }) => {
                                 </button>
                                 :
                                 <button className={`btn w-100 ${styles['submit-button']}`} onClick={handleSubmit}>
-                                    Confirm final payment
+                                    Confirm customer have completed payment and received product
                                 </button>
                         }
                     </div>

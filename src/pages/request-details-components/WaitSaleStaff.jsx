@@ -465,7 +465,7 @@ const WaitSaleStaff = ({ order }) => {
                             </select>
                         </div>
                         <p>
-                            <b>Carat weight</b>
+                            <b>Weight</b>
                         </p>
                         <div className="col-10 mb-2">
                             <input

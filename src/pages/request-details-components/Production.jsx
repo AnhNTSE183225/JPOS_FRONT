@@ -14,7 +14,7 @@ const Production = ({ order }) => {
 
     const [processing, setProcessing] = useState(false);
     const [imageFile, setImageFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState(`Not provided`);
+    const [imageUrl, setImageUrl] = useState(null);
 
     const handleSubmit = async () => {
         try {
@@ -69,9 +69,9 @@ const Production = ({ order }) => {
                 <div className="row mb-2">
                     <div className="col-6">
                         <h4 className='fw-bold'>Customer name</h4>
-                        <p  className='fs-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
+                        <p className='fs-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h4 className='fw-bold'>Customer address</h4>
-                        <p  className='fs-4'>{order.customer.address}</p>
+                        <p className='fs-4'>{order.customer.address}</p>
                         {order.orderType !== "from_design"
                             ? <>
                                 <h4 className='fw-bold'>Customer budget</h4>
@@ -123,7 +123,12 @@ const Production = ({ order }) => {
                     <div className="col">
                         <label className="form-label">Upload completed image of product</label>
                         <input className="form-control mb-3" type="file" onChange={(e) => setImageFile(e.target.files[0])} />
-                        <p>URL: {imageUrl}</p>
+                        {
+                            imageUrl !== null
+                                ? <img src={imageUrl} crossOrigin='anonymous'>
+                                </img>
+                                : <p>URL: Not provided</p>
+                        }
                         <div className="row">
                             <div className="col">
                                 {

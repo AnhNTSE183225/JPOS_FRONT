@@ -12,7 +12,7 @@ const CustomDesignPage = () => {
     const [designFile, setDesignFile] = useState(null);
     const [description, setDescription] = useState('');
     const [budget, setBudget] = useState(500);
-    const [imageUrl, setImageUrl] = useState(`Not provided`);
+    const [imageUrl, setImageUrl] = useState(null);
 
     const [processing, setProcessing] = useState(false);
 
@@ -62,7 +62,7 @@ const CustomDesignPage = () => {
                         setDesignFile(null);
                         setDescription('');
                         setBudget(500);
-                        setImageUrl(`Not provided`);
+                        setImageUrl(null);
                     }
                 ).catch(
                     error => {
@@ -91,7 +91,11 @@ const CustomDesignPage = () => {
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
                                 <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
-                                <p>URL: {imageUrl}</p>
+                                {
+                                    imageUrl !== null
+                                    ? <img src={imageUrl} crossOrigin="anonymous"/>
+                                    : <p>URL: Not provided</p>
+                                }
                                 {
                                     processing
                                         ? < button className="btn btn-primary" type="button" disabled>

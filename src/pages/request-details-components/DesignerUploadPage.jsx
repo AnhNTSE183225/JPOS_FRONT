@@ -6,11 +6,17 @@ import { formatPrice } from '../../helper_function/ConvertFunction';
 
 const DesignerUploadPage = ({ order }) => {
     const [designFile, setDesignFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState(`Not provided`);
-
+    const [imageUrl, setImageUrl] = useState(null);
     const [processing, setProcessing] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (designFile !== null) {
+            const objectURL = URL.createObjectURL(designFile);
+            setImageUrl(objectURL);
+        }
+    }, [designFile])
 
     const uploadImage = async () => {
         try {
@@ -24,7 +30,6 @@ const DesignerUploadPage = ({ order }) => {
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }
-                setImageUrl(response.data);
                 setProcessing(false);
                 navigate('/staff/request');
             }
@@ -155,7 +160,11 @@ const DesignerUploadPage = ({ order }) => {
                         <div>
                             <div className="mb-3">
                                 <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
-                                <p>File URL: {imageUrl}</p>
+                                {
+                                    imageUrl !== null
+                                        ? <img src={imageUrl} crossOrigin='anonymous' />
+                                        : <p>Image preview...</p>
+                                }
                                 {
                                     processing
                                         ? < button className="btn btn-primary" type="button" disabled>
