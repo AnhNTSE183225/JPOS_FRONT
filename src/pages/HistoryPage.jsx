@@ -6,7 +6,7 @@ import OrderDetails from '../components/OrderDetails';
 
 const HistoryPage = () => {
     const [orders, setOrders] = useState([]);
-    const [currentOrder, setCurrentOrder] = useState(null);
+    const [currentOrderId, setCurrentOrderId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,7 +55,7 @@ const HistoryPage = () => {
                                             <td>{formatPrice(order.totalAmount)}</td>
                                             <td>Completed</td>
                                             <td>
-                                                <button onClick={() => setCurrentOrder(order)} className='fs-6'>
+                                                <button onClick={() => setCurrentOrderId(order.id)} className='fs-6'>
                                                     View details
                                                 </button>
                                             </td>
@@ -67,10 +67,10 @@ const HistoryPage = () => {
                     </div>
                 </div>
                 <div className="row">
-                    {currentOrder == null ? (
+                    {currentOrderId == null ? (
                         <h1>Please select an order to view its details</h1>
                     ) : (
-                        <OrderDetails order={currentOrder} />
+                        <OrderDetails orderId={currentOrderId} staffType="staff"/>
                     )}
                 </div>
             </div>

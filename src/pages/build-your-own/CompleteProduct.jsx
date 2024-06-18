@@ -78,9 +78,18 @@ const CompleteProduct = () => {
             if (!orderAmount || orderAmount.status === 204) {
                 console.log(`Can't find totalAmount of that order`);
             } else {
-                console.log(orderAmount);
                 sessionStorage.setItem('currentOrderId', orderAmount.data.id);
                 sessionStorage.setItem('currentOrderType', orderAmount.data.orderType);
+                
+                sessionStorage.removeItem('quantity');
+                sessionStorage.removeItem('shellId');
+                sessionStorage.removeItem('diamonds');
+                sessionStorage.removeItem('diamondPrices');
+                sessionStorage.removeItem('diamondImages');
+                sessionStorage.removeItem('designId');
+                sessionStorage.removeItem('designName');
+                sessionStorage.removeItem('designPrice');
+                sessionStorage.removeItem('designImage');
                 makePayment(orderAmount.data.totalAmount * 0.3);
             }
         } catch (error) {

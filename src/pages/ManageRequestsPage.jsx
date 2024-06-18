@@ -10,7 +10,7 @@ const ManageRequestsPage = () => {
     const [orders, setOrders] = useState([]);
     const [queryOrders, setQueryOrders] = useState([]);
     const [activeStatus, setActiveStatus] = useState(null);
-    const [activeOrder, setActiveOrder] = useState(null);
+    const [activeOrderId, setActiveOrderId] = useState(null);
     const orderStatus = [
         'Waiting for Sales Staff',
         'Waiting for Manager',
@@ -84,10 +84,10 @@ const ManageRequestsPage = () => {
         if (status !== null) {
             const query_orders = orders.filter(order => order.status == status);
             setQueryOrders(query_orders);
-            setActiveOrder(null);
+            setActiveOrderId(null);
         } else {
             setQueryOrders(orders);
-            setActiveOrder(null);
+            setActiveOrderId(null);
         }
     }, [activeStatus])
 
@@ -125,7 +125,7 @@ const ManageRequestsPage = () => {
                                     <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
                                     <td>{order.status}</td>
                                     <td>
-                                        <button onClick={() => setActiveOrder(order)}>
+                                        <button onClick={() => setActiveOrderId(order.id)}>
                                             View details
                                         </button>
                                     </td>
@@ -135,10 +135,10 @@ const ManageRequestsPage = () => {
                 </table>
             </div>
             <div className="row mb-3">
-                {activeOrder == null ? (
+                {activeOrderId == null ? (
                     <h1>Please select an order to view its details</h1>
                 ) : (
-                    <OrderDetails order={activeOrder} />
+                    <OrderDetails orderId={activeOrderId} staffType="manage"/>
                 )}
             </div>
         </div>

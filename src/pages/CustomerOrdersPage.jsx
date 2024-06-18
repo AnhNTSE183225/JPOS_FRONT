@@ -7,7 +7,7 @@ import OrderDetails from '../components/OrderDetails';
 
 const CustomerOrdersPage = () => {
     const [orders, setOrders] = useState([]);
-    const [currentOrder, setCurrentOrder] = useState(null);
+    const [currentOrderId, setcurrentOrderId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,7 +65,7 @@ const CustomerOrdersPage = () => {
                                             <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
                                             <td>{order.status}</td>
                                             <td>
-                                                <button onClick={() => setCurrentOrder(order)} className='fs-6'>
+                                                <button onClick={() => setcurrentOrderId(order.id)} className='fs-6'>
                                                     View details
                                                 </button>
                                             </td>
@@ -78,10 +78,10 @@ const CustomerOrdersPage = () => {
                 </div>
                 <div className={`${styles['detail']}`}>
                     <div className="row">
-                        {currentOrder == null ? (
+                        {currentOrderId == null ? (
                             <h3 className="text-center mt-5">Please select an order to view its details</h3>
                         ) : (
-                            <OrderDetails order={currentOrder} />
+                            <OrderDetails orderId={currentOrderId} />
                         )}
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import styles from '/src/css/LoginPage.module.css';
+import { toast } from 'sonner';
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -63,6 +64,50 @@ const LoginPage = () => {
         }
     };
 
+    const unionLogin = async () => {
+        if (username.length > 0 && password.length > 0) {
+            try {
+                const response = await axios.post(`http://localhost:8080/login`, {
+                    username: username,
+                    password: password
+                });
+                if (!response.data || response.status === 204) {
+                    toast.error(`Invalid credentials. Please try again`);
+                } else {
+                    console.log(response.data);
+                    console.log(response.data.customerId);
+                    console.log(response.data.staffId);
+                    if (response.data.customerId !== undefined) {
+                        console.log('logged in as customer');
+                        sessionStorage.setItem("customer_id", response.data.customerId);
+                        sessionStorage.setItem("username", response.data.username);
+                        sessionStorage.setItem("name", response.data.name);
+                        sessionStorage.setItem("address", response.data.address);
+                        navigate("/");
+                        return;
+                    } else if (response.data.staffId !== undefined) {
+                        console.log(`Logged in as staff`);
+                        sessionStorage.setItem("staff_id", response.data.staffId);
+                        sessionStorage.setItem("username", response.data.username);
+                        sessionStorage.setItem("name", response.data.name);
+                        sessionStorage.setItem("phone", response.data.phone);
+                        sessionStorage.setItem("staff_type", response.data.staffType);
+                        if (response.data.staffType == 'manage') {
+                            navigate("/staff/manage-requests")
+                        } else {
+                            navigate("/staff/request");
+                        }
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            toast.info("Please fill in all forms!");
+        }
+    }
+
     return (
         <div className={`container-fluid d-flex align-items-center justify-content-center ${styles.fullHeight}`}>
             <div className={`card p-3 mt-3 ${styles.centerCard}`}>
@@ -94,7 +139,7 @@ const LoginPage = () => {
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        <button onClick={login} className="btn btn-dark w-100">
+                        <button onClick={unionLogin} className="btn btn-dark w-100">
                             Login
                         </button>
                     </div>
@@ -104,9 +149,9 @@ const LoginPage = () => {
                         </Link>
                     </div>
                 </div>
-                <div className="d-flex justify-content-end">
+                {/* <div className="d-flex justify-content-end">
                     <Link to="" onClick={loginStaff} className={styles.customLink}>Login as staff</Link>
-                </div>
+                </div> */}
             </div>
         </div>
     );
