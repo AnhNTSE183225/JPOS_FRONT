@@ -29,7 +29,7 @@ const WaitManager = ({ order }) => {
                     .then(
                         response => {
                             toast.success(`Form submitted`);
-                            navigate('/staff/request');
+                            navigate('/staff/manage-requests');
                         }
                     ).catch(
                         error => {
@@ -68,12 +68,6 @@ const WaitManager = ({ order }) => {
     return (
         <>
             <div className='container-fluid' id={`${styles['wait-manager']}`}>
-                <div className="row">
-                    <h1 className='fw-bold'>
-                        <FontAwesomeIcon onClick={() => navigate('/staff/request')} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
-                        Quotation Request
-                    </h1>
-                </div>
                 <div className="row">
                     <div className="col-6">
                         <h4 className='fw-bold'>Customer name</h4>

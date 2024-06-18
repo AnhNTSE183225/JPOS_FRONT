@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import img from '../assets/FullLogo.png';
 import styles from '../css/Sidebar.module.css';
 
@@ -21,7 +21,7 @@ const Sidebar = () => {
     return (
         <>
             <div className="d-flex flex-column flex-shrink-0 p-3 position-fixed min-vh-100" style={{ width: '18rem', backgroundColor: '#e3e3e3', color: '#48AAAD' }}>
-                <Link to="/" className="d-flex align-items-center mb-4 text-decoration-none w-100">
+                <Link to="#" className="d-flex align-items-center mb-4 text-decoration-none w-100">
                     <img src={img} className='img-fluid mx-auto mt-3' style={{ width: '100px' }} />
                 </Link>
                 <ul className="nav nav-pills flex-column mb-auto">
@@ -52,6 +52,12 @@ const Sidebar = () => {
                                     <Link to="/staff/manage-staff" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-staff') ? styles['active'] : ''}`}>
                                         <FontAwesomeIcon className='me-3' icon={faUsers} />
                                         Manage staff
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/staff/manage-price" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-price') ? styles['active'] : ''}`}>
+                                        <FontAwesomeIcon className='me-3' icon={faMoneyBill} />
+                                        Manage price
                                     </Link>
                                 </li>
                             </>

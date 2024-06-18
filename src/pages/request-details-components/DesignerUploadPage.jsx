@@ -162,7 +162,7 @@ const DesignerUploadPage = ({ order }) => {
                                 <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
                                 {
                                     imageUrl !== null
-                                        ? <img src={imageUrl} crossOrigin='anonymous' />
+                                        ? <img className='img-fluid' src={imageUrl} crossOrigin='anonymous' />
                                         : <p>Image preview...</p>
                                 }
                                 {

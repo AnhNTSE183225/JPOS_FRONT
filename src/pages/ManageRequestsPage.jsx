@@ -4,13 +4,14 @@ import axios from 'axios';
 import styles from '/src/css/ManageRequestsPage.module.css';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 import OrderDetails from "../components/OrderDetails";
+import WaitManager from '../pages/request-details-components/WaitManager';
 
 const ManageRequestsPage = () => {
 
     const [orders, setOrders] = useState([]);
     const [queryOrders, setQueryOrders] = useState([]);
     const [activeStatus, setActiveStatus] = useState(null);
-    const [activeOrderId, setActiveOrderId] = useState(null);
+    const [activeOrder, setActiveOrder] = useState(null);
     const orderStatus = [
         'Waiting for Sales Staff',
         'Waiting for Manager',
@@ -84,10 +85,10 @@ const ManageRequestsPage = () => {
         if (status !== null) {
             const query_orders = orders.filter(order => order.status == status);
             setQueryOrders(query_orders);
-            setActiveOrderId(null);
+            setActiveOrder(null);
         } else {
             setQueryOrders(orders);
-            setActiveOrderId(null);
+            setActiveOrder(null);
         }
     }, [activeStatus])
 
@@ -125,7 +126,7 @@ const ManageRequestsPage = () => {
                                     <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
                                     <td>{order.status}</td>
                                     <td>
-                                        <button onClick={() => setActiveOrderId(order.id)}>
+                                        <button onClick={() => setActiveOrder(order)}>
                                             View details
                                         </button>
                                     </td>
@@ -135,11 +136,12 @@ const ManageRequestsPage = () => {
                 </table>
             </div>
             <div className="row mb-3">
-                {activeOrderId == null ? (
-                    <h1>Please select an order to view its details</h1>
-                ) : (
-                    <OrderDetails orderId={activeOrderId} staffType="manage"/>
-                )}
+                {activeOrder == null
+                    ? <h1>Please select an order to view its details</h1>
+                    : activeOrder.status == 'wait_manager'
+                        ? <WaitManager order={activeOrder} />
+                        : <OrderDetails orderId={activeOrder.id} staffType="manage" />
+                }
             </div>
         </div>
     )
