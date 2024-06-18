@@ -28,6 +28,7 @@ import CustomerOrdersPage from './pages/CustomerOrdersPage';
 import PaymentHandler from './PaymentHandler';
 import ManageRequestsPage from './pages/ManageRequestsPage';
 import ManageStaffPage from './pages/ManageStaffPage';
+import ManagePricePage from './pages/ManagePricePage';
 
 
 
@@ -130,6 +131,10 @@ const router = createBrowserRouter([
       {
         path: 'manage-staff',
         element: <ManageStaffPage/>
+      },
+      {
+        path: 'manage-price',
+        element: <ManagePricePage/>
       }
     ]
   },

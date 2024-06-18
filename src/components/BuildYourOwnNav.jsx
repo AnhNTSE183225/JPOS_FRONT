@@ -53,12 +53,6 @@ const BuildYourOwnNav = () => {
 
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
-            <button onClick={() => {
-                for (let i = 0; i < sessionStorage.length; i++) {
-                    const key = sessionStorage.key(i);
-                    console.log(`Key: ${key} | Value: ${sessionStorage.getItem(key)}`);
-                }
-            }}> Click me </button>
             <div className="row flex-nowrap">
                 <div className={`col-lg-4 ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
                     <div className="col-1">

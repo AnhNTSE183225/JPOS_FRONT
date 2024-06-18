@@ -164,7 +164,7 @@ const SettingDetails = () => {
                                 {showShellDetails && selectedShell && (
                                     <div className={styles["shell-details-section"]}>
                                         <h3 className={styles["shell-title"]}>{selectedShell.shellName} Details</h3>
-                                        <p className={styles["shell-detail"]}><strong>ID:</strong> {selectedShell.productShellDesignId}</p>
+                                        <p className={styles["shell-detail"]}><strong>Product Shell Design Code:</strong> {('000' + selectedShell.productShellDesignId).slice(-4)}</p>
                                         <p className={styles["shell-detail"]}><strong>Diamonds:</strong> {selectedShell.diamondQuantity}</p>
                                         <p className={styles["shell-detail"]}><strong>Production Price:</strong> {formatPrice(selectedShell.productionPrice)}</p>
                                         <p className={styles["shell-detail"]}><strong>Extra Diamond Price:</strong> {formatPrice(selectedShell.ediamondPrice)}</p>
