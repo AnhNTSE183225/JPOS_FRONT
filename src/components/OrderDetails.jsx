@@ -264,7 +264,19 @@ const OrderDetails = ({ orderId, staffType }) => {
                             </ul>
                             <h5>Tax fee (10% VAT): {formatPrice(order.taxFee)}</h5>
                             <h4><b>TOTAL PRICE {formatDate(order.qdate)}: <span style={{ color: '#48AAAD' }}>{formatPrice(order.totalAmount)}</span></b></h4>
-
+                            {
+                                order.status == 'completed'
+                                    ? <>
+                                        <h4 className="fw-bold">WARRANTY INFORMATION</h4>
+                                        <h4>Customer ID: {('000' + order.customer.customerId).slice(-4)}</h4>
+                                        <h4>Product ID: {('000' + order.product.productId).slice(-4)}</h4>
+                                        <h4>Purchase date: {order.odate === null ? formatDate(order.orderDate) : formatDate(order.odate)}</h4>
+                                        <h4>Warranty: 4 years from purchase date</h4>
+                                        <h4>Terms: <a href="https://www.bluenile.com/policies/terms-and-conditions" target="_blank">Read our terms here</a></h4>
+                                    </>
+                                    : <>
+                                    </>
+                            }
                         </div>
                         {
                             order.status != 'completed' && staffType == 'manage'
