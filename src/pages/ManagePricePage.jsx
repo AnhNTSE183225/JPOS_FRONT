@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
+import styles from '/src/css/ManagePricePage.module.css';
 
 const ManagePricePage = () => {
 
@@ -181,7 +182,7 @@ const ManagePricePage = () => {
             </div>
 
             <div className="row mb-2">
-                <button onClick={clearFilter}>
+                <button className={`${styles[`button`]}`} onClick={clearFilter} >
                     Clear
                 </button>
             </div>
@@ -196,7 +197,7 @@ const ManagePricePage = () => {
                 <div className="col-2">
                     <div className="container-fluid">
                         <span>Page No</span>
-                        <input className="form-control" type="number" min="0" max="100" step="1" value={pageNo} onChange={(e) => setPageNo(e.target.value)} />
+                        <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo + 1} onChange={(e) => setPageNo(e.target.value - 1)} />
                     </div>                
                 </div>
             </div>
@@ -217,7 +218,7 @@ const ManagePricePage = () => {
                             <th>
                                 {selectedPrice !== null
                                     ? <>
-                                        <button onClick={() => setSelectedPrice(null)}>Cancel</button>
+                                        <button style={{width: '90px'}} className={`${styles[`button`]}`} onClick={() => setSelectedPrice(null)}>Cancel</button>
                                     </>
                                     : <>
                                         Action
@@ -253,10 +254,10 @@ const ManagePricePage = () => {
                                         {
                                             selectedPrice == value.diamondPriceId
                                                 ? <>
-                                                    <button onClick={() => updateDiamondPrice(value.price)}>Save</button>
+                                                    <button style={{width: '90px'}} className={`${styles[`button`]}`} onClick={() => updateDiamondPrice(value.price)}>Save</button>
                                                 </>
                                                 : <>
-                                                    <button onClick={() => {
+                                                    <button style={{width: '90px'}} className={`${styles[`button`]}`} onClick={() => {
                                                         setSelectedPrice(value.diamondPriceId);
                                                         setUpdatedPrice(value.price);
                                                     }}>Edit</button>
