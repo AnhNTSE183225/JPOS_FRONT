@@ -255,24 +255,26 @@ const OrderDetails = ({ orderId, staffType }) => {
                                 </>
                             }
                             <h4>Quotation price: <span style={{ color: 'red' }}>{order.qmaterialPrice === null ? 'None' : formatPrice(order.qmaterialPrice)}</span></h4>
-                            <h4>Order price: <span style={{ color: '#48AAAD' }}>{formatPrice(order.omaterialPrice)}</span></h4>
+                            <h4>Order price: <span style={{ color: '#48AAAD' }}>{order.omaterialPrice === null ? 'None' : formatPrice(order.omaterialPrice)}</span></h4>
                             <h4 className='fw-bold'>Extra</h4>
                             <ul>
                                 <li>Extra diamonds: {formatPrice(order.ediamondPrice)}</li>
                                 <li>Extra materials: {formatPrice(order.ematerialPrice)}</li>
                                 <li>Production price: {formatPrice(order.productionPrice)}</li>
                             </ul>
-                            <h5>Tax fee (10% VAT): {formatPrice(order.taxFee)}</h5>
+                            <h5>Tax fee (10% VAT): {order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</h5>
                             <h4><b>TOTAL PRICE {formatDate(order.qdate)}: <span style={{ color: '#48AAAD' }}>{formatPrice(order.totalAmount)}</span></b></h4>
                             {
                                 order.status == 'completed'
                                     ? <>
-                                        <h4 className="fw-bold">WARRANTY INFORMATION</h4>
-                                        <h4>Customer ID: {('000' + order.customer.customerId).slice(-4)}</h4>
-                                        <h4>Product ID: {('000' + order.product.productId).slice(-4)}</h4>
-                                        <h4>Purchase date: {order.odate === null ? formatDate(order.orderDate) : formatDate(order.odate)}</h4>
-                                        <h4>Warranty: 4 years from purchase date</h4>
-                                        <h4>Terms: <a href="https://www.bluenile.com/policies/terms-and-conditions" target="_blank">Read our terms here</a></h4>
+                                        <h5 className="fw-bold">WARRANTY INFORMATION</h5>
+                                        <ul>
+                                            <li>Customer ID: {('000' + order.customer.customerId).slice(-4)}</li>
+                                            <li>Product ID: {('000' + order.product.productId).slice(-4)}</li>
+                                            <li>Purchase date: {order.odate === null ? formatDate(order.orderDate) : formatDate(order.odate)}</li>
+                                            <li>Warranty: 4 years from purchase date</li>
+                                            <li>Terms: <a href="/" target="_blank">Read our terms here</a></li>
+                                        </ul>
                                     </>
                                     : <>
                                     </>
