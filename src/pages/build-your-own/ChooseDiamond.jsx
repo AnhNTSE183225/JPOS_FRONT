@@ -21,18 +21,18 @@ const ChooseDiamond = () => {
 
     const [minCarat, setMinCarat] = useState(0.05);
     const [maxCarat, setMaxCarat] = useState(10);
-
-    const [beginColor, setBeginColor] = useState(0);
-    const [endColor, setEndColor] = useState(7);
+    
     const colors = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
+    const [beginColor, setBeginColor] = useState(0);
+    const [endColor, setEndColor] = useState(colors.length-1);
 
+    const clarities = ['SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
     const [beginClarity, setBeginClarity] = useState(0);
-    const [endClarity, setEndClarity] = useState(10);
-    const clarities = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+    const [endClarity, setEndClarity] = useState(clarities.length-1);
 
-    const [beginCut, setBeginCut] = useState(0);
-    const [endCut, setEndCut] = useState(3);
     const cuts = ['Fair', 'Good', 'Very_Good', 'Excellent'];
+    const [beginCut, setBeginCut] = useState(0);
+    const [endCut, setEndCut] = useState(cuts.length-1);
 
     const [origin, setOrigin] = useState('NATURAL')
 
@@ -93,15 +93,15 @@ const ChooseDiamond = () => {
         setMaxPrice(5000000);
 
         setBeginClarity(0);
-        setEndClarity(10);
+        setEndClarity(clarities.length-1);
 
         setBeginCut(0);
-        setEndCut(3);
+        setEndCut(cuts.length-1);
 
         setActiveShape(null);
 
         setBeginColor(0);
-        setEndColor(7)
+        setEndColor(colors.length-1);
 
         setOrigin("NATURAL");
 
@@ -194,8 +194,8 @@ const ChooseDiamond = () => {
                         <b>Min Color</b>
                         <div className="container-fluid my-3">
                             <div className="row">
-                                <div className="col text-start">K</div>
-                                <div className="col text-end">D</div>
+                                <div className="col text-start">{colors[0]}</div>
+                                <div className="col text-end">{colors[colors.length-1]}</div>
                             </div>
                             <div className="row">
                                 <div className='col text-start'>{convertColor(beginColor)}</div>
@@ -214,8 +214,8 @@ const ChooseDiamond = () => {
                         <b>Clarity</b>
                         <div className="container-fluid my-3">
                             <div className="row">
-                                <div className="col text-start">I3</div>
-                                <div className="col text-end">FL</div>
+                                <div className="col text-start">{clarities[0]}</div>
+                                <div className="col text-end">{clarities[clarities.length-1]}</div>
                             </div>
                             <Slider value={[beginClarity, endClarity]} min={0} max={clarities.length - 1} onChange={(e) => {
                                 setBeginClarity(e.target.value[0]);
@@ -231,8 +231,8 @@ const ChooseDiamond = () => {
                         <b>Cut</b>
                         <div className="container-fluid my-3">
                             <div className="row">
-                                <div className="col text-start">Fair</div>
-                                <div className="col text-end">Excellent</div>
+                                <div className="col text-start">{cuts[0]}</div>
+                                <div className="col text-end">{cuts[cuts.length-1]}</div>
                             </div>
                             <Slider value={[beginCut, endCut]} min={0} max={cuts.length - 1} onChange={(e) => {
                                 setBeginCut(e.target.value[0]);
