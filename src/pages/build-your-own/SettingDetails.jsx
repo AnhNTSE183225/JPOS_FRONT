@@ -31,6 +31,14 @@ const SettingDetails = () => {
         }
     }, [selectedShell]);
 
+    useEffect(() => {
+        if (productDesign) {
+            document.title = productDesign.designName;
+        } else {
+            document.title = 'Setting Details';
+        }
+    }, [productDesign]);
+
     const fetchData = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/product-designs/${designId}`);

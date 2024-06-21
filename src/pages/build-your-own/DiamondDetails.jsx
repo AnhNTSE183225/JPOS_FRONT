@@ -12,7 +12,9 @@ const DiamondDetails = () => {
     const { diamondId } = useParams();
     const [diamond, setDiamond] = useState(null);
     const [diamondPrice, setDiamondPrice] = useState(null);
+    
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         if (sessionStorage.getItem('designId') === null) {
@@ -25,7 +27,15 @@ const DiamondDetails = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (diamond) {
+            document.title = diamond.caratWeight + ' Carat ' + diamond.shape + ' ' + diamond.origin + ' Diamond';
+        } else {
+            document.title = 'Diamond Details';
+        }
+    }, [diamond]);
 
     const fetchDiamond = async () => {
         try {
@@ -36,8 +46,9 @@ const DiamondDetails = () => {
                 const result = response.data;
                 const diamondPrice = await fetchDiamondPrice(result.origin, result.shape, result.caratWeight, result.color, result.clarity, result.cut);
                 //console.log('Fetched Diamond Data:', response.data);
-                setDiamond(response.data);
+                setDiamond(result);
                 setDiamondPrice(diamondPrice);
+                
             }
         } catch (error) {
             console.error('An error occurred while fetching the diamond data:', error);
@@ -97,11 +108,10 @@ const DiamondDetails = () => {
 
         navigate("/build-your-own/choose-diamond");
     }
-
-
     if (diamond === null || diamondPrice == null) {
         return <div>Loading...</div>;
     } else {
+        
         return (
             <div className={styles.container}>
                 <div className={`${styles[`imageSection`]} col-md-5`}>

@@ -5,12 +5,14 @@ import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 import ProductCard from './ProductCard';
 import styles from '/src/css/ChooseSettings.module.css';
+import useDocumentTitle from '../../components/Title';
 
 const ChooseSetting = () => {
 
     const navigate = useNavigate();
     const [designList, setDesignList] = useState([]);
 
+    useDocumentTitle('Build Your Own Ring');
     useEffect(() => {
         fetchData();
     }, [])

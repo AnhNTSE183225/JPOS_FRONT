@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGem, faRing, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/CompleteProduct.module.css';
 import { makePayment } from '../../helper_function/Pay';
+import useDocumentTitle from '../../components/Title';
 
 const CompleteProduct = () => {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const CompleteProduct = () => {
     const [materials, setMaterials] = useState([]);
     const [estimatedPrice, setEstimatedPrice] = useState(null);
 
+    useDocumentTitle('Complete Bijoux Order');
     useEffect(() => {
         const getDesign = async () => {
             if (sessionStorage.getItem('designId') === null) {
@@ -157,6 +159,7 @@ const CompleteProduct = () => {
             </>
         )
     } else {
+        
         return (
             <>
                 <div className='container'>

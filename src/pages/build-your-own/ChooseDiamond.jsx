@@ -6,6 +6,7 @@ import DiamondCard from './DiamondCard';
 import styles from '/src/css/ChooseDiamonds.module.css';
 import { formatPrice } from '../../helper_function/ConvertFunction';
 import { Slider } from '@mui/material';
+import useDocumentTitle from '../../components/Title';
 
 const ChooseDiamond = () => {
 
@@ -37,6 +38,8 @@ const ChooseDiamond = () => {
 
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(40);
+
+    useDocumentTitle('Find Your Diamonds by 4C');
 
     const setup = async () => {
         if (sessionStorage.getItem('designId') === null) {
