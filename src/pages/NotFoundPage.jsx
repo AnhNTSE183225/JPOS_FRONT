@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import useDocumentTitle from '../components/Title';
 
 const NotFoundPage = () => {
+    useDocumentTitle('404 Not Found');
     return (
         <div>
             404 not found

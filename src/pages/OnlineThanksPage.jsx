@@ -2,10 +2,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
 import complete from '/src/assets/order-complete.png';
 import styles from '/src/css/OnlineThanksPage.module.css';
+import useDocumentTitle from '../components/Title';
 
 const OnlineThanksPage = () => {
 
     const navigate = useNavigate();
+
+    useDocumentTitle("Thank You!");
 
     const clear = () => {
         const customer_id = sessionStorage.getItem("customer_id");

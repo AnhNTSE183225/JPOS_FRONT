@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/Production.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
+import useDocumentTitle from '../../components/Title';
 
 const Production = ({ order }) => {
 
@@ -15,6 +16,8 @@ const Production = ({ order }) => {
     const [processing, setProcessing] = useState(false);
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
+
+    useDocumentTitle("Complete Production");
 
     const handleSubmit = async () => {
         try {
@@ -125,7 +128,7 @@ const Production = ({ order }) => {
                         <input className="form-control mb-3" type="file" onChange={(e) => setImageFile(e.target.files[0])} />
                         {
                             imageUrl !== null
-                                ? <img className='img-fluid' src={imageUrl} crossOrigin='anonymous'>
+                                ? <img className='img-fluid mb-3' src={imageUrl} crossOrigin='anonymous'>
                                 </img>
                                 : <p>URL: Not provided</p>
                         }

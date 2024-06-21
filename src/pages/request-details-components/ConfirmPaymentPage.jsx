@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/ConfirmPaymentPage.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
+import useDocumentTitle from '../../components/Title';
 
 const ConfirmPaymentPage = ({ order }) => {
     const navigate = useNavigate();
@@ -14,6 +15,8 @@ const ConfirmPaymentPage = ({ order }) => {
     const [amountPaid, setAmountPaid] = useState(0);
     const [processing, setProcessing] = useState(false);
 
+    useDocumentTitle("Confirm Payment");
+    
     const getPaidAmount = async () => {
 
         try {
