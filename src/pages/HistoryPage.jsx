@@ -3,10 +3,13 @@ import { useState, useEffect } from 'react';
 import styles from '/src/css/HistoryPage.module.css';
 import axios from 'axios';
 import OrderDetails from '../components/OrderDetails';
+import useDocumentTitle from '../components/Title';
 
 const HistoryPage = () => {
     const [orders, setOrders] = useState([]);
     const [currentOrderId, setCurrentOrderId] = useState(null);
+
+    useDocumentTitle('History');
 
     useEffect(() => {
         const fetchData = async () => {

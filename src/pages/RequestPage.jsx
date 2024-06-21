@@ -4,10 +4,12 @@ import { Toaster, toast } from 'sonner';
 import styles from '/src/css/RequestPage.module.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import useDocumentTitle from '../components/Title';
 
 const TableComponent = ({ requests }) => {
 
     const navigate = useNavigate();
+    useDocumentTitle("Custom Requests");
 
     return (
         <table className={`${styles['request-table']}`}>
