@@ -14,10 +14,11 @@ export const fetchMaterialPrice = async (id) => {
     }
 };
 
-export const fetchDiamondPrice = async (cut, color, clarity, caratWeight, shape) => {
+export const fetchDiamondPrice = async (origin, shape, caratWeight, color, clarity, cut) => {
 
-    const response = await axios.post(`http://localhost:8080/api/get-price-by-4C`,
+    const response = await axios.post(`http://localhost:8080/api/diamond-price/get-single-price`,
         {
+            origin: origin,
             cut: cut,
             clarity: clarity,
             caratWeight: caratWeight,

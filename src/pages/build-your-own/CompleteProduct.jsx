@@ -55,7 +55,7 @@ const CompleteProduct = () => {
         totalPrice += shell.productionPrice;
         totalPrice += shell.ediamondPrice;
         for (const diamond of diamonds) {
-            const diamond_price = await fetchDiamondPrice(diamond.cut, diamond.color, diamond.clarity, diamond.caratWeight, diamond.shape);
+            const diamond_price = await fetchDiamondPrice(diamond.origin, diamond.shape, diamond.caratWeight, diamond.color, diamond.clarity, diamond.cut);
             totalPrice += diamond_price;
         }
         for (const material of materials) {
@@ -80,7 +80,7 @@ const CompleteProduct = () => {
             } else {
                 sessionStorage.setItem('currentOrderId', orderAmount.data.id);
                 sessionStorage.setItem('currentOrderType', orderAmount.data.orderType);
-                
+
                 sessionStorage.removeItem('quantity');
                 sessionStorage.removeItem('shellId');
                 sessionStorage.removeItem('diamonds');
@@ -116,19 +116,25 @@ const CompleteProduct = () => {
         }
     }
 
+
     const getDiamonds = async () => {
         const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
-        const chosenDiamondsInt = chosenDiamonds.map(Number);
-        try {
-            const response = await axios.post(`http://localhost:8080/api/get-multiple-diamonds-by-id`, chosenDiamondsInt);
-            if (!response.data || response.status === 204) {
-                toast.error("CANNOT FETCH Diamonds");
-            } else {
-                return response.data;
+        let result = [];
+
+        for (const diamondId of chosenDiamonds) {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/diamond/get-by-id/${diamondId}`);
+                if (!response.data || response.status === 204) {
+                    console.log(`Can't fetch diamond ${diamondId}`);
+                } else {
+                    result = [...result, response.data];
+                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
         }
+
+        return result;
     }
 
     const getMaterials = async () => {

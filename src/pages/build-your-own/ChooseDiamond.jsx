@@ -38,8 +38,6 @@ const ChooseDiamond = () => {
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(40);
 
-    const [testValue, setTestValue] = useState(0);
-
     const setup = async () => {
         if (sessionStorage.getItem('designId') === null) {
             toast.info(`Please pick a setting first`);
@@ -68,7 +66,6 @@ const ChooseDiamond = () => {
             if (!response.data || response.status === 204) {
                 toast.error(`Cannot fetch data`);
             } else {
-                console.log(response.data);
                 return response.data;
             }
 

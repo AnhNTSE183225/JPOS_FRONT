@@ -29,12 +29,12 @@ const DiamondDetails = () => {
 
     const fetchDiamond = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamonds/${diamondId}`);
+            const response = await axios.get(`http://localhost:8080/api/diamond/get-by-id/${diamondId}`);
             if (!response.data || response.status === 204) {
                 console.error(`Cannot find diamond with ID ${diamondId}`);
             } else {
                 const result = response.data;
-                const diamondPrice = await fetchDiamondPrice(result.cut, result.color, result.clarity, result.caratWeight, result.shape);
+                const diamondPrice = await fetchDiamondPrice(result.origin, result.shape, result.caratWeight, result.color, result.clarity, result.cut);
                 //console.log('Fetched Diamond Data:', response.data);
                 setDiamond(response.data);
                 setDiamondPrice(diamondPrice);
