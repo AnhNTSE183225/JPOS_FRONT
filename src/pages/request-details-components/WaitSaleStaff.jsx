@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { formatPrice } from '../../helper_function/ConvertFunction';
+import { formatDate, formatPrice } from '../../helper_function/ConvertFunction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/WaitSaleStaff.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
+import { Slider } from '@mui/material';
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -21,12 +22,13 @@ const WaitSaleStaff = ({ order }) => {
     const [extraPrice, setExtraPrice] = useState({ material: 0, diamond: 0, production: 0, markupRate: 1.0 });
     const [materialList, setMaterialList] = useState([]);
 
+    const [diamondList, setDiamondList] = useState([]);
     const [chosenDiamonds, setChosenDiamonds] = useState([]);
     const [chosenMaterials, setChosenMaterials] = useState([]);
     const [totalMaterialPrice, setTotalMaterialPrice] = useState(0);
     const [totalDiamondPrice, setTotalDiamondPrice] = useState(0);
 
-    const [shape, setShape] = useState('');
+    const [shape, setShape] = useState('all');
     const shapes = ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'];
 
     const [minPrice, setMinPrice] = useState(200);
@@ -35,20 +37,20 @@ const WaitSaleStaff = ({ order }) => {
     const [minCarat, setMinCarat] = useState(0.05);
     const [maxCarat, setMaxCarat] = useState(10);
 
-    const [beginColor, setBeginColor] = useState(0);
-    const [endColor, setEndColor] = useState(7);
     const colors = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
+    const [beginColor, setBeginColor] = useState(0);
+    const [endColor, setEndColor] = useState(colors.length - 1);
 
+    const clarities = ['SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
     const [beginClarity, setBeginClarity] = useState(0);
-    const [endClarity, setEndClarity] = useState(10);
-    const clarities = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+    const [endClarity, setEndClarity] = useState(clarities.length - 1);
 
-    const [beginCut, setBeginCut] = useState(0);
-    const [endCut, setEndCut] = useState(3);
     const cuts = ['Fair', 'Good', 'Very_Good', 'Excellent'];
+    const [beginCut, setBeginCut] = useState(0);
+    const [endCut, setEndCut] = useState(cuts.length - 1);
 
-    const [origin, setOrigin] = useState('')
-    const origins = ['NATURAL','LAB_GROWN']
+    const [origin, setOrigin] = useState('NATURAL')
+    const origins = ['NATURAL', 'LAB_GROWN']
 
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(40);
@@ -58,6 +60,33 @@ const WaitSaleStaff = ({ order }) => {
     useEffect(() => {
         fetchMaterials();
     }, [])
+
+    useEffect(() => {
+        const update = async () => {
+            const query = {
+                origin: origin,
+                shapeList: shape == "all" ? shapes : [shape],
+                colorList: [...colors.slice(beginColor, endColor), colors[endColor]],
+                clarityList: [...clarities.slice(beginClarity, endClarity), clarities[endClarity]],
+                cutList: [...cuts.slice(beginCut, endCut), cuts[endCut]],
+                minCarat: minCarat,
+                maxCarat: maxCarat,
+                minPrice: minPrice,
+                maxPrice: maxPrice
+            }
+            try {
+                const response = await axios.post(`http://localhost:8080/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+                if (!response.data || response.status === 204) {
+                    console.log(`Cannot fetch diamonds`);
+                } else {
+                    setDiamondList(response.data);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        update();
+    }, [pageNo, pageSize, shape, origin, beginColor, endColor, beginClarity, endClarity, minCarat, maxCarat, minPrice, maxPrice])
 
     const finalSubmit = async () => {
         if (productName.trim().length > 0 &&
@@ -114,13 +143,13 @@ const WaitSaleStaff = ({ order }) => {
             if (productType.trim().length <= 0) {
                 toast.info(`You haven't selected any product type`);
             }
-            if(extraPrice.markupRate <= 0) {
+            if (extraPrice.markupRate <= 0) {
                 toast.info(`Markup rate cannot be below 0`);
             }
-            if(chosenDiamonds.length <= 0) {
+            if (chosenDiamonds.length <= 0) {
                 toast.info(`You haven't chosen any diamonds`);
             }
-            if(chosenMaterials.length <= 0) {
+            if (chosenMaterials.length <= 0) {
                 toast.info(`You haven't chosen any materials`);
             }
         }
@@ -181,9 +210,9 @@ const WaitSaleStaff = ({ order }) => {
                     Request Quotation
                 </h1>
             </div>
-            <div className="row">
+            <div className="row mb-5">
 
-                <div className="col-4">
+                <div className="col-3">
                     <p>
                         <b>Full Name</b>
                     </p>
@@ -202,62 +231,193 @@ const WaitSaleStaff = ({ order }) => {
                     <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
                 </div>
 
-                <div className="col-4">
-                    <h4 className='fw-bold'>Basic information</h4>
-                    <div className="row mb-2">
-                        <div className="col">Product name</div>
-                        <div className="col"><input className='form-control' type='text' placeholder='Enter name...' value={productName} onChange={(e) => setProductName(e.target.value)} /></div>
-                    </div>
-                    <div className="row mb-2">
-                        <div className="col">Product type</div>
-                        <div className="col">
-                            <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
-                                <option value=''>Choose product type</option>
-                                {[`Engagement Ring`, `Wedding Ring`, `Earrings`, `Necklace`, `General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
+                <div className="col-5">
+                    <div className="container-fluid">
+                        <h4 className='fw-bold'>Basic information</h4>
+                        <div className="row mb-2">
+                            <div className="col">Product name</div>
+                            <div className="col"><input className='form-control' type='text' placeholder='Enter name...' value={productName} onChange={(e) => setProductName(e.target.value)} /></div>
+                        </div>
+                        <div className="row mb-2">
+                            <div className="col">Product type</div>
+                            <div className="col">
+                                <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
+                                    <option value=''>Choose product type</option>
+                                    {[`Engagement Ring`, `Wedding Ring`, `Earrings`, `Necklace`, `General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
+                                </select>
+                            </div>
+                        </div>
+                        <h4 className='fw-bold'>Main Diamond Quality</h4>
+
+                        <div className="row mb-2">
+                            <div className="col">Shape</div>
+                            <select value={shape} onChange={(e) => setShape(e.target.value)} className='form-select col mx-3'>
+                                <option value="all">All</option>
+                                {shapes.map((value, index) =>
+                                    <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
+                                )}
                             </select>
                         </div>
-                    </div>
-                    <h4 className='fw-bold'>Main Diamond Quality</h4>
-                    
-                    <div className="row mb-2">
-                        <div className="p col">Shape</div>
-                        <select className='form-select col'>
-                            <option value="">Select a shape</option>
-                            {shapes.map((value, index) =>
-                                <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
-                            )}
-                        </select>
-                    </div>
 
-                    <div className="row mb-2">
-                        <div className="p col">Origin</div>
-                        <select className='form-select col'>
-                            <option value="">Choose origin</option>
-                            {origins.map((value, index) =>
-                                <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
-                            )}
-                        </select>
+                        <div className="row mb-2">
+                            <div className="col">Origin</div>
+                            <select value={origin} onChange={(e) => setOrigin(e.target.value)} className='form-select col mx-3'>
+                                {origins.map((value, index) =>
+                                    <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
+                                )}
+                            </select>
+                        </div>
+
+                        <div className="row mb-2">
+                            <div className="col-3">Color</div>
+                            <Slider
+                                value={[beginColor, endColor]}
+                                min={0}
+                                max={colors.length - 1}
+                                onChange={(e) => {
+                                    setBeginColor(e.target.value[0]);
+                                    setEndColor(e.target.value[1]);
+                                }}
+                                marks={
+                                    colors.map((value, index) =>
+                                    ({
+                                        value: index,
+                                        label: value
+                                    })
+                                    )
+                                }
+                                step={null}
+                                className='col me-5'
+                            />
+                        </div>
+
+                        <div className="row mb-2">
+                            <div className="col-3">Clarity</div>
+                            <Slider
+                                value={[beginClarity, endClarity]}
+                                min={0}
+                                max={clarities.length - 1}
+                                onChange={(e) => {
+                                    setBeginClarity(e.target.value[0])
+                                    setEndClarity(e.target.value[1])
+                                }}
+                                step={null}
+                                marks={
+                                    clarities.map((value, index) => (
+                                        {
+                                            value: index,
+                                            label: value
+                                        }
+                                    ))
+                                }
+                                className='col me-5'
+                            />
+                        </div>
+
+                        <div className="row mb-2">
+                            <div className="col-3">Cut</div>
+                            <Slider
+                                value={[beginCut, endCut]}
+                                min={0}
+                                max={cuts.length - 1}
+                                onChange={(e) => {
+                                    setBeginCut(e.target.value[0]);
+                                    setEndCut(e.target.value[1]);
+                                }}
+                                step={null}
+                                marks={
+                                    cuts.map((value, index) => (
+                                        {
+                                            value: index,
+                                            label: value.replace("_", " ")
+                                        }
+                                    ))
+                                }
+                                className='col me-5'
+                            />
+                        </div>
+
+                        <div className="row mb-2">
+                            <div className="col-3">Carat</div>
+                            <Slider
+                                value={[minCarat, maxCarat]}
+                                min={0}
+                                max={10.0}
+                                step={0.05}
+                                onChange={(e) => {
+                                    setMinCarat(e.target.value[0]);
+                                    setMaxCarat(e.target.value[1]);
+                                }}
+                                className='col me-5'
+                                valueLabelDisplay='auto'
+                                marks={
+                                    [
+                                        {
+                                            value: 0,
+                                            label: 'Min: 0'
+                                        },
+                                        {
+                                            value: 10.0,
+                                            label: 'Max: 10'
+                                        }
+                                    ]
+                                }
+                            />
+                        </div>
+
+                        <div className="row mb-2">
+                            <div className="col-3">Price</div>
+                            <Slider
+                                value={[minPrice, maxPrice]}
+                                min={200}
+                                max={5000000}
+                                onChange={(e) => {
+                                    setMinPrice(e.target.value[0]);
+                                    setMaxPrice(e.target.value[1]);
+                                }}
+                                step={1}
+                                valueLabelDisplay='auto'
+                                marks={
+                                    [
+                                        {
+                                            value: 200,
+                                            label: "Min: 200"
+                                        },
+                                        {
+                                            value: 5000000,
+                                            label: "Max: 5,000,000"
+                                        }
+                                    ]
+                                }
+                                className='col me-5'
+                            />
+                        </div>
+
+                        <div className='row mb-2'>
+                            <div className="col">
+                                <h4 className='fw-bold'>Chosen diamonds</h4>
+                                <ul>
+                                    {
+                                        chosenDiamonds.map((entry, index) => (
+                                            <li key={index}>{entry.id} - {entry.name} - {formatPrice(entry.price)}</li>
+                                        ))
+                                    }
+                                </ul>
+                                <div className="row mb-2">
+                                    <div className="col-10 fw-semibold">
+                                        Price
+                                    </div>
+                                    <div className="col-10">
+                                        {formatPrice(totalDiamondPrice)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <div className="row mb-2">
-
-                    </div>
-
                 </div>
 
                 <div className="col-4">
-                    <div className='col-10'>
-                        <h4 className='fw-bold'>Chosen diamonds</h4>
-
-                        <div className="row mb-2">
-                            <div className="col-10 fw-semibold">
-                                Price
-                            </div>
-                            <div className="col-10">
-                                {formatPrice(totalDiamondPrice)}
-                            </div>
-                        </div>
-                    </div>
                     <div>
                         <p>
                             <b>Material</b>
@@ -422,6 +582,71 @@ const WaitSaleStaff = ({ order }) => {
                     }
 
                 </div>
+            </div>
+            <div className="row mb-2">
+                <input name="pageNo" type="number" min={0} value={pageNo} onChange={(e) => setPageNo(e.target.value)} className='col mx-5 form-control' />
+                <input name="pageSize" type="number" min={10} value={pageSize} onChange={(e) => setPageSize(e.target.value)} className='col mx-5 form-control' />
+            </div>
+            <div className="row mb-2 px-3">
+                <table className='table table-bordered col text-center'>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Shape</th>
+                            <th>4C</th>
+                            <th>Price</th>
+                            <th>Eff.Date</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {diamondList.length > 0
+                            ? diamondList.map((diamond, index) => (
+                                <tr key={index}>
+                                    <td>{diamond.diamond.diamondId}</td>
+                                    <td>{diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)}</td>
+                                    <td>{diamond.diamond.color}-{diamond.diamond.clarity} {diamond.diamond.cut.replace("_", " ")} {diamond.diamond.caratWeight} Carat</td>
+                                    <td>{formatPrice(diamond.latestPrice)}</td>
+                                    <td>{formatDate(diamond.effectiveDate)}</td>
+                                    <td>
+                                        {
+                                            chosenDiamonds.find(d => d.id == diamond.diamond.diamondId) == null
+                                                ? <>
+                                                    <button
+                                                        className='btn btn-success'
+                                                        onClick={() => {
+                                                            setChosenDiamonds(l => [...l,
+                                                            {
+                                                                id: diamond.diamond.diamondId,
+                                                                name: `${diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)} ${diamond.diamond.color}-${diamond.diamond.clarity} ${diamond.diamond.cut.replace("_", " ")} ${diamond.diamond.caratWeight} Carat`,
+                                                                price: diamond.latestPrice
+                                                            }
+                                                            ])
+                                                            setTotalDiamondPrice(p => p + diamond.latestPrice);
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faPlus} />
+                                                    </button>
+                                                </>
+                                                : <>
+                                                    <button
+                                                        className='btn btn-danger'
+                                                        onClick={() => {
+                                                            setChosenDiamonds(l => l.filter(entry => entry.id !== diamond.diamond.diamondId));
+                                                            setTotalDiamondPrice(p => p - diamond.latestPrice);
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faMinus} />
+                                                    </button>
+                                                </>
+                                        }
+                                    </td>
+                                </tr>
+                            ))
+                            : <></>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     );
