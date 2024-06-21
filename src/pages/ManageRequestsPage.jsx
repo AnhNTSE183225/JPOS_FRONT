@@ -5,6 +5,7 @@ import styles from '/src/css/ManageRequestsPage.module.css';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 import OrderDetails from "../components/OrderDetails";
 import WaitManager from '../pages/request-details-components/WaitManager';
+import useDocumentTitle from "../components/Title";
 
 const ManageRequestsPage = () => {
 
@@ -25,6 +26,8 @@ const ManageRequestsPage = () => {
         'Waiting for Payment',
         'Completed'
     ]
+
+    useDocumentTitle("Manage Requests");
 
     useEffect(() => {
         const fetchData = async () => {

@@ -3,11 +3,14 @@ import { Toaster, toast } from 'sonner';
 import PendingDesign from './customer-request-details/PendingDesign';
 import WaitCustomer from './customer-request-details/WaitCustomer';
 import axios from 'axios';
+import useDocumentTitle from '../components/Title';
 
 const CustomerRequestDetailsPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentOrder, setCurrentOrder] = useState(null);
     const [orderList, setOrderList] = useState([]);
+
+    useDocumentTitle("Your Request Details");
 
     const fetchOrder = async () => {
 

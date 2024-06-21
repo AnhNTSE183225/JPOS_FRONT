@@ -8,6 +8,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/WaitSaleStaff.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
+import useDocumentTitle from '../../components/Title';
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -54,6 +55,8 @@ const WaitSaleStaff = ({ order }) => {
     const [pageSize, setPageSize] = useState(40);
 
     const [processing, setProcessing] = useState(false);
+
+    useDocumentTitle("Manager Request Quotation");
 
     useEffect(() => {
         fetchMaterials();

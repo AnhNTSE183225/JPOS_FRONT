@@ -4,6 +4,7 @@ import { Toaster, toast } from 'sonner';
 import img from '../assets/jewelry_manufacturing_process.png';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import useDocumentTitle from "../components/Title";
 
 const CustomDesignPage = () => {
 
@@ -16,6 +17,7 @@ const CustomDesignPage = () => {
 
     const [processing, setProcessing] = useState(false);
 
+    useDocumentTitle("Custom Your Own Design");
     const handleDescription = (event) => {
         setDescription(event.target.value);
     }
@@ -93,7 +95,7 @@ const CustomDesignPage = () => {
                                 <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
                                 {
                                     imageUrl !== null
-                                    ? <img src={imageUrl} crossOrigin="anonymous"/>
+                                    ? <img className="mb-3" src={imageUrl} crossOrigin="anonymous"/>
                                     : <p>URL: Not provided</p>
                                 }
                                 {

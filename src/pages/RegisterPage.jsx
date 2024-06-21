@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import styles from '/src/css/RegisterPage.module.css';
+import useDocumentTitle from '../components/Title';
 
 const RegisterPage = () => {
 
@@ -10,6 +11,8 @@ const RegisterPage = () => {
     const [fullName, setFullName] = useState('');
     const [address, setAddress] = useState('');
 
+    useDocumentTitle('Register');
+    
     const handlePassword = (event) => {
         setPassword(event.target.value);
     }

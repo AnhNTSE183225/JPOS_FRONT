@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import styles from '/src/css/LoginPage.module.css';
 import { toast } from 'sonner';
+import useDocumentTitle from "../components/Title";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+
+    useDocumentTitle("Login");
     const handleUsername = (event) => {
         setUsername(event.target.value);
     };

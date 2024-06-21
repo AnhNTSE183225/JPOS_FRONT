@@ -2,11 +2,14 @@ import NavigationBar from "../components/NavigationBar";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
+import useDocumentTitle from "../components/Title";
 
 const DiamondPriceListPage = () => {
     const [diamondPriceList, setDiamondPriceList] = useState([]);
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(50);
+
+    useDocumentTitle("Bijoux Diamond Price List");
 
     const fetchDiamondList = async (pageNo, pageSize) => {
         try {

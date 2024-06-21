@@ -4,10 +4,13 @@ import { formatDate, formatPrice } from '/src/helper_function/ConvertFunction.js
 import axios from 'axios';
 import styles from '/src/css/CustomerOrdersPage.module.css';
 import OrderDetails from '../components/OrderDetails';
+import useDocumentTitle from "../components/Title";
 
 const CustomerOrdersPage = () => {
     const [orders, setOrders] = useState([]);
     const [currentOrderId, setcurrentOrderId] = useState(null);
+
+    useDocumentTitle("Your Orders");
 
     useEffect(() => {
         const fetchData = async () => {

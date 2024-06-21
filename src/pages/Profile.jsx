@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import image from '/src/assets/logoProfile.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import useDocumentTitle from '../components/Title';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
+    useDocumentTitle("Your Profile");
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
