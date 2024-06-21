@@ -20,8 +20,7 @@ const WaitSaleStaff = ({ order }) => {
     const [color, setColor] = useState('');
     const [clarity, setClarity] = useState('');
     const [shape, setShape] = useState('');
-    const [fromCaratWeight, setFromCaratWeight] = useState(0.0);
-    const [toCaratWeight, setToCaratWeight] = useState(5.0);
+    const [caratWeight, setCaratWeight] = useState(0.0);
 
     const [materialWeight, setMaterialWeight] = useState(0);
     const [currentMaterial, setCurrentMaterial] = useState('');

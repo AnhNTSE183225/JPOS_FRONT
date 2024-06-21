@@ -5,137 +5,122 @@ import { useNavigate } from 'react-router-dom';
 import DiamondCard from './DiamondCard';
 import styles from '/src/css/ChooseDiamonds.module.css';
 import { formatPrice } from '../../helper_function/ConvertFunction';
-import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
+import { Slider } from '@mui/material';
 
 const ChooseDiamond = () => {
 
     const navigate = useNavigate();
     const [diamondList, setDiamondList] = useState([]);
+
     const [activeShape, setActiveShape] = useState(null);
+    const shapes = ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'];
+
     const [minPrice, setMinPrice] = useState(200);
+    const [maxPrice, setMaxPrice] = useState(5000000);
+
     const [minCarat, setMinCarat] = useState(0.05);
-    const [color, setColor] = useState(0);
-    const [clarity, setClarity] = useState(0);
-    const [cut, setCut] = useState(0);
+    const [maxCarat, setMaxCarat] = useState(10);
+
+    const [beginColor, setBeginColor] = useState(0);
+    const [endColor, setEndColor] = useState(7);
+    const colors = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
+
+    const [beginClarity, setBeginClarity] = useState(0);
+    const [endClarity, setEndClarity] = useState(10);
+    const clarities = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+
+    const [beginCut, setBeginCut] = useState(0);
+    const [endCut, setEndCut] = useState(3);
+    const cuts = ['Fair', 'Good', 'Very_Good', 'Excellent'];
+
     const [origin, setOrigin] = useState('NATURAL')
 
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(40);
-    const [processing, setProcessing] = useState(false);
+
+    const [testValue, setTestValue] = useState(0);
 
     const setup = async () => {
-        setProcessing(true);
         if (sessionStorage.getItem('designId') === null) {
             toast.info(`Please pick a setting first`);
             navigate('/build-your-own/choose-setting');
         } else {
-            let diamond_list = await fetchData(pageNo, pageSize);
+            //let diamond_list = await fetchData(pageNo, pageSize);
+            let diamond_list = await fetchQuery();
 
             setDiamondList(diamond_list);
-            setProcessing(false);
         }
     }
+    const fetchQuery = async () => {
+        try {
+            const query = {
+                origin: origin,
+                shapeList: activeShape !== null ? [activeShape.toLowerCase()] : shapes,
+                colorList: [...colors.slice(beginColor, endColor), colors[endColor]],
+                clarityList: [...clarities.slice(beginClarity, endClarity), clarities[endClarity]],
+                cutList: [...cuts.slice(beginCut, endCut), cuts[endCut]],
+                minCarat: minCarat,
+                maxCarat: maxCarat,
+                minPrice: minPrice,
+                maxPrice: maxPrice
+            }
+            const response = await axios.post(`http://localhost:8080/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+            if (!response.data || response.status === 204) {
+                toast.error(`Cannot fetch data`);
+            } else {
+                console.log(response.data);
+                return response.data;
+            }
 
-    const updateQuery = async () => {
-        setProcessing(true);
-        const caratWeight = minCarat;
-        const shapeList = activeShape === null ? ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'] : [activeShape]
-        const clarityList = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'].splice(clarity);
-        const cutList = ['Poor', 'Fair', 'Good', 'Very_Good', 'Excellent'].splice(cut);
-        const colorList = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'].splice(color);
-
-        //const newList = await fetchQuery(pageNo, pageSize, caratWeight, colorList, clarityList, cutList, shapeList);
-        const newList = await fetchQuery(pageNo, pageSize, caratWeight, minPrice, origin, colorList, clarityList, cutList, shapeList);
-        
-        // console.log(`Carat weight: ${caratWeight}`);
-        // console.log(`minPrice: ${minPrice}`);
-        // console.log(`origin ${origin}`);
-        // console.log(`colorList ${colorList}`);
-        // console.log(`clarityList ${clarityList}`)
-        // console.log(`cutList ${cutList}`)
-        // console.log(`shapeList ${shapeList}`)
-
-        setDiamondList(newList);
-        setProcessing(false);
+        } catch (error) {
+            console.log(error);
+        }
     }
-
     useEffect(() => {
         setup();
-        //updateQuery();
     }, [])
 
     useEffect(() => {
-        updateQuery();
-    }, [pageNo, pageSize])
-
-    const fetchData = async (pageNo, pageSize) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/diamonds?pageNo=${pageNo}&pageSize=${pageSize}`);
-            if (!response.data || response.status === 204) {
-                toast.error("Error fetching the diamonds from the server");
-            } else {
-                return response.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const fetchQuery = async (pageNo, pageSize, caratWeight, price, origin, colorList, clarityList, cutList, shapeList) => {
-        // console.log(`Carat weight: ${caratWeight}`);
-        // console.log(`minPrice: ${minPrice}`);
-        // console.log(`origin ${origin}`);
-        // console.log(`colorList ${colorList}`);
-        // console.log(`clarityList ${clarityList}`)
-        // console.log(`cutList ${cutList}`)
-        // console.log(`shapeList ${shapeList}`)
-        try {
-            const response = await axios.post(`http://localhost:8080/api/diamonds/query?pageNo=${pageNo}&pageSize=${pageSize}`,
-                {
-                    caratWeight: caratWeight,
-                    price: price,
-                    origin: origin,
-                    colorList: colorList,
-                    clarityList: clarityList,
-                    cutList: cutList,
-                    shapeList: shapeList
-                }
-            );
-            if (!response.data || response.data === 204) {
-                toast.error(`There's no diamond avaiable for this setting! Please click "Reset filters"`);
-            } else {
-                return response.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+        setup();
+    }, [pageNo, pageSize, activeShape, minCarat, maxCarat, beginColor, endColor, beginClarity, endClarity, beginCut, endCut, minPrice, maxPrice, origin])
 
     const resetFilters = () => {
+
         setMinCarat(0.05);
+        setMaxCarat(10);
+
         setMinPrice(200);
-        setClarity(0);
-        setCut(0);
+        setMaxPrice(5000000);
+
+        setBeginClarity(0);
+        setEndClarity(10);
+
+        setBeginCut(0);
+        setEndCut(3);
+
         setActiveShape(null);
-        setColor(0);
+
+        setBeginColor(0);
+        setEndColor(7)
+
         setOrigin("NATURAL");
+
+        setPageNo(0);
+        setPageSize(40);
+
         setup();
-        //updateQuery();
     }
 
     const convertColor = (int) => {
-        const chars = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
-        return chars[int] || 'Invalid input';
+        return colors[int] || 'Invalid input';
     }
 
     const convertClarity = (int) => {
-        const clarity = ['I3', 'I2', 'I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
-        return clarity[int] || 'Invalid input';
+        return clarities[int] || 'Invalid input';
     }
 
     const convertCut = (int) => {
-        const quality = ['Poor', 'Fair', 'Good', 'Very_Good', 'Excellent'];
-        return quality[int] || 'Invalid input';
+        return cuts[int] || 'Invalid input';
     }
 
     const handleChoose = (id) => {
@@ -143,7 +128,6 @@ const ChooseDiamond = () => {
     }
 
     const isSelected = (id) => {
-
         if (sessionStorage.getItem('diamonds') === null || sessionStorage.getItem('diamonds').length === 0) {
             return false;
         } else {
@@ -157,7 +141,7 @@ const ChooseDiamond = () => {
                 <div className="row">
                     <div className="col mx-auto">
                         <div className="form-check">
-                            <input type="radio" className='form-check-input' value={origin == "NATURAL"} onChange={() => setOrigin("NATURAL")} name="origin" defaultChecked/>
+                            <input type="radio" className='form-check-input' value={origin == "NATURAL"} onChange={() => setOrigin("NATURAL")} name="origin" defaultChecked />
                             <label className='form-check-label'>Natural</label>
                         </div>
                         <div className="form-check">
@@ -181,14 +165,29 @@ const ChooseDiamond = () => {
                         </div>
                     </div>
                     <div className="col-4">
-                        <b>Min Carat</b>
+                        <b>Carat weight</b>
+                        <div className="container-fluid my-3">
+                            <div className="row mb-2">
+                                <div className="col text-start fw-bold">0.05</div>
+                                <div className="col text-end fw-bold">10.0</div>
+                            </div>
+                            <div className="row mb-2">
+                                <div className="col">
+                                    <input type="number" min={0.05} max={10.0} className='form-control text-end px-0' step="0.01" onChange={(e) => setMinCarat(e.target.value)} value={minCarat} />
+                                </div>
+                                <div className="col">
+                                    <input type="number" min={0.05} max={10.0} className='form-control text-end px-0' step="0.01" onChange={(e) => setMaxCarat(e.target.value)} value={maxCarat} />
+                                </div>
+                            </div>
+                            <Slider value={[minCarat, maxCarat]} min={0.05} step={0.05} max={10.0} onChange={(e) => {
+                                setMinCarat(e.target.value[0]);
+                                setMaxCarat(e.target.value[1]);
+                            }} />
+                        </div>
                         <div className="container-fluid my-3">
                             <div className="row">
-                                <div className="col text-start">0.05</div>
-                                <div className="col text-end">5.0</div>
                             </div>
-                            <input type="range" className='form-range' min={0.05} max={5.0} step={0.05} value={minCarat} onChange={(e) => setMinCarat(e.target.value)} />
-                            <input type="number" min={0.05} max={30.0} className='form-control' step="0.01" onChange={(e) => setMinCarat(e.target.value)} value={minCarat} />
+
                         </div>
                     </div>
                     <div className="col-4">
@@ -198,33 +197,51 @@ const ChooseDiamond = () => {
                                 <div className="col text-start">K</div>
                                 <div className="col text-end">D</div>
                             </div>
-                            <input type="range" className='form-range' min={0} max={7} step={1} value={color} onChange={(e) => setColor(e.target.value)} />
-                            <div className='text-start'><b>Color:</b> {convertColor(color)}</div>
+                            <div className="row">
+                                <div className='col text-start'>{convertColor(beginColor)}</div>
+                                <div className='col text-end'>{convertColor(endColor)}</div>
+                            </div>
+                            <Slider value={[beginColor, endColor]} min={0} max={colors.length - 1} onChange={(e) => {
+                                setBeginColor(e.target.value[0]);
+                                setEndColor(e.target.value[1]);
+                            }} />
                         </div>
                     </div>
                 </div>
                 <div className="row">
 
                     <div className="col-4">
-                        <b>Min Clarity</b>
+                        <b>Clarity</b>
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">I3</div>
                                 <div className="col text-end">FL</div>
                             </div>
-                            <input type="range" className='form-range' min={0} max={10} step={1} value={clarity} onChange={(e) => setClarity(e.target.value)} />
-                            <div className='text-start'><b>Clarity:</b> {convertClarity(clarity)}</div>
+                            <Slider value={[beginClarity, endClarity]} min={0} max={clarities.length - 1} onChange={(e) => {
+                                setBeginClarity(e.target.value[0]);
+                                setEndClarity(e.target.value[1]);
+                            }} />
+                            <div className="row">
+                                <div className='col text-start'>{convertClarity(beginClarity)}</div>
+                                <div className='col text-end'>{convertClarity(endClarity)}</div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-4">
                         <b>Cut</b>
                         <div className="container-fluid my-3">
                             <div className="row">
-                                <div className="col text-start">Poor</div>
+                                <div className="col text-start">Fair</div>
                                 <div className="col text-end">Excellent</div>
                             </div>
-                            <input type="range" className='form-range' min={0} max={4} step={1} value={cut} onChange={(e) => setCut(e.target.value)} />
-                            <div className='text-start'><b>Cut:</b> {convertCut(cut)}</div>
+                            <Slider value={[beginCut, endCut]} min={0} max={cuts.length - 1} onChange={(e) => {
+                                setBeginCut(e.target.value[0]);
+                                setEndCut(e.target.value[1]);
+                            }} />
+                            <div className="row">
+                                <div className='col text-start'>{convertCut(beginCut)}</div>
+                                <div className='col text-end'>{convertCut(endCut)}</div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-4">
@@ -234,27 +251,18 @@ const ChooseDiamond = () => {
                                 <div className="col text-start">{formatPrice(200)}</div>
                                 <div className="col text-end">{formatPrice(5000000)}</div>
                             </div>
-                            <input type="range" className='form-range' min={200} max={5000000} step={200} value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
-                            <input type="number" min={200} max={5000000} className='form-control' step="0.01" onChange={(e) => setMinPrice(e.target.value)} value={minPrice} />
+                            <Slider value={[minPrice, maxPrice]} min={200} max={5000000} onChange={(e) => {
+                                setMinPrice(e.target.value[0]);
+                                setMaxPrice(e.target.value[1]);
+                            }} />
+                            <div className="row">
+                                <input type="number" min={200} max={maxPrice} className='col form-control' step="0.01" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
+                                <input type="number" min={minPrice} max={5000000} className='col form-control' step="0.01" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className='col text-end'>
-
-                        {
-                            processing
-                                ? < button className="btn btn-dark" type="button" disabled>
-                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                    <span role="status">Loading...</span>
-                                </button>
-                                : <button className='btn btn-dark' onClick={() => {
-                                    setPageNo(0);
-                                    setPageSize(40);
-                                    updateQuery();
-                                }}>Search</button>
-                        }
-                    </div>
                     <div className="col text-end">
                         <button className='btn' style={{ backgroundColor: '#48AAAD' }} onClick={resetFilters}>Reset filters</button>
                     </div>
@@ -273,12 +281,12 @@ const ChooseDiamond = () => {
                 </div>
                 <div className='row my-3'>
                     {diamondList !== undefined && diamondList !== null ? (
-                        diamondList.map((diamond, index) => (
+                        diamondList.map((entry, index) => (
                             <div key={index} className="col-md-3 mb-4">
                                 <DiamondCard
-                                    diamond={diamond}
-                                    isSelected={isSelected(diamond.diamondId)}
-                                    onClick={() => handleChoose(diamond.diamondId)}
+                                    diamond={entry.diamond}
+                                    isSelected={isSelected(entry.diamond.diamondId)}
+                                    onClick={() => handleChoose(entry.diamond.diamondId)}
                                 />
                             </div>
                         ))
