@@ -78,7 +78,7 @@ const WaitSaleStaff = ({ order }) => {
                 maxPrice: maxPrice
             }
             try {
-                const response = await axios.post(`http://localhost:8080/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
                 if (!response.data || response.status === 204) {
                     console.log(`Cannot fetch diamonds`);
                 } else {
@@ -113,7 +113,7 @@ const WaitSaleStaff = ({ order }) => {
                     materialsIds: chosenMaterials.map(material => ({ first: material.id, second: material.weight }))
                 }
 
-                const response = await axios.post(`http://localhost:8080/api/product/save`, productDTO);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/product/save`, productDTO);
                 if (!response.data || response.status === 204) {
                     throw new Error(`Product creation failed. Backend did not return id`);
                 }
@@ -129,7 +129,7 @@ const WaitSaleStaff = ({ order }) => {
                     qmaterialPrice: totalMaterialPrice
                 }
 
-                const response2 = await axios.post(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem(`staff_id`)}/${response.data}`, finalOrder);
+                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${sessionStorage.getItem(`staff_id`)}/${response.data}`, finalOrder);
                 if (!response.data || response.status === 204) {
                     throw new Error(`Order update failed. Backend did not return order`);
                 }
@@ -185,7 +185,7 @@ const WaitSaleStaff = ({ order }) => {
 
     const fetchMaterials = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/material/all`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`);
             if (response.status === 204) {
                 console.log("No data");
             } else {

@@ -37,7 +37,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchProductionStaff = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/staff-production`);
+            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-production`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {

@@ -13,7 +13,7 @@ const DiamondPriceListPage = () => {
 
     const fetchDiamondList = async (pageNo, pageSize) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamond-price/get-all?pageNo=${pageNo}&pageSize=${pageSize}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all?pageNo=${pageNo}&pageSize=${pageSize}`);
             if (!response.data || response.status === 204) {
                 console.log("No data");
             } else {
@@ -33,6 +33,8 @@ const DiamondPriceListPage = () => {
         fetchDiamondList(pageNo, pageSize);
     }, [pageNo, pageSize])
 
+    console.log(import.meta.env.VITE_jpos_back)
+
     return (
         <>
             <div className="container">
@@ -48,7 +50,7 @@ const DiamondPriceListPage = () => {
                 <div className="row mt-3">
                     <div className="col-1 ms-auto">
                         <span>Page No</span>
-                        <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo+1} onChange={(e) => setPageNo(e.target.value-1)} />
+                        <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo + 1} onChange={(e) => setPageNo(e.target.value - 1)} />
                     </div>
                 </div>
                 <div className="row mt-3">
@@ -67,13 +69,8 @@ const DiamondPriceListPage = () => {
                         </thead>
                         <tbody className="table-group-divider">
                             {
-                                diamondPriceList.length === 0
-                                    ? <tr>
-                                        <td>
-                                            Loading...
-                                        </td>
-                                    </tr>
-                                    : diamondPriceList.map((price, index) =>
+                                diamondPriceList !== null && Array.isArray(diamondPriceList) && diamondPriceList.length > 0
+                                    ? diamondPriceList.map((price, index) =>
                                         <tr key={index}>
                                             <td>{price.origin}</td>
                                             <td>{price.shape}</td>
@@ -85,6 +82,11 @@ const DiamondPriceListPage = () => {
                                             <td>{formatDate(price.effectiveDate)}</td>
                                         </tr>
                                     )
+                                    : <tr>
+                                        <td>
+                                            Loading...
+                                        </td>
+                                    </tr>
                             }
                         </tbody>
                     </table>

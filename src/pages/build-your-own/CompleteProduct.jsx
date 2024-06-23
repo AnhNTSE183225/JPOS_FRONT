@@ -27,7 +27,7 @@ const CompleteProduct = () => {
                 navigate("/build-your-own/choose-setting");
             } else {
                 try {
-                    const response = await axios.get(`http://localhost:8080/api/product-designs/${sessionStorage.getItem('designId')}`);
+                    const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${sessionStorage.getItem('designId')}`);
                     if (!response.data || response.status === 204) {
                         console.log('error, cannot fetch, wrong id');
                     } else {
@@ -76,7 +76,7 @@ const CompleteProduct = () => {
         }
         try {
             const orderId = await createOrder();
-            const orderAmount = await axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`);
+            const orderAmount = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`);
             if (!orderAmount || orderAmount.status === 204) {
                 console.log(`Can't find totalAmount of that order`);
             } else {
@@ -107,7 +107,7 @@ const CompleteProduct = () => {
                 diamondIds: sessionStorage.getItem('diamonds').split(','),
                 customerId: sessionStorage.getItem("customer_id")
             };
-            const response = await axios.post(`http://localhost:8080/api/create-order-from-design`, object);
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/create-order-from-design`, object);
             if (!response.data || response.status === 204) {
                 toast.error("Failed to fetch order");
             } else {
@@ -125,7 +125,7 @@ const CompleteProduct = () => {
 
         for (const diamondId of chosenDiamonds) {
             try {
-                const response = await axios.get(`http://localhost:8080/api/diamond/get-by-id/${diamondId}`);
+                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond/get-by-id/${diamondId}`);
                 if (!response.data || response.status === 204) {
                     console.log(`Can't fetch diamond ${diamondId}`);
                 } else {
@@ -141,7 +141,7 @@ const CompleteProduct = () => {
 
     const getMaterials = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product-shell-material/${sessionStorage.getItem('shellId')}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${sessionStorage.getItem('shellId')}`);
             if (!response.data || response.status === 204) {
                 toast.error("ERror cannot fetch materials");
             } else {

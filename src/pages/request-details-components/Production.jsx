@@ -24,7 +24,7 @@ const Production = ({ order }) => {
             if (imageUrl == "Not provided") {
                 toast.info("Please upload your completed product's image!");
             } else {
-                const response = await axios.post(`http://localhost:8080/api/${order.id}/complete-product?imageUrl=${imageUrl}&productionStaffId=${sessionStorage.getItem("staff_id")}`);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product?imageUrl=${imageUrl}&productionStaffId=${sessionStorage.getItem("staff_id")}`);
                 if (!response.data || response.status === 204) {
                     toast.error("Something went wrong, can't submit");
                 } else {
@@ -45,7 +45,7 @@ const Production = ({ order }) => {
                 setProcessing(true);
                 const formData = new FormData();
                 formData.append("file", imageFile);
-                const response = await axios.post(`http://localhost:8080/api/upload`, formData);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }

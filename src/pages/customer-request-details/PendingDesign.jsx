@@ -15,9 +15,9 @@ const PendingDesign = ({ order }) => {
             setProcessing(true);
             let response = null;
             if (accepted) {
-                response = await axios.post(`http://localhost:8080/api/customers/${order.id}/acceptDesign`);
+                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/acceptDesign`);
             } else {
-                response = await axios.post(`http://localhost:8080/api/customers/${order.id}/refuseDesign`, {
+                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/refuseDesign`, {
                     note: note
                 });
             }

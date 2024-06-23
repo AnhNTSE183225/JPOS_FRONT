@@ -22,7 +22,7 @@ const ManagePricePage = () => {
     const updateDiamondPrice = async (oldPrice) => {
         if (selectedPrice !== null && updatedPrice !== oldPrice) {
             try {
-                const response = await axios.post(`http://localhost:8080/api/update-diamond-price?diamondPriceId=${selectedPrice}&newPrice=${updatedPrice}`);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/update-diamond-price?diamondPriceId=${selectedPrice}&newPrice=${updatedPrice}`);
                 if (!response.data || response.status === 204) {
                     toast.error(`Something went wrong, cannot update price`);
                 } else {
@@ -74,7 +74,7 @@ const ManagePricePage = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamond-prices?pageNo=${pageNo}&pageSize=${pageSize}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-prices?pageNo=${pageNo}&pageSize=${pageSize}`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong, cannot fetch data`);
             } else {

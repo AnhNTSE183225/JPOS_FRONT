@@ -24,7 +24,7 @@ const LoginPage = () => {
     const login = () => {
         if (username.length !== 0 && password.length !== 0) {
             axios
-                .post("http://localhost:8080/api/customer-login", {
+                .post("${import.meta.env.VITE_jpos_back}/api/customer-login", {
                     username: username,
                     password: password,
                 })
@@ -46,7 +46,7 @@ const LoginPage = () => {
     const loginStaff = () => {
         if (username.length !== 0 && password.length !== 0) {
             axios
-                .post("http://localhost:8080/api/staff-login", {
+                .post("${import.meta.env.VITE_jpos_back}/api/staff-login", {
                     username: username,
                     password: password,
                 })
@@ -70,7 +70,7 @@ const LoginPage = () => {
     const unionLogin = async () => {
         if (username.length > 0 && password.length > 0) {
             try {
-                const response = await axios.post(`http://localhost:8080/login`, {
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/login`, {
                     username: username,
                     password: password
                 });

@@ -29,7 +29,7 @@ const DesignerUploadPage = ({ order }) => {
                 setProcessing(true);
                 const formData = new FormData();
                 formData.append("file", designFile);
-                const response = await axios.post(`http://localhost:8080/api/designs/upload/${sessionStorage.getItem("staff_id")}/${order.id}`, formData);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/designs/upload/${sessionStorage.getItem("staff_id")}/${order.id}`, formData);
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }

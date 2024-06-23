@@ -51,20 +51,20 @@ const RequestPage = () => {
 
         switch (sessionStorage.getItem("staff_type")) {
             case "sale":
-                console.log(`GET http://localhost:8080/api/sales/orders/${sessionStorage.getItem("staff_id")}`)
-                response = await axios.get(`http://localhost:8080/api/sales/orders/${sessionStorage.getItem("staff_id")}`);
+                console.log(`GET ${import.meta.env.VITE_jpos_back}/api/sales/orders/${sessionStorage.getItem("staff_id")}`)
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${sessionStorage.getItem("staff_id")}`);
                 break;
             case "manage":
-                response = await axios.get(`http://localhost:8080/api/manager/orders`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/manager/orders`);
                 break;
             case "design":
-                response = await axios.get(`http://localhost:8080/api/designs/orders/${sessionStorage.getItem("staff_id")}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${sessionStorage.getItem("staff_id")}`);
                 break;
             case "produce":
-                response = await axios.get(`http://localhost:8080/api/production/orders/${sessionStorage.getItem("staff_id")}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${sessionStorage.getItem("staff_id")}`);
                 break;
             default:
-                response = axios.get(`http://localhost:8080/api/order/all`);
+                response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`);
         }
 
         if (response.status === 204) {

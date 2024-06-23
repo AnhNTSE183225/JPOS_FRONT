@@ -31,7 +31,7 @@ const RegisterPage = () => {
 
     const customerRegister = () => {
         if (username.length !== 0 && password.length !== 0 && fullName.length !== 0 && address.length !== 0) {
-            axios.post('http://localhost:8080/api/customer-register',
+            axios.post(`${import.meta.env.VITE_jpos_back}/api/customer-register`,
                 {
                     username: username,
                     password: password,

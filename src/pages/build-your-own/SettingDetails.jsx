@@ -41,7 +41,7 @@ const SettingDetails = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product-designs/${designId}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${designId}`);
             if (!response.data || response.status === 204) {
                 console.error('Error, cannot fetch, wrong id or something');
             } else {
@@ -61,7 +61,7 @@ const SettingDetails = () => {
 
     const getMaterials = async (shell) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product-shell-material/${shell.productShellDesignId}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shell.productShellDesignId}`);
             if (!response.data || response.status === 204) {
                 toast.error("Error cannot fetch materials");
             } else {

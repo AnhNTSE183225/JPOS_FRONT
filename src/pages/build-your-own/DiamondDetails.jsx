@@ -39,7 +39,7 @@ const DiamondDetails = () => {
 
     const fetchDiamond = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/diamond/get-by-id/${diamondId}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond/get-by-id/${diamondId}`);
             if (!response.data || response.status === 204) {
                 console.error(`Cannot find diamond with ID ${diamondId}`);
             } else {

@@ -19,7 +19,7 @@ const ChooseSetting = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/product-designs/all`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/all`);
             if (!response.data || response.status === 204) {
                 toast.error("NO items in database");
             } else {

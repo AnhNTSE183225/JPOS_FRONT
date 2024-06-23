@@ -11,7 +11,7 @@ const ManagerApproved = ({ order }) => {
   const forwardQuotation = () => {
     let staff_id = sessionStorage.getItem('staff_id');
     if (staff_id !== null) {
-      axios.post(`http://localhost:8080/api/${order.id}/forward-quotation`)
+      axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/forward-quotation`)
         .then(
           response => {
             console.log(response.data);

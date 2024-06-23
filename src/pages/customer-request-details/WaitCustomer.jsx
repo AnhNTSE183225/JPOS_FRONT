@@ -40,7 +40,7 @@ const WaitCustomer = ({ order }) => {
 
     const createOrder = async () => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/accept-quotation?orderId=${order.id}`);
+            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/accept-quotation?orderId=${order.id}`);
             if (!response.data || response.status === 204) {
                 toast.error("Something went wrong, saving failed");
             } else {
@@ -55,7 +55,7 @@ const WaitCustomer = ({ order }) => {
         setProcessing(true);
         try {
             const orderId = await createOrder();
-            const orderAmount = await axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`);
+            const orderAmount = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`);
             if (!orderAmount || orderAmount.status === 204) {
                 console.log(`Can't find totalAmount of that order`);
             } else {

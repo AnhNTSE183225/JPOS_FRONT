@@ -20,7 +20,7 @@ const ConfirmPaymentPage = ({ order }) => {
     const getPaidAmount = async () => {
 
         try {
-            const response = await axios.get(`http://localhost:8080/api/payment/${order.id}`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/payment/${order.id}`);
             if (!response.data || response.status === 204) {
                 toast.error("Cannot fetch previously paid amount");
             } else {
@@ -38,7 +38,7 @@ const ConfirmPaymentPage = ({ order }) => {
     const handleSubmit = async () => {
         try {
             setProcessing(true);
-            const response = await axios.post(`http://localhost:8080/api/orders/${order.id}/complete`);
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/orders/${order.id}/complete`);
             if (!response.data || response.status === 204) {
                 toast.error("Something happened, failed to confirm deposit");
             } else {

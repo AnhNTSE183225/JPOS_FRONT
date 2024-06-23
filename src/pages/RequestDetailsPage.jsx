@@ -15,7 +15,7 @@ const RequestDetailPage = () => {
 
     const [order, setOrder] = useState(undefined);
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`)
+        axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`)
             .then(
                 response => {
                     setOrder(response.data);

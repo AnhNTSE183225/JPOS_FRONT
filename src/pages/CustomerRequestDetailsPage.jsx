@@ -14,8 +14,8 @@ const CustomerRequestDetailsPage = () => {
 
     const fetchOrder = async () => {
 
-        //console.log(`GET http://localhost:8080/api/customers/${sessionStorage.getItem('customer_id')}/orders`);
-        const response = await axios.get(`http://localhost:8080/api/customers/${sessionStorage.getItem('customer_id')}/orders`);
+        //console.log(`GET ${import.meta.env.VITE_jpos_back}/api/customers/${sessionStorage.getItem('customer_id')}/orders`);
+        const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/customers/${sessionStorage.getItem('customer_id')}/orders`);
         if (!response.data || response.status === 204) {
             toast.error("No data found");
         }

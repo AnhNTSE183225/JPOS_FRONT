@@ -30,7 +30,7 @@ const CustomDesignPage = () => {
             } else {
                 const formData = new FormData();
                 formData.append("file", designFile);
-                const response = await axios.post(`http://localhost:8080/api/upload`, formData);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }
@@ -51,7 +51,7 @@ const CustomDesignPage = () => {
             if (description.trim().length > 0 &&
                 budget >= 500
             ) {
-                axios.post('http://localhost:8080/api/send-request',
+                axios.post('${import.meta.env.VITE_jpos_back}/api/send-request',
                     {
                         customerId: sessionStorage.getItem('customer_id'),
                         designFile: imageUrl,

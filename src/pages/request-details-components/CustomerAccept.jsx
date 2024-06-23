@@ -40,7 +40,7 @@ const CustomerAccept = ({ order }) => {
                 amountPaid >= order.totalAmount * 0.3
             ) {
                 setProcessing(true);
-                const response = await axios.put(`http://localhost:8080/api/sales/orders/${order.id}/confirm-deposit`,
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${order.id}/confirm-deposit`,
                     {
                         paymentDate: paymentDate,
                         paymentMethod: paymentMethod,
