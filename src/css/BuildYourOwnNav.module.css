@@ -6,7 +6,17 @@
     align-items: center;
     justify-content: start;
     cursor: pointer;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
 }
+/* .text-ellipsis {
+    display: block; 
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%; 
+} */
+
 
 #build-your-own-nav .col:first-child {
     border-radius: 50px 0 0 50px;

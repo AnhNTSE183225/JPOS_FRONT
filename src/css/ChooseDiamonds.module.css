@@ -13,3 +13,18 @@
 .shape.active {
     border: 2px solid #48AAAD;
 }
+.custom-btn-natural {
+    background-color: #48AAAD;
+}
+
+.custom-btn-natural:hover {
+    background-color: #48AAAD; /* Darker green on hover */
+}
+
+.custom-btn-lab {
+    background-color: #cacaca;
+}
+
+.custom-btn-lab:hover {
+    background-color: #48AAAD; /* Darker blue on hover */
+}

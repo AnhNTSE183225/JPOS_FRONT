@@ -21,18 +21,18 @@ const ChooseDiamond = () => {
 
     const [minCarat, setMinCarat] = useState(0.05);
     const [maxCarat, setMaxCarat] = useState(10);
-    
+
     const colors = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
     const [beginColor, setBeginColor] = useState(0);
-    const [endColor, setEndColor] = useState(colors.length-1);
+    const [endColor, setEndColor] = useState(colors.length - 1);
 
     const clarities = ['SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
     const [beginClarity, setBeginClarity] = useState(0);
-    const [endClarity, setEndClarity] = useState(clarities.length-1);
+    const [endClarity, setEndClarity] = useState(clarities.length - 1);
 
     const cuts = ['Fair', 'Good', 'Very_Good', 'Excellent'];
     const [beginCut, setBeginCut] = useState(0);
-    const [endCut, setEndCut] = useState(cuts.length-1);
+    const [endCut, setEndCut] = useState(cuts.length - 1);
 
     const [origin, setOrigin] = useState('NATURAL')
 
@@ -65,7 +65,7 @@ const ChooseDiamond = () => {
                 minPrice: minPrice,
                 maxPrice: maxPrice
             }
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+            const response = await axios.post(`http://localhost:8080/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
             if (!response.data || response.status === 204) {
                 toast.error(`Cannot fetch data`);
             } else {
@@ -93,15 +93,15 @@ const ChooseDiamond = () => {
         setMaxPrice(5000000);
 
         setBeginClarity(0);
-        setEndClarity(clarities.length-1);
+        setEndClarity(clarities.length - 1);
 
         setBeginCut(0);
-        setEndCut(cuts.length-1);
+        setEndCut(cuts.length - 1);
 
         setActiveShape(null);
 
         setBeginColor(0);
-        setEndColor(colors.length-1);
+        setEndColor(colors.length - 1);
 
         setOrigin("NATURAL");
 
@@ -139,7 +139,7 @@ const ChooseDiamond = () => {
         <>
             <div className={`${styles.container} container`}>
                 <div className="row">
-                    <div className="col mx-auto">
+                <div className="col mx-auto">
                         <div className="form-check">
                             <input type="radio" className='form-check-input' value={origin == "NATURAL"} onChange={() => setOrigin("NATURAL")} name="origin" defaultChecked />
                             <label className='form-check-label'>Natural</label>
@@ -195,7 +195,7 @@ const ChooseDiamond = () => {
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">{colors[0]}</div>
-                                <div className="col text-end">{colors[colors.length-1]}</div>
+                                <div className="col text-end">{colors[colors.length - 1]}</div>
                             </div>
                             <div className="row">
                                 <div className='col text-start'>{convertColor(beginColor)}</div>
@@ -215,7 +215,7 @@ const ChooseDiamond = () => {
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">{clarities[0]}</div>
-                                <div className="col text-end">{clarities[clarities.length-1]}</div>
+                                <div className="col text-end">{clarities[clarities.length - 1]}</div>
                             </div>
                             <Slider value={[beginClarity, endClarity]} min={0} max={clarities.length - 1} onChange={(e) => {
                                 setBeginClarity(e.target.value[0]);
@@ -232,7 +232,7 @@ const ChooseDiamond = () => {
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">{cuts[0]}</div>
-                                <div className="col text-end">{cuts[cuts.length-1]}</div>
+                                <div className="col text-end">{cuts[cuts.length - 1]}</div>
                             </div>
                             <Slider value={[beginCut, endCut]} min={0} max={cuts.length - 1} onChange={(e) => {
                                 setBeginCut(e.target.value[0]);

@@ -56,20 +56,20 @@ const BuildYourOwnNav = () => {
             <div className="row flex-nowrap">
                 <div className={`col-lg-4 ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-setting")}>
                     <div className="col-1">
-                        <h3>1.</h3>
+                        <h2>1.</h2>
                     </div>
                     {
                         designId == null
                             ? <>
-                                Choose a setting
+                                <p className='fs-5'>Choose a setting</p>
                             </>
                             : <>
                                 <div className="col">
                                     <div className="container-fluid">
-                                        <div className="row fw-bold">
+                                        <div className={`"row fw-bold " ${styles['text-ellipsis']}`}>
                                             {sessionStorage.getItem('designName')}
                                         </div>
-                                        <div className="row">
+                                        <div className="row justify-content-around">
                                             <b className='text' style={{ color: '#48AAAD' }}>{sessionStorage.getItem('designPrice')}</b>
                                         </div>
                                     </div>
@@ -83,13 +83,13 @@ const BuildYourOwnNav = () => {
                     }
                 </div>
                 <div className={`col-lg-4 ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-diamond")}>
-                    <div className="col-1">
-                        <h3>2.</h3>
+                    <div className="col-1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <h2>2.</h2>
                     </div>
                     {
                         diamonds === null
                             ? <>
-                                Choose diamonds
+                                <p className='fs-5'>Choose diamonds</p>
                             </>
                             : <>
                                 {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
@@ -115,14 +115,14 @@ const BuildYourOwnNav = () => {
                 {
                     checkCompletion()
                         ? <div className={`col-lg-4 ${styles['col']} ${styles['final-button']}`} onClick={() => navigate("/build-your-own/complete-product")}>
-                            <p className='fw-bolder m-0 fs-4' >Proceed to checkout</p>
+                            <p className='fw-bolder m-0 fs-5' >Proceed to checkout</p>
                             <FontAwesomeIcon icon={faRightLong} id={`${styles['icon']}`} />
                         </div>
                         : <div className={`col ${styles['col']}`}>
                             <div className="col-1">
-                                <h3>3.</h3>
+                                <h2>3.</h2>
                             </div>
-                            <div className="col">
+                            <div className="col fs-5">
                                 Complete product
                             </div>
                         </div>

@@ -169,14 +169,16 @@ const CompleteProduct = () => {
                         </div>
                         <div className={styles.detailsSection}>
                             <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
-                            <h4 className='fw-semibold' style={{ color: '#48AAAD' }}><i>{productDesign.designName} in {shell.shellName}</i></h4>
+                            <h4 className='fs-2' style={{ color: '#48AAAD' }}>{productDesign.designName} in {shell.shellName}</h4>
                             <br />
                             <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
                             <ul>
                                 {diamonds.map(d =>
                                     <li key={d.diamondId} style={{ listStyle: 'none' }}>
                                         {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
+                                        
                                     </li>
+                                    
                                 )}
                             </ul>
                             <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
@@ -189,7 +191,7 @@ const CompleteProduct = () => {
                                     )
                                 }
                             </ul>
-                            <h3 className='fw-semibold fst-italic'>Product price: </h3>
+                            <p className='fw-semibold fst-italic fs-4'>Product price: </p>
                             <h5 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
                                 {estimatedPrice === null
                                     ? 'Estimating price...'
@@ -199,15 +201,16 @@ const CompleteProduct = () => {
                             <br />
                             <div className="col">
                                 <h3 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h3>
-                                <br />
+                                
                                 <div>
                                     <div>
                                         <div style={{ marginLeft: '1vw' }}>
-                                            <p>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
-                                            <p>US & Int. Shipping: Free</p>
-                                            <p>Taxes/Duties Estimate: 10% VAT</p>
+                                            <p className='fs-6'>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
+                                            <p className='fs-6'>US & Int. Shipping: Free</p>
+                                            <p className='fs-6'>Taxes/Duties Estimate: 10% VAT</p>
                                         </div>
-                                        <h2>Total Price: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></h2>
+                                        <hr />
+                                        <p className='fs-4'>TOTAL PRICE: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></p>
                                         <div className='row'>
                                             <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay 30% - {estimatedPrice !== null ? formatPrice(estimatedPrice * 1.1 * 0.3) : 'Estimating price...'}</button></div>
                                         </div>

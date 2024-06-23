@@ -11,7 +11,7 @@
 }
 
 .card:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 .cardImgTop {
@@ -25,6 +25,9 @@
 }
 
 .cardTitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 500;
     margin-bottom: 12px;
+    align-items: center;
+    justify-content: start;
 }
