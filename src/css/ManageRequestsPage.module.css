@@ -1,33 +1,63 @@
-#manage-request #status-row {
+/* Adjustments for status bar */
+.status-bar {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Increased gap between status items */
+    margin-bottom: 20px; /* Increase bottom margin for spacing */
+}
+
+.status-line {
+    display: flex;
     justify-content: center;
-    gap: 10px;
+    width: 100%;
+    gap: 20px; /* Increased gap between status items */
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column; /* Stack the circle and label vertically */
+    align-items: center;
+    text-align: center;
+    margin: 0 10px; /* Adjust margin for spacing */
 }
 
 .status-circle {
     cursor: pointer;
     background-color: rgb(239, 239, 239);
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 40px; /* Adjusted size for the circle */
+    height: 40px; /* Adjusted size for the circle */
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.2s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Relative positioning for z-index */
+    z-index: 1; /* Ensure circles are above lines */
 }
 
 .status-circle.active {
     background-color: #48AAAD;
-}
-
-.status-circle.active p {
     color: white;
 }
 
-.status-circle p {
-    overflow: hidden;
-    text-align: center;
+.status-circle:hover {
+    transform: scale(1.1); /* Scale up on hover */
+}
+
+.status-circle span {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.status-label {
+    margin-top: 5px; /* Adjusted spacing between circle and label */
+    font-size: 0.8rem;
+    color: #555; /* Text color */
+    max-width: 100px; /* Increased maximum width for the label */
+    word-wrap: break-word; /* Allow long words to break */
+    text-align: center; /* Center-align the text */
 }
 
 #manage-request .table-head {
@@ -45,19 +75,21 @@
 }
 
 #manage-request table {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     text-align: center;
     box-shadow: 0px 1.908px 19.078px 0px rgba(0, 0, 0, 0.10);
     width: 100%;
+    border-collapse: collapse;
 }
 
-#manage-request .table-head th,td {
+#manage-request th, td {
     background-clip: padding-box;
     padding: 1rem;
+    border: 1px solid #ddd;
 }
 
 #manage-request thead {
-    background-color: green;
+    background-color: #48AAAD;
 }
 
 #manage-request button {
@@ -66,7 +98,8 @@
     background-color: #48AAAD;
     border-radius: 20px;
     border: none;
-    transition: 0.2s;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
 }
 
 #manage-request button:hover {
