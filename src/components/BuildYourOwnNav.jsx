@@ -58,62 +58,66 @@ const BuildYourOwnNav = () => {
                     <div className="col-1">
                         <h2>1.</h2>
                     </div>
-                    
-                        {
-                            designId == null
-                                ? <>
-                                    <p className='fs-5 mt-3'>Choose a setting</p>
-                                </>
-                                : <>
-                                    <div className="col">
-                                        <div className="container-fluid">
-                                            <div className={`"row fw-bold " ${styles['text-ellipsis']}`}>
-                                                {sessionStorage.getItem('designName')}
-                                            </div>
-                                            <div className="row justify-content-around">
-                                                <b className='text' style={{ color: '#48AAAD' }}>{sessionStorage.getItem('designPrice')}</b>
-                                            </div>
+
+                    {
+                        designId == null
+                            ? <>
+                                <p className='fs-5 mt-3'>Choose a setting</p>
+                            </>
+                            : <>
+                                <div className="col">
+                                    <div className="container-fluid">
+                                        <div className={`"row fw-bold " ${styles['text-ellipsis']}`}>
+                                            {sessionStorage.getItem('designName')}
+                                        </div>
+                                        <div className="row justify-content-around">
+                                            <b className='text' style={{ color: '#48AAAD' }}>{sessionStorage.getItem('designPrice')}</b>
                                         </div>
                                     </div>
-                                    <div className={`col-2 ${styles['image-col']} `}>
-                                        <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/setting-details/${sessionStorage.getItem('designId')}`}>
-                                            <img crossOrigin='anonymous' src={sessionStorage.getItem('designImage')} alt="" />
-                                        </Link>
-                                    </div>
-                                </>
-                        }
-                    
+                                </div>
+                                <div className={`col-2 ${styles['image-col']} `}>
+                                    <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/setting-details/${sessionStorage.getItem('designId')}`}>
+                                        <img crossOrigin='anonymous' src={sessionStorage.getItem('designImage')} alt="" />
+                                    </Link>
+                                </div>
+                            </>
+                    }
+
                 </div>
                 <div className={`col-lg-4 ${styles['col']}`} onClick={() => navigate("/build-your-own/choose-diamond")}>
                     <div className="col-1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <h2>2.</h2>
                     </div>
-                    <div>
-                        {
-                        diamonds === null
-                            ? <>
-                                <p className='fs-5 mt-3'>Choose diamonds</p>
-                            </>
-                            : <>
-                                {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
-                                    <div key={index} className={`col-2 me-2 ${styles['image-col']}`}>
-                                        <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
-                                            <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
-                                        </Link>
-                                    </div>
-                                ))}
-                                <div className="col">
-                                    <div className="container-fluid">
-                                        <div className="row">
-                                            <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
-                                        </div>
-                                        <div className="row">
-                                            <b>Total: <span className='text' style={{ color: '#48AAAD' }}>{formatPrice(calculateTotal())}</span></b>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                    }
+                    <div className='col'>
+                        <div className="container-fluid">
+                            <div className="row">
+                                {
+                                    diamonds === null
+                                        ? <>
+                                            <p className='fs-5 mt-3'>Choose diamonds</p>
+                                        </>
+                                        : <>
+                                            {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
+                                                <div key={index} className="col p-0" style={{marginRight: '5px'}}>
+                                                    <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
+                                                        <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
+                                                    </Link>
+                                                </div>
+                                            ))}
+                                            <div className="col">
+                                                <div className="container-fluid">
+                                                    <div className="row">
+                                                        <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
+                                                    </div>
+                                                    <div className="row">
+                                                        <b>Total: <span className='text' style={{ color: '#48AAAD' }}>{formatPrice(calculateTotal())}</span></b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {
