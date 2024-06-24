@@ -187,10 +187,12 @@ const OrderDetails = ({ orderId, staffType }) => {
 
     const fetchOrder = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/sales/order-select/${orderId}`);
+            console.log(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`)
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`);
             if (!response.data || response.status == 204) {
                 toast.error(`Error fetching order`);
             } else {
+                console.log(response.data);
                 setOrder(response.data);
             }
         } catch (error) {
