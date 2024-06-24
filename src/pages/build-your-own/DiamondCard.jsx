@@ -8,7 +8,7 @@ const DiamondCard = ({ diamond, isSelected, onClick }) => {
     
     return (
         <div className={`${styles.card} ${isSelected ? styles.selected : ''}`} onClick={() => onClick(diamond.diamondId, !isSelected)}>
-            <img crossOrigin='anonymous' src={diamond.image} className={styles.cardImgTop} alt="diamond" />
+            <img crossOrigin='anonymous' src={diamond.image.split("|")[0]} className={styles.cardImgTop} alt="diamond" />
             <div className={styles.cardBody}>
                 <p className={`fs-6  ${styles.cardTitle}`}> {diamond.origin.charAt(0).toUpperCase() + diamond.origin.slice(1).toLowerCase().replace("_"," ")} {diamond.caratWeight} {diamond.color}-{diamond.clarity} {diamond.cut.replace("_", " ")} Cut {diamond.shape} Diamond</p>
                 <div className='text-center'>
