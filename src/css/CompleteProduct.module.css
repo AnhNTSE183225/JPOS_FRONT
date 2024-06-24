@@ -18,6 +18,17 @@
 }
 
 .diamondImage {
+    margin-bottom: 0;
+    width: 30%;
+    max-width: 30%;
+    height: auto;
+}
+.row {
+    margin-bottom: 0;
+}
+
+.productImage {
+    margin-bottom: 0;
     width: 100%;
     max-width: 100%;
     height: auto;

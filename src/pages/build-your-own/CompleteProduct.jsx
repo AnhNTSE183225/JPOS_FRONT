@@ -159,13 +159,22 @@ const CompleteProduct = () => {
             </>
         )
     } else {
-        
+
         return (
             <>
                 <div className='container'>
                     <div className={styles.container}>
-                        <div className={styles.imageSection}>
-                            <img src={productDesign.designFile} className={styles.diamondImage} alt="Product Design" />
+                        <div className={`row ${styles.imageSection}`}>
+                            <div className='row'>
+                                {diamonds.map(d =>
+                                    <li key={d.diamondId} style={{ listStyle: 'none' }}>
+                                        <img src={d.image} alt="Diamond" className={styles.diamondImage} />
+                                    </li>
+                                )}
+                            </div>
+                            <div className='row'>
+                                <img src={productDesign.designFile} className={styles.productImage} alt="Product Design" />
+                            </div>
                         </div>
                         <div className={styles.detailsSection}>
                             <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
@@ -176,9 +185,9 @@ const CompleteProduct = () => {
                                 {diamonds.map(d =>
                                     <li key={d.diamondId} style={{ listStyle: 'none' }}>
                                         {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
-                                        
+
                                     </li>
-                                    
+
                                 )}
                             </ul>
                             <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
@@ -201,7 +210,7 @@ const CompleteProduct = () => {
                             <br />
                             <div className="col">
                                 <h4 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h4>
-                                
+
                                 <div>
                                     <div>
                                         <div style={{ marginLeft: '1vw' }}>
