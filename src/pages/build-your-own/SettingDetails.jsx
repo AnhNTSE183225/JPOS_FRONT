@@ -117,16 +117,16 @@ const SettingDetails = () => {
             <div className="container">
                 <div className={styles.container} id={styles["setting-details"]}>
                     <div className={styles.content}>
-                        <div className={styles["image-section"]}>
+                        <div className={`col-md-6 ${styles["image-section"]}`}>
                             <img src={productDesign.designFile} alt="Ring" />
                             <div className={styles["more-info-section"]}>
                                 <div className={styles["toggle-button"]} onClick={toggleMoreInfo}>
-                                    <h3>{showMoreInfo ? 'Less Information' : 'More Information'}</h3>
+                                    <h5>{showMoreInfo ? 'Less Information' : 'More Information'}</h5>
                                     <span>{showMoreInfo ? '-' : '+'}</span>
                                 </div>
                                 {showMoreInfo && (
                                     <div className={styles["more-info-content"]}>
-                                        <h3>Can Be Set With:</h3>
+                                        <h5>Can Be Set With:</h5>
                                         <ul>
                                             {['Round', 'Princess', 'Cushion', 'Emerald', 'Oval', 'Radiant', 'Asscher', 'Marquise', 'Heart', 'Pear'].map(shape => (
                                                 <div key={shape}>
@@ -145,15 +145,15 @@ const SettingDetails = () => {
                                 )}
                             </div>
                         </div>
-                        <div className={styles["details-section"]}>
-                            <h1 className={styles.title}>{productDesign.designName}</h1>
+                        <div className={`col-md-6 ${styles["details-section"]}`}>
+                            <p className={styles.title}>{productDesign.designName}</p>
                             <h2 className={styles.subtitle}>{selectedShell ? selectedShell.shellName : "Select a Shell"}</h2>
-                            <div className={styles.price}>{formatPrice(settingPrice)} (Setting Price)</div>
+                            <div className={`fs-4 ${styles.price}`}>{formatPrice(settingPrice)} (Setting Price)</div>
                             <div className={styles.option}>
-                                Flexible Payment Options: 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
+                                <b>Flexible Payment Options:</b> 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
                             </div>
                             <div className={styles["metal-type-section"]}>
-                                <h3 className={styles["metal-type-title"]}></h3>
+                                <h3 className={styles["metal-type-title"]}>Metal Type: </h3>
                                 <div className={styles["shell-list"]}>
                                     {productDesign.productShellDesigns.map(shell => (
                                         <div
@@ -165,8 +165,18 @@ const SettingDetails = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className={styles["toggle-button"]} onClick={toggleShellDetails}>
-                                    <h3>Shell Details</h3>
+                                
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <button className={styles.button} onClick={handleChoose}>Select this setting</button>
+                                </div>
+                                <div className="col">
+                                    <button className={`${styles.button} ${styles["secondary-button"]}`}>Consult an expert</button>
+                                </div>
+                            </div>
+                            <div className={`mt-4 ${styles["toggle-button"]}`} onClick={toggleShellDetails}>
+                                    <p className="fs-5">Shell Details</p>
                                     <span>{showShellDetails ? '-' : '+'}</span>
                                 </div>
                                 {showShellDetails && selectedShell && (
@@ -179,15 +189,14 @@ const SettingDetails = () => {
                                         <p className={styles["shell-detail"]}><strong>Extra Material Price:</strong> {formatPrice(selectedShell.ematerialPrice)}</p>
                                     </div>
                                 )}
-                            </div>
-                            <div className={styles.paymentOptions}>
-                                <h3>Your order includes: </h3>
+                            <div className={`row ${styles.paymentOptions}`}>
+                                <p className="fs-5">Your order includes:</p>
                                 <div className={styles.optionBox}>
                                     <div className={styles.iconContainer}>
                                         <FontAwesomeIcon icon={faTruckFast} />
                                     </div>
                                     <div className={styles.textContainer}>
-                                        <h3>Free Shipping</h3>
+                                        <p><b>Free Shipping</b></p>
                                         <p>We're committed to making your entire experience a pleasant one, from shopping to shipping.</p>
                                     </div>
                                 </div>
@@ -196,7 +205,7 @@ const SettingDetails = () => {
                                         <FontAwesomeIcon icon={faChartBar} />
                                     </div>
                                     <div className={styles.textContainer}>
-                                        <h3>Appraisal Included</h3>
+                                        <p><b>Appraisal Included</b></p>
                                         <p>An appraisal is a document stating the approximate monetary value of your item. It is only available for items over $800.</p>
                                     </div>
                                 </div>
@@ -205,19 +214,12 @@ const SettingDetails = () => {
                                         <FontAwesomeIcon icon={faRightLeft} />
                                     </div>
                                     <div className={styles.textContainer}>
-                                        <h3>Free Returns</h3>
+                                        <p><b>Free Returns</b></p>
                                         <p>Our commitment to you does not end at delivery. We offer free returns (U.S and Canada) to make your experience as easy as possible.</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col">
-                                    <button className={styles.button} onClick={handleChoose}>Select this setting</button>
-                                </div>
-                                <div className="col">
-                                    <button className={`${styles.button} ${styles["secondary-button"]}`}>Consult an expert</button>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

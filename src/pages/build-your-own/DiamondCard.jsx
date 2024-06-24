@@ -10,27 +10,15 @@ const DiamondCard = ({ diamond, isSelected, onClick }) => {
         <div className={`${styles.card} ${isSelected ? styles.selected : ''}`} onClick={() => onClick(diamond.diamondId, !isSelected)}>
             <img crossOrigin='anonymous' src={diamond.image} className={styles.cardImgTop} alt="diamond" />
             <div className={styles.cardBody}>
-                <h5 className={styles.cardTitle}>{diamond.diamondName}</h5>
-                
-                <div className="row" style={{textTransform: 'capitalize'}}>
-                    <div className="col">
-                        <b>Shape:</b> {diamond.shape} <br />
-                        <b>Og:</b> {diamond.origin} <br />
-                        <b>Color:</b> {diamond.color} <br />
+                <p className={`fs-6  ${styles.cardTitle}`}> {diamond.origin.charAt(0).toUpperCase() + diamond.origin.slice(1).toLowerCase().replace("_"," ")} {diamond.caratWeight} {diamond.color}-{diamond.clarity} {diamond.cut.replace("_", " ")} Cut {diamond.shape} Diamond</p>
+                <div className='text-center'>
+                    <div className={`${styles.cardStatus}`}>
+                        {isSelected ? 'Selected' : 'Select'}
                     </div>
-                    <div className="col">
-                        <b>Clarity:</b> {diamond.clarity} <br />
-                        <b>Cut:</b> {diamond.cut} <br />
-                        <b>Carat:</b> {diamond.caratWeight}
-                    </div>
-                </div>
-
-                <div className={styles.cardStatus}>
-                    {isSelected ? 'Selected' : 'Select'}
                 </div>
             </div>
         </div>
-    );
+    );  
 }
 
 export default DiamondCard;

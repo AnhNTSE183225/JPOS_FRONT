@@ -281,6 +281,9 @@ const WaitSaleStaff = ({ order }) => {
                                     setBeginColor(e.target.value[0]);
                                     setEndColor(e.target.value[1]);
                                 }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
                                 marks={
                                     colors.map((value, index) =>
                                     ({
@@ -303,6 +306,9 @@ const WaitSaleStaff = ({ order }) => {
                                 onChange={(e) => {
                                     setBeginClarity(e.target.value[0])
                                     setEndClarity(e.target.value[1])
+                                }}
+                                style={{
+                                    color: '#2D9596',
                                 }}
                                 step={null}
                                 marks={
@@ -327,6 +333,9 @@ const WaitSaleStaff = ({ order }) => {
                                     setBeginCut(e.target.value[0]);
                                     setEndCut(e.target.value[1]);
                                 }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
                                 step={null}
                                 marks={
                                     cuts.map((value, index) => (
@@ -350,6 +359,9 @@ const WaitSaleStaff = ({ order }) => {
                                 onChange={(e) => {
                                     setMinCarat(e.target.value[0]);
                                     setMaxCarat(e.target.value[1]);
+                                }}
+                                style={{
+                                    color: '#2D9596',
                                 }}
                                 className='col me-5'
                                 valueLabelDisplay='auto'
@@ -378,7 +390,12 @@ const WaitSaleStaff = ({ order }) => {
                                     setMinPrice(e.target.value[0]);
                                     setMaxPrice(e.target.value[1]);
                                 }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
+                                className='col me-5'
                                 step={1}
+                                
                                 valueLabelDisplay='auto'
                                 marks={
                                     [
@@ -392,7 +409,6 @@ const WaitSaleStaff = ({ order }) => {
                                         }
                                     ]
                                 }
-                                className='col me-5'
                             />
                         </div>
 

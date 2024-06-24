@@ -2,7 +2,8 @@
     display: flex;
     justify-content: center;
     padding: 20px;
-    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: 2vh 4vw;
 }
 
 .content {
@@ -31,7 +32,7 @@
 }
 
 .title {
-    font-size: 24px;
+    font-size: 32px;
     margin-bottom: 10px;
 }
 
@@ -42,8 +43,14 @@
 
 .price {
     font-size: 20px;
-    color: #2d9596;
+    color: #327c7f;
     margin-bottom: 20px;
+}
+
+.option {
+    background-color: #dddddd4e;
+    padding: 15px;
+    margin-bottom: 2vh;
 }
 
 .paymentOptions {
@@ -57,17 +64,17 @@
 .optionBox {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     background-color: #f9f9f9;
-    border-radius: 3px;
     border: 1px solid #ddd;
 }
 
 .iconContainer {
     background-color: #b9eddd;
-    padding: 10px;
+    padding: 5px 15px;
     display: flex;
     align-items: center;
+    border-radius: 7px;
     justify-content: center;
     margin-right: 20px;
     width: 50px;
@@ -77,18 +84,6 @@
 .textContainer {
     display: flex;
     flex-direction: column;
-}
-
-h3 {
-    margin: 0 0 10px 0;
-    font-size: 18px;
-    color: #333;
-}
-
-p {
-    margin: 0;
-    font-size: 14px;
-    color: #666;
 }
 
 .product-details {
@@ -129,7 +124,7 @@ p {
 }
 
 .shell-item.selected {
-    border-color: #48AAAD;
+    border-color: #327c7f;
     background-color: #e9f8f9;
 }
 
@@ -139,10 +134,6 @@ p {
 
 .shell-label {
     font-size: 16px;
-}
-
-.shell-details-section {
-    margin-top: 20px;
 }
 
 .shell-title {
@@ -191,14 +182,8 @@ p {
     margin: 10px 0;
 }
 
-.toggle-button h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #000;
-}
-
 .toggle-button span {
-    font-size: 24px;
+    font-size: 20px;
     color: #000;
 }
 

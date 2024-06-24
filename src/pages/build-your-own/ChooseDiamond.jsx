@@ -138,15 +138,29 @@ const ChooseDiamond = () => {
     return (
         <>
             <div className={`${styles.container} container`}>
-                <div className="row">
-                <div className="col mx-auto">
-                        <div className="form-check">
-                            <input type="radio" className='form-check-input' value={origin == "NATURAL"} onChange={() => setOrigin("NATURAL")} name="origin" defaultChecked />
-                            <label className='form-check-label'>Natural</label>
-                        </div>
-                        <div className="form-check">
-                            <input type="radio" className='form-check-input' value={origin == "LAB_GROWN"} onChange={() => setOrigin("LAB_GROWN")} name="origin" />
-                            <label className='form-check-label'>Lab grown</label>
+                <div className="diamond-finder text-center">
+                    <h3 className='ms-3' style={{ textAlign: 'center' }}>Diamond Finder</h3>
+                    <p style={{ maxWidth: '550px', margin: '0 auto', textAlign: 'center' }}>Use our diamond search feature to find GIA-graded, conflict-free loose diamonds of the highest quality. Browse thousands of options and use the filters to narrow down the selection by carat, cut, colour, clarity, shape and price.</p>
+                </div>
+                <div className="row text-center mb-4 mt-4">
+                    <div className="col mx-auto">
+                        <div className="btn-group" role="group" aria-label="Diamond Origin">
+                            <button
+                                type="button"
+                                className={`btn ${origin === "NATURAL" ? styles['btn-custom'] : styles['btn-outline-custom']}`}
+                                onClick={() => setOrigin("NATURAL")}
+                                style={{width: '150px'}}
+                            >
+                                Natural
+                            </button>
+                            <button
+                                type="button"
+                                className={`btn ${origin === "LAB_GROWN" ? styles['btn-custom'] : styles['btn-outline-custom']}`}
+                                onClick={() => setOrigin("LAB_GROWN")}
+                                style={{width: '150px'}}
+                            >
+                                Lab Grown
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -167,11 +181,39 @@ const ChooseDiamond = () => {
                     <div className="col-4">
                         <b>Carat weight</b>
                         <div className="container-fluid my-3">
-                            <div className="row mb-2">
+                            <div className="row">
                                 <div className="col text-start fw-bold">0.05</div>
                                 <div className="col text-end fw-bold">10.0</div>
                             </div>
-                            <div className="row mb-2">
+
+                            <Slider
+                                value={[minCarat, maxCarat]}
+                                min={0.05}
+                                step={0.05}
+                                max={10.0}
+                                onChange={(e) => {
+                                    setMinCarat(e.target.value[0]);
+                                    setMaxCarat(e.target.value[1]);
+                                }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
+                                className='col me-5'
+                                valueLabelDisplay='auto'
+                                marks={
+                                    [
+                                        {
+                                            value: 0,
+                                            label: 'Min'
+                                        },
+                                        {
+                                            value: 10.0,
+                                            label: 'Max'
+                                        }
+                                    ]
+                                }
+                            />
+                            <div className="row">
                                 <div className="col">
                                     <input type="number" min={0.05} max={10.0} className='form-control text-end px-0' step="0.01" onChange={(e) => setMinCarat(e.target.value)} value={minCarat} />
                                 </div>
@@ -179,32 +221,34 @@ const ChooseDiamond = () => {
                                     <input type="number" min={0.05} max={10.0} className='form-control text-end px-0' step="0.01" onChange={(e) => setMaxCarat(e.target.value)} value={maxCarat} />
                                 </div>
                             </div>
-                            <Slider value={[minCarat, maxCarat]} min={0.05} step={0.05} max={10.0} onChange={(e) => {
-                                setMinCarat(e.target.value[0]);
-                                setMaxCarat(e.target.value[1]);
-                            }} />
-                        </div>
-                        <div className="container-fluid my-3">
-                            <div className="row">
-                            </div>
-
                         </div>
                     </div>
                     <div className="col-4">
-                        <b>Min Color</b>
+                        <b>Color</b>
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">{colors[0]}</div>
                                 <div className="col text-end">{colors[colors.length - 1]}</div>
                             </div>
-                            <div className="row">
-                                <div className='col text-start'>{convertColor(beginColor)}</div>
-                                <div className='col text-end'>{convertColor(endColor)}</div>
-                            </div>
+
                             <Slider value={[beginColor, endColor]} min={0} max={colors.length - 1} onChange={(e) => {
                                 setBeginColor(e.target.value[0]);
                                 setEndColor(e.target.value[1]);
-                            }} />
+                            }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
+                                marks={
+                                    colors.map((value, index) =>
+                                    ({
+                                        value: index,
+                                        label: value
+                                    })
+                                    )
+                                }
+                                step={null}
+                                className='col me-5' />
+
                         </div>
                     </div>
                 </div>
@@ -220,11 +264,20 @@ const ChooseDiamond = () => {
                             <Slider value={[beginClarity, endClarity]} min={0} max={clarities.length - 1} onChange={(e) => {
                                 setBeginClarity(e.target.value[0]);
                                 setEndClarity(e.target.value[1]);
-                            }} />
-                            <div className="row">
-                                <div className='col text-start'>{convertClarity(beginClarity)}</div>
-                                <div className='col text-end'>{convertClarity(endClarity)}</div>
-                            </div>
+                            }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
+                                step={null}
+                                marks={
+                                    clarities.map((value, index) => (
+                                        {
+                                            value: index,
+                                            label: value
+                                        }
+                                    ))
+                                }
+                                className='col me-5' />
                         </div>
                     </div>
                     <div className="col-4">
@@ -237,15 +290,25 @@ const ChooseDiamond = () => {
                             <Slider value={[beginCut, endCut]} min={0} max={cuts.length - 1} onChange={(e) => {
                                 setBeginCut(e.target.value[0]);
                                 setEndCut(e.target.value[1]);
-                            }} />
-                            <div className="row">
-                                <div className='col text-start'>{convertCut(beginCut)}</div>
-                                <div className='col text-end'>{convertCut(endCut)}</div>
-                            </div>
+                            }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
+                                step={null}
+                                marks={
+                                    cuts.map((value, index) => (
+                                        {
+                                            value: index,
+                                            label: value.replace("_", " ")
+                                        }
+                                    ))
+                                }
+                                className='col me-5' />
+
                         </div>
                     </div>
                     <div className="col-4">
-                        <b>Minimum price</b>
+                        <b>Price</b>
                         <div className="container-fluid my-3">
                             <div className="row">
                                 <div className="col text-start">{formatPrice(200)}</div>
@@ -254,7 +317,25 @@ const ChooseDiamond = () => {
                             <Slider value={[minPrice, maxPrice]} min={200} max={5000000} onChange={(e) => {
                                 setMinPrice(e.target.value[0]);
                                 setMaxPrice(e.target.value[1]);
-                            }} />
+                            }}
+                                style={{
+                                    color: '#2D9596',
+                                }}
+                                step={1}
+                                valueLabelDisplay='auto'
+                                marks={
+                                    [
+                                        {
+                                            value: 200,
+                                            label: "Min"
+                                        },
+                                        {
+                                            value: 5000000,
+                                            label: "Max"
+                                        }
+                                    ]
+                                }
+                                className='col me-5' />
                             <div className="row">
                                 <input type="number" min={200} max={maxPrice} className='col form-control' step="0.01" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
                                 <input type="number" min={minPrice} max={5000000} className='col form-control' step="0.01" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
@@ -267,16 +348,18 @@ const ChooseDiamond = () => {
                         <button className='btn' style={{ backgroundColor: '#48AAAD' }} onClick={resetFilters}>Reset filters</button>
                     </div>
                 </div>
-                <div className="row mt-3">
-                    <div className="col-1 ms-auto">
-                        <span>Page size</span>
-                        <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
-                    </div>
-                </div>
-                <div className="row mt-3">
-                    <div className="col-1 ms-auto">
-                        <span>Page No</span>
-                        <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo + 1} onChange={(e) => setPageNo(e.target.value - 1)} />
+                <div className='row'>
+                    <div className='col'>
+                        <div className="d-flex justify-content-end mt-3">
+                            <div className="me-3">
+                                <span>Page size</span>
+                                <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
+                            </div>
+                            <div>
+                                <span>Page No</span>
+                                <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo + 1} onChange={(e) => setPageNo(e.target.value - 1)} />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className='row my-3'>
