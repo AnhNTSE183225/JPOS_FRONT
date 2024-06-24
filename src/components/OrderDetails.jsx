@@ -37,7 +37,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchProductionStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-production`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-production`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -50,7 +50,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchDesignStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-design`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-design`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -63,7 +63,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchSaleStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-sale`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-sale`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
