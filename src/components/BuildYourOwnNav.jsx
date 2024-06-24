@@ -98,13 +98,13 @@ const BuildYourOwnNav = () => {
                                         </>
                                         : <>
                                             {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
-                                                <div key={index} className="col p-0" style={{marginRight: '5px'}}>
+                                                <div key={index} className="col-3 p-0">
                                                     <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
                                                         <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
                                                     </Link>
                                                 </div>
                                             ))}
-                                            <div className="col">
+                                            <div className="col-3 p-0">
                                                 <div className="container-fluid">
                                                     <div className="row">
                                                         <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
