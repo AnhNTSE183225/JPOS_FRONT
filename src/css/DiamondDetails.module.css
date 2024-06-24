@@ -1,39 +1,50 @@
 .container {
     display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
+    justify-content: center;
     padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: 2vh 4vw;
+}
+
+.content {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
 }
 
 .imageSection {
     padding: 20px;
     text-align: center;
 }
+.image-section img {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.option {
+    background-color: #dddddd4e;
+    padding: 15px;
+    margin-bottom: 2vh;
+}
 
 .diamondImage {
     width: 100%;
     border: 1px solid #ddd;
-    border-radius: 8px;
 }
 
 .detailsSection {
-    flex: 2;
+    flex: 1.5;
+    padding: 20px;
 }
 
 .diamondTitle {
-    margin-bottom: 2vw;
+    margin-bottom: 1rem;
 }
 
 .price {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 500;
-    color: #2d9596;
-    margin-bottom: 10px;
-    margin-left: 1vw;
+    color: #327c7f; 
 }
 
 .paymentOptions {
@@ -47,17 +58,17 @@
 .optionBox {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     background-color: #f9f9f9;
-    border-radius: 3px;
     border: 1px solid #ddd;
 }
 
 .iconContainer {
     background-color: #b9eddd;
-    padding: 10px;
+    padding: 5px 15px;
     display: flex;
     align-items: center;
+    border-radius: 7px;
     justify-content: center;
     margin-right: 20px;
     width: 50px;
