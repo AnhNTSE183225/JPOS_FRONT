@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '/src/css/DiamondDetails.module.css';
 import axios from 'axios';
@@ -12,6 +12,11 @@ const DiamondDetails = () => {
     const { diamondId } = useParams();
     const [diamond, setDiamond] = useState(null);
     const [diamondPrice, setDiamondPrice] = useState(null);
+
+    const [activeImage, setActiveImage] = useState(0)
+    const [spinning, setSpinning] = useState(false);
+    const isForwardDirection = useRef(false)
+    const prevX = useRef(0)
 
     const navigate = useNavigate();
 
@@ -36,6 +41,43 @@ const DiamondDetails = () => {
             document.title = 'Diamond Details';
         }
     }, [diamond]);
+
+    //Image stuff
+
+    const handleCursorMoveImage = (e) => {
+        const x = e.clientX
+
+        if (prevX.current < x) {
+            isForwardDirection.current = true;
+            moveImage(true);
+        } else {
+            isForwardDirection.current = false;
+            moveImage(false);
+        }
+
+        prevX.current = x
+    }
+
+    const moveImage = (isForward) => {
+        if (diamond != null) {
+            if (isForward) {
+                setActiveImage(n => (n + 1) % diamond.image.split("|").slice(1).length)
+            } else {
+                setActiveImage(n => n == 0 ? diamond.image.split("|").slice(1).length - 1 : n - 1)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (diamond != null) {
+            const interval = setInterval(() => {
+                moveImage(isForwardDirection.current)
+            }, 50);
+
+            return () => clearInterval(interval);
+        }
+    }, [diamond]);
+    //Image stuff
 
     const fetchDiamond = async () => {
         try {
@@ -66,11 +108,11 @@ const DiamondDetails = () => {
     const selectDiamond = () => {
         if (sessionStorage.getItem('diamonds') === null || sessionStorage.getItem('diamonds').length === 0) {
             sessionStorage.setItem('diamonds', diamondId);
-            sessionStorage.setItem('diamondImages', diamond.image);
+            sessionStorage.setItem('diamondImages', diamond.image.split("|")[0]);
             sessionStorage.setItem('diamondPrices', diamondPrice);
         } else if (Number(sessionStorage.getItem('quantity')) > sessionStorage.getItem('diamonds').split(',').length) {
             sessionStorage.setItem('diamonds', sessionStorage.getItem('diamonds').concat(`,${diamondId}`));
-            sessionStorage.setItem('diamondImages', sessionStorage.getItem('diamondImages').concat(`,${diamond.image}`));
+            sessionStorage.setItem('diamondImages', sessionStorage.getItem('diamondImages').concat(`,${diamond.image.split("|")[0]}`));
             sessionStorage.setItem('diamondPrices', sessionStorage.getItem('diamondPrices').concat(`,${diamondPrice}`));
         }
         toast.info(`You have selected ${sessionStorage.getItem('diamonds').split(',').length} diamonds out of ${sessionStorage.getItem('quantity')} slots`);
@@ -108,6 +150,8 @@ const DiamondDetails = () => {
 
         navigate("/build-your-own/choose-diamond");
     }
+
+
     if (diamond === null || diamondPrice == null) {
         return <div>Loading...</div>;
     } else {
@@ -118,7 +162,31 @@ const DiamondDetails = () => {
                     <div className={styles.container}>
                         <div className={styles.content}>
                             <div className={`${styles[`imageSection`]} col-md-6`}>
-                                <img src={diamond.image} alt="Diamond" className={styles.diamondImage} />
+                                {
+                                    spinning == false
+                                        ? <img style={{ cursor: 'pointer' }} src={diamond.image.split("|")[0]} alt="Diamond" className={styles.diamondImage} onClick={() => {
+                                            if (diamond.image.split("|").length > 1) {
+                                                setSpinning(true);
+                                            }
+                                        }} />
+                                        : <div style={{ cursor: 'grab' }} onClick={() => setSpinning(false)} onMouseMove={handleCursorMoveImage}>
+                                            {
+                                                diamond.image.split("|").length > 1
+                                                    ? diamond.image.split("|").slice(1).map((link, index) => {
+                                                        if (index == activeImage) {
+                                                            return (
+                                                                <img className={styles.diamondImage} key={index} src={link} />
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <img className={styles.diamondImage} key={index} src={link} style={{ display: "none" }} />
+                                                            )
+                                                        }
+                                                    })
+                                                    : <></>
+                                            }
+                                        </div>
+                                }
                                 <div className={styles.specs}>
                                     <p className={styles.specItem}><span>Shape:</span><span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
                                     <p className={styles.specItem}><span>Cut:</span><span>{diamond.cut}</span></p>

@@ -33,8 +33,6 @@ const DiamondPriceListPage = () => {
         fetchDiamondList(pageNo, pageSize);
     }, [pageNo, pageSize])
 
-    console.log(import.meta.env.VITE_jpos_back)
-
     return (
         <>
             <div className="container">

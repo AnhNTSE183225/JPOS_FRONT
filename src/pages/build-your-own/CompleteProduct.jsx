@@ -165,14 +165,12 @@ const CompleteProduct = () => {
                 <div className='container'>
                     <div className={styles.container}>
                         <div className={`row ${styles.imageSection}`}>
-                            <div className='row'>
-                                {diamonds.map(d =>
-                                    <li key={d.diamondId} style={{ listStyle: 'none' }}>
-                                        <img src={d.image} alt="Diamond" className={styles.diamondImage} />
-                                    </li>
-                                )}
-                            </div>
-                            <div className='row'>
+                            <div className='row position-relative'>
+                                <div className={`${styles['image-container']} position-absolute left-0`} style={{ height: '20%' }}>
+                                    {diamonds.map(d =>
+                                        <img key={d.diamondId} src={d.image} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
+                                    )}
+                                </div>
                                 <img src={productDesign.designFile} className={styles.productImage} alt="Product Design" />
                             </div>
                         </div>
@@ -219,7 +217,7 @@ const CompleteProduct = () => {
                                             <p className='fs-6'>Taxes/Duties Estimate: 10% VAT</p>
                                         </div>
                                         <hr />
-                                        <p className='fs-4'>TOTAL PRICE: <div style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</div></p>
+                                        <p className='fs-4'>TOTAL PRICE: <span style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</span></p>
                                         <div className='row'>
                                             <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay 30% - {estimatedPrice !== null ? formatPrice(estimatedPrice * 1.1 * 0.3) : 'Estimating price...'}</button></div>
                                         </div>

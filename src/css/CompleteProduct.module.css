@@ -16,12 +16,13 @@
     padding: 20px;
     box-sizing: border-box;
 }
-
+.image-container {
+    top: -10%;
+}
 .diamondImage {
     margin-bottom: 0;
-    width: 30%;
-    max-width: 30%;
-    height: auto;
+    width: auto;
+    max-height: 100%;
 }
 .row {
     margin-bottom: 0;

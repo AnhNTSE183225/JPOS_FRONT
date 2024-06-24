@@ -5,7 +5,7 @@ import { formatPrice } from '../../helper_function/ConvertFunction';
 
 const DiamondCard = ({ diamond, isSelected, onClick }) => {
     const navigate = useNavigate();
-
+    
     return (
         <div className={`${styles.card} ${isSelected ? styles.selected : ''}`} onClick={() => onClick(diamond.diamondId, !isSelected)}>
             <img crossOrigin='anonymous' src={diamond.image} className={styles.cardImgTop} alt="diamond" />
