@@ -37,7 +37,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchProductionStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-production`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-production`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -50,7 +50,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchDesignStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-design`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-design`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -63,7 +63,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchSaleStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-sale`);
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-sale`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -77,8 +77,8 @@ const AssignColumn = ({ order, fetchOrder }) => {
     const submitForm = async () => {
         if (selectedProductionStaff.length > 0 || selectedSaleStaff.length > 0 || selectedDesignStaff.length > 0) {
             try {
-                console.log(`POST ${import.meta.env.VITE_JPOS_BACK}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
-                const response = await axios.post(`${import.meta.env.VITE_JPOS_BACK}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
+                console.log(`POST ${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
                 if (!response.data || response.status === 204) {
                     toast.error(`Error submitting assignment form`);
                 } else {
