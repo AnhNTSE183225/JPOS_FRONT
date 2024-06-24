@@ -362,10 +362,10 @@ const ChooseDiamond = () => {
                         </div>
                     </div>
                 </div>
-                <div className='row my-3'>
+                <div className='row'>
                     {diamondList !== undefined && diamondList !== null ? (
                         diamondList.map((entry, index) => (
-                            <div key={index} className="col-md-3 mb-4">
+                            <div key={index} className="col-md-4 col-lg-3 mb-4">
                                 <DiamondCard
                                     diamond={entry.diamond}
                                     isSelected={isSelected(entry.diamond.diamondId)}

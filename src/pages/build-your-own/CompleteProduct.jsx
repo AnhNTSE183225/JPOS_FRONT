@@ -200,7 +200,7 @@ const CompleteProduct = () => {
                             </h5>
                             <br />
                             <div className="col">
-                                <h3 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h3>
+                                <h4 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h4>
                                 
                                 <div>
                                     <div>

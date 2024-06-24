@@ -125,6 +125,8 @@ const DiamondDetails = () => {
                                     <p className={styles.specItem}><span>Color:</span><span>{diamond.color}</span></p>
                                     <p className={styles.specItem}><span>Clarity:</span><span>{diamond.clarity}</span></p>
                                     <p className={styles.specItem}><span>Carat Weight:</span><span>{diamond.caratWeight}</span></p>
+                                    <p className={styles.specItem}><span>Polish:</span><span>{diamond.polish}</span></p>
+                                    <p className={styles.specItem}><span>Symmetry</span><span>{diamond.symmetry}</span></p>
                                 </div>
 
                             </div>

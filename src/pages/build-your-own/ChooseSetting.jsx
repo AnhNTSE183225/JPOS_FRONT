@@ -37,6 +37,10 @@ const ChooseSetting = () => {
             <>
                 <NavigationBar />
                 <div className={`${styles.container} container`}>
+                <div className="diamond-finder text-center mb-3">
+                    <h3 className='ms-3' style={{ textAlign: 'center' }}>Ring Settings</h3>
+                    <p style={{ maxWidth: '550px', margin: '0 auto', textAlign: 'center' }}>Search hundreds of engagement ring settings to find the perfect ring. Styles range from solitaire to vintage-inspired to everything in between.</p>
+                </div>
                     {designList.length > 0 ? (
                         <div className={`${styles.content} row`}>
                             {designList.map(design => (
