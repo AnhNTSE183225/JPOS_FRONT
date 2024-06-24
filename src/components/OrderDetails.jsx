@@ -50,7 +50,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchDesignStaff = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/staff-design`);
+            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-design`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -63,7 +63,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchSaleStaff = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/staff-sale`);
+            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/staff-sale`);
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -77,8 +77,8 @@ const AssignColumn = ({ order, fetchOrder }) => {
     const submitForm = async () => {
         if (selectedProductionStaff.length > 0 || selectedSaleStaff.length > 0 || selectedDesignStaff.length > 0) {
             try {
-                console.log(`POST http://localhost:8080/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
-                const response = await axios.post(`http://localhost:8080/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
+                console.log(`POST ${import.meta.env.VITE_JPOS_BACK}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
+                const response = await axios.post(`${import.meta.env.VITE_JPOS_BACK}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
                 if (!response.data || response.status === 204) {
                     toast.error(`Error submitting assignment form`);
                 } else {
@@ -187,7 +187,7 @@ const OrderDetails = ({ orderId, staffType }) => {
 
     const fetchOrder = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/sales/order-select/${orderId}`);
+            const response = await axios.get(`${import.meta.env.VITE_JPOS_BACK}/api/sales/order-select/${orderId}`);
             if (!response.data || response.status == 204) {
                 toast.error(`Error fetching order`);
             } else {
