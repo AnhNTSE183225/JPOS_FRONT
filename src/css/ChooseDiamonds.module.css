@@ -18,8 +18,9 @@
 }
 
 .shape:hover {
-    transform: scale(1.04);
-    background-color: rgba(124, 180, 199, 0.14);
+    transform: scale(1.03);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    border: 1px solid #48AAAD;
 }
 
 .shape.active {
