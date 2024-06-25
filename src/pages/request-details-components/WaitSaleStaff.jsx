@@ -214,48 +214,54 @@ const WaitSaleStaff = ({ order }) => {
                     Request Quotation
                 </h1>
             </div>
-            <div className="row mb-5">
-
-                <div className="col-3">
-                    <p>
-                        <b>Full Name</b>
-                    </p>
-                    <p className="px-3">{order.customer.name}</p>
-                    <p>
-                        <b>Description</b>
-                    </p>
-                    <textarea maxLength={255} readOnly value={order.description} style={{ resize: "none" }} className="form-control mb-3" rows='5' cols='30' aria-label="description"></textarea>
-                    <p>
-                        <b>Budget</b>
-                    </p>
-                    <p className="px-3">{order.budget}</p>
-                    <p>
-                        <b>Reference image</b>
-                    </p>
-                    <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
+            <div className='container-fluid'>
+                <div className='row'>
+                    <h4 className="text-center fw-bold mb-4 mt-4">CUSTOMER INFORMATION</h4><hr />
+                    <div className="col-md">
+                        <p className='fs-5 fw-semibold'>
+                            Full Customer Name
+                        </p>
+                        <p className="px-3 fs-6">{order.customer.name}</p>
+                        <p className='fs-5 fw-semibold'>
+                            Description
+                        </p>
+                        <textarea maxLength={255} readOnly value={order.description} style={{ resize: "none" }} className="form-control mb-3 px-3 fs-6" rows='5' cols='30' aria-label="description"></textarea>
+                        <p className='fs-5 fw-semibold'>
+                            Budget
+                        </p>
+                        <p className="px-3 fs-6">{order.budget}</p>
+                    </div>
+                    <div className='col-md'>
+                        <p className='fs-5 fw-semibold'>
+                            Reference image
+                        </p>
+                        <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                    </div>
                 </div>
-
-                <div className="col-5">
+            </div>
+            <div className="row mb-5">
+                <h4 className="text-center fw-bold mb-4 mt-4">ORDER INFORMATION</h4><hr />
+                <div className="col-md-7">
                     <div className="container-fluid">
-                        <h4 className='fw-bold'>Basic information</h4>
+                        <p className='fs-5 fw-semibold'>Basic information</p>
                         <div className="row mb-2">
-                            <div className="col">Product name</div>
-                            <div className="col"><input className='form-control' type='text' placeholder='Enter name...' value={productName} onChange={(e) => setProductName(e.target.value)} /></div>
+                            <div className="col-md fs-6 ms-4">Product name</div>
+                            <div className="col-md"><input className='form-control' type='text' placeholder='Enter name...' value={productName} onChange={(e) => setProductName(e.target.value)} /></div>
                         </div>
                         <div className="row mb-2">
-                            <div className="col">Product type</div>
-                            <div className="col">
+                            <div className="col-md fs-6 ms-4">Product type</div>
+                            <div className="col-md">
                                 <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
                                     <option value=''>Choose product type</option>
                                     {[`Engagement Ring`, `Wedding Ring`, `Earrings`, `Necklace`, `General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
                                 </select>
                             </div>
                         </div>
-                        <h4 className='fw-bold'>Main Diamond Quality</h4>
+                        <p className='fs-5 fw-semibold'>Main Diamond Quality</p>
 
                         <div className="row mb-2">
-                            <div className="col">Shape</div>
-                            <select value={shape} onChange={(e) => setShape(e.target.value)} className='form-select col mx-3'>
+                            <div className="col-md fs-6 ms-4">Shape</div>
+                            <select value={shape} onChange={(e) => setShape(e.target.value)} className='form-select col mx-3 fs-6 ms-4'>
                                 <option value="all">All</option>
                                 {shapes.map((value, index) =>
                                     <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
@@ -264,16 +270,16 @@ const WaitSaleStaff = ({ order }) => {
                         </div>
 
                         <div className="row mb-2">
-                            <div className="col">Origin</div>
-                            <select value={origin} onChange={(e) => setOrigin(e.target.value)} className='form-select col mx-3'>
+                            <div className="col-md fs-6 ms-4">Origin</div>
+                            <select value={origin} onChange={(e) => setOrigin(e.target.value)} className='form-select col mx-3 fs-6 ms-4'>
                                 {origins.map((value, index) =>
-                                    <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
+                                    <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1).toLowerCase().replaceAll("_" , " ")}</option>
                                 )}
                             </select>
                         </div>
 
                         <div className="row mb-2">
-                            <div className="col-3">Color</div>
+                            <div className="col-md-3 fs-6 ms-4">Color</div>
                             <Slider
                                 value={[beginColor, endColor]}
                                 min={0}
@@ -294,12 +300,12 @@ const WaitSaleStaff = ({ order }) => {
                                     )
                                 }
                                 step={null}
-                                className='col me-5'
+                                className='col-md me-5'
                             />
                         </div>
 
                         <div className="row mb-2">
-                            <div className="col-3">Clarity</div>
+                            <div className="col-md-3 fs-6 ms-4">Clarity</div>
                             <Slider
                                 value={[beginClarity, endClarity]}
                                 min={0}
@@ -320,12 +326,12 @@ const WaitSaleStaff = ({ order }) => {
                                         }
                                     ))
                                 }
-                                className='col me-5'
+                                className='col-md me-5'
                             />
                         </div>
 
                         <div className="row mb-2">
-                            <div className="col-3">Cut</div>
+                            <div className="col-md-3 fs-6 ms-4">Cut</div>
                             <Slider
                                 value={[beginCut, endCut]}
                                 min={0}
@@ -346,12 +352,12 @@ const WaitSaleStaff = ({ order }) => {
                                         }
                                     ))
                                 }
-                                className='col me-5'
+                                className='col-md me-5'
                             />
                         </div>
 
                         <div className="row mb-2">
-                            <div className="col-3">Carat</div>
+                            <div className="col-md-3 fs-6 ms-4">Carat</div>
                             <Slider
                                 value={[minCarat, maxCarat]}
                                 min={0}
@@ -364,7 +370,7 @@ const WaitSaleStaff = ({ order }) => {
                                 style={{
                                     color: '#2D9596',
                                 }}
-                                className='col me-5'
+                                className='col-md me-5'
                                 valueLabelDisplay='auto'
                                 marks={
                                     [
@@ -382,7 +388,7 @@ const WaitSaleStaff = ({ order }) => {
                         </div>
 
                         <div className="row mb-2">
-                            <div className="col-3">Price</div>
+                            <div className="col-md-3 fs-6 ms-4">Price</div>
                             <Slider
                                 value={[minPrice, maxPrice]}
                                 min={200}
@@ -394,9 +400,9 @@ const WaitSaleStaff = ({ order }) => {
                                 style={{
                                     color: '#2D9596',
                                 }}
-                                className='col me-5'
+                                className='col-md me-5'
                                 step={1}
-                                
+
                                 valueLabelDisplay='auto'
                                 marks={
                                     [
@@ -414,22 +420,19 @@ const WaitSaleStaff = ({ order }) => {
                         </div>
 
                         <div className='row mb-2'>
-                            <div className="col">
-                                <h4 className='fw-bold'>Chosen diamonds</h4>
-                                <ul>
+                            <div className="col-md">
+                                <p className='fs-5 fw-semibold'>Chosen diamonds</p>
+                                <ul style={{listStyle: "none"}}>
                                     {
                                         chosenDiamonds.map((entry, index) => (
-                                            <li key={index}>{entry.id} - {entry.name} - {formatPrice(entry.price)}</li>
+                                            <li className='fs-6 ms-4' key={index}>{entry.id} - {entry.name} - {formatPrice(entry.price)}</li>
                                         ))
                                     }
                                 </ul>
                                 <div className="row mb-2">
-                                    <div className="col-10 fw-semibold">
-                                        Price
-                                    </div>
-                                    <div className="col-10">
-                                        {formatPrice(totalDiamondPrice)}
-                                    </div>
+                                    <p className='fs-4 fw-bold'>
+                                        Price: {formatPrice(totalDiamondPrice)}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -437,12 +440,12 @@ const WaitSaleStaff = ({ order }) => {
                     </div>
                 </div>
 
-                <div className="col-4">
+                <div className="col-md-5">
                     <div>
-                        <p>
-                            <b>Material</b>
+                        <p className='fs-5 fw-semibold'>
+                            Material
                         </p>
-                        <div className="col-10 mb-2">
+                        <div className="col-md mb-2">
                             <select value={currentMaterial} onChange={handleMaterial} className="form-select">
                                 <option value=''>Choose material</option>
                                 {materialList.map(
@@ -452,10 +455,10 @@ const WaitSaleStaff = ({ order }) => {
                                 )}
                             </select>
                         </div>
-                        <p>
-                            <b>Weight</b>
+                        <p className='fs-5 fw-semibold'>
+                            Weight
                         </p>
-                        <div className="col-10 mb-2">
+                        <div className="col-md mb-2">
                             <input
                                 value={materialWeight}
                                 onChange={handleMaterialWeight}
@@ -468,14 +471,14 @@ const WaitSaleStaff = ({ order }) => {
                         </div>
 
 
-                        <div className='col-10'>
+                        <div className='col-md'>
                             <table className='table table-bordered'>
                                 <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Weight</th>
-                                        <th>Price</th>
-                                        <th>#</th>
+                                    <tr className='text-center'>
+                                        <th className='fs-5 fw-semibold'>ID</th>
+                                        <th className='fs-5 fw-semibold'>Weight</th>
+                                        <th className='fs-5 fw-semibold'>Price</th>
+                                        <th className='fs-5 fw-semibold'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody className='table-group-divider'>
@@ -485,28 +488,28 @@ const WaitSaleStaff = ({ order }) => {
                                                 <td>{material.id}</td>
                                                 <td>{material.weight}</td>
                                                 <td>{formatPrice(material.price)}</td>
-                                                <td><button onClick={() => removeMaterial(material.id, material.price)} ><b>-</b></button></td>
+                                                <td><button className={`fs-6 w-100 ${styles['custom-button']}`} onClick={() => removeMaterial(material.id, material.price)} >REMOVE</button></td>
                                             </tr>
                                         )
                                     )}
                                 </tbody>
                             </table>
                         </div>
-                        <button onClick={chooseMaterial} type="button" className="btn btn-secondary">
-                            Add
+                        <button onClick={chooseMaterial} type="button" className={` w-100 ${styles['custom-button']}`}>
+                            ADD
                         </button>
-                        <div className="col-8 d-flex justify-content-between align-items-center">
-                            <p className="fw-semibold">Price</p>
+                        <div className="col-md d-flex justify-content-between align-items-center">
+                            <p className="fs-4 fw-semibold">Price:</p>
                             <p>{formatPrice(totalMaterialPrice)}</p>
                         </div>
                     </div>
 
 
                     <div>
-                        <p>
-                            <b>Extra</b>
+                        <p className='fs-5 fw-semibold'>
+                            Extra
                         </p>
-                        <div className="form-floating col-md-10 mb-2">
+                        <div className="form-floating col-md mb-2">
                             <input
                                 type="number"
                                 className="form-control"
@@ -521,7 +524,7 @@ const WaitSaleStaff = ({ order }) => {
                             />
                             <label>Extra Diamond</label>
                         </div>
-                        <div className="form-floating col-md-10 mb-2">
+                        <div className="form-floating col-md mb-2">
                             <input
                                 type="number"
                                 className="form-control"
@@ -536,17 +539,17 @@ const WaitSaleStaff = ({ order }) => {
                             />
                             <label>Extra Material</label>
                         </div>
-                        <div className="col-md-10 d-flex justify-content-between align-items-center">
-                            <p className="fw-semibold">Price</p>
+                        <div className="col-md d-flex justify-content-between align-items-center">
+                            <p className="fs-4 fw-semibold">Price:</p>
                             <p>{formatPrice(extraPrice.diamond + extraPrice.material)}</p>
                         </div>
                     </div>
 
                     <div>
-                        <p>
-                            <b>Production</b>
+                        <p className='fs-5 fw-semibold'>
+                            Production
                         </p>
-                        <form className="form-floating col-md-10 mb-2">
+                        <form className="form-floating col-md mb-2">
                             <input
                                 type="number"
                                 className="form-control"
@@ -563,10 +566,10 @@ const WaitSaleStaff = ({ order }) => {
                         </form>
                     </div>
                     <div>
-                        <p>
-                            <b>Markup rate</b>
+                        <p className='fs-5 fw-semibold'>
+                            Markup rate
                         </p>
-                        <form className="form-floating col-md-10 mb-2">
+                        <form className="form-floating col-md mb-2">
                             <input
                                 type="number"
                                 className="form-control"
@@ -582,11 +585,11 @@ const WaitSaleStaff = ({ order }) => {
                             <label>Rate</label>
                         </form>
                     </div>
-                    <div className="col-md-10 d-flex justify-content-between align-items-center">
-                        <p className="fw-bold">Product price</p>
+                    <div className="col-md d-flex justify-content-between align-items-center">
+                        <p className='fs-5 fw-semibold'>Product price</p>
                         <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate)}</p>
                     </div>
-                    <div className="col-md-10 d-flex justify-content-between align-items-center">
+                    <div className="col-md d-flex justify-content-between align-items-center">
                         <p className="fw-bold">Total amount &#40;10% tax&#41;</p>
                         <p>{formatPrice((totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate * 1.1)}</p>
                     </div>
@@ -596,27 +599,27 @@ const WaitSaleStaff = ({ order }) => {
                                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                 <span role="status">Loading...</span>
                             </button>
-                            : <button type="button" className="btn btn-secondary col-md-10" onClick={finalSubmit}>
-                                Request Manager
+                            : <button type="button" className={` w-100 ${styles['custom-button']}`} onClick={finalSubmit}>
+                                REQUEST MANAGER
                             </button>
                     }
 
                 </div>
             </div>
-            <div className="row mb-2">
+            {/* <div className="row mb-2">
                 <input name="pageNo" type="number" min={0} value={pageNo} onChange={(e) => setPageNo(e.target.value)} className='col mx-5 form-control' />
                 <input name="pageSize" type="number" min={10} value={pageSize} onChange={(e) => setPageSize(e.target.value)} className='col mx-5 form-control' />
-            </div>
+            </div> */}
             <div className="row mb-2 px-3">
-                <table className='table table-bordered col text-center'>
+                <table className='table col-md text-center'>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Shape</th>
-                            <th>4C</th>
-                            <th>Price</th>
-                            <th>Eff.Date</th>
-                            <th>#</th>
+                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>ID</th>
+                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Shape</th>
+                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>4C</th>
+                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Price</th>
+                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Eff.Date</th>
+                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Action</th>
                         </tr>
                     </thead>
                     <tbody>

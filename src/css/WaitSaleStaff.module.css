@@ -13,3 +13,13 @@
 #go-back-icon:hover {
     left: -5px;
 }
+
+.custom-button {
+    border: none;
+    background-color: #48AAAD;
+    color: white;
+    transition: 0.3s;
+}
+.custom-button:hover {
+    transform: scale(0.97);
+}
