@@ -23,3 +23,14 @@
 .custom-button:hover {
     transform: scale(0.97);
 }
+
+.image-btn {
+    border: none;
+    background-color: transparent;
+    font-size: 4rem;
+    transition: 0.3s;
+}
+
+.image-btn:hover {
+    transform: scale(1.2);
+}

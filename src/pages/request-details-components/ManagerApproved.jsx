@@ -3,7 +3,10 @@ import { formatDate, formatPrice } from '../../helper_function/ConvertFunction'
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 import empty_image from '/src/assets/empty_image.jpg';
-import styles from '/src/css/WaitManager.module.css';
+import styles from '/src/css/ManagerApproved.module.css';
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 
 const ManagerApproved = ({ order }) => {
@@ -30,6 +33,19 @@ const ManagerApproved = ({ order }) => {
     }
   }
 
+  //--------------------------------IMAGE THING---------------------------------------------------
+  const [activeReferenceImage, setActiveReferenceImage] = useState(0);
+
+  const handleReferenceImageMove = (direction) => {
+    if (direction) {
+      setActiveReferenceImage(n => n + 1);
+    } else {
+      setActiveReferenceImage(n => n - 1);
+    }
+  }
+  //--------------------------------IMAGE THING---------------------------------------------------
+
+
   return (
     <>
       <div className="container-fluid">
@@ -46,9 +62,27 @@ const ManagerApproved = ({ order }) => {
             <h5 className='fw-semibold'>Customer address</h5>
             <p className='fs-6 ms-4'>{order.customer.address}</p>
             <h5 className='fw-semibold'>Reference image</h5>
-            <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
-            <h5 className='fw-semibold'>Production image</h5>
-            <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
+            {
+              order.designFile === null
+                ? <>
+                  <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                </>
+                : <>
+                  <div className="position-relative">
+                    <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                    <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                    {
+                      order.designFile.split("|").map((image, index) => {
+                        if (index == activeReferenceImage) {
+                          return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                        } else {
+                          return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                        }
+                      })
+                    }
+                  </div>
+                </>
+            }
           </div>
           <div className="col-md-4">
             <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />

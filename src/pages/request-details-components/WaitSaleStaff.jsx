@@ -4,7 +4,7 @@ import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { formatDate, formatPrice } from '../../helper_function/ConvertFunction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft, faCaretRight, faChevronLeft, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/WaitSaleStaff.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
@@ -207,6 +207,18 @@ const WaitSaleStaff = ({ order }) => {
         setMaterialWeight(event.target.value);
     }
 
+    //--------------------------------IMAGE THING---------------------------------------------------
+    const [activeReferenceImage, setActiveReferenceImage] = useState(0);
+
+    const handleReferenceImageMove = (direction) => {
+        if (direction) {
+            setActiveReferenceImage(n => n + 1);
+        } else {
+            setActiveReferenceImage(n => n - 1);
+        }
+    }
+    //--------------------------------IMAGE THING---------------------------------------------------
+
     return (
         <div className={`${styles['wait-sale-staff']}`}>
             <div className="row">
@@ -236,7 +248,27 @@ const WaitSaleStaff = ({ order }) => {
                         <p className='fs-5 fw-semibold'>
                             Reference image
                         </p>
-                        <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                        {
+                            order.designFile === null
+                                ? <>
+                                    <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                </>
+                                : <>
+                                    <div className="position-relative">
+                                        <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                        <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                        {
+                                            order.designFile.split("|").map((image, index) => {
+                                                if (index == activeReferenceImage) {
+                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                                                } else {
+                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                }
+                                            })
+                                        }
+                                    </div>
+                                </>
+                        }
                     </div>
                 </div>
             </div>
@@ -274,7 +306,7 @@ const WaitSaleStaff = ({ order }) => {
                             <div className="col-md fs-6 ms-4">Origin</div>
                             <select value={origin} onChange={(e) => setOrigin(e.target.value)} className='form-select col mx-3 fs-6 ms-4'>
                                 {origins.map((value, index) =>
-                                    <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1).toLowerCase().replaceAll("_" , " ")}</option>
+                                    <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1).toLowerCase().replaceAll("_", " ")}</option>
                                 )}
                             </select>
                         </div>
@@ -423,7 +455,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className='row mb-2'>
                             <div className="col-md">
                                 <p className='fs-5 fw-semibold'>Chosen diamonds</p>
-                                <ul style={{listStyle: "none"}}>
+                                <ul style={{ listStyle: "none" }}>
                                     {
                                         chosenDiamonds.map((entry, index) => (
                                             <li className='fs-6 ms-4' key={index}>{entry.id} - {entry.name} - {formatPrice(entry.price)}</li>
@@ -615,12 +647,12 @@ const WaitSaleStaff = ({ order }) => {
                 <table className='table col-md text-center'>
                     <thead>
                         <tr>
-                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>ID</th>
-                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Shape</th>
-                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>4C</th>
-                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Price</th>
-                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Eff.Date</th>
-                            <th className='fw-semibold' style={{backgroundColor: "#48AAAD", color: "white"}}>Action</th>
+                            <th className='fw-semibold' style={{ backgroundColor: "#48AAAD", color: "white" }}>ID</th>
+                            <th className='fw-semibold' style={{ backgroundColor: "#48AAAD", color: "white" }}>Shape</th>
+                            <th className='fw-semibold' style={{ backgroundColor: "#48AAAD", color: "white" }}>4C</th>
+                            <th className='fw-semibold' style={{ backgroundColor: "#48AAAD", color: "white" }}>Price</th>
+                            <th className='fw-semibold' style={{ backgroundColor: "#48AAAD", color: "white" }}>Eff.Date</th>
+                            <th className='fw-semibold' style={{ backgroundColor: "#48AAAD", color: "white" }}>Action</th>
                         </tr>
                     </thead>
                     <tbody>

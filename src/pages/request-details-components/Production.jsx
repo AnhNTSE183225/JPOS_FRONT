@@ -4,7 +4,7 @@ import { formatPrice, formatDate } from '../../helper_function/ConvertFunction';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft, faCaretRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styles from '/src/css/Production.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import useDocumentTitle from '../../components/Title';
@@ -14,17 +14,17 @@ const Production = ({ order }) => {
     const navigate = useNavigate();
 
     const [processing, setProcessing] = useState(false);
-    const [imageFile, setImageFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState(null);
+    const [designFiles, setDesignFiles] = useState([]);
+    const [imageUrls, setImageUrls] = useState([]);
 
     useDocumentTitle("Complete Production");
 
     const handleSubmit = async () => {
         try {
-            if (imageUrl == "Not provided") {
+            if (imageUrls.length <= 0) {
                 toast.info("Please upload your completed product's image!");
             } else {
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product?imageUrl=${imageUrl}&productionStaffId=${sessionStorage.getItem("staff_id")}`);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product`, imageUrls.join("|"));
                 if (!response.data || response.status === 204) {
                     toast.error("Something went wrong, can't submit");
                 } else {
@@ -37,28 +37,48 @@ const Production = ({ order }) => {
         }
     }
 
-    const uploadImage = async () => {
+    const uploadImages = async () => {
+        setImageUrls([]);
+        setProcessing(true);
         try {
-            if (imageFile === null) {
-                toast.info(`Please select a file to upload`);
-            } else {
-                setProcessing(true);
-                const formData = new FormData();
-                formData.append("file", imageFile);
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
-                if (!response.data || response.status === 204) {
-                    throw new Error("Upload file failed. Backend fail");
+            if (designFiles.length > 0) {
+                for (const file of designFiles) {
+                    const formData = new FormData();
+                    formData.append("file", file)
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
+                    if (!response.data || response.status === 204) {
+                        throw new Error("Upload file failed. Backend fail");
+                    }
+                    setImageUrls(arr => [...arr, response.data]);
                 }
-                setImageUrl(response.data);
-                setProcessing(false);
+            } else {
+                toast.info(`Please select at least 1 image!`);
             }
         } catch (error) {
-            toast.error(`Something went wrong`);
             console.log(error);
-            setProcessing(false);
+        }
+        setProcessing(false);
+    }
+
+    const [activeProductionImage, setActiveProductionImage] = useState(0);
+    const [activeImage, setActiveImage] = useState(0);
+
+    const handleProductionImageMove = (direction) => {
+        if (direction) {
+            setActiveProductionImage(n => n + 1);
+        } else {
+            setActiveProductionImage(n => n - 1);
         }
     }
-    {/* <h4 className='fw-bold'>Model - by [ID: {order.designStaff.staffId}]{order.designStaff.name}</h4> */ }
+
+    const handleImageMove = (direction) => {
+        if (direction) {
+            setActiveImage(n => n + 1);
+        } else {
+            setActiveImage(n => n - 1);
+        }
+    }
+
     return (
         <>
             <div className='container-fluid' id={`${styles['production']}`}>
@@ -76,10 +96,28 @@ const Production = ({ order }) => {
                         <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h5 className='fw-semibold'>Customer address</h5>
                         <p className='fs-6 ms-4'>{order.customer.address}</p>
-                        <h5 className='fw-semibold'>Reference image</h5>
-                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
-                        <h5 className='fw-semibold'>Production image</h5>
-                        <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
+                        <h5 className='fw-semibold'>Design images</h5>
+                        {
+                            order.modelFile === null
+                                ? <>
+                                    <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                </>
+                                : <>
+                                    <div className="position-relative">
+                                        <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                        <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                        {
+                                            order.modelFile.split("|").map((image, index) => {
+                                                if (index == activeProductionImage) {
+                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                                                } else {
+                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                }
+                                            })
+                                        }
+                                    </div>
+                                </>
+                        }
                     </div>
                     <div className="col-md-4">
                         <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />
@@ -130,13 +168,26 @@ const Production = ({ order }) => {
                 <div className="row mb-2">
                     <div className="col text-center">
                         <label className="form-label ">Upload completed image of product</label>
-                        <input className="form-control mb-3" type="file" onChange={(e) => setImageFile(e.target.files[0])} />
-                        {
-                            imageUrl !== null
-                                ? <img className='img-fluid mb-3' src={imageUrl} crossOrigin='anonymous'>
-                                </img>
-                                : <p>URL: Not provided</p>
-                        }
+                        <input className="form-control mb-3" multiple={true} type="file" onChange={(e) => setDesignFiles(e.target.files)} />
+                        <div className={`position-relative`}>
+                            <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                            <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                            {
+                                imageUrls.length > 0
+                                    ? imageUrls.map((image, index) => {
+                                        if (activeImage == index) {
+                                            return (
+                                                <img key={index} src={image} crossOrigin="anonymous" />
+                                            )
+                                        } else {
+                                            return (
+                                                <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                            )
+                                        }
+                                    })
+                                    : <p>URL: Not provided</p>
+                            }
+                        </div>
                         <div className="row">
                             <div className="col">
                                 {
@@ -145,7 +196,7 @@ const Production = ({ order }) => {
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn btn-primary w-100" onClick={uploadImage} >Upload image</button>
+                                        : <button className="btn btn-primary w-100" onClick={uploadImages} >Upload image</button>
                                 }
 
                             </div>

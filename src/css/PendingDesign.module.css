@@ -1,8 +1,3 @@
-.listItem {
-    display: flex;
-    justify-content: space-between;
-}
-
 .image-btn {
     border: none;
     background-color: transparent;

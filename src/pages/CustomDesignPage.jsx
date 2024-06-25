@@ -1,5 +1,5 @@
 import NavigationBar from "../components/NavigationBar";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, act } from 'react';
 import { Toaster, toast } from 'sonner';
 import img from '../assets/jewelry_manufacturing_process.png';
 import img1 from '../assets/computer sample.png';
@@ -11,14 +11,21 @@ import img6 from '../assets/polishing_fine_jewerly.png';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import useDocumentTitle from "../components/Title";
+import styles from '/src/css/CustomDesignPage.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 const CustomDesignPage = () => {
     const navigate = useNavigate();
-    const [designFile, setDesignFile] = useState(null);
+
+    const [designFiles, setDesignFiles] = useState([]);
+    const [imageUrls, setImageUrls] = useState([]);
+
     const [description, setDescription] = useState('');
     const [budget, setBudget] = useState(500);
-    const [imageUrl, setImageUrl] = useState(null);
     const [processing, setProcessing] = useState(false);
+
+    const [activeImage, setActiveImage] = useState(0);
 
     useDocumentTitle("Custom Your Own Design");
 
@@ -26,25 +33,35 @@ const CustomDesignPage = () => {
         setDescription(event.target.value);
     }
 
-    const uploadImage = async () => {
+    const uploadImages = async () => {
+        setImageUrls([]);
         setProcessing(true);
         try {
-            if (designFile === null) {
-                toast.info(`Please select a file to upload`);
-            } else {
-                const formData = new FormData();
-                formData.append("file", designFile)
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
-                if (!response.data || response.status === 204) {
-                    throw new Error("Upload file failed. Backend fail");
+            if (designFiles.length > 0) {
+                for (const file of designFiles) {
+                    const formData = new FormData();
+                    formData.append("file", file)
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
+                    if (!response.data || response.status === 204) {
+                        throw new Error("Upload file failed. Backend fail");
+                    }
+                    setImageUrls(arr => [...arr, response.data]);
                 }
-                setImageUrl(response.data);
+            } else {
+                toast.info(`Please select at least 1 image!`);
             }
         } catch (error) {
-            toast.error(`Something went wrong`);
             console.log(error);
         }
         setProcessing(false);
+    }
+
+    const handleImageMove = (direction) => {
+        if (direction) {
+            setActiveImage(n => n + 1);
+        } else {
+            setActiveImage(n => n - 1);
+        }
     }
 
     const submitForm = () => {
@@ -53,22 +70,23 @@ const CustomDesignPage = () => {
             navigate("/login");
         } else {
             if (description.trim().length > 0 &&
-                budget >= 500
+                budget >= 500 &&
+                imageUrls.length > 0
             ) {
                 axios.post(`${import.meta.env.VITE_jpos_back}/api/send-request`,
                     {
                         customerId: sessionStorage.getItem('customer_id'),
-                        designFile: imageUrl,
+                        designFile: imageUrls.join("|"),
                         description: description,
                         budget: budget
                     }
                 ).then(
                     response => {
                         toast.success('Form submitted successfully!');
-                        setDesignFile(null);
+                        setDesignFiles([]);
                         setDescription('');
                         setBudget(500);
-                        setImageUrl(null);
+                        setImageUrls([]);
                     }
                 ).catch(
                     error => {
@@ -77,6 +95,9 @@ const CustomDesignPage = () => {
                     }
                 )
             } else {
+                if (imageUrls.length <= 0) {
+                    toast.error(`Please select at least one image!`);
+                }
                 if (description.trim().length <= 0) {
                     toast.error(`Description cannot be empty! You need to describe your product`);
                 }
@@ -96,19 +117,33 @@ const CustomDesignPage = () => {
                         <div>
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
-                                <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
-                                {
-                                    imageUrl !== null
-                                        ? <img className="mb-3" src={imageUrl} crossOrigin="anonymous" />
-                                        : <p>URL: Not provided</p>
-                                }
+                                <input type="file" className="form-control mb-3" multiple accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
+                                <div className={`position-relative`}>
+                                    <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft}/></button>
+                                    <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length-1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight}/></button>
+                                    {
+                                        imageUrls.length > 0
+                                            ? imageUrls.map((image, index) => {
+                                                if (activeImage == index) {
+                                                    return (
+                                                        <img key={index} src={image} crossOrigin="anonymous" />
+                                                    )
+                                                } else {
+                                                    return (
+                                                        <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                    )
+                                                }
+                                            })
+                                            : <p>URL: Not provided</p>
+                                    }
+                                </div>
                                 {
                                     processing
                                         ? < button className="btn btn-primary" type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn w-100" style={{ backgroundColor: '#48AAAD' }} onClick={uploadImage} >Upload image</button>
+                                        : <button className="btn w-100" style={{ backgroundColor: '#48AAAD' }} onClick={uploadImages} >Upload image</button>
                                 }
                             </div>
                             <div className="mb-3">

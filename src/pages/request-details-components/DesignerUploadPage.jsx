@@ -5,38 +5,54 @@ import { useNavigate } from 'react-router-dom';
 import { formatPrice, formatDate } from '../../helper_function/ConvertFunction';
 import useDocumentTitle from '../../components/Title';
 import empty_image from '/src/assets/empty_image.jpg';
-import styles from '/src/css/WaitManager.module.css';
+import styles from '/src/css/DesignerUploadPage.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 
 const DesignerUploadPage = ({ order }) => {
-    const [designFile, setDesignFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState(null);
+    const [designFiles, setDesignFiles] = useState([]);
+    const [imageUrls, setImageUrls] = useState([]);
     const [processing, setProcessing] = useState(false);
 
     useDocumentTitle("Upload Design");
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (designFile !== null) {
-            const objectURL = URL.createObjectURL(designFile);
-            setImageUrl(objectURL);
-        }
-    }, [designFile])
-
-    const uploadImage = async () => {
+    const uploadImages = async () => {
+        setImageUrls([]);
+        setProcessing(true);
         try {
-            if (designFile === null) {
+            if (designFiles.length > 0) {
+                for (const file of designFiles) {
+                    const formData = new FormData();
+                    formData.append("file", file)
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
+                    if (!response.data || response.status === 204) {
+                        throw new Error("Upload file failed. Backend fail");
+                    }
+                    setImageUrls(arr => [...arr, response.data]);
+                }
+            } else {
+                toast.info(`Please select at least 1 image!`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        setProcessing(false);
+    }
+
+    const submit = async () => {
+        try {
+            if (designFiles.length <= 0) {
                 toast.info(`Please select a file to upload`);
             } else {
                 setProcessing(true);
-                const formData = new FormData();
-                formData.append("file", designFile);
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/designs/upload/${sessionStorage.getItem("staff_id")}/${order.id}`, formData);
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/designs/upload/${order.id}`,imageUrls.join("|"));
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }
-                setProcessing(false);
                 navigate('/staff/request');
+                setProcessing(false);
             }
         } catch (error) {
             toast.error(`Something went wrong`);
@@ -44,6 +60,28 @@ const DesignerUploadPage = ({ order }) => {
             setProcessing(false);
         }
     }
+
+    //--------------------------------IMAGE THING---------------------------------------------------
+    const [activeReferenceImage, setActiveReferenceImage] = useState(0);
+
+    const handleReferenceImageMove = (direction) => {
+        if (direction) {
+            setActiveReferenceImage(n => n + 1);
+        } else {
+            setActiveReferenceImage(n => n - 1);
+        }
+    }
+
+    const [activeImage, setActiveImage] = useState(0);
+    const handleImageMove = (direction) => {
+        if (direction) {
+            setActiveImage(n => n + 1);
+        } else {
+            setActiveImage(n => n - 1);
+        }
+    }
+    //--------------------------------IMAGE THING---------------------------------------------------
+
 
     return (
         <>
@@ -56,9 +94,27 @@ const DesignerUploadPage = ({ order }) => {
                         <h5 className='fw-semibold'>Customer address</h5>
                         <p className='fs-6 ms-4'>{order.customer.address}</p>
                         <h5 className='fw-semibold'>Reference image</h5>
-                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
-                        <h5 className='fw-semibold'>Production image</h5>
-                        <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
+                        {
+                            order.designFile === null
+                                ? <>
+                                    <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                </>
+                                : <>
+                                    <div className="position-relative">
+                                        <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                        <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                        {
+                                            order.designFile.split("|").map((image, index) => {
+                                                if (index == activeReferenceImage) {
+                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                                                } else {
+                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                }
+                                            })
+                                        }
+                                    </div>
+                                </>
+                        }
                     </div>
                     <div className="col-md-4">
                         <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />
@@ -126,20 +182,49 @@ const DesignerUploadPage = ({ order }) => {
                         <h2>Upload design file</h2>
                         <div>
                             <div className="mb-3">
-                                <input className="form-control mb-3" type="file" accept="image/*" onChange={(e) => setDesignFile(e.target.files[0])} />
-                                {
-                                    imageUrl !== null
-                                        ? <img className='img-fluid mb-3' src={imageUrl} crossOrigin='anonymous' />
-                                        : <p>Image preview</p>
-                                }
-                                {
-                                    processing
-                                        ? < button className="btn btn-primary" type="button" disabled>
-                                            <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                            <span role="status">Loading...</span>
-                                        </button>
-                                        : <button className="btn btn-dark w-100" onClick={uploadImage} >Upload image</button>
-                                }
+                                <input className="form-control mb-3" type="file" multiple={true} accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
+                                <div className={`position-relative`}>
+                                    <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                    <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                    {
+                                        imageUrls.length > 0
+                                            ? imageUrls.map((image, index) => {
+                                                if (activeImage == index) {
+                                                    return (
+                                                        <img key={index} src={image} crossOrigin="anonymous" />
+                                                    )
+                                                } else {
+                                                    return (
+                                                        <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                    )
+                                                }
+                                            })
+                                            : <p>URL: Not provided</p>
+                                    }
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        {
+                                            processing
+                                                ? < button className="btn btn-primary" type="button" disabled>
+                                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                                    <span role="status">Loading...</span>
+                                                </button>
+                                                : <button className="btn btn-dark w-100" onClick={uploadImages} >Upload image</button>
+                                        }
+
+                                    </div>
+                                    <div className="col">
+                                        {
+                                            processing
+                                                ? < button className="btn btn-primary" type="button" disabled>
+                                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                                    <span role="status">Loading...</span>
+                                                </button>
+                                                : <button className="btn btn-dark w-100" onClick={submit} >Submit</button>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,8 @@ import { formatDate, formatPrice } from '../helper_function/ConvertFunction';
 import styles from '/src/css/OrderDetails.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import { toast } from "sonner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 const AssignColumn = ({ order, fetchOrder }) => {
 
@@ -14,14 +16,6 @@ const AssignColumn = ({ order, fetchOrder }) => {
     const [selectedSaleStaff, setSelectedSaleStaff] = useState('');
     const [selectedDesignStaff, setSelectedDesignStaff] = useState('');
     const [selectedProductionStaff, setSelectedProductionStaff] = useState('');
-
-    const saveAssignment = async () => {
-        try {
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,7 +71,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
     const submitForm = async () => {
         if (selectedProductionStaff.length > 0 || selectedSaleStaff.length > 0 || selectedDesignStaff.length > 0) {
             try {
-                console.log(`POST ${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
+                //console.log(`POST ${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
                 const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
                 if (!response.data || response.status === 204) {
                     toast.error(`Error submitting assignment form`);
@@ -162,7 +156,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
                                 </select>
                             </>
                             : <>
-                                {order.productionStaff.name} [ID:{order.productionStaff.staffId}] 
+                                {order.productionStaff.name} [ID:{order.productionStaff.staffId}]
                             </>
                     }
                 </div>
@@ -187,12 +181,12 @@ const OrderDetails = ({ orderId, staffType }) => {
 
     const fetchOrder = async () => {
         try {
-            console.log(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`)
+            //(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`)
             const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`);
             if (!response.data || response.status == 204) {
                 toast.error(`Error fetching order`);
             } else {
-                console.log(response.data);
+                //console.log(response.data);
                 setOrder(response.data);
             }
         } catch (error) {
@@ -202,6 +196,38 @@ const OrderDetails = ({ orderId, staffType }) => {
     useEffect(() => {
         fetchOrder();
     }, [orderId]);
+
+    //--------------------------------IMAGE THING---------------------------------------------------
+    const [activeReferenceImage, setActiveReferenceImage] = useState(0);
+
+    const handleReferenceImageMove = (direction) => {
+        if (direction) {
+            setActiveReferenceImage(n => n + 1);
+        } else {
+            setActiveReferenceImage(n => n - 1);
+        }
+    }
+
+    const [activeProductionImage, setActiveProductionImage] = useState(0);
+
+    const handleProductionImageMove = (direction) => {
+        if (direction) {
+            setActiveProductionImage(n => n + 1);
+        } else {
+            setActiveProductionImage(n => n - 1);
+        }
+    }
+
+    const [activeFinalImage, setActiveFinalImage] = useState(0);
+
+    const handleFinalImageMove = (direction) => {
+        if (direction) {
+            setActiveFinalImage(n => n + 1);
+        } else {
+            setActiveFinalImage(n => n - 1);
+        }
+    }
+    //--------------------------------IMAGE THING---------------------------------------------------
 
     if (order == null) {
         return (
@@ -220,10 +246,72 @@ const OrderDetails = ({ orderId, staffType }) => {
                             <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                             <h5 className='fw-semibold'>Customer address</h5>
                             <p className='fs-6 ms-4'>{order.customer.address}</p>
-                            <h5 className='fw-semibold'>Reference image</h5>
-                            <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
-                            <h5 className='fw-semibold'>Production image</h5>
-                            <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
+                            <h5 className='fw-semibold'>Reference images</h5>
+                            {
+                                order.designFile === null
+                                    ? <>
+                                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                    </>
+                                    : <>
+                                        <div className="position-relative">
+                                            <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                            <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                            {
+                                                order.designFile.split("|").map((image, index) => {
+                                                    if (index == activeReferenceImage) {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                                                    } else {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                    </>
+                            }
+                            <h5 className='fw-semibold'>Design images</h5>
+                            {
+                                order.modelFile === null
+                                    ? <>
+                                        <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                    </>
+                                    : <>
+                                        <div className="position-relative">
+                                            <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                            <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                            {
+                                                order.modelFile.split("|").map((image, index) => {
+                                                    if (index == activeProductionImage) {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                                                    } else {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                    </>
+                            }
+                            <h5 className='fw-semibold'>Finished product</h5>
+                            {
+                                order.productImage === null
+                                    ? <>
+                                        <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
+                                    </>
+                                    : <>
+                                        <div className="position-relative">
+                                            <button onClick={() => handleFinalImageMove(false)} disabled={activeFinalImage == 0} hidden={order.productImage.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                            <button onClick={() => handleFinalImageMove(true)} disabled={activeFinalImage == order.productImage.split("|").length - 1} hidden={order.productImage.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                            {
+                                                order.productImage.split("|").map((image, index) => {
+                                                    if (index == activeFinalImage) {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
+                                                    } else {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                    </>
+                            }
                         </div>
 
                         <div className="col-md-4">
