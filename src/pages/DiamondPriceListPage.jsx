@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 import useDocumentTitle from "../components/Title";
+import { Pagination } from "@mui/material";
 
 const DiamondPriceListPage = () => {
     const [diamondPriceList, setDiamondPriceList] = useState([]);
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(50);
+    const [totalPage, setTotalPage] = useState(10);
 
     useDocumentTitle("Bijoux Diamond Price List");
 
@@ -18,7 +20,8 @@ const DiamondPriceListPage = () => {
                 console.log("No data");
             } else {
                 const data = response.data;
-                setDiamondPriceList(data);
+                setDiamondPriceList(data.content);
+                setTotalPage(data.page.totalPages);
             }
         } catch (error) {
             console.log(error);
@@ -45,11 +48,10 @@ const DiamondPriceListPage = () => {
                         <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
                     </div>
                 </div>
-                <div className="row mt-3">
-                    <div className="col-1 ms-auto">
-                        <span>Page No</span>
-                        <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo + 1} onChange={(e) => setPageNo(e.target.value - 1)} />
-                    </div>
+                <div style={{display: 'flex',justifyContent:'flex-end'}}>
+                    <Pagination count={totalPage} shape="rounded" page={pageNo + 1} onChange={(event, value) => {
+                        setPageNo(value - 1)
+                    }} />
                 </div>
                 <div className="row mt-3">
                     <table className="table table-bordered">

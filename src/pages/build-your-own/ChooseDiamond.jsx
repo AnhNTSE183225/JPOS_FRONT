@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DiamondCard from './DiamondCard';
 import styles from '/src/css/ChooseDiamonds.module.css';
 import { formatPrice } from '../../helper_function/ConvertFunction';
-import { Slider } from '@mui/material';
+import { Pagination, Slider } from '@mui/material';
 import useDocumentTitle from '../../components/Title';
 
 const ChooseDiamond = () => {
@@ -26,7 +26,7 @@ const ChooseDiamond = () => {
     const [beginColor, setBeginColor] = useState(0);
     const [endColor, setEndColor] = useState(colors.length - 1);
 
-    const clarities = ['SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+    const clarities = ['SI3', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
     const [beginClarity, setBeginClarity] = useState(0);
     const [endClarity, setEndClarity] = useState(clarities.length - 1);
 
@@ -38,6 +38,7 @@ const ChooseDiamond = () => {
 
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(40);
+    const [totalPage, setTotalPage] = useState(10);
 
     useDocumentTitle('Find Your Diamonds by 4C');
 
@@ -47,8 +48,11 @@ const ChooseDiamond = () => {
             navigate('/build-your-own/choose-setting');
         } else {
             //let diamond_list = await fetchData(pageNo, pageSize);
-            let diamond_list = await fetchQuery();
+            let query = await fetchQuery();
+            let diamond_list = query.content;
+            let total_page = query.page.totalPages;
 
+            setTotalPage(total_page);
             setDiamondList(diamond_list);
         }
     }
@@ -149,7 +153,7 @@ const ChooseDiamond = () => {
                                 type="button"
                                 className={`btn ${origin === "NATURAL" ? styles['btn-custom'] : styles['btn-outline-custom']}`}
                                 onClick={() => setOrigin("NATURAL")}
-                                style={{width: '150px'}}
+                                style={{ width: '150px' }}
                             >
                                 Natural
                             </button>
@@ -157,7 +161,7 @@ const ChooseDiamond = () => {
                                 type="button"
                                 className={`btn ${origin === "LAB_GROWN" ? styles['btn-custom'] : styles['btn-outline-custom']}`}
                                 onClick={() => setOrigin("LAB_GROWN")}
-                                style={{width: '150px'}}
+                                style={{ width: '150px' }}
                             >
                                 Lab Grown
                             </button>
@@ -344,23 +348,25 @@ const ChooseDiamond = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col text-end">
+                    <div className="col text-start">
                         <button className='btn' style={{ backgroundColor: '#48AAAD' }} onClick={resetFilters}>Reset filters</button>
                     </div>
-                </div>
-                <div className='row'>
                     <div className='col'>
                         <div className="d-flex justify-content-end mt-3">
-                            <div className="me-3">
-                                <span>Page size</span>
-                                <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
+                            <div className='me-3'>
+                                <Pagination count={totalPage} page={pageNo + 1} onChange={(event, value) => {
+                                    setPageNo(value - 1)
+                                }} />
                             </div>
-                            <div>
-                                <span>Page No</span>
-                                <input className="form-control" type="number" min="1" max="100" step="1" value={pageNo + 1} onChange={(e) => setPageNo(e.target.value - 1)} />
+                            <div className='row'>
+                                <span className='col text-center p-0' style={{lineHeight:'2rem'}}>Page size</span>
+                                <input className="form-control col text-end p-0" style={{height: '1.5rem', marginTop: '0.3rem', marginRight: '1rem'}} type="number" min="10" max="100" step="5" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className='row'>
+
                 </div>
                 <div className='row'>
                     {diamondList !== undefined && diamondList !== null ? (
