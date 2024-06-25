@@ -36,3 +36,7 @@
 .secondary-button:hover {
     background-color: #87cbb9;
 }
+.listItem {
+    display: flex;
+    justify-content: space-between;
+}

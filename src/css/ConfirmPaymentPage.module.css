@@ -23,3 +23,21 @@
     background-color: rgba(72, 170, 173, 0.3);
     color: #338c8f;
 }
+#confirm-payment button {
+    font-weight: semibold;
+    color: white;
+    background-color: #48AAAD;
+    border-radius: 2px;
+    border: none;
+    padding: 0.5rem 1rem;
+    transition: 0.3s ease;
+}
+
+#confirm-payment button:hover {
+    background-color: #5db8bb;
+    transform: scale(0.95);
+}
+.listItem {
+    display: flex;
+    justify-content: space-between;
+}

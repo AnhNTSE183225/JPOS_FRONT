@@ -16,7 +16,7 @@ const ConfirmPaymentPage = ({ order }) => {
     const [processing, setProcessing] = useState(false);
 
     useDocumentTitle("Confirm Payment");
-    
+
     const getPaidAmount = async () => {
 
         try {
@@ -63,49 +63,61 @@ const ConfirmPaymentPage = ({ order }) => {
                 </div>
 
                 <div className="row">
-                    <div className="col">
-                        <h4 className='fw-bold'>Customer name</h4>
-                        <p>[ID: {order.customer.customerId}] {order.customer.name}</p>
-                        <h4 className='fw-bold'>Customer address</h4>
-                        <p>{order.customer.address}</p>
-                        <h4 className='fw-bold'>Customer budget</h4>
-                        <p>{formatPrice(order.budget)}</p>
-                        <h4 className='fw-bold'>Description</h4>
-                        <p style={{ maxWidth: '500px', wordWrap: 'break-word' }} >{order.description}</p>
-                        <h4 className='fw-bold'>Reference image</h4>
-                        <img className='img-fluid' src={order.designFile == 'Not provided' ? empty_image : order.designFile} alt="" style={{ width: '500px', height: '500px' }} />
+                    <div className="col-md-8">
+                        <h4 className="text-center fw-bold mb-4 mt-4">CUSTOMER INFORMATION</h4><hr />
+                        <h5 className='fw-semibold'>Customer name</h5>
+                        <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
+                        <h5 className='fw-semibold'>Customer address</h5>
+                        <p className='fs-6 ms-4'>{order.customer.address}</p>
+                        <h5 className='fw-semibold'>Reference image</h5>
+                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                        <h5 className='fw-semibold'>Production image</h5>
+                        <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
                     </div>
-                    <div className='col'>
-                        {order.product.diamonds.map(diamond =>
-                            <div key={diamond.diamondId}>
-                                <h4 className='fw-bold'>Diamond #{diamond.diamondId}</h4>
-                                <ul>
-                                    <li>Shape: {diamond.shape}</li>
-                                    <li>Clarity: {diamond.clarity}</li>
-                                    <li>Color: {diamond.color}</li>
-                                    <li>Cut: {diamond.cut}</li>
-                                </ul>
-                            </div>
-                        )}
-                        <h4>Total: <span className='text-success'>{formatPrice(order.odiamondPrice)}</span></h4>
-                        {order.product.materials.map(material =>
-                            <div key={material.material.materialId}>
-                                <h4 className='fw-bold'>Material #{material.material.materialId}</h4>
-                                <ul>
-                                    <li>Name: {material.material.materialName}</li>
-                                    <li>Weight: {material.weight} karat</li>
-                                </ul>
-                            </div>
-                        )}
-                        <h4>Total: <span className='text-success'>{formatPrice(order.omaterialPrice)}</span></h4>
-                        <h4 className='fw-bold'>Extra</h4>
-                        <ul>
-                            <li>Extra diamonds: {formatPrice(order.ediamondPrice)}</li>
-                            <li>Extra materials: {formatPrice(order.ematerialPrice)}</li>
-                            <li>Production price: {formatPrice(order.productionPrice)}</li>
-                        </ul>
-                        <h4>Accepted price as of {formatDate(order.odate)}: <span className='text-success'>{formatPrice(order.totalAmount)}</span></h4>
-                        <h4 className='fw-bold'>Payment</h4>
+                    <div className="col-md-4">
+                        <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />
+                        {order.product !== null
+                            ? order.product.diamonds.map(diamond =>
+                                <div key={diamond.diamondId}>
+                                    <h5 className='fw-semibold mb-4'>Diamond #{diamond.diamondId}</h5>
+                                    <div className='fs-6'>
+                                        <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
+                                        <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
+                                        <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
+                                        <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
+                                    </div>
+                                </div>
+                            )
+                            : <></>
+                        }
+                        <h5 className={styles.listItem}><span>Quotation price:</span> <span style={{ color: 'red' }}>{order.qdiamondPrice === null ? 'None' : formatPrice(order.qdiamondPrice)}</span></h5>
+                        <h5 className={styles.listItem}><span>Order price:</span> <span style={{ color: '#48AAAD' }}>{order.odiamondPrice === null ? 'None' : formatPrice(order.odiamondPrice)}</span></h5>
+                        <hr />
+                        {order.product !== null
+                            ? order.product.materials.map(material =>
+                                <div key={material.material.materialId}>
+                                    <h5 className='fw-semibold mb-4'>Material #{material.material.materialId}</h5>
+                                    <div className='fs-6' style={{ listStyle: "none" }}>
+                                        <p className={styles.listItem}><span>Name:</span> <span>{material.material.materialName.replaceAll("_", " ")}</span></p>
+                                        <p className={styles.listItem}><span>Weight:</span> <span>{material.weight}</span></p>
+                                    </div>
+                                </div>
+                            )
+                            : <>
+                            </>
+                        }
+                        <h5 className={styles.listItem}><span>Quotation price:</span> <span style={{ color: 'red' }}>{order.qmaterialPrice === null ? 'None' : formatPrice(order.qmaterialPrice)}</span></h5>
+                        <h5 className={styles.listItem}><span>Order price:</span> <span style={{ color: '#48AAAD' }}>{order.omaterialPrice === null ? 'None' : formatPrice(order.omaterialPrice)}</span></h5>
+                        <hr />
+                        <h5 className='fw-semibold mb-4'>Extra</h5>
+                        <div className='fs-6' style={{ listStyle: "none" }}>
+                            <p className={styles.listItem}><span>Extra diamonds:</span> <span>{order.ediamondPrice === null ? "None" : formatPrice(order.ediamondPrice)}</span></p>
+                            <p className={styles.listItem}><span>Extra materials:</span> <span>{order.ematerialPrice === null ? "None" : formatPrice(order.ematerialPrice)}</span></p>
+                            <p className={styles.listItem}><span>Production price:</span> <span>{order.productionPrice === null ? "None" : formatPrice(order.productionPrice)}</span></p>
+                        </div>
+
+                        <hr /><h5 className={styles.listItem}><span>Tax fee (10% VAT):</span> <span>{order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</span></h5>
+                        <h5 className='fw-bold'>Payment</h5>
                         <div className="row mb-2">
                             <div className="col">
                                 70% Payment
@@ -114,14 +126,7 @@ const ConfirmPaymentPage = ({ order }) => {
                                 {formatPrice(amountPaid)}
                             </div>
                         </div>
-                        <div className="row mb-2">
-                            <div className="col">
-                                Total amount
-                            </div>
-                            <div className="col">
-                                {formatPrice(order.totalAmount)}
-                            </div>
-                        </div>
+                        <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
                         {
                             processing
                                 ? <button className="btn btn-secondary w-100" type="button" disabled>
