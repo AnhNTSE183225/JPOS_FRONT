@@ -98,15 +98,15 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     return (
         <>
-            <div className="row">
+            <div className="row mb-2">
                 <div className="col">
                     Sale staff:
                 </div>
-                <div className="col">
+                <div className="col text-end">
                     {
                         order.saleStaff == null
                             ? <>
-                                <select value={selectedSaleStaff} onChange={(e) => setSelectedSaleStaff(e.target.value)}>
+                                <select className={`form-select`} value={selectedSaleStaff} onChange={(e) => setSelectedSaleStaff(e.target.value)}>
                                     <option value=''>Select a staff</option>
                                     {saleStaff.map((staff, index) =>
                                         <option key={index} value={staff.staffId}>{staff.name} - {staff.phone}</option>
@@ -114,7 +114,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
                                 </select>
                             </>
                             : <>
-                                [ID: {order.saleStaff.staffId}] {order.saleStaff.name}
+                                {order.saleStaff.name} [ID: {order.saleStaff.staffId}]
                             </>
                     }
                 </div>
@@ -123,15 +123,15 @@ const AssignColumn = ({ order, fetchOrder }) => {
                 order.orderType == 'from_design'
                     ? <></>
                     : <>
-                        <div className="row">
+                        <div className="row mb-2">
                             <div className="col">
                                 Design staff:
                             </div>
-                            <div className="col">
+                            <div className="col text-end">
                                 {
                                     order.designStaff == null
                                         ? <>
-                                            <select value={selectedDesignStaff} onChange={(e) => setSelectedDesignStaff(e.target.value)}>
+                                            <select className={`form-select`} value={selectedDesignStaff} onChange={(e) => setSelectedDesignStaff(e.target.value)}>
                                                 <option value=''>Select a staff</option>
                                                 {designStaff.map((staff, index) =>
                                                     <option key={index} value={staff.staffId}>{staff.name} - {staff.phone}</option>
@@ -139,22 +139,22 @@ const AssignColumn = ({ order, fetchOrder }) => {
                                             </select>
                                         </>
                                         : <>
-                                            [ID:{order.designStaff.staffId}] {order.designStaff.name}
+                                            {order.designStaff.name} [ID:{order.designStaff.staffId}]
                                         </>
                                 }
                             </div>
                         </div>
                     </>
             }
-            <div className="row">
+            <div className="row mb-2">
                 <div className="col">
                     Prod. staff:
                 </div>
-                <div className="col">
+                <div className="col text-end">
                     {
                         order.productionStaff == null
                             ? <>
-                                <select value={selectedProductionStaff} onChange={(e) => setSelectedProductionStaff(e.target.value)}>
+                                <select className={`form-select`} value={selectedProductionStaff} onChange={(e) => setSelectedProductionStaff(e.target.value)}>
                                     <option value=''>Select a staff</option>
                                     {productionStaff.map((staff, index) =>
                                         <option key={index} value={staff.staffId}>{staff.name} - {staff.phone}</option>
@@ -162,7 +162,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
                                 </select>
                             </>
                             : <>
-                                [ID:{order.productionStaff.staffId}] {order.productionStaff.name}
+                                {order.productionStaff.name} [ID:{order.productionStaff.staffId}] 
                             </>
                     }
                 </div>
@@ -225,7 +225,17 @@ const OrderDetails = ({ orderId, staffType }) => {
                             <h5 className='fw-semibold'>Production image</h5>
                             <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
                         </div>
+
                         <div className="col-md-4">
+                            {
+                                order.status != 'completed' && staffType == 'manage'
+                                    ? <div className="col">
+                                        <h4 className="text-center fw-bold mb-4 mt-4">ASSIGNMENT</h4><hr />
+                                        <AssignColumn order={order} fetchOrder={fetchOrder} />
+                                    </div>
+                                    : <>
+                                    </>
+                            }
                             <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />
                             {order.product !== null
                                 ? order.product.diamonds.map(diamond =>
@@ -248,7 +258,7 @@ const OrderDetails = ({ orderId, staffType }) => {
                                 ? order.product.materials.map(material =>
                                     <div key={material.material.materialId}>
                                         <h5 className='fw-semibold mb-4'>Material #{material.material.materialId}</h5>
-                                        <div className='fs-6' style={{listStyle: "none"}}>
+                                        <div className='fs-6' style={{ listStyle: "none" }}>
                                             <p className={styles.listItem}><span>Name:</span> <span>{material.material.materialName.replaceAll("_", " ")}</span></p>
                                             <p className={styles.listItem}><span>Weight:</span> <span>{material.weight}</span></p>
                                         </div>
@@ -261,12 +271,12 @@ const OrderDetails = ({ orderId, staffType }) => {
                             <h5 className={styles.listItem}><span>Order price:</span> <span style={{ color: '#48AAAD' }}>{order.omaterialPrice === null ? 'None' : formatPrice(order.omaterialPrice)}</span></h5>
                             <hr />
                             <h5 className='fw-semibold mb-4'>Extra</h5>
-                            <div className='fs-6' style={{listStyle: "none"}}>
+                            <div className='fs-6' style={{ listStyle: "none" }}>
                                 <p className={styles.listItem}><span>Extra diamonds:</span> <span>{order.ediamondPrice === null ? "None" : formatPrice(order.ediamondPrice)}</span></p>
                                 <p className={styles.listItem}><span>Extra materials:</span> <span>{order.ematerialPrice === null ? "None" : formatPrice(order.ematerialPrice)}</span></p>
                                 <p className={styles.listItem}><span>Production price:</span> <span>{order.productionPrice === null ? "None" : formatPrice(order.productionPrice)}</span></p>
                             </div>
-                            
+
                             <hr /><h5 className={styles.listItem}><span>Tax fee (10% VAT):</span> <span>{order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</span></h5>
                             <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
                             {
@@ -285,15 +295,6 @@ const OrderDetails = ({ orderId, staffType }) => {
                                     </>
                             }
                         </div>
-                        {/* {
-                            order.status != 'completed' && staffType == 'manage'
-                                ? <div className="col">
-                                    <h2 className="fw-bold">ASSIGNMENT</h2>
-                                    <AssignColumn order={order} fetchOrder={fetchOrder} />
-                                </div>
-                                : <>
-                                </>
-                        } */}
                     </div>
                 </div>
             </>
