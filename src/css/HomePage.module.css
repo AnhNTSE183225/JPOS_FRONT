@@ -29,25 +29,48 @@
 }
 
 .overlay-content {
-  padding-top: 5%;
+  padding-top: 8%;
   position: absolute;
   left: 3%;
   color: #264646;
+  text-align: justify;
 
   button {
     margin-right: 2vw;
-    border-radius: 10px;
+    border-radius: 2px;
     background-color: #48AAAD;
     color: #fff;
     font-size: 18px;
     font-weight: 500;
     padding: 8px 20px;
-    transition: 0.3s background-color;
+    transition: 0.3s;
     border: none;
   }
 
   button:hover {
     background-color: #264646;
+    transform: scale(0.95);
+  }
+}
+
+.overlay-content-video {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  color: white;
+  button {
+    background-color: transparent;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 20px;
+    transition: 0.3s;
+    border: 2px solid white;
+    width: 100%;
+  }
+
+  button:hover {
+    transform: scale(0.95);
   }
 }
 
@@ -56,4 +79,18 @@
     position: inherit;
     text-align: center;
   }
+  
+}
+@media screen and (max-width: 575px) {
+  .overlay-content-video {
+    padding-top: 2rem;
+    text-align: center;
+    p {
+      display: none;
+    }
+    button {
+      align-items: center;
+    }
+  }
+  
 }
