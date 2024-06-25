@@ -119,7 +119,6 @@ const CustomDesignPage = () => {
                                 <label className="form-label">What's your budget? Minimum value: $500</label>
                                 <input className="form-control" type="number" min={500} value={budget} onChange={(e) => setBudget(e.target.value)} />
                             </div>
-
                             <div>
                                 <button className="btn btn-dark w-100" onClick={submitForm}>Submit</button>
                             </div>

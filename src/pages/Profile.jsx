@@ -69,27 +69,16 @@ const ProfilePage = () => {
                     </button>
                 </div>
                 <div className="row mt-5">
-                    <div className={`col ${styles['button-custom']}`}>
-                        <button
-
-                            onClick={() => navigate("/profile/your-orders")}
-                        >
-                            View Order Detail
-                        </button>
+                    <div className={`col ${styles['button-custom']}`} onClick={() => navigate("/profile/your-orders")} >
+                        View Order Details
                     </div>
-                    <div className={`col ${styles['button-custom']}`}>
-                        <button
-                            type="button"
-                            className="btn btn-md"
-                            onClick={() => navigate("/profile/your-request")}
-                        >
-                            View Request
-                        </button>
+                    <div className={`col ${styles['button-custom']}`} onClick={() => navigate("/profile/your-request")}>
+                        View Request
                     </div>
                 </div>
             </div>
 
-        </div>
+        </div >
     );
 }
 
