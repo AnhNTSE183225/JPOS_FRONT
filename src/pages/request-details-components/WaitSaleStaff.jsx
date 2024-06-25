@@ -78,11 +78,12 @@ const WaitSaleStaff = ({ order }) => {
                 maxPrice: maxPrice
             }
             try {
+                console.log(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`)
                 const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
                 if (!response.data || response.status === 204) {
                     console.log(`Cannot fetch diamonds`);
                 } else {
-                    setDiamondList(response.data);
+                    setDiamondList(response.data.content);
                 }
             } catch (error) {
                 console.log(error);
