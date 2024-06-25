@@ -70,7 +70,7 @@
     padding: 8px 20px;
     transition: 0.3s;
     border: 2px solid white;
-    width: 90%;
+    width: 100%;
   }
 
   button:hover {
