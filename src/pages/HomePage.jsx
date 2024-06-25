@@ -18,7 +18,7 @@ const HomePage = () => {
                     </div>
                 </section>
                 <section className={`${styles['row']}`}>
-                    <img className='img-slide img-fluid' src="https://ecommo--ion.bluenile.com/static-dyo-bn/DYO_Banner.dde8f.jpg" alt="choose_settings" />
+                    <img className={`img-fluid ${styles['img-slide']}`} src="https://ecommo--ion.bluenile.com/static-dyo-bn/DYO_Banner.dde8f.jpg" alt="choose_settings" />
                     <div className={`${styles[`overlay-content`]} col-xl-5`}>
                         <img src={Logo} alt="Logo" style={{ width: '6vw', height: 'auto' }} />
                         <p className='fs-4 fw-semibold text-center'>DESIGN YOUR OWN JEWELERY</p>
@@ -29,9 +29,9 @@ const HomePage = () => {
                     </div>
                 </section>
                 <section className={`mt-5 ${styles['row']}`}>
-                    <img className='img-slide img-fluid' src="https://ecommo--ion.bluenile.com/static-dyo-bn/lab_diamonds_sale_banner.6a518.jpg" alt="choose_engagement" />
+                    <img className={`img-fluid ${styles['img-slide']}`} src="https://ecommo--ion.bluenile.com/static-dyo-bn/lab_diamonds_sale_banner.6a518.jpg" alt="choose_engagement" />
                     <div className={`${styles[`overlay-content`]} col-xl-5`}>
-                        <p className='fs-4 fw-semibold text-center'>An Unforgettable Proposal</p>
+                        <p className='fs-4 fw-semibold text-center'>AN UNFORGETTABLE PROPOSAL</p>
                         <p className='fs-6'>Embark on a journey towards a proposal as unique as your love story. With our bespoke engagement rings,
                             each detail is meticulously crafted to capture the essence of your bond. Let us help you create a moment
                             filled with joy and love, marking the beginning of your forever.</p>

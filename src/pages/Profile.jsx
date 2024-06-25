@@ -1,35 +1,86 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import image from '/src/assets/logoProfile.png';
+import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useDocumentTitle from '../components/Title';
+import styles from '../css/Profile.module.css';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
-    useDocumentTitle("Your Profile");
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+
+    useDocumentTitle("My Account");
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="card shadow" style={{ borderRadius: '15px', maxWidth: '400px', width: '100%' }}>
-                <div className="card-body text-center">
-                    <div className="mt-3 mb-4">
-                        <img src={image} className="rounded-circle img-fluid" style={{ width: '100px' }} alt="Profile" />
+        <div className={`${styles['account-page']}`}>
+            <section className={`${styles['row']}`}>
+                <img className={`img-fluid ${styles['img-slide']}`} src="https://www.withclarity.com/cdn/shop/files/Diamond-banner_1920x.jpg?v=1695385583" alt="choose_settings" />
+                <div className={`${styles[`overlay-content`]}`}>
+                    <p className='fw-light text-center'>MY ACCOUNT</p>
+                </div>
+            </section>
+            <div className={`row ${styles[`form-container`]}`}>
+                <p className='mb-5 fw-light' style={{ fontSize: '2rem' }}>My Personal Details</p>
+                <div className="col-md-4">
+                    <div className="form-floating">
+                        <input
+                            type="name"
+                            class="form-control"
+                            id="floatingInputGrid"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <label for="floatingInputGrid">Name</label>
                     </div>
-                    <h4 className="mb-2 text-uppercase">{sessionStorage.getItem('name')}</h4>
-                    <p className="text-muted mb-4">Customer</p>
-                    <div className="d-flex flex-column">
-                        <button 
-                            type="button" 
-                            className="btn btn-lg mb-2" 
-                            style={{ backgroundColor: '#48AAAD', color: '#fff' }}
+                </div>
+                <div className="col-md-4">
+                    <div className="form-floating">
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="floatingInputGrid"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <label for="floatingInputGrid">Email address</label>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="form-floating">
+                        <input
+                            type="address"
+                            class="form-control"
+                            id="floatingInputGrid"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                        <label for="floatingInputGrid">Address</label>
+                    </div>
+                </div>
+                <div className='row mt-4'>
+                    <button
+                        type="button"
+                        className="btn btn-md"
+                    >
+                        Save Changes
+                    </button>
+                </div>
+                <div className="row mt-5">
+                    <div className={`col ${styles['button-custom']}`}>
+                        <button
+
                             onClick={() => navigate("/profile/your-orders")}
                         >
                             View Order Detail
                         </button>
-                        <button 
-                            type="button" 
-                            className="btn btn-lg" 
-                            style={{ backgroundColor: '#48AAAD', color: '#fff' }}
+                    </div>
+                    <div className={`col ${styles['button-custom']}`}>
+                        <button
+                            type="button"
+                            className="btn btn-md"
                             onClick={() => navigate("/profile/your-request")}
                         >
                             View Request
@@ -37,6 +88,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }

@@ -1,6 +1,3 @@
-/* body {
-    overflow-x: hidden;
-} */
 .row {
   --bs-gutter-y: 0;
   display: flex;
@@ -31,6 +28,11 @@
 .home-page img {
   position: relative;
   object-fit: cover;
+}
+
+.img-slide {
+  width: 100vw; /* Adjust the value as needed */
+  height: auto; /* Keeps the aspect ratio of the image */
 }
 
 .overlay-content {

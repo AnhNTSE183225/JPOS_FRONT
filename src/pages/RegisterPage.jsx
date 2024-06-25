@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from '/src/css/RegisterPage.module.css';
 import useDocumentTitle from '../components/Title';
 import {toast} from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
 
@@ -12,6 +13,7 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
     const [address, setAddress] = useState('');
+    const navigate = useNavigate();
 
     useDocumentTitle('Register');
 
@@ -44,7 +46,8 @@ const RegisterPage = () => {
             if (!response.data || response.status === 204) {
                 toast.error(`Username or email already exists!`)
             } else {
-                toast.success(`Account created!`)
+                toast.success(`Account created! Please login to continue.`)
+                navigate('/login');
             }
         } else {
             toast.info(`Please fill in all details! (username, email, password, name, address)`);
