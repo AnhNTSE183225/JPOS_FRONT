@@ -7,6 +7,7 @@ import { faRightLeft, faTruckFast, faChartBar } from '@fortawesome/free-solid-sv
 import { toast } from 'sonner';
 import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
 import { formatPrice } from '../../helper_function/ConvertFunction';
+import { faUnity } from '@fortawesome/free-brands-svg-icons';
 
 const DiamondDetails = () => {
     const { diamondId } = useParams();
@@ -164,11 +165,15 @@ const DiamondDetails = () => {
                             <div className={`${styles[`imageSection`]} col-md-6`}>
                                 {
                                     spinning == false
-                                        ? <img style={{ cursor: 'pointer' }} src={diamond.image.split("|")[0]} alt="Diamond" className={styles.diamondImage} onClick={() => {
-                                            if (diamond.image.split("|").length > 1) {
-                                                setSpinning(true);
-                                            }
-                                        }} />
+                                        ? <div className="position-relative">
+                                            <img style={{ cursor: 'pointer' }} src={diamond.image.split("|")[0]} alt="Diamond" className={styles.diamondImage} onClick={() => {
+                                                if (diamond.image.split("|").length > 1) {
+                                                    setSpinning(true);
+                                                }
+                                            }} >
+                                            </img>
+                                            <FontAwesomeIcon hidden={diamond.image.split("|").length <= 1} icon={faUnity} style={{marginLeft: '1rem', marginTop: '1rem', fontSize: '2rem'}} className='position-absolute start-0 top-0' />
+                                        </div>
                                         : <div style={{ cursor: 'grab' }} onClick={() => setSpinning(false)} onMouseMove={handleCursorMoveImage}>
                                             {
                                                 diamond.image.split("|").length > 1

@@ -7,6 +7,53 @@ import { faRightLeft, faTruckFast, faChartBar } from '@fortawesome/free-solid-sv
 import { formatPrice } from "../../helper_function/ConvertFunction";
 import { fetchMaterialPrice } from "../../helper_function/FetchPriceFunctions";
 
+const NoteComponent = ({ designType }) => {
+    let result = null;
+
+    const ringSizes = [6, 7, 8, 9];
+    const necklaceLengths = ["16 inches", "18 inches", "20 inches"];
+
+    const handleSelect = (value) => {
+        sessionStorage.setItem("note", value);
+    };
+
+    switch (designType) {
+        case 'ring':
+            result = (
+                <div className="row">
+                    <h3 className={`${styles["metal-type-title"]} col`}>Select ring size</h3>
+                    <div className="col">
+                        <select className="form-select" onChange={(e) => handleSelect(e.target.value)}>
+                            {ringSizes.map((size) => (
+                                <option key={size} value={`Ring size: ${size}`}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>);
+            break;
+        case 'Necklace':
+            result = (
+                <div className="row">
+                    <h3 className={`${styles["metal-type-title"]} col`}>Select necklace length</h3>
+                    <div className="col">
+                        <select className="form-select" onChange={(e) => handleSelect(e.target.value)}>
+                            {necklaceLengths.map((length) => (
+                                <option key={length} value={`Necklace length: ${length}`}>
+                                    {length}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>);
+            break;
+        default:
+            result = (<></>);
+    }
+    return result;
+}
+
 const SettingDetails = () => {
     const navigate = useNavigate();
     const { designId } = useParams();
@@ -134,7 +181,7 @@ const SettingDetails = () => {
                                                         <img
                                                             src={`/src/assets/svg/${shape}.svg`}
                                                             alt={shape}
-                                                            style={{ maxWidth: '20px', maxHeight: '20px', marginRight: '5px' }} 
+                                                            style={{ maxWidth: '20px', maxHeight: '20px', marginRight: '5px' }}
                                                         />
                                                         <span>{shape} 0.20 - 8.00 Carat</span>
                                                     </div>
@@ -152,6 +199,7 @@ const SettingDetails = () => {
                             <div className={styles.option}>
                                 <b>Flexible Payment Options:</b> 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
                             </div>
+                            <NoteComponent designType={productDesign.designType} />
                             <div className={styles["metal-type-section"]}>
                                 <h3 className={styles["metal-type-title"]}>Metal Type: </h3>
                                 <div className={styles["shell-list"]}>
@@ -165,7 +213,7 @@ const SettingDetails = () => {
                                         </div>
                                     ))}
                                 </div>
-                                
+
                             </div>
                             <div className="row">
                                 <div className="col">
@@ -176,19 +224,19 @@ const SettingDetails = () => {
                                 </div>
                             </div>
                             <div className={`mt-4 ${styles["toggle-button"]}`} onClick={toggleShellDetails}>
-                                    <p className="fs-5">Shell Details</p>
-                                    <span>{showShellDetails ? '-' : '+'}</span>
+                                <p className="fs-5">Shell Details</p>
+                                <span>{showShellDetails ? '-' : '+'}</span>
+                            </div>
+                            {showShellDetails && selectedShell && (
+                                <div className={styles["shell-details-section"]}>
+                                    <h3 className={styles["shell-title"]}>{selectedShell.shellName} Details</h3>
+                                    <p className={styles["shell-detail"]}><strong>Product Shell Design Code:</strong> {('000' + selectedShell.productShellDesignId).slice(-4)}</p>
+                                    <p className={styles["shell-detail"]}><strong>Diamonds:</strong> {selectedShell.diamondQuantity}</p>
+                                    <p className={styles["shell-detail"]}><strong>Production Price:</strong> {formatPrice(selectedShell.productionPrice)}</p>
+                                    <p className={styles["shell-detail"]}><strong>Extra Diamond Price:</strong> {formatPrice(selectedShell.ediamondPrice)}</p>
+                                    <p className={styles["shell-detail"]}><strong>Extra Material Price:</strong> {formatPrice(selectedShell.ematerialPrice)}</p>
                                 </div>
-                                {showShellDetails && selectedShell && (
-                                    <div className={styles["shell-details-section"]}>
-                                        <h3 className={styles["shell-title"]}>{selectedShell.shellName} Details</h3>
-                                        <p className={styles["shell-detail"]}><strong>Product Shell Design Code:</strong> {('000' + selectedShell.productShellDesignId).slice(-4)}</p>
-                                        <p className={styles["shell-detail"]}><strong>Diamonds:</strong> {selectedShell.diamondQuantity}</p>
-                                        <p className={styles["shell-detail"]}><strong>Production Price:</strong> {formatPrice(selectedShell.productionPrice)}</p>
-                                        <p className={styles["shell-detail"]}><strong>Extra Diamond Price:</strong> {formatPrice(selectedShell.ediamondPrice)}</p>
-                                        <p className={styles["shell-detail"]}><strong>Extra Material Price:</strong> {formatPrice(selectedShell.ematerialPrice)}</p>
-                                    </div>
-                                )}
+                            )}
                             <div className={`row ${styles.paymentOptions}`}>
                                 <p className="fs-5">Your order includes:</p>
                                 <div className={styles.optionBox}>
@@ -219,7 +267,7 @@ const SettingDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

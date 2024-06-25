@@ -246,6 +246,8 @@ const OrderDetails = ({ orderId, staffType }) => {
                             <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                             <h5 className='fw-semibold'>Customer address</h5>
                             <p className='fs-6 ms-4'>{order.customer.address}</p>
+                            <h5 className='fw-semibold'>Note</h5>
+                            <p className='fs-6 ms-4'>{order.note}</p>
                             <h5 className='fw-semibold'>Reference images</h5>
                             {
                                 order.designFile === null

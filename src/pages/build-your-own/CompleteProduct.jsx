@@ -105,7 +105,8 @@ const CompleteProduct = () => {
                 productDesignId: sessionStorage.getItem('designId'),
                 productShellId: sessionStorage.getItem('shellId'),
                 diamondIds: sessionStorage.getItem('diamonds').split(','),
-                customerId: sessionStorage.getItem("customer_id")
+                customerId: sessionStorage.getItem("customer_id"),
+                note: sessionStorage.getItem('note')
             };
             const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/create-order-from-design`, object);
             if (!response.data || response.status === 204) {
