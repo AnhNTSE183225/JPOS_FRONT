@@ -112,7 +112,7 @@ const ManageRequestsPage = () => {
         <div id={styles['manage-request']} className="container-fluid">
             <div className="row my-3">
                 <div className="col">
-                    <h1>Status</h1>
+                    <h2 className="mb-4">Status</h2>
                     <div style={circleStyle}>
                         {/* First Line */}
                         <div className={styles['status-line']}>
@@ -133,7 +133,7 @@ const ManageRequestsPage = () => {
             </div>
             <div className="row my-3">
                 <div className="col">
-                    <h1>Orders</h1>
+                    <h2 className="mb-4">Orders</h2>
                     <table>
                         <thead>
                             <tr className={styles['table-head']}>
@@ -142,7 +142,7 @@ const ManageRequestsPage = () => {
                                 <th>Date</th>
                                 <th>Price/Budget</th>
                                 <th>Status</th>
-                                <th>#</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -156,10 +156,10 @@ const ManageRequestsPage = () => {
                                         <td>{order.customer.name}</td>
                                         <td>{formatDate(order.orderDate)}</td>
                                         <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
-                                        <td>{order.status}</td>
+                                        <td>{order.status.replaceAll("_", " ")}</td>
                                         <td>
-                                            <button onClick={() => setActiveOrder(order)}>
-                                                View details
+                                            <button className="fs-6" onClick={() => setActiveOrder(order)}>
+                                                VIEW DETAILS
                                             </button>
                                         </td>
                                     </tr>
@@ -171,7 +171,7 @@ const ManageRequestsPage = () => {
             <div className="row mb-3">
                 <div className="col">
                     {activeOrder == null
-                        ? <h1>Please select an order to view its details</h1>
+                        ? <p className="fs-5 mt-3">*Choose an order to view its details.</p>
                         : activeOrder.status === 'wait_manager'
                             ? <WaitManager order={activeOrder} />
                             : <OrderDetails orderId={activeOrder.id} staffType="manage" />

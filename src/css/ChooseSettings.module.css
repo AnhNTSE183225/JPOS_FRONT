@@ -14,7 +14,7 @@
 }
 
 .category-selector div:hover {
-    transform: scale(1.1); /* Grow in size */
+    transform: scale(1.03); /* Grow in size */
     border: 2px solid #48AAAD; /* Subtle border using theme color */
     background-color: #e6f7f7; /* Lighter shade for hover */
 }
