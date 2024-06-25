@@ -10,6 +10,22 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.save-change {
+    border-radius: 0;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+.save-change:hover {
+    border-radius: 0;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    transform:scale(0.98)
+}
+
 .img-slide {
     width: 100vw;
     height: auto;
@@ -39,7 +55,6 @@
     cursor: pointer;
     background-color: #48AAAD;
     padding: 0.2rem 0;
-    margin: 0 1rem;
     text-align: center;
     color: white;
 }
