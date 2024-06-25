@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchMaterialPrice = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/materialPrices/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/materialPrices/${id}`);
         if (response.status === 204) {
             return 0;
         } else {
@@ -16,7 +16,7 @@ export const fetchMaterialPrice = async (id) => {
 
 export const fetchDiamondPrice = async (origin, shape, caratWeight, color, clarity, cut) => {
 
-    const response = await axios.post(`http://localhost:8080/api/diamond-price/get-single-price`,
+    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-single-price`,
         {
             origin: origin,
             cut: cut,
