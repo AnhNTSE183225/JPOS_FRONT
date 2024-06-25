@@ -11,11 +11,12 @@ const ChooseSetting = () => {
 
     const navigate = useNavigate();
     const [designList, setDesignList] = useState([]);
+    const [activeCategory, setActiveCategory] = useState(null);
 
     useDocumentTitle('Build Your Own Ring');
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [activeCategory])
 
     const fetchData = async () => {
         try {
@@ -24,7 +25,11 @@ const ChooseSetting = () => {
                 toast.error("NO items in database");
             } else {
                 //console.log(response.data);
-                setDesignList(response.data);
+                if (activeCategory == null) {
+                    setDesignList(response.data);
+                } else {
+                    setDesignList(response.data.filter(design => design.designType === activeCategory))
+                }
             }
 
         } catch (error) {
@@ -32,37 +37,47 @@ const ChooseSetting = () => {
         }
     }
 
-    if (designList.length > 0) {
-        return (
-            <>
-                <NavigationBar />
-                <div className={`${styles.container} container`}>
-                <div className="diamond-finder text-center mb-3">
-                    <h3 className='ms-3' style={{ textAlign: 'center' }}>Ring Settings</h3>
-                    <p style={{ maxWidth: '550px', margin: '0 auto', textAlign: 'center' }}>Search hundreds of engagement ring settings to find the perfect ring. Styles range from solitaire to vintage-inspired to everything in between.</p>
-                </div>
-                    {designList.length > 0 ? (
-                        <div className={`${styles.content} row`}>
-                            {designList.map(design => (
-                                <div key={design.productDesignId} className="col-md-4 col-lg-3 mb-4">
-                                    <ProductCard design={design} />
-                                </div>
-                            ))}
+    return (
+        <>
+            <NavigationBar />
+            <div className={`${styles.container} container`}>
+                {/* <div className="diamond-finder text-center mb-3">
+                        <h3 className='ms-3' style={{ textAlign: 'center' }}>Ring Settings</h3>
+                        <p style={{ maxWidth: '550px', margin: '0 auto', textAlign: 'center' }}>Search hundreds of engagement ring settings to find the perfect ring. Styles range from solitaire to vintage-inspired to everything in between.</p>
+                    </div> */}
+                <div className="container-fluid mb-5">
+                    <div className={`row text-center ${styles['category-selector']}`}>
+                        <div className={`col ${activeCategory == null ? styles['active'] : ''}`} onClick={() => setActiveCategory(null)}>
+                            ALL
                         </div>
-                    ) : (
-                        <div>Loading...</div>
-                    )}
+                        <div className={`col ${activeCategory == 'Necklace' ? styles['active'] : ''}`} onClick={() => setActiveCategory('Necklace')}>
+                            NECKLACES & PENDANTS
+                        </div>
+                        <div className={`col ${activeCategory == 'Earrings' ? styles['active'] : ''}`} onClick={() => setActiveCategory('Earrings')}>
+                            EARRINGS
+                        </div>
+                        <div className={`col ${activeCategory == 'Bracelets' ? styles['active'] : ''}`} onClick={() => setActiveCategory('Bracelets')}>
+                            BRACELETS
+                        </div>
+                        <div className={`col ${activeCategory == 'ring' ? styles['active'] : ''}`} onClick={() => setActiveCategory('ring')}>
+                            RINGS
+                        </div>
+                    </div>
                 </div>
-            </>
-        )
-    } else {
-        return (
-            <>
-                <Toaster position="top-center" richColors expand={true} />
-                Loading...
-            </>
-        )
-    }
+                {designList.length > 0 ? (
+                    <div className={`${styles.content} row`}>
+                        {designList.map(design => (
+                            <div key={design.productDesignId} className="col-md-4 col-lg-3 mb-4">
+                                <ProductCard design={design} />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div>Loading...</div>
+                )}
+            </div>
+        </>
+    )
 }
 
 export default ChooseSetting;
