@@ -3,16 +3,18 @@ import { useState } from 'react';
 import axios from 'axios';
 import styles from '/src/css/RegisterPage.module.css';
 import useDocumentTitle from '../components/Title';
+import {toast} from 'sonner';
 
 const RegisterPage = () => {
 
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
     const [address, setAddress] = useState('');
 
     useDocumentTitle('Register');
-    
+
     const handlePassword = (event) => {
         setPassword(event.target.value);
     }
@@ -29,26 +31,23 @@ const RegisterPage = () => {
         setAddress(event.target.value);
     }
 
-    const customerRegister = () => {
-        if (username.length !== 0 && password.length !== 0 && fullName.length !== 0 && address.length !== 0) {
-            axios.post(`${import.meta.env.VITE_jpos_back}/api/customer-register`,
-                {
-                    username: username,
-                    password: password,
-                    name: fullName,
-                    address: address
-                }
-            ).then(
-                (response) => {
-                    console.log(response.data);
-                }
-            ).catch(
-                (error) => {
-                    alert('Username already exists!');
-                }
-            )
+    const customerRegister = async () => {
+        if (username.length > 0 && email.length > 0 && password.length > 0 && fullName.length > 0 && address.length > 0) {
+
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customer-register`, {
+                username: username,
+                password: password,
+                email: email,
+                name: fullName,
+                address: address
+            })
+            if (!response.data || response.status === 204) {
+                toast.error(`Username or email already exists!`)
+            } else {
+                toast.success(`Account created!`)
+            }
         } else {
-            alert('Please fill in all fields!');
+            toast.info(`Please fill in all details! (username, email, password, name, address)`);
         }
     }
 
@@ -61,6 +60,10 @@ const RegisterPage = () => {
                 <div className='mb-3'>
                     <label className='form-label'>Username</label>
                     <textarea value={username} onChange={handleUsername} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                </div>
+                <div className="mb-3">
+                    <label className='form-label'>Email</label>
+                    <textarea value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Password</label>

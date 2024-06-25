@@ -78,12 +78,11 @@ const LoginPage = () => {
                     toast.error(`Invalid credentials. Please try again`);
                 } else {
                     console.log(response.data);
-                    console.log(response.data.customerId);
-                    console.log(response.data.staffId);
                     if (response.data.customerId !== undefined) {
                         console.log('logged in as customer');
                         sessionStorage.setItem("customer_id", response.data.customerId);
-                        sessionStorage.setItem("username", response.data.username);
+                        sessionStorage.setItem("username", response.data.account.username);
+                        sessionStorage.setItem("email",response.data.account.email);
                         sessionStorage.setItem("name", response.data.name);
                         sessionStorage.setItem("address", response.data.address);
                         navigate("/");

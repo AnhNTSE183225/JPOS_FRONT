@@ -168,7 +168,7 @@ const CompleteProduct = () => {
                             <div className='row position-relative'>
                                 <div className={`${styles['image-container']} position-absolute left-0`} style={{ height: '20%' }}>
                                     {diamonds.map(d =>
-                                        <img key={d.diamondId} src={d.image} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
+                                        <img key={d.diamondId} src={d.image.split("|")[0]} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
                                     )}
                                 </div>
                                 <img src={productDesign.designFile} className={styles.productImage} alt="Product Design" />
