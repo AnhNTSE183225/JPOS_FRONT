@@ -60,14 +60,14 @@
 .overlay-content-video {
   position: absolute;
   bottom: 2rem;
-  left: 2rem;
+  right : 2rem;
   color: white;
   button {
     background-color: transparent;
     color: #fff;
-    font-size: 14px;
+    font-size: 1.5rem;
     font-weight: 500;
-    padding: 8px 20px;
+    padding: 0.5rem 4rem;
     transition: 0.3s;
     border: 2px solid white;
     width: 100%;
