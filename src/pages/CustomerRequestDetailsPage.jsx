@@ -4,6 +4,7 @@ import PendingDesign from './customer-request-details/PendingDesign';
 import WaitCustomer from './customer-request-details/WaitCustomer';
 import axios from 'axios';
 import useDocumentTitle from '../components/Title';
+import styles from '/src/css/CustomerRequestDetailsPage.module.css';
 
 const CustomerRequestDetailsPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,15 +42,15 @@ const CustomerRequestDetailsPage = () => {
 
     return (
         <>
-            <div className='container'>
-                <div className="row p-3">
-                    <div className='col-md-6'>
-                        <button onClick={() => setCurrentIndex(val => val - 1)} disabled={currentIndex <= 0} className='btn btn-primary w-100'>
+            <div className='container' id={`${styles['customer-request-detail']}`}>
+                <div className="row p-0 gap-3">
+                    <div className='col p-0'>
+                        <button onClick={() => setCurrentIndex(val => val - 1)} className={` ${styles['btn']} ${currentIndex <= 0 ? styles['disabled'] : ''} btn btn-primary w-100`}>
                             Previous
                         </button>
                     </div>
-                    <div className='col-md-6'>
-                        <button onClick={() => setCurrentIndex(val => val + 1)} disabled={currentIndex >= orderList.length-1} className='btn btn-primary w-100'>
+                    <div className='col p-0'>
+                        <button onClick={() => setCurrentIndex(val => val + 1)} className={` ${styles['btn']} ${currentIndex <= 0 ? styles['disabled'] : ''} btn btn-primary w-100`}>
                             Next
                         </button>
                     </div>

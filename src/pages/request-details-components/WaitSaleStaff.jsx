@@ -123,6 +123,7 @@ const WaitSaleStaff = ({ order }) => {
                     ...order,
                     productionPrice: extraPrice.production,
                     markupRate: extraPrice.markupRate,
+                    taxFee: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate * 0.1,
                     totalAmount: (totalDiamondPrice + totalMaterialPrice + extraPrice.material + extraPrice.diamond + extraPrice.production) * extraPrice.markupRate * 1.1,
                     ematerialPrice: extraPrice.material,
                     ediamondPrice: extraPrice.diamond,
