@@ -69,7 +69,7 @@ const ChooseDiamond = () => {
                 minPrice: minPrice,
                 maxPrice: maxPrice
             }
-            const response = await axios.post(`http://localhost:8080/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
             if (!response.data || response.status === 204) {
                 toast.error(`Cannot fetch data`);
             } else {
