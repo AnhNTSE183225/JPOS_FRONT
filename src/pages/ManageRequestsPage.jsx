@@ -93,12 +93,7 @@ const ManageRequestsPage = () => {
             setActiveOrder(null);
         }
     }, [activeStatus, orders])
-
-    // CSS styles for the circular progress bar
-    const circleStyle = {
-
-    };
-
+    
     return (
         <div id={styles['manage-request']} className="container-fluid">
             <div className="row my-3">
