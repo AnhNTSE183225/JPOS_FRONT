@@ -128,85 +128,80 @@ const CustomDesignPage = () => {
                         <img src={img} className="img-fluid" />
                     </div>
                 </div>
-                <div className="row justify-content-center mt-4">
-                    <div className="col-md-10 text-center">
-                        <h2>Designing a 3D Jewelry Model</h2>
-                        <p>
-                            After the initial idea and/or sketch is developed, it’s time to start work on the digital model.
-                            Using CAD (Computer Aided Design) software, the 3d designer will make a digital render of your jewelry.
-                            Depending on the complexity of the project and how busy the studio or artist is, this can take
-                            anywhere from a day to a week.
-                        </p>
-                        <p>
-                            While this step is great for you to see your jewelry before committing to full production, keep in
-                            mind the 3d model is made for functionality first, not aesthetics, so it might not look as pretty as
-                            your finished piece! That being said, you can always request a more detailed render.
-                            Check out our blog on the subject to learn more about CAD models.
-                        </p>
-                        <img src={img1}  className="img-fluid mt-3" />
+                <div>
+                    <div className="row justify-content-center mt-5">
+                        <div className="col-md-8 text-center">
+                            <h2 className="mb-4">Designing a 3D Jewelry Model</h2>
+                            <p style={{ textAlign: 'justify' }}>
+                                After the initial idea and/or sketch is developed, it's time to start work on the digital model.
+                                Depending on the complexity of the project and how busy the studio or artist is, this can take
+                                anywhere from a day to a week.
+                            </p>
+                            <p style={{ textAlign: 'justify' }}>
+                                While this step is great for you to see your jewelry before committing to full production, keep in
+                                mind the 3d model is made for functionality first, not aesthetics, so it might not look as pretty as
+                                your finished piece! That being said, you can always request a more detailed render.
+                            </p>
+                            <img src={img1} className="img-fluid mt-3" />
+                        </div>
+                    </div>
+                    <div className="row justify-content-center mt-4">
+                        <div className="col-md-8 text-center">
+                            <h2 className="mb-4">3D Wax Printing Your Jewelry</h2>
+                            <p style={{ textAlign: 'justify' }}>
+                                Not only was the previous step's 3D model intended for your preview, but it also forms the foundation for the subsequent
+                                step—the wax model. The majority of contemporary jewelry manufacturing involves the producer creating a resin-based wax model
+                                using a 3D printer, which often takes no longer than 48 hours.
+                            </p>
+                            <img src={img2} className="img-fluid mt-3" />
+                        </div>
+                    </div>
+                    <div className="row justify-content-center mt-4">
+                        <div className="col-md-8 text-center">
+                            <h2 className="mb-4">Casting the wax model into Metal</h2>
+                            <p style={{ textAlign: 'justify' }}>The jewelry is put through the casting process in the following phase. At this point, your creation begins to resemble jewelry that
+                                you may find in a store. The wax is removed and replaced with your preferred metal—typically platinum, silver, or gold—in a molten state.
+                                After that, the metal on your jewelry hardens into its shape. We refer to this process as "lost wax" casting.
+                            </p>
+                            <img src={img3} className="img-fluid mt-3" />
+                        </div>
+                    </div>
+                    <div className="row justify-content-center mt-4">
+                        <div className="col-md-8 text-center">
+                            <h2 className="mb-4">Basic Jewelry Assembly</h2>
+                            <p style={{ textAlign: 'justify' }}>
+                                It may take three days to three weeks for your jewelry to be finally fabricated after it has completed the design and casting stages.
+                                The jeweler now refines the ring's, necklace's, or other piece's main framework. In order to expose the metal beneath the casting skin,
+                                the jeweler files it down. Even if casting turned the jewelry into fine metal, the jeweler still needs to check that the piece can support gemstones
+                                in a functional manner and make any necessary aesthetic adjustments.
+                            </p>
+                            <p>
+                                When the jewelry is finished mounting, the stones can be placed. Before setting, any enameling or further design work on the object would be completed.
+                            </p>
+                            <img src={img4} className="img-fluid mt-3" />
+                        </div>
+                    </div>
+                    <div className="row justify-content-center mt-4">
+                        <div className="col-md-8 text-center">
+                            <h2 className="mb-4">The Stone Setting Process</h2>
+                            <p style={{ textAlign: 'justify' }}>
+                                The diamond setter inserts the diamonds or other jewels to your item in this final stage. He inserts the center stone into the mount with great care.
+                                Before setting, the setter must manually drill for any side stones that may be involved. They next placed each individual stone under a microscope.
+                            </p>
+                            <img src={img5} className="img-fluid mt-3" />
+                        </div>
+                    </div>
+                    <div className="row justify-content-center mt-4">
+                        <div className="col-md-8 text-center">
+                            <h2 className="mb-4">Polishing, Finishing, and Quality Assurance</h2>
+                            <p style={{ textAlign: 'justify' }}>
+                                A polisher works to ensure that the metal is flawlessly polished and as shiny as possible during the last stage. Final embellishments like engravings are
+                                also applied. At last, the jewelry is examined and every aspect is examined to ensure that the production process was successful.
+                            </p>
+                            <img src={img6} className="img-fluid mt-3" />
+                        </div>
                     </div>
                 </div>
-                <div className="row justify-content-center mt-4">
-                    <div className="col-md-10 text-center">
-                        <h2>3D Wax Printing Your Jewelry</h2>
-                        <p>
-                        Not only was the previous step's 3D model intended for your preview, but it also forms the foundation for the subsequent
-                        step—the wax model. The majority of contemporary jewelry manufacturing involves the producer creating a resin-based wax model 
-                        using a 3D printer, which often takes no longer than 48 hours.
-                        </p>
-                       <img src={img2} className="img-fluid mt-3"/> 
-                    </div>
-                </div>
-                <div className="row justify-content-center mt-4">
-                    <div className="col-md-10 text-center">
-                        <h2>Casting the wax model into Metal</h2>
-                        <p>The jewelry is put through the casting process in the following phase. At this point, your creation begins to resemble jewelry that 
-                           you may find in a store. The wax is removed and replaced with your preferred metal—typically platinum, silver, or gold—in a molten state.
-                           After that, the metal on your jewelry hardens into its shape. We refer to this process as "lost wax" casting.
-                        </p>  
-                        <img src={img3} className="img-fluid mt-3"/>      
-                    </div>
-                </div>
-                <div className="row justify-content-center mt-4">
-                    <div className="col-md-10 text-center">
-                        <h2>Basic Jewelry Assembly</h2>
-                        <p>
-                        It may take three days to three weeks for your jewelry to be finally fabricated after it has completed the design and casting stages. 
-                        The jeweler now refines the ring's, necklace's, or other piece's main framework. In order to expose the metal beneath the casting skin,
-                        the jeweler files it down. Even if casting turned the jewelry into fine metal, the jeweler still needs to check that the piece can support gemstones
-                        in a functional manner and make any necessary aesthetic adjustments.
-                        </p>
-                        <p>
-                        When the jewelry is finished mounting, the stones can be placed. Before setting, any enameling or further design work on the object would be completed.
-                        </p>
-                        <img src={img4} className="img-fluid mt-3"/>
-                    </div>
-                </div>
-                <div className="row justify-content-center mt-04">
-                    <div className="col-md-10 text-center">
-                        <h2>The Stone Setting Process</h2>
-                        <p>
-                        The diamond setter inserts the diamonds or other jewels to your item in this final stage. He inserts the center stone into the mount with great care.
-                        Before setting, the setter must manually drill for any side stones that may be involved. They next placed each individual stone under a microscope.
-                        </p>
-                        <img src={img5} className="img-fluid mt-8"/>
-                    </div>
-                </div>
-                <div className="row justify-content-center mt-04">
-                    <div className="col-md-10 text-center">
-                        <h2>Polishing, Finishing, and Quality Assurance</h2>
-                        <p>
-                        A polisher works to ensure that the metal is flawlessly polished and as shiny as possible during the last stage. Final embellishments like engravings are
-                        also applied. At last, the jewelry is examined and every aspect is examined to ensure that the production process was successful.
-                        </p>
-                        <img src={img6} className="img-fluid mt-04"/>
-                        <p>
-                        Knowing the fundamentals of jewelry manufacture will put you in a far better position when collaborating with the production businesses or studio of your 
-                        choice—especially if you're launching your own jewelry company. Please feel free to write us with any questions you may have concerning any aspect of the jewelry
-                        manufacturing process, from design to finishing!
-                        </p>
-                    </div>
-                    </div>               
             </div>
         </>
     )
