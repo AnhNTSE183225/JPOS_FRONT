@@ -96,16 +96,7 @@ const ManageRequestsPage = () => {
 
     // CSS styles for the circular progress bar
     const circleStyle = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '10px', // Adjust the gap between lines
-        marginBottom: '20px',
-    };
 
-    // Function to determine if a status is in the first line or the second line
-    const isInFirstLine = (index) => {
-        return index < 6; // Steps 1 to 6 are in the first line
     };
 
     return (
@@ -113,14 +104,22 @@ const ManageRequestsPage = () => {
             <div className="row my-3">
                 <div className="col">
                     <h2 className="mb-4">Status</h2>
-                    <div style={circleStyle}>
-                        {/* First Line */}
+                    <div className={`${styles['circle-style']}`}>
                         <div className={styles['status-line']}>
+                            <div className={`${styles['status-item']}`}>
+                                <div
+                                    onClick={() => setActiveStatus(null)}
+                                    className={`${styles['status-circle']}`}
+                                >
+                                    <span className="fw-bold">0</span>
+                                </div>
+                                <p className={styles['status-label']}>View all</p>
+                            </div>
                             {orderStatus.map((status, index) => (
-                                <div key={index} className={`${styles['status-item']} ${activeStatus === status ? styles['active'] : ''}`}>
+                                <div key={index} className={`${styles['status-item']} `}>
                                     <div
                                         onClick={() => setActiveStatus(status)}
-                                        className={styles['status-circle']}
+                                        className={`${styles['status-circle']} ${activeStatus === status ? styles['active'] : ''}`}
                                     >
                                         <span className="fw-bold">{index + 1}</span>
                                     </div>

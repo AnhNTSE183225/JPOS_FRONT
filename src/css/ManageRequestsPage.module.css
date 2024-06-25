@@ -2,15 +2,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px; /* Increased gap between status items */
-    margin-bottom: 20px; /* Increase bottom margin for spacing */
+    gap: 20px;
+    /* Increased gap between status items */
+    margin-bottom: 20px;
+    /* Increase bottom margin for spacing */
 }
 
 .status-line {
     display: flex;
     justify-content: center;
     width: 100%;
-    gap: 20px; /* Increased gap between status items */
+    gap: 1rem;
+    flex-wrap: wrap;
+    /* Increased gap between status items */
 }
 
 .status-item {
@@ -18,7 +22,9 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin: 0 10px; /* Adjust margin for spacing */
+    margin: 0 10px;
+    width: 4rem;
+    /* Adjust margin for spacing */
 }
 
 
@@ -26,24 +32,28 @@
     cursor: pointer;
     background-color: rgb(239, 239, 239);
     border-radius: 50%;
-    width: 40px; /* Adjusted size for the circle */
-    height: 40px; /* Adjusted size for the circle */
+    width: 40px;
+    /* Adjusted size for the circle */
+    height: 40px;
+    /* Adjusted size for the circle */
     display: flex;
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; /* Relative positioning for z-index */
-    z-index: 1; /* Ensure circles are above lines */
-}
-
-.status-circle.active {
-    background-color: #48AAAD;
-    color: white;
+    position: relative;
+    /* Relative positioning for z-index */
+    z-index: 1;
+    /* Ensure circles are above lines */
 }
 
 .status-circle:hover {
-    transform: scale(1.1); /* Scale up on hover */
+    transform: scale(1.1);
+    /* Scale up on hover */
+}
+
+.status-circle .active {
+    color: green;
 }
 
 .status-circle span {
@@ -52,12 +62,17 @@
 }
 
 .status-label {
-    margin-top: 5px; /* Adjusted spacing between circle and label */
+    margin-top: 5px;
+    /* Adjusted spacing between circle and label */
     font-size: 0.8rem;
-    color: #555; /* Text color */
-    max-width: 100px; /* Increased maximum width for the label */
-    word-wrap: break-word; /* Allow long words to break */
-    text-align: center; /* Center-align the text */
+    color: #555;
+    /* Text color */
+    max-width: 100px;
+    /* Increased maximum width for the label */
+    word-wrap: break-word;
+    /* Allow long words to break */
+    text-align: center;
+    /* Center-align the text */
 }
 
 #manage-request .table-head {
@@ -80,7 +95,8 @@
     width: 100%;
 }
 
-#manage-request th, td {
+#manage-request th,
+td {
     padding: 1rem;
 }
 
@@ -105,4 +121,12 @@
 #manage-request button:hover {
     background-color: #5db8bb;
     transform: scale(0.95);
+}
+
+.circle-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: '20px';
 }
