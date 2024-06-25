@@ -91,7 +91,7 @@ const CustomDesignPage = () => {
         <>
             <div className="container">
                 <div className="row">
-                    <div className="col" style={{ marginLeft: '5vw' }}>
+                    <div className="col-md" style={{ marginLeft: '5vw' }}>
                         <h1 className="text-center">Design your own</h1>
                         <div>
                             <div className="mb-3">
@@ -124,7 +124,7 @@ const CustomDesignPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col" style={{ marginRight: '5vw' }}>
+                    <div className="col-md" style={{ marginRight: '5vw' }}>
                         <img src={img} className="img-fluid" />
                     </div>
                 </div>
