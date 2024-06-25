@@ -88,9 +88,9 @@ const BuildYourOwnNav = () => {
                     <div className="col-1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <h2>2.</h2>
                     </div>
-                    <div className='col'>
-                        <div className="container-fluid">
-                            <div className="row">
+                    <div className='col' style={{height: '100%',boxSizing: 'border-box'}}>
+                        <div className="container-fluid" style={{boxSizing: 'border-box', height: '100%'}}>
+                            <div className="row" style={{boxSizing: 'border-box', height: '100%'}}>
                                 {
                                     diamonds === null
                                         ? <>
@@ -98,13 +98,13 @@ const BuildYourOwnNav = () => {
                                         </>
                                         : <>
                                             {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
-                                                <div key={index} className="col-3 p-0">
+                                                <div key={index} className="col-2 p-0" style={{boxSizing: 'border-box', height: '100%', marginRight: '5px'}}>
                                                     <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
                                                         <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
                                                     </Link>
                                                 </div>
                                             ))}
-                                            <div className="col-3 p-0">
+                                            <div className="col-3 p-0" style={{boxSizing: 'border-box', height: '100%'}}>
                                                 <div className="container-fluid">
                                                     <div className="row">
                                                         <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
