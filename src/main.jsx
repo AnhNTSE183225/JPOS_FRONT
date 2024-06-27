@@ -29,6 +29,8 @@ import PaymentHandler from './PaymentHandler';
 import ManageRequestsPage from './pages/ManageRequestsPage';
 import ManageStaffPage from './pages/ManageStaffPage';
 import ManagePricePage from './pages/ManagePricePage';
+import CustomerTestPage from './pages/CustomerTestPage';
+import StaffTestPage from './pages/StaffTestPage';
 
 
 
@@ -105,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/your-orders',
         element: <CustomerOrdersPage />
+      },
+      {
+        path: '/test',
+        element: <CustomerTestPage/>
       }
     ]
   },
@@ -135,6 +141,10 @@ const router = createBrowserRouter([
       {
         path: 'manage-price',
         element: <ManagePricePage/>
+      },
+      {
+        path: 'test',
+        element: <StaffTestPage/>
       }
     ]
   },
