@@ -31,6 +31,7 @@ import ManageStaffPage from './pages/ManageStaffPage';
 import ManagePricePage from './pages/ManagePricePage';
 import CustomerTestPage from './pages/CustomerTestPage';
 import StaffTestPage from './pages/StaffTestPage';
+import OrderDetails from './components/OrderDetails';
 
 
 
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
         element: <CustomerOrdersPage />
       },
       {
+        path: '/profile/your-orders/:orderId',
+        element: <OrderDetails/>
+      },
+      {
         path: '/test',
         element: <CustomerTestPage/>
       }
@@ -133,6 +138,10 @@ const router = createBrowserRouter([
       {
         path: 'manage-requests',
         element: <ManageRequestsPage/>
+      },
+      {
+        path: 'manage-requests/request/:orderId',
+        element: <OrderDetails/>
       },
       {
         path: 'manage-staff',

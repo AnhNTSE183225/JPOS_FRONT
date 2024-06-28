@@ -2,3 +2,15 @@
     display: flex;
     justify-content: space-between;
 }
+
+.back-icon {
+    top: 0.9rem;
+    font-size: 3rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-icon:hover {
+    color: #48AAAD;
+    transform: scale(1.1);
+}

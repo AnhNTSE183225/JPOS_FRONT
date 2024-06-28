@@ -6,12 +6,13 @@ import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 import OrderDetails from "../components/OrderDetails";
 import WaitManager from '../pages/request-details-components/WaitManager';
 import useDocumentTitle from "../components/Title";
+import { Link } from "react-router-dom";
 
 const ManageRequestsPage = () => {
     const [orders, setOrders] = useState([]);
     const [queryOrders, setQueryOrders] = useState([]);
     const [activeStatus, setActiveStatus] = useState(null);
-    const [activeOrder, setActiveOrder] = useState(null);
+    // const [activeOrder, setActiveOrder] = useState(null);
     const orderStatus = [
         'Waiting for Sales Staff',
         'Waiting for Manager',
@@ -87,13 +88,11 @@ const ManageRequestsPage = () => {
         if (status !== null) {
             const query_orders = orders.filter(order => order.status === status);
             setQueryOrders(query_orders);
-            setActiveOrder(null);
         } else {
             setQueryOrders(orders);
-            setActiveOrder(null);
         }
     }, [activeStatus, orders])
-    
+
     return (
         <div id={styles['manage-request']} className="container-fluid">
             <div className="row my-3">
@@ -152,9 +151,11 @@ const ManageRequestsPage = () => {
                                         <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
                                         <td>{order.status.replaceAll("_", " ")}</td>
                                         <td>
-                                            <button className="fs-6" onClick={() => setActiveOrder(order)}>
-                                                VIEW DETAILS
-                                            </button>
+                                            <Link to={`/staff/manage-requests/request/${order.id}`} >
+                                                <button className="fs-6">
+                                                    VIEW DETAILS
+                                                </button>
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))}
@@ -162,7 +163,7 @@ const ManageRequestsPage = () => {
                     </table>
                 </div>
             </div>
-            <div className="row mb-3">
+            {/* <div className="row mb-3">
                 <div className="col">
                     {activeOrder == null
                         ? <p className="fs-5 mt-3">*Choose an order to view its details.</p>
@@ -171,7 +172,7 @@ const ManageRequestsPage = () => {
                             : <OrderDetails orderId={activeOrder.id} staffType="manage" />
                     }
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

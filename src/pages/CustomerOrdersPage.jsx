@@ -5,10 +5,10 @@ import axios from 'axios';
 import styles from '/src/css/CustomerOrdersPage.module.css';
 import OrderDetails from '../components/OrderDetails';
 import useDocumentTitle from "../components/Title";
+import { Link } from "react-router-dom";
 
 const CustomerOrdersPage = () => {
     const [orders, setOrders] = useState([]);
-    const [currentOrderId, setcurrentOrderId] = useState(null);
 
     useDocumentTitle("Your Orders");
 
@@ -68,24 +68,17 @@ const CustomerOrdersPage = () => {
                                             <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
                                             <td>{order.status}</td>
                                             <td>
-                                                <button onClick={() => setcurrentOrderId(order.id)} className='fs-6'>
-                                                    View details
-                                                </button>
+                                                <Link to={`/profile/your-orders/${order.id}`}>
+                                                    <button className='fs-6'>
+                                                        View details
+                                                    </button>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))
                                 )}
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div className={`${styles['detail']}`}>
-                    <div className="row">
-                        {currentOrderId == null ? (
-                            <h3 className="text-center mt-5">Please select an order to view its details</h3>
-                        ) : (
-                            <OrderDetails orderId={currentOrderId} />
-                        )}
                     </div>
                 </div>
             </div>

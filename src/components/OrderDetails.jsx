@@ -5,7 +5,9 @@ import styles from '/src/css/OrderDetails.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight, faLeftLong } from "@fortawesome/free-solid-svg-icons";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 
 const AssignColumn = ({ order, fetchOrder }) => {
 
@@ -175,9 +177,13 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
 }
 
-const OrderDetails = ({ orderId, staffType }) => {
-
+const OrderDetails = () => {
+    const location = useLocation().pathname.split("/");
+    const navigate = useNavigate();
+    const orderId = useParams().orderId;
     const [order, setOrder] = useState(null);
+
+    const staffType = location.includes("your-orders") ? 'customer' : 'manage';
 
     const fetchOrder = async () => {
         try {
@@ -238,9 +244,10 @@ const OrderDetails = ({ orderId, staffType }) => {
     } else {
         return (
             <>
-                <div className="container-fluid">
+                <div className={`${staffType == 'manage' ? 'container-fluid' : 'container'}`}>
                     <div className="row">
-                        <div className="col-md-8">
+                        <div className="col-md-8 position-relative">
+                            <FontAwesomeIcon className={`${styles['back-icon']} position-absolute`} icon={faLeftLong} onClick={() => navigate(-1)} />
                             <h4 className="text-center fw-bold mb-4 mt-4">CUSTOMER INFORMATION</h4><hr />
                             <h5 className='fw-semibold'>Customer name</h5>
                             <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
