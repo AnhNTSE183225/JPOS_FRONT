@@ -126,7 +126,7 @@ const CustomDesignPage = () => {
                                             ? imageUrls.map((image, index) => {
                                                 if (activeImage == index) {
                                                     return (
-                                                        <img key={index} src={image} crossOrigin="anonymous" />
+                                                        <img key={index} src={image} crossOrigin="anonymous" style={{maxWidth: "35rem", height: "auto"}} />
                                                     )
                                                 } else {
                                                     return (
@@ -139,11 +139,11 @@ const CustomDesignPage = () => {
                                 </div>
                                 {
                                     processing
-                                        ? < button className="btn btn-primary" type="button" disabled>
+                                        ? < button className="btn btn-primary mt-3" style={{backgroundColor: "#48AAAD", border: "none"}} type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn w-100" style={{ backgroundColor: '#48AAAD' }} onClick={uploadImages} >Upload image</button>
+                                        : <button className="image-btn w-100 mt-3" style={{ backgroundColor: '#48AAAD' }} onClick={uploadImages} >Upload image</button>
                                 }
                             </div>
                             <div className="mb-3">

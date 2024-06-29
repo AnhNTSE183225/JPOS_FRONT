@@ -14,3 +14,22 @@
     color: #48AAAD;
     transform: scale(1.1);
 }
+
+.image-btn {
+    border: none;
+    background-color: transparent;
+    font-size: 4rem;
+    transition: 0.3s;
+
+}
+
+button {
+    border: none;
+    padding: 0.5rem 1rem;
+    background-color: #48AAAD;
+    color: white;
+    transition: 0.3s;
+}
+button:hover {
+    transform: scale(0.97);
+}

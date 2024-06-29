@@ -19,7 +19,14 @@
     justify-content: space-between;
 }
 
-#production button {
+.image-btn {
+    border: none;
+    background-color: transparent;
+    font-size: 4rem;
+    transition: 0.3s;
+}
+
+.custom-button {
     font-weight: semibold;
     color: white;
     background-color: #48AAAD;
@@ -29,7 +36,7 @@
     transition: 0.3s ease;
 }
 
-#production button:hover {
+.custom-button:hover {
     background-color: #5db8bb;
     transform: scale(0.95);
 }

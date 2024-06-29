@@ -105,7 +105,7 @@ const Production = ({ order }) => {
                                     <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: 'auto' }} />
                                 </>
                                 : <>
-                                    <div className="position-relative">
+                                    <div className="container position-relative">
                                         <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
                                         <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                         {
@@ -179,31 +179,31 @@ const Production = ({ order }) => {
                                     ? imageUrls.map((image, index) => {
                                         if (activeImage == index) {
                                             return (
-                                                <img key={index} src={image} crossOrigin="anonymous" />
+                                                <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" />
                                             )
                                         } else {
                                             return (
-                                                <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
                                             )
                                         }
                                     })
                                     : <p>URL: Not provided</p>
                             }
                         </div>
-                        <div className="row">
+                        <div className="row mt-3">
                             <div className="col">
                                 {
                                     processing
-                                        ? < button className="btn btn-primary w-100" type="button" disabled>
+                                        ? < button className={`w-100 ${styles[`custom-button`]}`} type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn btn-primary w-100" onClick={uploadImages} >Upload image</button>
+                                        : <button className={`w-100 ${styles[`custom-button`]}`} onClick={uploadImages} >Upload image</button>
                                 }
 
                             </div>
                             <div className="col">
-                                <button className='btn btn-secondary w-100' onClick={handleSubmit}>Submit order</button>
+                                <button className={`w-100 ${styles[`custom-button`]}`} onClick={handleSubmit}>Submit order</button>
                             </div>
                         </div>
                     </div>
