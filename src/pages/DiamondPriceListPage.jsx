@@ -17,16 +17,16 @@ import radiant from '/src/assets/svg/Radiant.svg';
 import round from '/src/assets/svg/Round.svg';
 
 const SHAPES_IMAGES = [
-    { name: 'Round', image: round },
-    { name: 'Princess', image: princess },
-    { name: 'Cushion', image: cushion },
-    { name: 'Emerald', image: emerald },
-    { name: 'Oval', image: oval },
-    { name: 'Radiant', image: radiant },
-    { name: 'Asscher', image: asscher },
-    { name: 'Marquise', image: marquise },
-    { name: 'Heart', image: heart },
-    { name: 'Pear', image: pear },
+    { name: 'round', image: round },
+    { name: 'princess', image: princess },
+    { name: 'cushion', image: cushion },
+    { name: 'emerald', image: emerald },
+    { name: 'oval', image: oval },
+    { name: 'radiant', image: radiant },
+    { name: 'asscher', image: asscher },
+    { name: 'marquise', image: marquise },
+    { name: 'heart', image: heart },
+    { name: 'pear', image: pear },
 ];
 //Selection above
 const SHAPES = ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'];
@@ -53,20 +53,54 @@ const DiamondPriceListPage = () => {
         <div className={`container ${styles['diamond-price-list']}`}>
             <div className="row mb-3" id={`${styles['origin-row']}`}>
                 {
-                    ORIGINS.map((value,index) => (
+                    ORIGINS.map((value, index) => (
                         <div onClick={() => setActiveOrigin(value)} key={index} id={`${styles['origin-div']}`} className={`col p-0 text-center ${value == activeOrigin ? styles['active'] : ''}`}>
-                            <span>{value.replace("_"," ")}</span>
+                            <span>{value.replace("_", " ")}</span>
                         </div>
                     ))
                 }
             </div>
-            <div className="row gap-5">
+            <div className="row gap-5 mb-3">
                 {SHAPES_IMAGES.map((value, index) => (
-                    <div key={index} className={`col p-0 position-relative`} id={`${styles['shape-div']}`}>
+                    <div onClick={() => setActiveShape(value.name)} key={index} className={`col ${value.name == activeShape ? styles['active'] : ''}`} id={`${styles['shape-div']}`}>
                         <img src={value.image} alt="" />
-                        <span>{value.name}</span>
+                        <span>{value.name[0].toUpperCase() + value.name.slice(1)}</span>
                     </div>
                 ))}
+            </div>
+
+            <div className={`row mb-3`}>
+                <table className="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            {
+                                COLORS.map((value, index) => (
+                                    <th key={index}>
+                                        {value}
+                                    </th>
+                                ))
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            CLARITIES.map((value,index) => (
+                                <tr key={index}>
+                                    <th>{value}</th>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                    <td>$100</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     );
