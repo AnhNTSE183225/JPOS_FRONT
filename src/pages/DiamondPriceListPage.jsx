@@ -4,96 +4,71 @@ import axios from 'axios';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 import useDocumentTitle from "../components/Title";
 import { Pagination } from "@mui/material";
+import styles from '/src/css/DiamondPriceListPage.module.css';
+import asscher from '/src/assets/svg/Asscher.svg';
+import cushion from '/src/assets/svg/Cushion.svg';
+import emerald from '/src/assets/svg/Emerald.svg';
+import heart from '/src/assets/svg/Heart.svg';
+import marquise from '/src/assets/svg/Marquise.svg';
+import oval from '/src/assets/svg/Oval.svg';
+import pear from '/src/assets/svg/Pear.svg';
+import princess from '/src/assets/svg/Princess.svg';
+import radiant from '/src/assets/svg/Radiant.svg';
+import round from '/src/assets/svg/Round.svg';
+
+const SHAPES_IMAGES = [
+    { name: 'Round', image: round },
+    { name: 'Princess', image: princess },
+    { name: 'Cushion', image: cushion },
+    { name: 'Emerald', image: emerald },
+    { name: 'Oval', image: oval },
+    { name: 'Radiant', image: radiant },
+    { name: 'Asscher', image: asscher },
+    { name: 'Marquise', image: marquise },
+    { name: 'Heart', image: heart },
+    { name: 'Pear', image: pear },
+];
+//Selection above
+const SHAPES = ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'];
+const ORIGINS = ['LAB_GROWN', 'NATURAL'];
+
+//Combination of these create a table
+const CUTS = ['Fair', 'Good', 'Very_Good', 'Excellent'];
+const MIN_CARAT = 0.05;
+const CARAT_STEP = 0.1;
+const MAX_CARAT = 10;
+
+//A single table
+const CLARITIES = ['SI3', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL']; //Column
+const COLORS = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D']; //Row
 
 const DiamondPriceListPage = () => {
-    const [diamondPriceList, setDiamondPriceList] = useState([]);
-    const [pageNo, setPageNo] = useState(0);
-    const [pageSize, setPageSize] = useState(50);
-    const [totalPage, setTotalPage] = useState(10);
+
+    const [activeOrigin, setActiveOrigin] = useState(ORIGINS[0]);
+    const [activeShape, setActiveShape] = useState(SHAPES[0]);
 
     useDocumentTitle("Bijoux Diamond Price List");
 
-    const fetchDiamondList = async (pageNo, pageSize) => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all?pageNo=${pageNo}&pageSize=${pageSize}`);
-            if (!response.data || response.status === 204) {
-                console.log("No data");
-            } else {
-                const data = response.data;
-                setDiamondPriceList(data.content);
-                setTotalPage(data.page.totalPages);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        fetchDiamondList(pageNo, pageSize);
-    }, []);
-
-    useEffect(() => {
-        fetchDiamondList(pageNo, pageSize);
-    }, [pageNo, pageSize])
-
     return (
-        <>
-            <div className="container">
-                <div className="row mt-3">
-                    <h1 className="text-center">Diamond Price List</h1>
-                </div>
-                <div className="row mt-3">
-                    <div className="col-1 ms-auto">
-                        <span>Page size</span>
-                        <input className="form-control" type="number" min="10" max="100" step="10" value={pageSize} onChange={(e) => setPageSize(e.target.value)} />
-                    </div>
-                </div>
-                <div style={{display: 'flex',justifyContent:'flex-end'}}>
-                    <Pagination count={totalPage} shape="rounded" page={pageNo + 1} onChange={(event, value) => {
-                        setPageNo(value - 1)
-                    }} />
-                </div>
-                <div className="row mt-3">
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Origin</th>
-                                <th>Shape</th>
-                                <th>Clarity</th>
-                                <th>Color</th>
-                                <th>Cut</th>
-                                <th>Carat weight</th>
-                                <th>Price</th>
-                                <th>Effective Date</th>
-                            </tr>
-                        </thead>
-                        <tbody className="table-group-divider">
-                            {
-                                diamondPriceList !== null && Array.isArray(diamondPriceList) && diamondPriceList.length > 0
-                                    ? diamondPriceList.map((price, index) =>
-                                        <tr key={index}>
-                                            <td>{price.origin}</td>
-                                            <td>{price.shape}</td>
-                                            <td>{price.clarity}</td>
-                                            <td>{price.color}</td>
-                                            <td>{price.cut}</td>
-                                            <td>{price.caratWeightFrom} - {price.caratWeightTo}</td>
-                                            <td>{formatPrice(price.price)}</td>
-                                            <td>{formatDate(price.effectiveDate)}</td>
-                                        </tr>
-                                    )
-                                    : <tr>
-                                        <td>
-                                            Loading...
-                                        </td>
-                                    </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
+        <div className={`container ${styles['diamond-price-list']}`}>
+            <div className="row mb-3" id={`${styles['origin-row']}`}>
+                {
+                    ORIGINS.map((value,index) => (
+                        <div onClick={() => setActiveOrigin(value)} key={index} id={`${styles['origin-div']}`} className={`col p-0 text-center ${value == activeOrigin ? styles['active'] : ''}`}>
+                            <span>{value.replace("_"," ")}</span>
+                        </div>
+                    ))
+                }
             </div>
-        </>
+            <div className="row gap-5">
+                {SHAPES_IMAGES.map((value, index) => (
+                    <div key={index} className={`col p-0 position-relative`} id={`${styles['shape-div']}`}>
+                        <img src={value.image} alt="" />
+                        <span>{value.name}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 };
 
