@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,12 +15,11 @@ const ProfilePage = () => {
 
     const saveChanges = async () => {
         if (customer.name.length > 0 &&
-            customer.email.length > 0 &&
+            customer.account.email.length > 0 &&
             customer.address.length > 0
         ) {
             try {
-                console.log(`PUT ${import.meta.env.VITE_jpos_back}/api/update?customerId=${sessionStorage.getItem('customer_id')}&email=${email}&name=${name}&address=${address}`);
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update?customerId=${sessionStorage.getItem('customer_id')}&email=${email}&name=${name}&address=${address}`);
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update?customerId=${customer.customerId}&email=${customer.account.email}&name=${customer.name}&address=${customer.address}`);
                 if (!response.data || response.status == 204) {
                     toast.error(`Error updating profile`);
                 } else {
@@ -65,8 +64,16 @@ const ProfilePage = () => {
                                 type="email"
                                 className="form-control"
                                 id="floatingInputGrid"
-                                value={email}
-                                onChange={(e) => setCustomer(c => ({...c,email: e.target.value}))}
+                                value={customer.account.email}
+                                onChange={(e) => setCustomer(c => (
+                                    {
+                                        ...c,
+                                        account: {
+                                            ...c.account,
+                                            email: e.target.value
+                                        }
+                                    }
+                                ))}
                             />
                             <label htmlFor="floatingInputGrid">Email address</label>
                         </div>
@@ -77,7 +84,7 @@ const ProfilePage = () => {
                                 type="address"
                                 className="form-control"
                                 id="floatingInputGrid"
-                                value={address}
+                                value={customer.address}
                                 onChange={(e) => setCustomer(c => ({...c,address: e.target.value}))}
                             />
                             <label htmlFor="floatingInputGrid">Address</label>

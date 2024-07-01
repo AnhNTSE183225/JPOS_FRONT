@@ -97,7 +97,6 @@ const ManageRequestsPage = () => {
         <div id={styles['manage-request']} className="container-fluid">
             <div className="row my-3">
                 <div className="col">
-                    <h2 className="mb-4">Status</h2>
                     <div className={`${styles['circle-style']}`}>
                         <div className={styles['status-line']}>
                             <div className={`${styles['status-item']}`}>
@@ -126,7 +125,6 @@ const ManageRequestsPage = () => {
             </div>
             <div className="row my-3">
                 <div className="col">
-                    <h2 className="mb-4">Orders</h2>
                     <table>
                         <thead>
                             <tr className={styles['table-head']}>

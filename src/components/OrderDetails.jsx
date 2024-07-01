@@ -164,13 +164,13 @@ const AssignColumn = ({ order, fetchOrder }) => {
                 </div>
             </div>
             {
-                order.saleStaff !== null && order.productionStaff !== null && order.designStaff !== null
-                    ? <></>
-                    : <div className="row">
+                (order.orderType == 'from_design' && (order.saleStaff == null || order.productionStaff == null)) || (order.orderType == 'customize' && (order.saleStaff == null || order.productionStaff == null || order.designStaff == null))
+                    ? <div className="row">
                         <button onClick={submitForm}>
                             Assign
                         </button>
                     </div>
+                    : <></>
             }
         </>
     )
@@ -244,7 +244,7 @@ const OrderDetails = () => {
     } else {
         return (
             <>
-                <div className={`${staffType == 'manage' ? 'container-fluid' : 'container'}`}>
+                <div id={`${styles['order-details']}`} className={`${staffType == 'manage' ? 'container-fluid' : 'container'}`}>
                     <div className="row">
                         <div className="col-md-8 position-relative">
                             <FontAwesomeIcon className={`${styles['back-icon']} position-absolute`} icon={faLeftLong} onClick={() => navigate(-1)} />

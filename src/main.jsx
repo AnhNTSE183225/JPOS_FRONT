@@ -32,6 +32,7 @@ import ManagePricePage from './pages/ManagePricePage';
 import CustomerTestPage from './pages/CustomerTestPage';
 import StaffTestPage from './pages/StaffTestPage';
 import OrderDetails from './components/OrderDetails';
+import CreateStaff from './pages/CreateStaff';
 
 
 
@@ -146,6 +147,10 @@ const router = createBrowserRouter([
       {
         path: 'manage-staff',
         element: <ManageStaffPage/>
+      },
+      {
+        path: 'manage-staff/create',
+        element: <CreateStaff/>
       },
       {
         path: 'manage-price',

@@ -19,3 +19,21 @@
     top: 20%;
     right: 3%;
 }
+
+#action-button {
+    cursor: pointer;
+}
+
+.popup-div button{
+    display: block;
+    width: 5rem;
+    border: none;
+}
+
+.popup-div button:hover {
+    background-color: gray;
+}
+
+.input-label {
+    width: 4rem;
+}

@@ -23,13 +23,13 @@
 
 }
 
-button {
+#order-details button {
     border: none;
     padding: 0.5rem 1rem;
     background-color: #48AAAD;
     color: white;
     transition: 0.3s;
 }
-button:hover {
+#order-details button:hover {
     transform: scale(0.97);
 }
