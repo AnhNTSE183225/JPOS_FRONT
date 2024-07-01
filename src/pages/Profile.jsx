@@ -9,17 +9,14 @@ import axios from 'axios';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
-
-    const [name, setName] = useState(sessionStorage.getItem('name'));
-    const [email, setEmail] = useState(sessionStorage.getItem('email'));
-    const [address, setAddress] = useState(sessionStorage.getItem('address'));
+    const [customer,setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
 
     useDocumentTitle("My Account");
 
     const saveChanges = async () => {
-        if (name != sessionStorage.getItem('name') ||
-            email != sessionStorage.getItem('email') ||
-            address != sessionStorage.getItem('address')
+        if (customer.name.length > 0 &&
+            customer.email.length > 0 &&
+            customer.address.length > 0
         ) {
             try {
                 console.log(`PUT ${import.meta.env.VITE_jpos_back}/api/update?customerId=${sessionStorage.getItem('customer_id')}&email=${email}&name=${name}&address=${address}`);
@@ -27,19 +24,15 @@ const ProfilePage = () => {
                 if (!response.data || response.status == 204) {
                     toast.error(`Error updating profile`);
                 } else {
-                    sessionStorage.setItem("email", response.data.account.email);
-                    setEmail(response.data.account.email);
-                    sessionStorage.setItem("name", response.data.name);
-                    setName(response.data.name);
-                    sessionStorage.setItem("address", response.data.address);
-                    setAddress(response.data.address);
-                    toast.success(`Changes saved`)
+                    setCustomer(response.data);
+                    sessionStorage.setItem('customer',JSON.stringify(response.data));
+                    toast.success(`Changes saved`);
                 }
             } catch (error) {
                 console.log(error);
             }
         } else {
-            toast.info(`You haven't changed anything`);
+            toast.info(`Fields can't be empty`);
         }
     }
 
@@ -60,8 +53,8 @@ const ProfilePage = () => {
                                 type="name"
                                 className="form-control"
                                 id="floatingInputGrid"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={customer.name}
+                                onChange={(e) => setCustomer(c => ({...c,name: e.target.value}))}
                             />
                             <label htmlFor="floatingInputGrid">Name</label>
                         </div>
@@ -73,7 +66,7 @@ const ProfilePage = () => {
                                 className="form-control"
                                 id="floatingInputGrid"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => setCustomer(c => ({...c,email: e.target.value}))}
                             />
                             <label htmlFor="floatingInputGrid">Email address</label>
                         </div>
@@ -85,7 +78,7 @@ const ProfilePage = () => {
                                 className="form-control"
                                 id="floatingInputGrid"
                                 value={address}
-                                onChange={(e) => setAddress(e.target.value)}
+                                onChange={(e) => setCustomer(c => ({...c,address: e.target.value}))}
                             />
                             <label htmlFor="floatingInputGrid">Address</label>
                         </div>

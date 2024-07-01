@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 const CustomerOrdersPage = () => {
     const [orders, setOrders] = useState([]);
+    const [customer, setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
 
     useDocumentTitle("Your Orders");
 
@@ -20,7 +21,7 @@ const CustomerOrdersPage = () => {
                     toast.info(`You currently have no orders`);
                 } else {
                     let list = response.data;
-                    list = list.filter(order => order.customer.customerId.toString() === sessionStorage.getItem('customer_id'));
+                    list = list.filter(order => order.customer.customerId === customer.customerId);
                     if (list === null || list.length === 0) {
                         toast.info(`You currently have no orders`);
                     } else {

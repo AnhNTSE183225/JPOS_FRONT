@@ -37,6 +37,10 @@ const CUTS = ['Fair', 'Good', 'Very_Good', 'Excellent'];
 const MIN_CARAT = 0.05;
 const CARAT_STEP = 0.1;
 const MAX_CARAT = 10;
+let CARAT_RANGE = []
+for (let i = MIN_CARAT; i <= MAX_CARAT; i += CARAT_STEP) {
+    CARAT_RANGE = [...CARAT_RANGE, i.toFixed(2) + " - " + (i + CARAT_STEP).toFixed(2) + ' ct'];
+}
 
 //A single table
 const CLARITIES = ['SI3', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL']; //Column
@@ -48,6 +52,8 @@ const DiamondPriceListPage = () => {
     const [activeShape, setActiveShape] = useState(SHAPES[0]);
 
     useDocumentTitle("Bijoux Diamond Price List");
+
+    console.log(CARAT_RANGE);
 
     return (
         <div className={`container ${styles['diamond-price-list']}`}>
@@ -69,39 +75,44 @@ const DiamondPriceListPage = () => {
                 ))}
             </div>
 
-            <div className={`row mb-3`}>
-                <table className="table table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            {
-                                COLORS.map((value, index) => (
-                                    <th key={index}>
-                                        {value}
-                                    </th>
-                                ))
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            CLARITIES.map((value,index) => (
-                                <tr key={index}>
+            {
+                CARAT_RANGE.map((value, index) => (
+                    <div key={index} className={`row mb-3`}>
+                        <h4>{activeOrigin.replace("_"," ")} {activeShape.toUpperCase()} EXCELLENT CUT {value}</h4>
+                        <table className="table table-bordered text-center">
+                            <thead>
+                                <tr>
                                     <th>{value}</th>
-                                    <td>$100</td>
-                                    <td>$100</td>
-                                    <td>$100</td>
-                                    <td>$100</td>
-                                    <td>$100</td>
-                                    <td>$100</td>
-                                    <td>$100</td>
-                                    <td>$100</td>
+                                    {
+                                        COLORS.map((value, index) => (
+                                            <th key={index}>
+                                                {value}
+                                            </th>
+                                        ))
+                                    }
                                 </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
+                            </thead>
+                            <tbody>
+                                {
+                                    CLARITIES.map((value, index) => (
+                                        <tr key={index}>
+                                            <th>{value}</th>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                            <td>$100</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                ))
+            }
         </div>
     );
 };

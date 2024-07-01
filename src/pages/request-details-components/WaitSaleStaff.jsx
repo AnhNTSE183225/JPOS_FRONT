@@ -15,6 +15,7 @@ const WaitSaleStaff = ({ order }) => {
 
     const navigate = useNavigate();
 
+    const [staff, setStaff] = useState(JSON.parse(sessionStorage.getItem('staff')));
     const [productName, setProductName] = useState('');
     const [productType, setProductType] = useState('');
 
@@ -131,7 +132,7 @@ const WaitSaleStaff = ({ order }) => {
                     qmaterialPrice: totalMaterialPrice
                 }
 
-                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${sessionStorage.getItem(`staff_id`)}/${response.data}`, finalOrder);
+                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}/${response.data}`, finalOrder);
                 if (!response.data || response.status === 204) {
                     throw new Error(`Order update failed. Backend did not return order`);
                 }

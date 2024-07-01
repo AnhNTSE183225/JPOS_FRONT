@@ -49,8 +49,7 @@ const WaitManager = ({ order }) => {
     }
 
     const refuseQuote = () => {
-        let staff_id = sessionStorage.getItem('staff_id');
-        if (staff_id !== null) {
+        if (sessionStorage.getItem('staff') !== null) {
             axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/manager-response?managerApproval=false`)
                 .then(
                     response => {

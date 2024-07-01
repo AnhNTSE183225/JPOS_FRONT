@@ -44,24 +44,24 @@ const TableComponent = ({ requests }) => {
 const RequestPage = () => {
 
     const [requests, setRequests] = useState([]);
+    const staff = JSON.parse(sessionStorage.getItem('staff'));
 
     const fetchData = async () => {
 
         let response = null;
 
-        switch (sessionStorage.getItem("staff_type")) {
+        switch (staff.staffType) {
             case "sale":
-                console.log(`GET ${import.meta.env.VITE_jpos_back}/api/sales/orders/${sessionStorage.getItem("staff_id")}`)
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${sessionStorage.getItem("staff_id")}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}`);
                 break;
             case "manage":
                 response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/manager/orders`);
                 break;
             case "design":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${sessionStorage.getItem("staff_id")}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${staff.staffId}`);
                 break;
             case "produce":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${sessionStorage.getItem("staff_id")}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${staff.staffId}`);
                 break;
             default:
                 response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`);

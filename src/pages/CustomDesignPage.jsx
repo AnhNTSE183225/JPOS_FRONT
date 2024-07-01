@@ -17,6 +17,7 @@ import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 const CustomDesignPage = () => {
     const navigate = useNavigate();
+    const [customer, setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
 
     const [designFiles, setDesignFiles] = useState([]);
     const [imageUrls, setImageUrls] = useState([]);
@@ -65,7 +66,7 @@ const CustomDesignPage = () => {
     }
 
     const submitForm = () => {
-        if (sessionStorage.getItem('customer_id') == null) {
+        if (customer == null) {
             toast.info(`Please log in to continue!`);
             navigate("/login");
         } else {
@@ -75,7 +76,7 @@ const CustomDesignPage = () => {
             ) {
                 axios.post(`${import.meta.env.VITE_jpos_back}/api/send-request`,
                     {
-                        customerId: sessionStorage.getItem('customer_id'),
+                        customerId: customer.customerId,
                         designFile: imageUrls.join("|"),
                         description: description,
                         budget: budget

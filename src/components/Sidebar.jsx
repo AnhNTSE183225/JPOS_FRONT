@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 import img from '../assets/FullLogo.png';
 import styles from '../css/Sidebar.module.css';
+import { useState } from 'react';
 
 const Sidebar = () => {
 
     const navigate = useNavigate();
     const location = useLocation().pathname.split('/');
+    const [staff, setStaff] = useState(JSON.parse(sessionStorage.getItem('staff')));
 
     const handleDropdown = () => {
         setDropdown(!dropdown);
@@ -25,7 +27,7 @@ const Sidebar = () => {
                 </Link>
                 <ul className="nav nav-pills flex-column mb-auto">
                     {
-                        sessionStorage.getItem('staff_type') !== 'manage'
+                        staff.staffType !== 'manage'
                             ? <>
                                 <li className="nav-item">
                                     <Link to="/staff/request" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('request') ? styles['active'] : ''}`}>
@@ -65,7 +67,7 @@ const Sidebar = () => {
                 <div className="dropdown">
                     <a href="#" className={`${styles['user']} d-flex align-items-center text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
-                        <strong>{sessionStorage.getItem('name')}</strong>
+                        <strong>{staff.name}</strong>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                         <li><a onClick={logout} className="dropdown-item" href="#">Sign out</a></li>

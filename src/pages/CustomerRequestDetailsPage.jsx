@@ -10,13 +10,14 @@ const CustomerRequestDetailsPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentOrder, setCurrentOrder] = useState(null);
     const [orderList, setOrderList] = useState([]);
+    const [customer,setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
 
     useDocumentTitle("Your Request Details");
 
     const fetchOrder = async () => {
 
         //console.log(`GET ${import.meta.env.VITE_jpos_back}/api/customers/${sessionStorage.getItem('customer_id')}/orders`);
-        const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/customers/${sessionStorage.getItem('customer_id')}/orders`);
+        const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/customers/${customer.customerId}/orders`);
         if (!response.data || response.status === 204) {
             toast.error("No data found");
         }

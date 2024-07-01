@@ -1,0 +1,21 @@
+#search-bar {
+    position: relative;
+    padding: 0;
+}
+
+#manage-staff h1{
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+#search-bar input {
+    width: 100%;
+    height: 100%;
+}
+
+#search-icon {
+    color: grey;
+    position: absolute;
+    top: 20%;
+    right: 3%;
+}

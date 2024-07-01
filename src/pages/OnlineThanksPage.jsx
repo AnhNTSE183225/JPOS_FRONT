@@ -11,17 +11,11 @@ const OnlineThanksPage = () => {
     useDocumentTitle("Thank You!");
 
     const clear = () => {
-        const customer_id = sessionStorage.getItem("customer_id");
-        const username = sessionStorage.getItem("username");
-        const name = sessionStorage.getItem("name");
-        const address = sessionStorage.getItem("address");
+        const customer = JSON.parse(sessionStorage.getItem('customer'));
 
         sessionStorage.clear();
 
-        sessionStorage.setItem("customer_id", customer_id);
-        sessionStorage.setItem("username", username);
-        sessionStorage.setItem("name", name);
-        sessionStorage.setItem("address", address);
+        sessionStorage.setItem('customer',JSON.stringify(customer));
     }
 
     return (

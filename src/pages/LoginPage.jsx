@@ -21,52 +21,6 @@ const LoginPage = () => {
         setPassword(event.target.value);
     };
 
-    const login = () => {
-        if (username.length !== 0 && password.length !== 0) {
-            axios
-                .post("${import.meta.env.VITE_jpos_back}/api/customer-login", {
-                    username: username,
-                    password: password,
-                })
-                .then((response) => {
-                    sessionStorage.setItem("customer_id", response.data.customerId);
-                    sessionStorage.setItem("username", response.data.username);
-                    sessionStorage.setItem("name", response.data.name);
-                    sessionStorage.setItem("address", response.data.address);
-                    navigate("/");
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        } else {
-            toast.info(`Please fill in the required fields: username, password`);
-        }
-    };
-
-    const loginStaff = () => {
-        if (username.length !== 0 && password.length !== 0) {
-            axios
-                .post("${import.meta.env.VITE_jpos_back}/api/staff-login", {
-                    username: username,
-                    password: password,
-                })
-                .then((response) => {
-                    sessionStorage.setItem("staff_id", response.data.staffId);
-                    sessionStorage.setItem("username", response.data.username);
-                    sessionStorage.setItem("name", response.data.name);
-                    sessionStorage.setItem("phone", response.data.phone);
-                    sessionStorage.setItem("staff_type", response.data.staffType);
-                    navigate("/staff/request");
-                })
-                .catch((error) => {
-                    alert("Invalid login credentials");
-                    console.log(error);
-                });
-        } else {
-            alert("Please fill in all forms!");
-        }
-    };
-
     const unionLogin = async () => {
         if (username.length > 0 && password.length > 0) {
             try {
@@ -77,23 +31,13 @@ const LoginPage = () => {
                 if (!response.data || response.status === 204) {
                     toast.error(`Invalid credentials. Please try again`);
                 } else {
-                    console.log(response.data);
                     if (response.data.customerId !== undefined) {
-                        console.log('logged in as customer');
-                        sessionStorage.setItem("customer_id", response.data.customerId);
-                        sessionStorage.setItem("username", response.data.account.username);
-                        sessionStorage.setItem("email",response.data.account.email);
-                        sessionStorage.setItem("name", response.data.name);
-                        sessionStorage.setItem("address", response.data.address);
+                        sessionStorage.setItem('customer', JSON.stringify(response.data));
                         navigate("/");
                         return;
                     } else if (response.data.staffId !== undefined) {
-                        console.log(`Logged in as staff`);
-                        sessionStorage.setItem("staff_id", response.data.staffId);
-                        sessionStorage.setItem("username", response.data.username);
-                        sessionStorage.setItem("name", response.data.name);
-                        sessionStorage.setItem("phone", response.data.phone);
-                        sessionStorage.setItem("staff_type", response.data.staffType);
+                        sessionStorage.setItem("staff", JSON.stringify(response.data));
+
                         if (response.data.staffType == 'manage') {
                             navigate("/staff/manage-requests")
                         } else {

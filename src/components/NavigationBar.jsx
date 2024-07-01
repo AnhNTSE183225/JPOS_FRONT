@@ -28,7 +28,7 @@ const UserComponent = (props) => {
         return (
             <div className="nav-item dropdown">
                 <div className={`${styles['nav-link']} nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={handleDropdown}>
-                    {sessionStorage.getItem('name')}
+                    {props.customer.name}
                 </div>
                 <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
                     <li><a className="dropdown-item" onClick={logout} style={{ cursor: 'pointer' }}>Logout</a></li>
@@ -39,11 +39,12 @@ const UserComponent = (props) => {
 }
 
 const NavigationBar = () => {
-    const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('username') != null);
+    const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('customer') != null);
     const location = useLocation().pathname.split("/");
+    const [customer, setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
 
     useEffect(() => {
-        setLoggedIn(sessionStorage.getItem('username') != null);
+        setLoggedIn(sessionStorage.getItem('customer') != null);
     }, [location]);
 
     return (
@@ -73,7 +74,7 @@ const NavigationBar = () => {
                                     <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/build-your-own/choose-setting">BUILD JEWELERY</Link>
                                 </li>
                                 {
-                                    sessionStorage.getItem('customer_id') !== null
+                                    customer !== null
                                         ? <li className="nav-item">
                                             <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/profile">PROFILE</Link>
                                         </li>
@@ -86,7 +87,7 @@ const NavigationBar = () => {
                     </div>
                     <div className='navbar-bar'>
                         <div className={`${styles['login-button']} login-button`}>
-                            <UserComponent loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                            <UserComponent customer={customer} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
                         </div>
                     </div>
                     <button className={styles['navbar-toggler'] + " navbar-toggler"} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
