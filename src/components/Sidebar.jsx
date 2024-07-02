@@ -1,6 +1,6 @@
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill, faGem } from '@fortawesome/free-solid-svg-icons';
 import img from '../assets/FullLogo.png';
 import styles from '../css/Sidebar.module.css';
 import { useState } from 'react';
@@ -10,10 +10,6 @@ const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation().pathname.split('/');
     const [staff, setStaff] = useState(JSON.parse(sessionStorage.getItem('staff')));
-
-    const handleDropdown = () => {
-        setDropdown(!dropdown);
-    }
 
     const logout = () => {
         sessionStorage.clear();
@@ -57,8 +53,8 @@ const Sidebar = () => {
                                 </li>
                                 <li>
                                     <Link to="/staff/manage-price" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-price') ? styles['active'] : ''}`}>
-                                        <FontAwesomeIcon className='me-3' icon={faMoneyBill} />
-                                        Manage price
+                                        <FontAwesomeIcon className='me-3' icon={faGem} />
+                                        Diamond prices
                                     </Link>
                                 </li>
                             </>

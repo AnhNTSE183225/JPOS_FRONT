@@ -34,3 +34,8 @@ table {
 table th,td{
     width: auto;
 }
+
+.active-page {
+    background-color: #48AAAD;
+    color: white;
+}

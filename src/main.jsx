@@ -34,6 +34,9 @@ import StaffTestPage from './pages/StaffTestPage';
 import OrderDetails from './components/OrderDetails';
 import CreateStaff from './pages/CreateStaff';
 import MaterialPriceListPage from './pages/MaterialPriceListPage';
+import ManageMaterialPrice from './pages/ManageMaterialPrice';
+import ManageDesignPrice from './pages/ManageDesignPrice';
+import AdminFrame from './pages/frame/AdminFrame';
 
 
 
@@ -58,7 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'material-price-list',
-        element: <MaterialPriceListPage/>
+        element: <MaterialPriceListPage />
       },
       {
         path: 'login',
@@ -117,11 +120,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile/your-orders/:orderId',
-        element: <OrderDetails/>
+        element: <OrderDetails />
       },
       {
         path: '/test',
-        element: <CustomerTestPage/>
+        element: <CustomerTestPage />
       }
     ]
   },
@@ -143,33 +146,47 @@ const router = createBrowserRouter([
       },
       {
         path: 'manage-requests',
-        element: <ManageRequestsPage/>
+        element: <ManageRequestsPage />
       },
       {
         path: 'manage-requests/request/:orderId',
-        element: <OrderDetails/>
-      },
-      {
-        path: 'manage-staff',
-        element: <ManageStaffPage/>
-      },
-      {
-        path: 'manage-staff/create',
-        element: <CreateStaff/>
+        element: <OrderDetails />
       },
       {
         path: 'manage-price',
-        element: <ManagePricePage/>
+        element: <ManagePricePage />
       },
       {
         path: 'test',
-        element: <StaffTestPage/>
+        element: <StaffTestPage />
+      },
+      {
+        path: 'manage-material-price',
+        element: <ManageMaterialPrice />
+      },
+      {
+        path: 'manage-design-price',
+        element: <ManageDesignPrice />
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    element: <AdminFrame />,
+    children: [
+      {
+        path: 'manage-staff',
+        element: <ManageStaffPage />
+      },
+      {
+        path: 'manage-staff/create',
+        element: <CreateStaff />
       }
     ]
   },
   {
     path: '/payment-callback',
-    element: <PaymentHandler/>
+    element: <PaymentHandler />
   }
 ]);
 

@@ -42,6 +42,9 @@ const ManagePricePage = () => {
 
     const [pageSize, setPageSize] = useState(50);
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+    const [refresh, setRefresh] = useState(false);
+
     let pages = []
     if (queryList !== null) {
         let i = 0
@@ -57,7 +60,6 @@ const ManagePricePage = () => {
                 console.log(`Can't fetch from ${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
             } else {
                 setDiamondPriceList(response.data);
-                setQueryList(response.data);
             }
         } catch (error) {
             console.log(error);
@@ -71,8 +73,7 @@ const ManagePricePage = () => {
                 console.log(`Can't update`);
                 toast.error(`Something wen't wrong, you cannot update`);
             } else {
-                setSelectedPrice(undefined);
-                fetchData();
+                setRefresh(r => !r);
                 toast.success('Update successfully');
             }
         } catch (error) {
@@ -92,8 +93,22 @@ const ManagePricePage = () => {
             ) {
                 toast.info(`Put in all values of filter to proceed creating new price`);
             } else {
-                const newPrice = {
-                    
+                const object = {
+                    origin: origin,
+                    caratWeightFrom: caratRange[0],
+                    caratWeightTo: caratRange[1],
+                    shape: shape,
+                    color: color,
+                    clarity: clarity,
+                    cut: cut,
+                    price: newPrice
+                }
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`,object);
+                if(!response.data || response.status === 204) {
+                    toast.error(`Error creating`);
+                } else {
+                    toast.success(`Creation completed`);
+                    setRefresh(r => !r);
                 }
             }
         } catch (error) {
@@ -139,7 +154,12 @@ const ManagePricePage = () => {
             setQueryList(query_list);
             setCurrentPageIndex(0);
         }
-    }, [shape, origin, caratRange, cut, clarity, color])
+    }, [shape, origin, caratRange, cut, clarity, color, diamondPriceList])
+
+    useEffect(() => {
+        setSelectedPrice(undefined);
+        fetchData();
+    },[refresh])
 
     return (
         <div className="container-fluid" id={`${styles['manage-price']}`}>
@@ -197,7 +217,7 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group">
-                        <button className={`btn btn-primary ${styles['select-label']}`}>Create new price</button>
+                        <button onClick={createNewPrice} className={`btn btn-primary ${styles['select-label']}`}>Create new price</button>
                         <span className="input-group-text">$</span>
                         <input type="number" min={0.01} step={0.01} className="form-control" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} />
                     </div>
@@ -252,7 +272,7 @@ const ManagePricePage = () => {
                         <ul className="pagination input-group">
                             {
                                 pages.map((value, index) => (
-                                    <li key={index} style={{ cursor: 'pointer' }} className="page-item" onClick={() => setCurrentPageIndex(value)}><span className="page-link">{index + 1}</span></li>
+                                    <li key={index} style={{ cursor: 'pointer' }} className={`page-item`} onClick={() => setCurrentPageIndex(value)}><span className={`page-link ${value == currentPageIndex ? styles['active-page'] : ''}`}>{index + 1}</span></li>
                                 ))
                             }
                             <button className="btn btn-primary" onClick={resetFilters}>Reset filters</button>
