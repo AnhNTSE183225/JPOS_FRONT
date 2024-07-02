@@ -159,16 +159,16 @@ const router = createBrowserRouter([
         element: <ManagePricePage />
       },
       {
-        path: 'test',
-        element: <StaffTestPage />
-      },
-      {
         path: 'manage-material-price',
         element: <ManageMaterialPrice />
       },
       {
         path: 'manage-design-price',
         element: <ManageDesignPrice />
+      },
+      {
+        path: 'test',
+        element: <StaffTestPage />
       }
     ]
   },

@@ -1,6 +1,6 @@
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill, faGem, faHammer } from '@fortawesome/free-solid-svg-icons';
+import { faInbox, faClockRotateLeft, faCircleExclamation, faGem, faHammer, faRing } from '@fortawesome/free-solid-svg-icons';
 import img from '../assets/FullLogo.png';
 import styles from '../css/Sidebar.module.css';
 import { useState } from 'react';
@@ -55,6 +55,12 @@ const Sidebar = () => {
                                     <Link to="/staff/manage-material-price" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-material-price') ? styles['active'] : ''}`}>
                                         <FontAwesomeIcon className='me-3' icon={faHammer} />
                                         Material prices
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/staff/manage-design-price" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-design-price') ? styles['active'] : ''}`}>
+                                        <FontAwesomeIcon className='me-3' icon={faRing} />
+                                        Design prices
                                     </Link>
                                 </li>
                             </>
