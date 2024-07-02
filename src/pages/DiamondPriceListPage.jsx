@@ -15,6 +15,7 @@ import pear from '/src/assets/svg/Pear.svg';
 import princess from '/src/assets/svg/Princess.svg';
 import radiant from '/src/assets/svg/Radiant.svg';
 import round from '/src/assets/svg/Round.svg';
+import { toast } from "sonner";
 
 const SHAPES_IMAGES = [
     { name: 'round', image: round },
@@ -39,7 +40,7 @@ const CARAT_STEP = 0.1;
 const MAX_CARAT = 10;
 let CARAT_RANGE = []
 for (let i = MIN_CARAT; i <= MAX_CARAT; i += CARAT_STEP) {
-    CARAT_RANGE = [...CARAT_RANGE, i.toFixed(2) + " - " + (i + CARAT_STEP).toFixed(2) + ' ct'];
+    CARAT_RANGE = [...CARAT_RANGE, [i, i + CARAT_STEP]];
 }
 
 //A single table
@@ -51,7 +52,39 @@ const DiamondPriceListPage = () => {
     const [activeOrigin, setActiveOrigin] = useState(ORIGINS[0]);
     const [activeShape, setActiveShape] = useState(SHAPES[0]);
 
+    const [diamondPrices, setDiamondPrices] = useState(null);
+    const [queryList, setQueryList] = useState(null);
+    
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+
     useDocumentTitle("Bijoux Diamond Price List");
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
+            if (!response.data || response.status === 204) {
+                console.log(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
+                toast.info(`Cannot fetch diamond prices right now...`);
+            } else {
+                setDiamondPrices(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    useEffect(() => {
+        if (diamondPrices != null) {
+            let query_list = [...diamondPrices];
+            query_list = query_list.filter(price => price.origin == activeOrigin && price.shape == activeShape);
+            setQueryList(query_list);
+        }
+    }, [activeOrigin, activeShape, diamondPrices])
 
     return (
         <div className={`container ${styles['diamond-price-list']}`}>
@@ -74,17 +107,17 @@ const DiamondPriceListPage = () => {
             </div>
 
             {
-                CARAT_RANGE.map((value, index) => (
+                CARAT_RANGE.map((caratRangeValue, index) => (
                     <div key={index} className={`row mb-3`}>
-                        <h4>{activeOrigin.replace("_"," ")} {activeShape.toUpperCase()} EXCELLENT CUT {value}</h4>
+                        <h4>{activeOrigin.replace("_", " ")} {activeShape.toUpperCase()} EXCELLENT CUT {caratRangeValue[0].toFixed(2)} - {caratRangeValue[1].toFixed(2)} Ct</h4>
                         <table className="table table-bordered text-center">
                             <thead>
                                 <tr>
-                                    <th>{value}</th>
+                                    <th>{caratRangeValue[0].toFixed(2)} - {caratRangeValue[1].toFixed(2)} Ct</th>
                                     {
-                                        COLORS.map((value, index) => (
+                                        COLORS.map((caratRangeValue, index) => (
                                             <th key={index}>
-                                                {value}
+                                                {caratRangeValue}
                                             </th>
                                         ))
                                     }
@@ -92,17 +125,22 @@ const DiamondPriceListPage = () => {
                             </thead>
                             <tbody>
                                 {
-                                    CLARITIES.map((value, index) => (
+                                    CLARITIES.map((clarityValue, index) => (
                                         <tr key={index}>
-                                            <th>{value}</th>
-                                            <td>$100</td>
-                                            <td>$100</td>
-                                            <td>$100</td>
-                                            <td>$100</td>
-                                            <td>$100</td>
-                                            <td>$100</td>
-                                            <td>$100</td>
-                                            <td>$100</td>
+                                            <th>{clarityValue}</th>
+                                            {
+                                                COLORS.map((colorValue, index) => (
+                                                    <td key={index}>
+                                                        {
+                                                            queryList != null
+                                                                ? queryList.find(price => price.color == colorValue && price.clarity == clarityValue && caratRangeValue[0] == price.caratWeightFrom && caratRangeValue[1] == price.caratWeightTo) != null
+                                                                    ? formatPrice(queryList.find(price => price.color == colorValue && price.clarity == clarityValue && caratRangeValue[0] == price.caratWeightFrom && caratRangeValue[1] == price.caratWeightTo).price)
+                                                                    : 'NaN'
+                                                                : 'NaN'
+                                                        }
+                                                    </td>
+                                                ))
+                                            }
                                         </tr>
                                     ))
                                 }

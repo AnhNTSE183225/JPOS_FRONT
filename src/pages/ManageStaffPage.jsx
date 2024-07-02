@@ -78,7 +78,7 @@ const ManageStaffPage = () => {
                         <span className={`input-group-text ${styles['input-label']}`}>Dept.</span>
                         <select className="form-select" type="text" value={staffType} onChange={(e) => setStaffType(e.target.value)} >
                             {
-                                ['sale','design','produce'].map((value,index) => (
+                                ['sale','design','produce','manage'].map((value,index) => (
                                     <option key={index} value={value}>{DEPARTMENT[value]}</option>
                                 ))
                             }
@@ -100,7 +100,7 @@ const ManageStaffPage = () => {
             if (!response.data || response.status == 204) {
                 toast.info(`No info`);
             } else {
-                let employees = response.data.filter(staff => staff.staffType != 'manage');
+                let employees = response.data;
                 let requests_count = [];
                 for (let i = 0; i < employees.length; i++) {
                     requests_count.push(await (fetchRequestsCount(employees[i].staffType, employees[i].staffId)));

@@ -37,6 +37,8 @@ import MaterialPriceListPage from './pages/MaterialPriceListPage';
 import ManageMaterialPrice from './pages/ManageMaterialPrice';
 import ManageDesignPrice from './pages/ManageDesignPrice';
 import AdminFrame from './pages/frame/AdminFrame';
+import Dashboard from './pages/Dashboard';
+import ManageCustomer from './pages/ManageCustomer';
 
 
 
@@ -181,6 +183,14 @@ const router = createBrowserRouter([
       {
         path: 'manage-staff/create',
         element: <CreateStaff />
+      },
+      {
+        path: 'dashboard',
+        element: <Dashboard />
+      }, 
+      {
+        path: 'manage-customer',
+        element: <ManageCustomer />
       }
     ]
   },
