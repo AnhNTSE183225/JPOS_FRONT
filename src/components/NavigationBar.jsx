@@ -3,53 +3,18 @@ import { useState, useEffect } from 'react';
 import logo from "../assets/textLogo.png";
 import styles from '/src/css/NavigationBar.module.css';
 
-const UserComponent = (props) => {
-
+const NavigationBar = () => {
+    const location = useLocation().pathname;
+    const [customer, setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
     const navigate = useNavigate();
     const [dropDown, setDropdown] = useState(false);
 
-    const handleDropdown = () => {
-        setDropdown(!dropDown);
-    }
-
-    const logout = () => {
-        sessionStorage.clear();
-        props.setLoggedIn(false);
-        navigate("/");
-    }
-
-    if (!props.loggedIn) {
-        return (
-            <div className='nav-item'>
-                <Link className={`${styles[`nav-login`]} nav-login`} to='/login'>LOGIN/REGISTER</Link>
-            </div>
-        )
-    } else {
-        return (
-            <div className="nav-item dropdown">
-                <div className={`${styles['nav-link']} nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={handleDropdown}>
-                    {props.customer.name}
-                </div>
-                <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
-                    <li><a className="dropdown-item" onClick={logout} style={{ cursor: 'pointer' }}>Logout</a></li>
-                </ul>
-            </div>
-        )
-    }
-}
-
-const NavigationBar = () => {
-    const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem('customer') != null);
-    const location = useLocation().pathname.split("/");
-    const [customer, setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
-
     useEffect(() => {
-        setLoggedIn(sessionStorage.getItem('customer') != null);
-    }, [location]);
+        setCustomer(JSON.parse(sessionStorage.getItem('customer')));
+    },[location])
 
     return (
         <>
-            {/* className="navbar navbar-expand-xl fixed-top" */}
             <nav className={`${styles['navbar']} navbar navbar-expand-xl fixed-top`}>
                 <div className="container-fluid">
                     <Link to='/' className={`${styles['navbar-brand']} navbar-brand`}><img src={logo} alt="Logo" style={{ width: '16vw', height: 'auto' }} /></Link>
@@ -66,6 +31,9 @@ const NavigationBar = () => {
                                 </li>
                                 <li className="nav-item">
                                     <Link className={`${styles['nav-link']} nav-link mx-lg-2`} to="/diamond-price-list">DIAMOND PRICE LIST</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={`${styles['nav-link']} nav-link mx-lg-2`} to="/material-price-list">MATERIAL PRICE LIST</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/custom-design">CUSTOM DESIGN</Link>
@@ -87,7 +55,28 @@ const NavigationBar = () => {
                     </div>
                     <div className='navbar-bar'>
                         <div className={`${styles['login-button']} login-button`}>
-                            <UserComponent customer={customer} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                            {
+                                customer != null
+                                    ? <>
+                                        <div className="nav-item dropdown">
+                                            <div className={`${styles['nav-link']} nav-link dropdown-toggle`} role="button" aria-expanded="false" onClick={() => setDropdown(d => !d)}>
+                                                {customer.name}
+                                            </div>
+                                            <ul className={dropDown == false ? "dropdown-menu" : "dropdown-menu show"}>
+                                                <li><a className="dropdown-item" onClick={() => {
+                                                    sessionStorage.clear();
+                                                    setCustomer(null);
+                                                    navigate("/");
+                                                }} style={{ cursor: 'pointer' }}>Logout</a></li>
+                                            </ul>
+                                        </div>
+                                    </>
+                                    : <>
+                                        <div className='nav-item'>
+                                            <Link className={`${styles[`nav-login`]} nav-login`} to='/login'>LOGIN/REGISTER</Link>
+                                        </div>
+                                    </>
+                            }
                         </div>
                     </div>
                     <button className={styles['navbar-toggler'] + " navbar-toggler"} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

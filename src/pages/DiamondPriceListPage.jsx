@@ -53,8 +53,6 @@ const DiamondPriceListPage = () => {
 
     useDocumentTitle("Bijoux Diamond Price List");
 
-    console.log(CARAT_RANGE);
-
     return (
         <div className={`container ${styles['diamond-price-list']}`}>
             <div className="row mb-3" id={`${styles['origin-row']}`}>

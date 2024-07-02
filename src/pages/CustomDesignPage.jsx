@@ -144,7 +144,7 @@ const CustomDesignPage = () => {
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="image-btn w-100 mt-3" style={{ backgroundColor: '#48AAAD' }} onClick={uploadImages} >Upload image</button>
+                                        : <button className="btn btn-primary w-100 mt-3" style={{ backgroundColor: '#48AAAD', borderColor: '#48AAAD'}} onClick={uploadImages} >Upload image</button>
                                 }
                             </div>
                             <div className="mb-3">

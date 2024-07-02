@@ -33,6 +33,7 @@ import CustomerTestPage from './pages/CustomerTestPage';
 import StaffTestPage from './pages/StaffTestPage';
 import OrderDetails from './components/OrderDetails';
 import CreateStaff from './pages/CreateStaff';
+import MaterialPriceListPage from './pages/MaterialPriceListPage';
 
 
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: 'diamond-price-list',
         element: <DiamondPriceListPage /> //Customer exclusive
+      },
+      {
+        path: 'material-price-list',
+        element: <MaterialPriceListPage/>
       },
       {
         path: 'login',
