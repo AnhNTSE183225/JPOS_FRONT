@@ -3,6 +3,8 @@ import styles from '/src/css/CreateStaff.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import axios from 'axios';
 
 const STAFF_TYPE = ['sale', 'design', 'produce', 'manage']
 
@@ -17,6 +19,35 @@ const CreateStaff = () => {
 
     const navigate = useNavigate();
 
+    const handleCreate = async () => {
+        try {
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const object = {
+                name: name,
+                phone: phone,
+                staffType: staffType,
+                account: {
+                    email: email,
+                    password: password,
+                    role: 'staff',
+                    status: true,
+                    username: username
+                }
+            }
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/staff/create`, object, { headers });
+            if (response.status === 200) {
+                toast.success(`Creation successful`);
+                navigate(-1);
+            } else {
+                toast.error(`Username must be unique`);
+            }
+        } catch (error) {
+            toast.error(`Something went wrong. Creation failed`);
+        }
+    }
+
     return (
         <div className="container-fluid" id={`${styles['create-staff']}`}>
             <div className="row mb-3">
@@ -28,7 +59,7 @@ const CreateStaff = () => {
                     <div className="col-lg-6">
                         <div className={`input-group mb-3 ${styles['input-group']}`}>
                             <span className='input-group-text'>Username</span>
-                            <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" className='form-control'/>
+                            <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" className='form-control' />
                         </div>
                         <div className={`input-group mb-3 ${styles['input-group']}`}>
                             <span className='input-group-text'>Name</span>
@@ -48,8 +79,17 @@ const CreateStaff = () => {
                         </div>
                         <div className={`input-group mb-3 ${styles['input-group']}`}>
                             <span className='input-group-text'>Staff type</span>
-                            <input value={staffType} onChange={(e) => setStaffType(e.target.value)} className='form-control' type="email" />
+                            <select value={staffType} onChange={(e) => setStaffType(e.target.value)} className='form-select'>
+                                {
+                                    STAFF_TYPE.map((staff_type, index) => (
+                                        <option key={index} value={staff_type}>
+                                            {staff_type}
+                                        </option>
+                                    ))
+                                }
+                            </select>
                         </div>
+                        <button className='btn btn-primary' onClick={handleCreate}>Create</button>
                     </div>
                 </div>
             </div>

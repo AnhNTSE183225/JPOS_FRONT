@@ -37,7 +37,6 @@ const LoginPage = () => {
                         navigate("/");
                         return;
                     } else if (response.data.account.staffId !== undefined) {
-                        console.log(response.data);
                         sessionStorage.setItem('staff',JSON.stringify(response.data.account));
                         sessionStorage.setItem('token',response.data.token);
                         if (response.data.account.staffType == 'manage') {
@@ -46,10 +45,16 @@ const LoginPage = () => {
                             navigate("/staff/request");
                         }
                         return;
+                    } else if (response.data.account.role == 'admin') {
+                        sessionStorage.setItem('admin',JSON.stringify(response.data.account));
+                        sessionStorage.setItem('token',response.data.token);
+                        navigate('/admin/dashboard');
+                        return;
                     }
                 }
             } catch (error) {
                 console.log(error);
+                toast.error(`Invalid credentials, please try again!`);
             }
         } else {
             toast.info("Please fill in all forms!");

@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill, faGem, faGauge } from '@fortawesome/free-solid-svg-icons';
 import img from '../assets/FullLogo.png';
 import styles from '../css/Sidebar.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SidebarAdmin = () => {
 
     const navigate = useNavigate();
     const location = useLocation().pathname.split('/');
-    const [admin, setAdmin] = useState(JSON.parse(sessionStorage.getItem('admin')));
+    const admin = sessionStorage.getItem('admin') !== null ? JSON.parse(sessionStorage.getItem('admin')) : null;
 
     const logout = () => {
         sessionStorage.clear();
@@ -40,7 +40,7 @@ const SidebarAdmin = () => {
                 <div className="dropdown">
                     <a href="#" className={`${styles['user']} d-flex align-items-center text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
-                        <strong>ADMIN</strong>
+                        <strong>{admin.username}</strong>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                         <li><a onClick={logout} className="dropdown-item" href="#">Sign out</a></li>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import axios from "axios";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Switch } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const DEPARTMENT = {
@@ -30,6 +30,7 @@ const ManageStaffPage = () => {
 
     const [openDialog, setOpenDialog] = useState(false);
     const [activeStaff, setActiveStaff] = useState(null);
+    const [refresh, setRefresh] = useState(false);
 
     const UpdateDialog = () => {
 
@@ -98,13 +99,40 @@ const ManageStaffPage = () => {
         )
     }
 
+    const toggleAccount = async (staff) => {
+        try {
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/staff/update`,
+                {
+                    ...staff,
+                    account: {
+                        ...staff.account,
+                        status: !staff.account.status
+                    }
+                },
+                {
+                    headers
+                }
+            )
+            if(response.status === 200) {
+                toast.success(`Changed staff's status`);
+            } else {
+                toast.error(`Can't change status`);
+            }
+            setRefresh(r => !r);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const fetchData = async () => {
         try {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff/find-all`,{headers});
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff/find-all`, { headers });
             if (!response.data || response.status == 204) {
                 toast.info(`No info`);
             } else {
@@ -129,7 +157,7 @@ const ManageStaffPage = () => {
         }
         switch (type) {
             case 'sale':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${id}`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${id}`, { headers });
                 if (!response.data || response.status === 204) {
                     orders_count = 0;
                 } else {
@@ -137,7 +165,7 @@ const ManageStaffPage = () => {
                 }
                 break;
             case 'design':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${id}`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${id}`, { headers });
                 if (!response.data || response.status === 204) {
                     orders_count = 0;
                 } else {
@@ -145,7 +173,7 @@ const ManageStaffPage = () => {
                 }
                 break;
             case 'produce':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${id}`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${id}`, { headers });
                 if (!response.data || response.status === 204) {
                     orders_count = 0;
                 } else {
@@ -159,6 +187,7 @@ const ManageStaffPage = () => {
     useEffect(() => {
         fetchData();
     }, [])
+
     useEffect(() => {
         if (search.length > 0) {
             let query_list = [...employees];
@@ -168,6 +197,10 @@ const ManageStaffPage = () => {
             setQueryList(employees);
         }
     }, [search])
+
+    useEffect(() => {
+        fetchData();
+    },[refresh])
 
     return (
         <div className="container-fluid" id={`${styles['manage-staff']}`}>
@@ -182,6 +215,7 @@ const ManageStaffPage = () => {
                 </div>
             </div>
             <div className="row mb-3">
+
                 <table className="table">
                     <thead>
                         <tr>
@@ -204,7 +238,12 @@ const ManageStaffPage = () => {
                                         <td>{DEPARTMENT[value.staffType]}</td>
                                         <td>{value.phone}</td>
                                         <td className="text-center">{requestsCount[index]}</td>
-                                        <td className="text-center">{value.account.status ? 'Active' : 'Disabled'}</td>
+                                        <td className="text-center">
+                                            <Switch
+                                                checked={value.account.status}
+                                                onChange={() => toggleAccount(value)}
+                                            />
+                                        </td>
                                         <td className="text-center" id={`${styles['action-button']}`} onClick={(e) => {
                                             setAnchor(anchor ? null : e.currentTarget);
                                             setActiveStaff(value);

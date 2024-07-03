@@ -58,7 +58,7 @@ const ManagePricePage = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`,{headers});
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`, { headers });
             if (!response.data || response.status === 204) {
                 console.log(`Can't fetch from ${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
             } else {
@@ -74,7 +74,7 @@ const ManagePricePage = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/diamond-price/update`, selectedPrice, {headers});
+            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/diamond-price/update`, selectedPrice, { headers });
             if (!response.data || response.status === 204) {
                 console.log(`Can't update`);
                 toast.error(`Something wen't wrong, you cannot update`);
@@ -112,8 +112,8 @@ const ManagePricePage = () => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`,object,{headers});
-                if(!response.data || response.status === 204) {
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`, object, { headers });
+                if (!response.data || response.status === 204) {
                     toast.error(`Error creating`);
                 } else {
                     toast.success(`Creation completed`);
@@ -168,7 +168,7 @@ const ManagePricePage = () => {
     useEffect(() => {
         setSelectedPrice(undefined);
         fetchData();
-    },[refresh])
+    }, [refresh])
 
     return (
         <div className="container-fluid" id={`${styles['manage-price']}`}>
@@ -323,7 +323,13 @@ const ManagePricePage = () => {
                                                             : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control text-end" disabled />
                                                     }
                                                     <button onClick={() => setSelectedPrice(value)} className="btn btn-primary"> <FontAwesomeIcon icon={faPenToSquare} /> </button>
-                                                    <button onClick={updatePrice} className="btn btn-primary"> <FontAwesomeIcon icon={faFloppyDisk} /> </button>
+                                                    {
+                                                        selectedPrice !== undefined
+                                                            ? selectedPrice.diamondPriceId == value.diamondPriceId
+                                                                ? <button onClick={updatePrice} className="btn btn-primary"> <FontAwesomeIcon icon={faFloppyDisk} /> </button>
+                                                                : <></>
+                                                            : <></>
+                                                    }
                                                 </div>
                                             </td>
                                             <td>{formatDate(value.effectiveDate)}</td>
