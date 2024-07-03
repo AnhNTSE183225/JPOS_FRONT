@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import styles from '/src/css/RegisterPage.module.css';
 import useDocumentTitle from '../components/Title';
-import {toast} from 'sonner';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
@@ -36,18 +36,30 @@ const RegisterPage = () => {
     const customerRegister = async () => {
         if (username.length > 0 && email.length > 0 && password.length > 0 && fullName.length > 0 && address.length > 0) {
 
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customer-register`, {
-                username: username,
-                password: password,
-                email: email,
-                name: fullName,
-                address: address
-            })
-            if (!response.data || response.status === 204) {
-                toast.error(`Username or email already exists!`)
-            } else {
-                toast.success(`Account created! Please login to continue.`)
-                navigate('/login');
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/v1/auth/register`, {
+                    username: username,
+                    password: password,
+                    email: email,
+                    name: fullName,
+                    address: address
+                })
+                if (!response.data || response.status === 204) {
+                    toast.error(`Username or email already exists!`)
+                } else {
+                    toast.success(`Account created!`)
+                    const customer = response.data.account;
+                    const token = response.data.token;
+                    sessionStorage.setItem('customer',JSON.stringify(customer));
+                    sessionStorage.setItem('token',token);
+                    navigate('/');
+                }
+            } catch (error) {
+                if(error.response.status === 409) {
+                    toast.error(`Account username already exists! Please login or try another username`);
+                } else {
+                    console.log(error);
+                }
             }
         } else {
             toast.info(`Please fill in all details! (username, email, password, name, address)`);

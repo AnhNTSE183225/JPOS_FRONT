@@ -20,10 +20,16 @@ const WaitManager = ({ order }) => {
             if (markupRate <= 0 || totalAmount <= 0) {
                 toast.info(`Markup rate cannot be 0 or below`);
             } else {
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
                 axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/manager-response?managerApproval=true`,
                     {
                         markupRate: markupRate,
                         totalAmount: totalAmount
+                    },
+                    {
+                        headers
                     }
                 )
                     .then(
@@ -50,7 +56,10 @@ const WaitManager = ({ order }) => {
 
     const refuseQuote = () => {
         if (sessionStorage.getItem('staff') !== null) {
-            axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/manager-response?managerApproval=false`)
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/manager-response?managerApproval=false`,{headers})
                 .then(
                     response => {
                         toast(response.data);

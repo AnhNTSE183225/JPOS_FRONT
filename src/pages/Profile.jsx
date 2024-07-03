@@ -19,7 +19,10 @@ const ProfilePage = () => {
             customer.address.length > 0
         ) {
             try {
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update?customerId=${customer.customerId}&email=${customer.account.email}&name=${customer.name}&address=${customer.address}`);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update?customerId=${customer.customerId}&email=${customer.account.email}&name=${customer.name}&address=${customer.address}`,{headers});
                 if (!response.data || response.status == 204) {
                     toast.error(`Error updating profile`);
                 } else {

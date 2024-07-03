@@ -24,25 +24,27 @@ const LoginPage = () => {
     const unionLogin = async () => {
         if (username.length > 0 && password.length > 0) {
             try {
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/login`, {
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/v1/auth/authenticate`, {
                     username: username,
                     password: password
                 });
                 if (!response.data || response.status === 204) {
                     toast.error(`Invalid credentials. Please try again`);
                 } else {
-                    if (response.data.customerId !== undefined) {
-                        sessionStorage.setItem('customer', JSON.stringify(response.data));
+                    if (response.data.account.customerId !== undefined) {
+                        sessionStorage.setItem('customer',JSON.stringify(response.data.account));
+                        sessionStorage.setItem('token',response.data.token);
                         navigate("/");
                         return;
-                    } else if (response.data.staffId !== undefined) {
-                        sessionStorage.setItem("staff", JSON.stringify(response.data));
+                    } else if (response.data.account.staffId !== undefined) {
+                        console.log(response.data);
+                        // sessionStorage.setItem("staff", JSON.stringify(response.data));
 
-                        if (response.data.staffType == 'manage') {
-                            navigate("/staff/manage-requests")
-                        } else {
-                            navigate("/staff/request");
-                        }
+                        // if (response.data.staffType == 'manage') {
+                        //     navigate("/staff/manage-requests")
+                        // } else {
+                        //     navigate("/staff/request");
+                        // }
                         return;
                     }
                 }

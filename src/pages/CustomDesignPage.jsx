@@ -42,7 +42,10 @@ const CustomDesignPage = () => {
                 for (const file of designFiles) {
                     const formData = new FormData();
                     formData.append("file", file)
-                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
+                    const headers = {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData, {headers});
                     if (!response.data || response.status === 204) {
                         throw new Error("Upload file failed. Backend fail");
                     }
@@ -74,12 +77,18 @@ const CustomDesignPage = () => {
                 budget >= 500 &&
                 imageUrls.length > 0
             ) {
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
                 axios.post(`${import.meta.env.VITE_jpos_back}/api/send-request`,
                     {
                         customerId: customer.customerId,
                         designFile: imageUrls.join("|"),
                         description: description,
                         budget: budget
+                    },
+                    {
+                        headers
                     }
                 ).then(
                     response => {

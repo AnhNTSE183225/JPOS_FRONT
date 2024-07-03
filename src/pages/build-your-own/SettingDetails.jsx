@@ -6,16 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faTruckFast, faChartBar } from '@fortawesome/free-solid-svg-icons';
 import { formatPrice } from "../../helper_function/ConvertFunction";
 import { fetchMaterialPrice } from "../../helper_function/FetchPriceFunctions";
+import { toast } from "sonner";
 
-const NoteComponent = ({ designType }) => {
+const NoteComponent = ({ designType, note, setNote }) => {
     let result = null;
 
     const ringSizes = [6, 7, 8, 9];
     const necklaceLengths = ["16 inches", "18 inches", "20 inches"];
-
-    const handleSelect = (value) => {
-        sessionStorage.setItem("note", value);
-    };
 
     switch (designType) {
         case 'ring':
@@ -23,7 +20,8 @@ const NoteComponent = ({ designType }) => {
                 <div className="row">
                     <h3 className={`${styles["metal-type-title"]} col`}>Select ring size</h3>
                     <div className="col">
-                        <select className="form-select" onChange={(e) => handleSelect(e.target.value)}>
+                        <select className="form-select" onChange={(e) => setNote(e.target.value)}>
+                            <option value="Choose">Choose</option>
                             {ringSizes.map((size) => (
                                 <option key={size} value={`Ring size: ${size}`}>
                                     {size}
@@ -38,7 +36,8 @@ const NoteComponent = ({ designType }) => {
                 <div className="row">
                     <h3 className={`${styles["metal-type-title"]} col`}>Select necklace length</h3>
                     <div className="col">
-                        <select className="form-select" onChange={(e) => handleSelect(e.target.value)}>
+                        <select className="form-select" onChange={(e) => setNote(e.target.value)}>
+                            <option value="Choose">Choose</option>
                             {necklaceLengths.map((length) => (
                                 <option key={length} value={`Necklace length: ${length}`}>
                                     {length}
@@ -62,6 +61,7 @@ const SettingDetails = () => {
     const [showShellDetails, setShowShellDetails] = useState(false);
     const [settingPrice, setSettingPrice] = useState(null);
     const [showMoreInfo, setShowMoreInfo] = useState(false);
+    const [note, setNote] = useState('Choose');
 
     useEffect(() => {
         fetchData();
@@ -88,7 +88,10 @@ const SettingDetails = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${designId}`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${designId}`,{headers});
             if (!response.data || response.status === 204) {
                 console.error('Error, cannot fetch, wrong id or something');
             } else {
@@ -108,7 +111,10 @@ const SettingDetails = () => {
 
     const getMaterials = async (shell) => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shell.productShellDesignId}`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shell.productShellDesignId}`,{headers});
             if (!response.data || response.status === 204) {
                 toast.error("Error cannot fetch materials");
             } else {
@@ -129,18 +135,22 @@ const SettingDetails = () => {
     };
 
     const handleChoose = () => {
-        if (designId !== null && selectedShell.productShellDesignId !== null && selectedShell.diamondQuantity > 0 && settingPrice !== null) {
-            sessionStorage.setItem('designImage', productDesign.designFile);
-            sessionStorage.setItem('designName', productDesign.designName);
-            sessionStorage.setItem('designPrice', formatPrice(settingPrice));
-            sessionStorage.setItem('designId', designId);
-            sessionStorage.setItem('shellId', selectedShell.productShellDesignId);
-            sessionStorage.setItem('quantity', selectedShell.diamondQuantity);
-            sessionStorage.setItem('diamonds', '');
-            sessionStorage.setItem('diamondImages', '');
-            sessionStorage.setItem('diamondPrices', '');
+        if (designId !== null && selectedShell.productShellDesignId !== null && selectedShell.diamondQuantity > 0 && settingPrice !== null && note != 'Choose') {
+
+            const selected_product = {
+                designFile: productDesign.designFile,
+                designName: productDesign.designName,
+                designType: productDesign.designType,
+                productDesignId: designId,
+                selectedShell: selectedShell,
+                note: note,
+                price: settingPrice
+            }
+            sessionStorage.setItem('selected_product',JSON.stringify(selected_product));
+            sessionStorage.removeItem('selected_diamonds');
             navigate("/build-your-own/choose-diamond");
         } else {
+            toast.info(`Please select all required settings`);
             console.log("ERROR CHOOSING");
         }
     };
@@ -199,7 +209,7 @@ const SettingDetails = () => {
                             <div className={styles.option}>
                                 <b>Flexible Payment Options:</b> 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
                             </div>
-                            <NoteComponent designType={productDesign.designType} />
+                            <NoteComponent note={note} setNote={setNote} designType={productDesign.designType} />
                             <div className={styles["metal-type-section"]}>
                                 <h3 className={styles["metal-type-title"]}>Metal Type: </h3>
                                 <div className={styles["shell-list"]}>

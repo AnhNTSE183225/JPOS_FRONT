@@ -80,7 +80,10 @@ const WaitSaleStaff = ({ order }) => {
             }
             try {
                 console.log(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`)
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query, {headers});
                 if (!response.data || response.status === 204) {
                     console.log(`Cannot fetch diamonds`);
                 } else {
@@ -115,7 +118,10 @@ const WaitSaleStaff = ({ order }) => {
                     materialsIds: chosenMaterials.map(material => ({ first: material.id, second: material.weight }))
                 }
 
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/product/save`, productDTO);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/product/save`, productDTO, {headers});
                 if (!response.data || response.status === 204) {
                     throw new Error(`Product creation failed. Backend did not return id`);
                 }
@@ -132,7 +138,8 @@ const WaitSaleStaff = ({ order }) => {
                     qmaterialPrice: totalMaterialPrice
                 }
 
-                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}/${response.data}`, finalOrder);
+                
+                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}/${response.data}`, finalOrder, {headers});
                 if (!response.data || response.status === 204) {
                     throw new Error(`Order update failed. Backend did not return order`);
                 }
@@ -188,7 +195,10 @@ const WaitSaleStaff = ({ order }) => {
 
     const fetchMaterials = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`, {headers});
             if (response.status === 204) {
                 console.log("No data");
             } else {

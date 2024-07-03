@@ -14,42 +14,44 @@ const CompleteProduct = () => {
     const navigate = useNavigate();
 
     const [productDesign, setProductDesign] = useState(null);
-    const [shell, setShell] = useState(null);
-    const [diamonds, setDiamonds] = useState([]);
     const [materials, setMaterials] = useState([]);
     const [estimatedPrice, setEstimatedPrice] = useState(null);
+    const selectedDiamonds = sessionStorage.getItem('selected_diamonds') !== null ? JSON.parse(sessionStorage.getItem('selected_diamonds')) : null;
+    const selectedProduct = sessionStorage.getItem('selected_product') !== null ? JSON.parse(sessionStorage.getItem('selected_product')) : null;
 
     useDocumentTitle('Complete Bijoux Order');
     useEffect(() => {
-        const getDesign = async () => {
-            if (sessionStorage.getItem('designId') === null) {
-                toast.info(`Please return for selection`);
-                navigate("/build-your-own/choose-setting");
-            } else {
-                try {
-                    const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${sessionStorage.getItem('designId')}`);
-                    if (!response.data || response.status === 204) {
-                        console.log('error, cannot fetch, wrong id');
-                    } else {
-                        const shell = response.data.productShellDesigns.find(val => val.productShellDesignId === Number(sessionStorage.getItem('shellId')));
-                        const diamonds = await getDiamonds();
-                        const materials = await getMaterials();
-                        const price = await getEstimatePrice(shell, diamonds, materials);
-
-                        setProductDesign(response.data);
-                        setShell(shell);
-                        setDiamonds(diamonds);
-                        setMaterials(materials);
-                        setEstimatedPrice(price);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            }
+        if (selectedDiamonds == null || selectedProduct == null) {
+            toast.info(`Please return for selection`);
+            navigate(`/build-your-own/choose-settings`);
+        } else {
+            fetchData();
         }
+    }, [])
 
-        getDesign();
-    }, []);
+    const fetchData = async () => {
+        const materials = await getMaterials(selectedProduct.selectedShell.productShellDesignId);
+        const estimated_price = await getEstimatePrice(selectedProduct.selectedShell, selectedDiamonds, materials);
+
+        setEstimatedPrice(estimated_price);
+        setMaterials(materials);
+    }
+
+    const getMaterials = async (shellId) => {
+        try {
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shellId}`, { headers });
+            if (!response.data || response.status === 204) {
+                toast.error("ERror cannot fetch materials");
+            } else {
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const getEstimatePrice = async (shell, diamonds, materials) => {
         let totalPrice = 0;
@@ -76,22 +78,18 @@ const CompleteProduct = () => {
         }
         try {
             const orderId = await createOrder();
-            const orderAmount = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const orderAmount = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`, { headers });
             if (!orderAmount || orderAmount.status === 204) {
                 console.log(`Can't find totalAmount of that order`);
             } else {
                 sessionStorage.setItem('currentOrderId', orderAmount.data.id);
                 sessionStorage.setItem('currentOrderType', orderAmount.data.orderType);
 
-                sessionStorage.removeItem('quantity');
-                sessionStorage.removeItem('shellId');
-                sessionStorage.removeItem('diamonds');
-                sessionStorage.removeItem('diamondPrices');
-                sessionStorage.removeItem('diamondImages');
-                sessionStorage.removeItem('designId');
-                sessionStorage.removeItem('designName');
-                sessionStorage.removeItem('designPrice');
-                sessionStorage.removeItem('designImage');
+                sessionStorage.removeItem('selected_product');
+                sessionStorage.removeItem('selected_diamonds');
                 makePayment(orderAmount.data.totalAmount * 0.3);
             }
         } catch (error) {
@@ -102,13 +100,16 @@ const CompleteProduct = () => {
     const createOrder = async () => {
         try {
             const object = {
-                productDesignId: sessionStorage.getItem('designId'),
-                productShellId: sessionStorage.getItem('shellId'),
-                diamondIds: sessionStorage.getItem('diamonds').split(','),
+                productDesignId: selectedProduct.productDesignId,
+                productShellId: selectedProduct.selectedShell.productShellDesignId,
+                diamondIds: selectedDiamonds.map(d => d.diamondId),
                 customerId: sessionStorage.getItem("customer_id"),
-                note: sessionStorage.getItem('note')
+                note: selectedProduct.note
             };
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/create-order-from-design`, object);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/create-order-from-design`, object, { headers });
             if (!response.data || response.status === 204) {
                 toast.error("Failed to fetch order");
             } else {
@@ -119,118 +120,75 @@ const CompleteProduct = () => {
         }
     }
 
-
-    const getDiamonds = async () => {
-        const chosenDiamonds = sessionStorage.getItem('diamonds').split(',');
-        let result = [];
-
-        for (const diamondId of chosenDiamonds) {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond/get-by-id/${diamondId}`);
-                if (!response.data || response.status === 204) {
-                    console.log(`Can't fetch diamond ${diamondId}`);
-                } else {
-                    result = [...result, response.data];
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        return result;
-    }
-
-    const getMaterials = async () => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${sessionStorage.getItem('shellId')}`);
-            if (!response.data || response.status === 204) {
-                toast.error("ERror cannot fetch materials");
-            } else {
-                return response.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    if (materials.length === 0 || productDesign === null || shell === null || diamonds.length === 0) {
-        return (
-            <>
-                Processing order
-            </>
-        )
-    } else {
-
-        return (
-            <>
-                <div className='container'>
-                    <div className={styles.container}>
-                        <div className={`row ${styles.imageSection}`}>
-                            <div className='row position-relative'>
-                                <div className={`${styles['image-container']} position-absolute left-0`} style={{ height: '20%' }}>
-                                    {diamonds.map(d =>
-                                        <img key={d.diamondId} src={d.image.split("|")[0]} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
-                                    )}
-                                </div>
-                                <img src={productDesign.designFile} className={styles.productImage} alt="Product Design" />
-                            </div>
-                        </div>
-                        <div className={styles.detailsSection}>
-                            <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
-                            <h4 className='fs-2' style={{ color: '#48AAAD' }}>{productDesign.designName} in {shell.shellName}</h4>
-                            <br />
-                            <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
-                            <ul>
-                                {diamonds.map(d =>
-                                    <li key={d.diamondId} style={{ listStyle: 'none' }}>
-                                        {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
-
-                                    </li>
-
+    return (
+        <>
+            <div className='container'>
+                <div className={styles.container}>
+                    <div className={`row ${styles.imageSection}`}>
+                        <div className='row position-relative'>
+                            <div className={`${styles['image-container']} position-absolute left-0`} style={{ height: '20%' }}>
+                                {selectedDiamonds.map(d =>
+                                    <img key={d.diamondId} src={d.image.split("|")[0]} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
                                 )}
-                            </ul>
-                            <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
-                            <ul>
-                                {
-                                    materials.map(m =>
-                                        <li key={m.material.materialId} style={{ listStyle: 'none' }}>
-                                            {m.material.materialName} - {m.weight} carat
-                                        </li>
-                                    )
-                                }
-                            </ul>
-                            <p className='fw-semibold fst-italic fs-4'>Product price: </p>
-                            <h5 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
-                                {estimatedPrice === null
-                                    ? 'Estimating price...'
-                                    : formatPrice(estimatedPrice)
-                                }
-                            </h5>
-                            <br />
-                            <div className="col">
-                                <h4 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h4>
+                            </div>
+                            <img src={selectedProduct.designFile} className={styles.productImage} alt="Product Design" />
+                        </div>
+                    </div>
+                    <div className={styles.detailsSection}>
+                        <h1 className='text-center fw-semibold mb-5' style={{ color: '#48AAAD' }}>MY BIJOUX ORDER</h1>
+                        <h4 className='fs-2' style={{ color: '#48AAAD' }}>{selectedProduct.designName} in {selectedProduct.selectedShell.shellName}</h4>
+                        <br />
+                        <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
+                        <ul>
+                            {selectedDiamonds.map(d =>
+                                <li key={d.diamondId} style={{ listStyle: 'none' }}>
+                                    {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
 
+                                </li>
+
+                            )}
+                        </ul>
+                        <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
+                        <ul>
+                            {
+                                materials.map(m =>
+                                    <li key={m.material.materialId} style={{ listStyle: 'none' }}>
+                                        {m.material.materialName} - {m.weight} carat
+                                    </li>
+                                )
+                            }
+                        </ul>
+                        <p className='fw-semibold fst-italic fs-4'>Product price: </p>
+                        <h5 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
+                            {estimatedPrice === null
+                                ? 'Estimating price...'
+                                : formatPrice(estimatedPrice)
+                            }
+                        </h5>
+                        <br />
+                        <div className="col">
+                            <h4 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h4>
+
+                            <div>
                                 <div>
-                                    <div>
-                                        <div style={{ marginLeft: '1vw' }}>
-                                            <p className='fs-6'>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
-                                            <p className='fs-6'>US & Int. Shipping: Free</p>
-                                            <p className='fs-6'>Taxes/Duties Estimate: 10% VAT</p>
-                                        </div>
-                                        <hr />
-                                        <p className='fs-4'>TOTAL PRICE: <span style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</span></p>
-                                        <div className='row'>
-                                            <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay 30% - {estimatedPrice !== null ? formatPrice(estimatedPrice * 1.1 * 0.3) : 'Estimating price...'}</button></div>
-                                        </div>
+                                    <div style={{ marginLeft: '1vw' }}>
+                                        <p className='fs-6'>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
+                                        <p className='fs-6'>US & Int. Shipping: Free</p>
+                                        <p className='fs-6'>Taxes/Duties Estimate: 10% VAT</p>
+                                    </div>
+                                    <hr />
+                                    <p className='fs-4'>TOTAL PRICE: <span style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</span></p>
+                                    <div className='row'>
+                                        <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay 30% - {estimatedPrice !== null ? formatPrice(estimatedPrice * 1.1 * 0.3) : 'Estimating price...'}</button></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </>
-        )
-    }
+            </div>
+        </>
+    )
 }
 
 export default CompleteProduct;

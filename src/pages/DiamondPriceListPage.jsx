@@ -62,7 +62,10 @@ const DiamondPriceListPage = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`, {headers});
             if (!response.data || response.status === 204) {
                 console.log(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
                 toast.info(`Cannot fetch diamond prices right now...`);

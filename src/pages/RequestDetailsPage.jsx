@@ -15,7 +15,10 @@ const RequestDetailPage = () => {
 
     const [order, setOrder] = useState(undefined);
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`)
+        const headers = {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        }
+        axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`,{headers})
             .then(
                 response => {
                     setOrder(response.data);

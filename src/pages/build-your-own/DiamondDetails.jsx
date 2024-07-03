@@ -20,10 +20,10 @@ const DiamondDetails = () => {
     const prevX = useRef(0)
 
     const navigate = useNavigate();
-
+    const selectedProduct = sessionStorage.getItem('selected_product') !== null ? JSON.parse(sessionStorage.getItem('selected_product')) : null;
 
     useEffect(() => {
-        if (sessionStorage.getItem('designId') === null) {
+        if (selectedProduct === null) {
             toast.info(`Please pick a setting first`);
             navigate('/build-your-own/choose-setting');
         } else {
@@ -70,19 +70,22 @@ const DiamondDetails = () => {
     }
 
     useEffect(() => {
-        if (diamond != null) {
+        if (diamond != null && spinning) {
             const interval = setInterval(() => {
                 moveImage(isForwardDirection.current)
             }, 50);
 
             return () => clearInterval(interval);
         }
-    }, [diamond]);
+    }, [diamond, spinning]);
     //Image stuff
 
     const fetchDiamond = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond/get-by-id/${diamondId}`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond/get-by-id/${diamondId}`, { headers });
             if (!response.data || response.status === 204) {
                 console.error(`Cannot find diamond with ID ${diamondId}`);
             } else {
@@ -99,56 +102,43 @@ const DiamondDetails = () => {
     };
 
     const isSelected = () => {
-        if (sessionStorage.getItem('diamonds') == null) {
+        if (sessionStorage.getItem('selected_diamonds') == null) {
             return false;
         } else {
-            return sessionStorage.getItem('diamonds').includes(diamondId.toString());
+
+            const selected_diamonds = JSON.parse(sessionStorage.getItem('selected_diamonds'));
+            return selected_diamonds.filter(d => d.diamondId == diamondId).length > 0;
         }
     }
 
     const selectDiamond = () => {
-        if (sessionStorage.getItem('diamonds') === null || sessionStorage.getItem('diamonds').length === 0) {
-            sessionStorage.setItem('diamonds', diamondId);
-            sessionStorage.setItem('diamondImages', diamond.image.split("|")[0]);
-            sessionStorage.setItem('diamondPrices', diamondPrice);
-        } else if (Number(sessionStorage.getItem('quantity')) > sessionStorage.getItem('diamonds').split(',').length) {
-            sessionStorage.setItem('diamonds', sessionStorage.getItem('diamonds').concat(`,${diamondId}`));
-            sessionStorage.setItem('diamondImages', sessionStorage.getItem('diamondImages').concat(`,${diamond.image.split("|")[0]}`));
-            sessionStorage.setItem('diamondPrices', sessionStorage.getItem('diamondPrices').concat(`,${diamondPrice}`));
+        let selected_diamonds = [];
+        if (sessionStorage.getItem('selected_diamonds') !== null) {
+            selected_diamonds = JSON.parse(sessionStorage.getItem('selected_diamonds'));
         }
-        toast.info(`You have selected ${sessionStorage.getItem('diamonds').split(',').length} diamonds out of ${sessionStorage.getItem('quantity')} slots`);
-
-        // console.log(sessionStorage.getItem('diamonds'));
-        // console.log(sessionStorage.getItem('diamondImages'));
-        // console.log(sessionStorage.getItem('diamondPrices'));
-
+        selected_diamonds = [
+            ...selected_diamonds,
+            {
+                ...diamond,
+                price: diamondPrice
+            }
+        ]
+        if (selected_diamonds.length <= selectedProduct.selectedShell.diamondQuantity) {
+            sessionStorage.setItem('selected_diamonds', JSON.stringify(selected_diamonds));
+        } else {
+            toast.info(`You have already selected ${selectedProduct.selectedShell.diamondQuantity} out of ${selectedProduct.selectedShell.diamondQuantity} diamonds!`);
+        }
         navigate("/build-your-own/choose-diamond");
     }
 
     const removeSelection = () => {
-        let diamonds = sessionStorage.getItem('diamonds').split(',');
-        let images = sessionStorage.getItem('diamondImages').split(',');
-        let prices = sessionStorage.getItem('diamondPrices').split(',');
-
-        // Get the index of the diamond to be removed
-        let index = diamonds.indexOf(diamondId.toString());
-
-        if (index !== -1) {
-            // Remove the diamond, image, and price from their respective lists
-            diamonds.splice(index, 1);
-            images.splice(index, 1);
-            prices.splice(index, 1);
+        let selected_diamonds = JSON.parse(sessionStorage.getItem('selected_diamonds'));
+        selected_diamonds = selected_diamonds.filter(d => d.diamondId != diamondId)
+        if (selected_diamonds.length > 0) {
+            sessionStorage.setItem('selected_diamonds', JSON.stringify(selected_diamonds));
+        } else {
+            sessionStorage.removeItem('selected_diamonds');
         }
-
-        // Update the session storage
-        sessionStorage.setItem('diamonds', diamonds.join(','));
-        sessionStorage.setItem('diamondImages', images.join(','));
-        sessionStorage.setItem('diamondPrices', prices.join(','));
-
-        // console.log(sessionStorage.getItem('diamonds'));
-        // console.log(sessionStorage.getItem('diamondImages'));
-        // console.log(sessionStorage.getItem('diamondPrices'));
-
         navigate("/build-your-own/choose-diamond");
     }
 
@@ -172,7 +162,7 @@ const DiamondDetails = () => {
                                                 }
                                             }} >
                                             </img>
-                                            <FontAwesomeIcon hidden={diamond.image.split("|").length <= 1} icon={faUnity} style={{marginLeft: '1rem', marginTop: '1rem', fontSize: '2rem'}} className='position-absolute start-0 top-0' />
+                                            <FontAwesomeIcon hidden={diamond.image.split("|").length <= 1} icon={faUnity} style={{ marginLeft: '1rem', marginTop: '1rem', fontSize: '2rem' }} className='position-absolute start-0 top-0' />
                                         </div>
                                         : <div style={{ cursor: 'grab' }} onClick={() => setSpinning(false)} onMouseMove={handleCursorMoveImage}>
                                             {

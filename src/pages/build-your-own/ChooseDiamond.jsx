@@ -76,7 +76,7 @@ const ChooseDiamond = () => {
     useDocumentTitle('Find The Right Diamond For You');
 
     const setup = async () => {
-        if (sessionStorage.getItem('designId') === null) {
+        if (sessionStorage.getItem('selected_product') == null) {
             toast.info(`Please pick a setting first`);
             navigate('/build-your-own/choose-setting');
         } else {
@@ -102,7 +102,10 @@ const ChooseDiamond = () => {
                 minPrice: minPrice,
                 maxPrice: maxPrice
             }
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query, {headers});
             if (!response.data || response.status === 204) {
                 toast.error(`Cannot fetch data`);
             } else {
@@ -142,8 +145,8 @@ const ChooseDiamond = () => {
 
         setOrigin("NATURAL");
 
-        setPageNo(0);
-        setPageSize(40);
+        setPageNo(DEFAULT_PAGE_NO);
+        setPageSize(DEFAULT_PAGE_SIZE);
 
         setup();
     }

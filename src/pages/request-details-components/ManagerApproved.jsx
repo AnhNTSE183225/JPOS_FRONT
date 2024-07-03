@@ -15,7 +15,10 @@ const ManagerApproved = ({ order }) => {
 
   const forwardQuotation = () => {
     if (sessionStorage.getItem('staff') !== null) {
-      axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/forward-quotation`)
+      const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      }
+      axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/forward-quotation`, { headers })
         .then(
           response => {
             console.log(response.data);

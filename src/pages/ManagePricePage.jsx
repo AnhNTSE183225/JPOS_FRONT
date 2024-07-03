@@ -55,7 +55,10 @@ const ManagePricePage = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`,{headers});
             if (!response.data || response.status === 204) {
                 console.log(`Can't fetch from ${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
             } else {
@@ -68,7 +71,10 @@ const ManagePricePage = () => {
 
     const updatePrice = async () => {
         try {
-            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/diamond-price/update`, selectedPrice);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/diamond-price/update`, selectedPrice, {headers});
             if (!response.data || response.status === 204) {
                 console.log(`Can't update`);
                 toast.error(`Something wen't wrong, you cannot update`);
@@ -103,7 +109,10 @@ const ManagePricePage = () => {
                     cut: cut,
                     price: newPrice
                 }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`,object);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`,object,{headers});
                 if(!response.data || response.status === 204) {
                     toast.error(`Error creating`);
                 } else {

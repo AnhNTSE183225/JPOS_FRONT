@@ -8,48 +8,32 @@ import { faRightLong } from '@fortawesome/free-solid-svg-icons';
 const BuildYourOwnNav = () => {
 
     const navigate = useNavigate();
-    const [designId, setDesignId] = useState(null);
-    const [diamonds, setDiamonds] = useState(null);
+    const selectedProduct = sessionStorage.getItem('selected_product') !== null ? JSON.parse(sessionStorage.getItem('selected_product')) : null;
+    const selectedDiamonds = sessionStorage.getItem('selected_diamonds') !== null ? JSON.parse(sessionStorage.getItem('selected_diamonds')) : null;
 
     const calculateTotal = () => {
-        if (sessionStorage.getItem('diamondPrices') === null) {
+        if(selectedDiamonds == null) {
             return 0;
         } else {
             let total = 0;
-            for (const price of sessionStorage.getItem('diamondPrices').split(',')) {
-                total += Number(price);
+            for(const diamond of selectedDiamonds) {
+                total += diamond.price;
             }
             return total;
         }
     }
 
     const checkCompletion = () => {
-        if (sessionStorage.getItem('designId') == null) {
-            return false;
-        } else if (sessionStorage.getItem('diamonds') == null || sessionStorage.getItem('diamonds').length == 0) {
-            return false;
-        } else if (sessionStorage.getItem('diamonds').split(',').length !== Number(sessionStorage.getItem('quantity'))) {
-            return false;
-        } else {
-            return true;
+        if(selectedProduct != null && selectedDiamonds != null) {
+            if(selectedDiamonds.length == selectedProduct.selectedShell.diamondQuantity) {
+                return true;
+            }
         }
+        return false;
     }
 
-    useEffect(() => {
-        if (sessionStorage.getItem('designId') !== null) {
-            setDesignId(sessionStorage.getItem('designId'));
-        } else {
-            setDesignId(null);
-        }
-    }, [sessionStorage.getItem('designId')]);
-
-    useEffect(() => {
-        if (sessionStorage.getItem('diamonds') !== null && sessionStorage.getItem('diamonds').length > 0) {
-            setDiamonds(sessionStorage.getItem('diamonds'));
-        } else {
-            setDiamonds(null);
-        }
-    }, [sessionStorage.getItem('diamonds')]);
+    console.log(selectedDiamonds);
+    console.log(selectedProduct);
 
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
@@ -60,7 +44,7 @@ const BuildYourOwnNav = () => {
                     </div>
 
                     {
-                        designId == null
+                        selectedProduct == null
                             ? <>
                                 <p className='fs-5 mt-3'>Choose a setting</p>
                             </>
@@ -68,16 +52,16 @@ const BuildYourOwnNav = () => {
                                 <div className="col">
                                     <div className="container-fluid">
                                         <div className={`"row fw-bold " ${styles['text-ellipsis']}`}>
-                                            {sessionStorage.getItem('designName')}
+                                            {selectedProduct.designName}
                                         </div>
                                         <div className="row justify-content-around">
-                                            <b className='text' style={{ color: '#48AAAD' }}>{sessionStorage.getItem('designPrice')}</b>
+                                            <b className='text' style={{ color: '#48AAAD' }}>{formatPrice(selectedProduct.price)}</b>
                                         </div>
                                     </div>
                                 </div>
                                 <div className={`col-2 ${styles['image-col']} `}>
-                                    <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/setting-details/${sessionStorage.getItem('designId')}`}>
-                                        <img crossOrigin='anonymous' src={sessionStorage.getItem('designImage')} alt="" />
+                                    <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/setting-details/${selectedProduct.productDesignId}`}>
+                                        <img crossOrigin='anonymous' src={selectedProduct.designFile} alt="" />
                                     </Link>
                                 </div>
                             </>
@@ -88,16 +72,35 @@ const BuildYourOwnNav = () => {
                     <div className="col-1" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <h2>2.</h2>
                     </div>
-                    <div className='col' style={{height: '100%',boxSizing: 'border-box'}}>
-                        <div className="container-fluid" style={{boxSizing: 'border-box', height: '100%'}}>
-                            <div className="row" style={{boxSizing: 'border-box', height: '100%'}}>
+                    <div className='col' style={{ height: '100%', boxSizing: 'border-box' }}>
+                        <div className="container-fluid" style={{ boxSizing: 'border-box', height: '100%' }}>
+                            <div className="row" style={{ boxSizing: 'border-box', height: '100%' }}>
                                 {
-                                    diamonds === null
+                                    selectedDiamonds === null
                                         ? <>
                                             <p className='fs-5 mt-3'>Choose diamonds</p>
                                         </>
                                         : <>
-                                            {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
+                                            {
+                                                selectedDiamonds.map((diamond, index) => (
+                                                    <div key={index} className="col-2 p-0" style={{ boxSizing: 'border-box', height: '100%', marginRight: '5px' }}>
+                                                        <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${diamond.diamondId}`}>
+                                                            <img crossOrigin='anonymous' className='img-fluid' src={diamond.image.split("|")[0]} alt="" />
+                                                        </Link>
+                                                    </div>
+                                                ))
+                                            }
+                                            <div className="col-3 p-0" style={{ boxSizing: 'border-box', height: '100%' }}>
+                                                <div className="container-fluid">
+                                                    <div className="row">
+                                                        <b>{selectedDiamonds.length}/{selectedProduct.selectedShell.diamondQuantity}</b>
+                                                    </div>
+                                                    <div className="row">
+                                                        <b>Total: <span className='text' style={{ color: '#48AAAD' }}>{formatPrice(calculateTotal())}</span></b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
                                                 <div key={index} className="col-2 p-0" style={{boxSizing: 'border-box', height: '100%', marginRight: '5px'}}>
                                                     <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
                                                         <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
@@ -113,7 +116,7 @@ const BuildYourOwnNav = () => {
                                                         <b>Total: <span className='text' style={{ color: '#48AAAD' }}>{formatPrice(calculateTotal())}</span></b>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </>
                                 }
                             </div>

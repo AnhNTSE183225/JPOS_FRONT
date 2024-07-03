@@ -8,7 +8,10 @@ const ManageDesignPrice = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/all`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/all`, {headers});
             if(!response.data || response.status === 204) {
                 toast.info(`Can't fetch data`);
             } else {

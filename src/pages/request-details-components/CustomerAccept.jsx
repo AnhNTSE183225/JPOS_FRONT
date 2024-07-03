@@ -40,6 +40,9 @@ const CustomerAccept = ({ order }) => {
                 amountPaid >= order.totalAmount * 0.3
             ) {
                 setProcessing(true);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
                 const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${order.id}/confirm-deposit`,
                     {
                         paymentDate: paymentDate,
@@ -47,6 +50,9 @@ const CustomerAccept = ({ order }) => {
                         paymentStatus: 'deposit',
                         amountPaid: amountPaid,
                         amountTotal: order.totalAmount
+                    },
+                    {
+                        headers
                     }
                 )
                 if (!response.data || response.status === 204) {

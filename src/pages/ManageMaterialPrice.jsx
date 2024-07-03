@@ -46,8 +46,11 @@ const ManageMaterialPrice = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/materialPrices/find-all`);
-            const response2 = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/materialPrices/find-all`,{headers});
+            const response2 = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`,{headers});
             if (!response.data || response.status === 204 || !response2.data || response2.status === 204) {
                 toast.info(`Cannot fetch data`);
             } else {
@@ -69,7 +72,10 @@ const ManageMaterialPrice = () => {
                     effectiveDate: formatBackendDate(activeDate),
                     materialPrice: newPrice
                 }
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/materialPrices/update`, object);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/materialPrices/update`, object, {headers});
                 if (!response.data || response.status === 204) {
                     toast.error(`Cannot update`);
                 } else {

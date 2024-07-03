@@ -18,18 +18,20 @@ const PendingDesign = ({ order }) => {
         try {
             setProcessing(true);
             let response = null;
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
             if (accepted) {
-                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/acceptDesign`);
+                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/acceptDesign`, {headers});
             } else {
                 response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/refuseDesign`, {
                     note: note
-                });
+                },{headers});
             }
             if (!response.data || response.status === 204) {
                 toast.error("Something went wrong, failed to submit");
             } else {
                 setProcessing(false);
-                console.log(response.data);
                 navigate("/profile");
             }
         } catch (error) {

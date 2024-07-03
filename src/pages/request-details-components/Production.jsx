@@ -24,7 +24,10 @@ const Production = ({ order }) => {
             if (imageUrls.length <= 0) {
                 toast.info("Please upload your completed product's image!");
             } else {
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product`, imageUrls.join("|"));
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product`, imageUrls.join("|"), {headers});
                 if (!response.data || response.status === 204) {
                     toast.error("Something went wrong, can't submit");
                 } else {

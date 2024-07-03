@@ -49,22 +49,25 @@ const RequestPage = () => {
     const fetchData = async () => {
 
         let response = null;
+        const headers = {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        }
 
         switch (staff.staffType) {
             case "sale":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}`,{headers});
                 break;
             case "manage":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/manager/orders`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/manager/orders`,{headers});
                 break;
             case "design":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${staff.staffId}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${staff.staffId}`,{headers});
                 break;
             case "produce":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${staff.staffId}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${staff.staffId}`,{headers});
                 break;
             default:
-                response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`);
+                response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`,{headers});
         }
 
         if (response.status === 204) {

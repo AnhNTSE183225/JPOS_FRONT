@@ -2,7 +2,10 @@ import axios from 'axios';
 
 export const fetchMaterialPrice = async (id) => {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/materialPrices/${id}`);
+        const headers = {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        }
+        const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/materialPrices/${id}`, {headers});
         if (response.status === 204) {
             return 0;
         } else {
@@ -15,7 +18,9 @@ export const fetchMaterialPrice = async (id) => {
 };
 
 export const fetchDiamondPrice = async (origin, shape, caratWeight, color, clarity, cut) => {
-
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    }
     const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-single-price`,
         {
             origin: origin,
@@ -24,6 +29,9 @@ export const fetchDiamondPrice = async (origin, shape, caratWeight, color, clari
             caratWeight: caratWeight,
             color: color,
             shape: shape
+        },
+        {
+            headers
         }
     )
     if (!response.data || response.status === 204) {

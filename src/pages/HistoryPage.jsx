@@ -14,7 +14,10 @@ const HistoryPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`, {headers});
                 if (!response.data || response.status === 204) {
                     console.log("Can't fetch data");
                 } else {

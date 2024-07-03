@@ -40,16 +40,21 @@ const ManageStaffPage = () => {
         const updateStaff = async () => {
             try {
                 console.log(`${import.meta.env.VITE_jpos_back}/api/staff/update`);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
                 const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/staff/update`, {
                     ...activeStaff,
                     name: name,
                     phone: phone,
                     staffType: staffType
+                }, {
+                    headers
                 })
-                if(!response.data || response.status === 204) {
+                if (!response.data || response.status === 204) {
                     console.log(`Can't update`);
                 } else {
-                    if(response.data > 0) {
+                    if (response.data > 0) {
                         toast.success(`Update successful`);
                     }
                     fetchData();
@@ -78,7 +83,7 @@ const ManageStaffPage = () => {
                         <span className={`input-group-text ${styles['input-label']}`}>Dept.</span>
                         <select className="form-select" type="text" value={staffType} onChange={(e) => setStaffType(e.target.value)} >
                             {
-                                ['sale','design','produce','manage'].map((value,index) => (
+                                ['sale', 'design', 'produce', 'manage'].map((value, index) => (
                                     <option key={index} value={value}>{DEPARTMENT[value]}</option>
                                 ))
                             }
@@ -96,7 +101,10 @@ const ManageStaffPage = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff/find-all`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff/find-all`,{headers});
             if (!response.data || response.status == 204) {
                 toast.info(`No info`);
             } else {
@@ -116,9 +124,12 @@ const ManageStaffPage = () => {
     const fetchRequestsCount = async (type, id) => {
         let orders_count = 0;
         let response = null;
+        const headers = {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        }
         switch (type) {
             case 'sale':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${id}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${id}`,{headers});
                 if (!response.data || response.status === 204) {
                     orders_count = 0;
                 } else {
@@ -126,7 +137,7 @@ const ManageStaffPage = () => {
                 }
                 break;
             case 'design':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${id}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${id}`,{headers});
                 if (!response.data || response.status === 204) {
                     orders_count = 0;
                 } else {
@@ -134,7 +145,7 @@ const ManageStaffPage = () => {
                 }
                 break;
             case 'produce':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${id}`);
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${id}`,{headers});
                 if (!response.data || response.status === 204) {
                     orders_count = 0;
                 } else {
