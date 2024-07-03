@@ -18,6 +18,7 @@ const CompleteProduct = () => {
     const [estimatedPrice, setEstimatedPrice] = useState(null);
     const selectedDiamonds = sessionStorage.getItem('selected_diamonds') !== null ? JSON.parse(sessionStorage.getItem('selected_diamonds')) : null;
     const selectedProduct = sessionStorage.getItem('selected_product') !== null ? JSON.parse(sessionStorage.getItem('selected_product')) : null;
+    const customer = sessionStorage.getItem('customer') !== null ? JSON.parse(sessionStorage.getItem('customer')) : null;
 
     useDocumentTitle('Complete Bijoux Order');
     useEffect(() => {
@@ -71,7 +72,7 @@ const CompleteProduct = () => {
     }
 
     const clickPay = async () => {
-        if (sessionStorage.getItem('customer_id') == null) {
+        if (sessionStorage.getItem('customer') == null) {
             toast.info(`You need to be logged in!`);
             navigate('/login');
             return;
@@ -103,7 +104,7 @@ const CompleteProduct = () => {
                 productDesignId: selectedProduct.productDesignId,
                 productShellId: selectedProduct.selectedShell.productShellDesignId,
                 diamondIds: selectedDiamonds.map(d => d.diamondId),
-                customerId: sessionStorage.getItem("customer_id"),
+                customerId: customer.customerId,
                 note: selectedProduct.note
             };
             const headers = {

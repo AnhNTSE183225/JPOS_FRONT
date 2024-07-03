@@ -33,7 +33,10 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchProductionStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-production`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-production`, { headers });
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -46,7 +49,10 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchDesignStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-design`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-design`, { headers });
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -59,7 +65,10 @@ const AssignColumn = ({ order, fetchOrder }) => {
 
     const fetchSaleStaff = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-sale`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/staff-sale`, { headers });
             if (!response.data || response.status === 204) {
                 toast.error(`Something went wrong went fetching staff members`);
             } else {
@@ -74,7 +83,10 @@ const AssignColumn = ({ order, fetchOrder }) => {
         if (selectedProductionStaff.length > 0 || selectedSaleStaff.length > 0 || selectedDesignStaff.length > 0) {
             try {
                 //console.log(`POST ${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/assign?orderId=${order.id}&${selectedProductionStaff.length > 0 ? `productionStaffId=${selectedProductionStaff}` : ''}&${selectedDesignStaff.length > 0 ? `designStaffId=${selectedDesignStaff}` : ''}&${selectedSaleStaff.length > 0 ? `saleStaffId=${selectedSaleStaff}` : ''}`, { headers });
                 if (!response.data || response.status === 204) {
                     toast.error(`Error submitting assignment form`);
                 } else {
@@ -188,7 +200,10 @@ const OrderDetails = () => {
     const fetchOrder = async () => {
         try {
             //(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`)
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`);
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`, { headers });
             if (!response.data || response.status == 204) {
                 toast.error(`Error fetching order`);
             } else {

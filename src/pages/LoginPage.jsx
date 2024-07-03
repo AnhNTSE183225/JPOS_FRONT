@@ -38,13 +38,13 @@ const LoginPage = () => {
                         return;
                     } else if (response.data.account.staffId !== undefined) {
                         console.log(response.data);
-                        // sessionStorage.setItem("staff", JSON.stringify(response.data));
-
-                        // if (response.data.staffType == 'manage') {
-                        //     navigate("/staff/manage-requests")
-                        // } else {
-                        //     navigate("/staff/request");
-                        // }
+                        sessionStorage.setItem('staff',JSON.stringify(response.data.account));
+                        sessionStorage.setItem('token',response.data.token);
+                        if (response.data.account.staffType == 'manage') {
+                            navigate("/staff/manage-requests")
+                        } else {
+                            navigate("/staff/request");
+                        }
                         return;
                     }
                 }
