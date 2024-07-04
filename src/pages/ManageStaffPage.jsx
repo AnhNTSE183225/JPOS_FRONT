@@ -184,6 +184,24 @@ const ManageStaffPage = () => {
         return orders_count;
     }
 
+    const deleteStaff = async (id) => {
+        try {
+            const headers = {
+                'Authorization' : `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.delete(`${import.meta.env.VITE_jpos_back}/api/staff/delete/${id}`, {headers});
+            if(response.status === 200) {
+                toast.success(`Delete successfully`);
+            } else {
+                toast.error(`Unable to delete staff`);
+            }
+            setAnchor(null);
+            setRefresh(r => !r);
+        } catch (error) {
+            toast.error(`Can't delete staff`);
+        }
+    }
+
     useEffect(() => {
         fetchData();
     }, [])
@@ -216,16 +234,18 @@ const ManageStaffPage = () => {
             </div>
             <div className="row mb-3">
 
-                <table className="table">
+                <table className="table text-center">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
                             <th>Department</th>
                             <th>Contact</th>
-                            <th className="text-center">Requests</th>
-                            <th className="text-center">Status</th>
-                            <th className="text-center">Actions</th>
+                            <th>Requests</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -235,6 +255,8 @@ const ManageStaffPage = () => {
                                     <tr key={index}>
                                         <td>{value.staffId}</td>
                                         <td>{value.name}</td>
+                                        <td>{value.account.username}</td>
+                                        <td>{value.account.email}</td>
                                         <td>{DEPARTMENT[value.staffType]}</td>
                                         <td>{value.phone}</td>
                                         <td className="text-center">{requestsCount[index]}</td>
@@ -260,7 +282,7 @@ const ManageStaffPage = () => {
                             setOpenDialog(true);
                             setAnchor(null);
                         }}>Update</button>
-                        <button>Delete</button>
+                        <button onClick={() => deleteStaff(activeStaff.staffId)}>Delete</button>
                     </div>
                 </BasePopup>
                 <UpdateDialog />

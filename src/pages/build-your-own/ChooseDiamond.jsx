@@ -152,10 +152,10 @@ const ChooseDiamond = () => {
     }
 
     const isSelected = (id) => {
-        if (sessionStorage.getItem('diamonds') === null || sessionStorage.getItem('diamonds').length === 0) {
+        if (sessionStorage.getItem('selected_diamonds') === null) {
             return false;
         } else {
-            return sessionStorage.getItem('diamonds').split(',').includes(id.toString());
+            return JSON.parse(sessionStorage.getItem('selected_diamonds')).filter(d => d.diamondId == id).length > 0;
         }
     }
 

@@ -1,6 +1,6 @@
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill, faGem, faGauge } from '@fortawesome/free-solid-svg-icons';
+import { faInbox, faClockRotateLeft, faCircleExclamation, faUsers, faMoneyBill, faGem, faGauge, faDiamond, faRing, faHammer } from '@fortawesome/free-solid-svg-icons';
 import img from '../assets/FullLogo.png';
 import styles from '../css/Sidebar.module.css';
 import { useEffect, useState } from 'react';
@@ -23,17 +23,29 @@ const SidebarAdmin = () => {
                 </Link>
                 <ul className="nav nav-pills flex-column mb-auto">
                     <li>
-                        <Link to="/admin/dashboard" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('dashboard') ? styles['active'] : ''}`}>
+                        <Link to="/admin/dashboard" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('dashboard') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faGauge} />
                             Dashboard
                         </Link>
-                        <Link to="/admin/manage-staff" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-staff') ? styles['active'] : ''}`}>
+                        <Link to="/admin/manage-staff" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-staff') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faUsers} />
                             Manage staff
                         </Link>
-                        <Link to="/admin/manage-customer" className={`${styles['nav-link']} nav-link py-3 px-5 my-1 ${location.includes('manage-customer') ? styles['active'] : ''}`}>
+                        <Link to="/admin/manage-customer" className={`${styles['nav-link']} nav-link py-3 pe-3 my-1 ${location.includes('manage-customer') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faUsers} />
                             Manage customer
+                        </Link>
+                        <Link to="/admin/manage-diamonds" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-diamonds') ? styles['active'] : ''}`}>
+                            <FontAwesomeIcon className='me-3' icon={faGem} />
+                            Manage diamonds
+                        </Link>
+                        <Link to="/admin/manage-materials" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-materials') ? styles['active'] : ''}`}>
+                            <FontAwesomeIcon className='me-3' icon={faHammer} />
+                            Manage materials
+                        </Link>
+                        <Link to="/admin/manage-designs" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-designs') ? styles['active'] : ''}`}>
+                            <FontAwesomeIcon className='me-3' icon={faRing} />
+                            Manage designs
                         </Link>
                     </li>
                 </ul>

@@ -39,6 +39,10 @@ import ManageDesignPrice from './pages/ManageDesignPrice';
 import AdminFrame from './pages/frame/AdminFrame';
 import Dashboard from './pages/Dashboard';
 import ManageCustomer from './pages/ManageCustomer';
+import ManageDiamonds from './pages/admin/ManageDiamonds';
+import ManageMaterials from './pages/admin/ManageMaterials';
+import ManageDesigns from './pages/admin/ManageDesigns';
+import EditDiamond from './pages/admin/EditDiamond';
 
 
 
@@ -191,6 +195,22 @@ const router = createBrowserRouter([
       {
         path: 'manage-customer',
         element: <ManageCustomer />
+      },
+      {
+        path: 'manage-diamonds',
+        element: <ManageDiamonds/>
+      },
+      {
+        path: 'manage-diamonds/create',
+        element: <EditDiamond/>
+      },
+      {
+        path: 'manage-materials',
+        element: <ManageMaterials/>
+      },
+      {
+        path: 'manage-designs',
+        element: <ManageDesigns/>
       }
     ]
   },

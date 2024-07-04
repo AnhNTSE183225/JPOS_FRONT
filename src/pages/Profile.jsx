@@ -9,12 +9,24 @@ import axios from 'axios';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
-    const [customer,setCustomer] = useState(JSON.parse(sessionStorage.getItem('customer')));
-
+    const customer = sessionStorage.getItem('customer') != null ? JSON.parse(sessionStorage.getItem('customer')) : null
+    const [name, setName] = useState(customer != null ? customer.name : null);
+    const [email, setEmail] = useState(customer != null ? customer.account.email : null);
+    const [address, setAddress] = useState(customer != null ? customer.address : null);
+    const [refresh, setRefresh] = useState(false);
     useDocumentTitle("My Account");
 
+    useEffect(() => {
+        if (customer != null) {
+            setName(customer.name);
+            setEmail(customer.account.email);
+            setAddress(customer.address);
+        }
+    }, [refresh])
+
     const saveChanges = async () => {
-        if (customer.name.length > 0 &&
+        if (customer != null &&
+            customer.name.length > 0 &&
             customer.account.email.length > 0 &&
             customer.address.length > 0
         ) {
@@ -22,12 +34,21 @@ const ProfilePage = () => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update?customerId=${customer.customerId}&email=${customer.account.email}&name=${customer.name}&address=${customer.address}`,{headers});
+                const object = {
+                    ...customer,
+                    account: {
+                        ...customer.account,
+                        email: email
+                    },
+                    address: address,
+                    name: name
+                }
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update`, object, { headers });
                 if (!response.data || response.status == 204) {
                     toast.error(`Error updating profile`);
                 } else {
-                    setCustomer(response.data);
-                    sessionStorage.setItem('customer',JSON.stringify(response.data));
+                    sessionStorage.setItem('customer', JSON.stringify(response.data));
+                    setRefresh(r => !r);
                     toast.success(`Changes saved`);
                 }
             } catch (error) {
@@ -55,8 +76,8 @@ const ProfilePage = () => {
                                 type="name"
                                 className="form-control"
                                 id="floatingInputGrid"
-                                value={customer.name}
-                                onChange={(e) => setCustomer(c => ({...c,name: e.target.value}))}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                             />
                             <label htmlFor="floatingInputGrid">Name</label>
                         </div>
@@ -67,16 +88,8 @@ const ProfilePage = () => {
                                 type="email"
                                 className="form-control"
                                 id="floatingInputGrid"
-                                value={customer.account.email}
-                                onChange={(e) => setCustomer(c => (
-                                    {
-                                        ...c,
-                                        account: {
-                                            ...c.account,
-                                            email: e.target.value
-                                        }
-                                    }
-                                ))}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                             <label htmlFor="floatingInputGrid">Email address</label>
                         </div>
@@ -87,8 +100,8 @@ const ProfilePage = () => {
                                 type="address"
                                 className="form-control"
                                 id="floatingInputGrid"
-                                value={customer.address}
-                                onChange={(e) => setCustomer(c => ({...c,address: e.target.value}))}
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
                             />
                             <label htmlFor="floatingInputGrid">Address</label>
                         </div>
