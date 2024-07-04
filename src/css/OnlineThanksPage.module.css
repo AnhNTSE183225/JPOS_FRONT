@@ -1,9 +1,14 @@
 .continueShoppingButton {
-    background-color: #48AAAD;
-    color: #fff;
-    transition: background-color 0.3s ease;
+    border-radius: 0;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    transition: 0.3s;
 }
 
 .continueShoppingButton:hover {
-    background-color: #2f7778;
+    border-radius: 0;
+    background-color: black;
+    color: white;
+    transform:scale(0.98)
 }

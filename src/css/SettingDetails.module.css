@@ -153,10 +153,12 @@
     border: none;
     cursor: pointer;
     width: 100%;
+    transition: 0.3s;
 }
 
 .button:hover {
     background-color: #327c7f;
+    transform: scale(0.98);
 }
 
 .secondary-button {

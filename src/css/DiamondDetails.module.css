@@ -103,10 +103,12 @@
     border: none;   
     cursor: pointer;
     width: 100%;
+    transition: 0.3s;
 }
 
 .primaryButton:hover {
-    background-color: #2d9596;
+    background-color: #327c7f;
+    transform: scale(0.98);
 }
 
 .removeButton {
@@ -116,10 +118,12 @@
     color: white;
     cursor: pointer;
     width: 100%;
+    transition: 0.3s;
 }
 
 .removeButton:hover {
     background-color: #9e0000;
+    transform: scale(0.98);
 }
 
 .secondaryButton {

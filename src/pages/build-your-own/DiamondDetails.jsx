@@ -211,9 +211,6 @@ const DiamondDetails = () => {
                                                     : <button onClick={selectDiamond} className={styles.primaryButton}>Select this diamond</button>
                                             }
                                         </div>
-                                        <div className='col'>
-                                            <button className={styles.secondaryButton}>Consult an expert</button>
-                                        </div>
                                     </div>
                                 </div>
                                 <div className={`row ${styles.paymentOptions}`}>

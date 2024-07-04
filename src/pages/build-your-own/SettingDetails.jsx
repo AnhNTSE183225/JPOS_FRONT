@@ -229,9 +229,6 @@ const SettingDetails = () => {
                                 <div className="col">
                                     <button className={styles.button} onClick={handleChoose}>Select this setting</button>
                                 </div>
-                                <div className="col">
-                                    <button className={`${styles.button} ${styles["secondary-button"]}`}>Consult an expert</button>
-                                </div>
                             </div>
                             <div className={`mt-4 ${styles["toggle-button"]}`} onClick={toggleShellDetails}>
                                 <p className="fs-5">Shell Details</p>

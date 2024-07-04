@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchMaterialPrice } from "../helper_function/FetchPriceFunctions";
 import axios from "axios";
+import styles from '/src/css/MaterialPriceListPage.module.css';
+import { formatDate } from "../helper_function/ConvertFunction";
 
 const MaterialPriceListPage = () => {
 
@@ -30,28 +32,45 @@ const MaterialPriceListPage = () => {
     useEffect(() => {
         fetchData();
     }, [])
-    
+
     return (
-        <div className="container-fluid">
+        <div className={`container ${styles[`list-page`]}`}>
+            <div className={`${styles[`page-title`]}`}>
+                <p>Precious Material Price List</p>
+            </div>
+            <div>
+                <p>Last Updated: {formatDate(new Date())}</p>
+            </div>
             {
                 materials !== null
-                    ? <>
-                        {
-                            materials.map((value, index) => (
-                                <div key={index}>
-                                    <p>
-                                        {value.materialId}
-                                    </p>
-                                    <p>
-                                        {value.materialName}
-                                    </p>
-                                    <p>
-                                        {value.price}
-                                    </p>
-                                </div>
-                            ))
-                        }
-                    </>
+                    ?
+                    <table className="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRECIOUS MATERIAL <span style={{fontWeight: "normal"}}>(carat)</span></th>
+                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRICE <span style={{fontWeight: "normal"}}>(USD)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody className={`${styles[`content`]}`}>
+
+                            {
+                                materials.map((value, index) => (
+                                    <tr key={index}>
+                                        {
+                                            value.materialName.replaceAll("_", " ").split(" ").map((word, i) => i === 0
+                                                    ? word.charAt(0).toUpperCase() + word.slice(1)
+                                                    : word.toUpperCase()
+                                                ).join(" ")
+                                        }
+                                        <td>
+                                            {value.price}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+
+                        </tbody>
+                    </table>
                     : <></>
             }
         </div>

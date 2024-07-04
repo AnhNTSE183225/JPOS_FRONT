@@ -26,9 +26,9 @@ const OnlineThanksPage = () => {
                         <img src={complete} alt="Complete" className="img-fluid mb-4" style={{ maxWidth: '200px' }} />
                         <h1 className="mb-3">Thank You for Your Purchase!</h1>
                         <p className="lead mb-4">Your order has been placed successfully.</p>
-                        <Link to="/build-your-own/choose-setting" onClick={clear} className={`btn btn-lg mb-3 ${styles.continueShoppingButton}`}>Continue Shopping</Link>
+                        <Link to="/build-your-own/choose-setting" onClick={clear} className={`col-2 btn btn-lg mb-3 ${styles.continueShoppingButton}`}>Continue Shopping</Link>
                         <br />
-                        <Link to="/profile/your-orders" className="btn btn-secondary btn-lg">View Order Details</Link>
+                        <Link to="/profile/your-orders" className={`col-2 btn btn-lg mb-3 ${styles.continueShoppingButton}`}>View Order Details</Link>
                     </div>
                 </div>
             </div>
