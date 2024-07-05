@@ -5,14 +5,20 @@ import styles from '/src/css/RegisterPage.module.css';
 import useDocumentTitle from '../components/Title';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { validateString } from '../helper_function/Validation';
 
 const RegisterPage = () => {
 
     const [username, setUsername] = useState('');
+    const validateUsername = validateString(username,8,16,null,'^[a-zA-Z0-9]+$');
     const [email, setEmail] = useState('');
+    const validateEmail = validateString(email,8,254,'^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
     const [password, setPassword] = useState('');
+    const validatePassword = validateString(password,8,16);
     const [fullName, setFullName] = useState('');
+    const validateFullName = validateString(fullName,8,20);
     const [address, setAddress] = useState('');
+    const validateAddress = validateString(address,10,100);
     const navigate = useNavigate();
 
     useDocumentTitle('Register');
@@ -34,7 +40,12 @@ const RegisterPage = () => {
     }
 
     const customerRegister = async () => {
-        if (username.length > 0 && email.length > 0 && password.length > 0 && fullName.length > 0 && address.length > 0) {
+        if (
+            validateUsername.result &&
+            validateEmail.result &&
+            validatePassword.result &&
+            validateAddress.result
+        ) {
 
             try {
                 const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/v1/auth/register`, {
@@ -62,35 +73,40 @@ const RegisterPage = () => {
                 }
             }
         } else {
-            toast.info(`Please fill in all details! (username, email, password, name, address)`);
+            toast.info(`Please fulfill all requirements`);
         }
     }
 
     return (
-        <div className={`container-fluid d-flex align-items-center justify-content-center ${styles.fullHeight}`}>
-            <div className={`card p-3 mt-3 ${styles.centerCard}`}>
+        <div className={`container-fluid ${styles.fullHeight}`}>
+            <div className={`card p-3 ${styles.centerCard}`}>
                 <div className='mb-3'>
                     <h1>Register</h1>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Username</label>
                     <textarea value={username} onChange={handleUsername} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <div className="form-text text-danger">{validateUsername.reason}</div>
                 </div>
                 <div className="mb-3">
                     <label className='form-label'>Email</label>
                     <textarea value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <div className="form-text text-danger">{validateEmail.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Password</label>
                     <input value={password} onChange={handlePassword} type="password" className='form-control' />
+                    <div className="form-text text-danger">{validatePassword.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Name</label>
                     <textarea value={fullName} onChange={handleFullName} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <div className="form-text text-danger">{validateFullName.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Address</label>
                     <textarea value={address} onChange={handleAddress} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <div className="form-text text-danger">{validateAddress.reason}</div>
                 </div>
                 <div className='mb-3 row'>
                     <div className='col'>
