@@ -30,8 +30,12 @@ const MaterialPriceListPage = () => {
         fetchData();
     }, [])
 
+    const [num, setNum] = useState(0);
+    console.log(typeof(num));
+
     return (
         <div className={`container ${styles[`list-page`]}`}>
+            <input value={num} onChange={(e) => setNum(e.target.value)} className="form-control" type="number" min={0} max={10} step={0.1} />
             <div className={`${styles[`page-title`]}`}>
                 <p>Precious Material Price List</p>
             </div>
@@ -53,12 +57,14 @@ const MaterialPriceListPage = () => {
                             {
                                 materials.map((value, index) => (
                                     <tr key={index}>
-                                        {
-                                            value.materialName.replaceAll("_", " ").split(" ").map((word, i) => i === 0
-                                                ? word.charAt(0).toUpperCase() + word.slice(1)
-                                                : word.toUpperCase()
-                                            ).join(" ")
-                                        }
+                                        <td>
+                                            {
+                                                value.materialName.replaceAll("_", " ").split(" ").map((word, i) => i === 0
+                                                    ? word.charAt(0).toUpperCase() + word.slice(1)
+                                                    : word.toUpperCase()
+                                                ).join(" ")
+                                            }
+                                        </td>
                                         <td>
                                             {formatPrice(value.price)}
                                         </td>

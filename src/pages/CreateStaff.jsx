@@ -25,16 +25,12 @@ const CreateStaff = () => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
             const object = {
+                username: username,
+                email: email,
+                password: password,
                 name: name,
                 phone: phone,
-                staffType: staffType,
-                account: {
-                    email: email,
-                    password: password,
-                    role: 'staff',
-                    status: true,
-                    username: username
-                }
+                staffType: staffType
             }
             const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/staff/create`, object, { headers });
             if (response.status === 200) {
