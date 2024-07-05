@@ -65,12 +65,12 @@ const DashboardComponent = () => {
     return (
         <div className={styles.dashboard}>
             <div className={styles.topSection}>
-                <div className={styles.smallCard}>
+                <div className={`${styles.card} ${styles.smallCard}`}>
                     <h2>Congratulations John! 🎉</h2>
                     <p>Best seller of the month</p>
                     <h1>$48.9k</h1>
                 </div>
-                <div className={styles.statistics}>
+                <div className={`${styles.card} ${styles.statistics}`}>
                     <h2>Statistics</h2>
                     <div className={styles.statsGrid}>
                         <div className={styles.stat}>
@@ -97,13 +97,13 @@ const DashboardComponent = () => {
                 <div className={styles.popularProductsWrapper}>
                     <PopularProducts />
                 </div>
-                <div className={styles.revenueReport}>
+                <div className={`${styles.card} ${styles.revenueReport}`}>
                     <h3>Revenue Report</h3>
                     <canvas ref={revenueChartRef} className={styles.revenueChart}></canvas>
                     <div className={styles.budgetInfo}>
                         <h3>$25,825</h3>
                         <p>Budget: $56,800</p>
-                        <button className={styles.increaseButton}>Increase Budget</button>
+                        <button className={`${styles.button} ${styles.increaseButton}`}>Increase Budget</button>
                     </div>
                 </div>
             </div>
@@ -112,3 +112,4 @@ const DashboardComponent = () => {
 };
 
 export default DashboardComponent;
+    
