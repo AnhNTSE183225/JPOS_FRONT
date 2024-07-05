@@ -31,31 +31,45 @@ const PopularProducts = () => {
 };
 
 const DashboardComponent = () => {
-    const revenueChartRef = useRef(null);
+    const accessoriesChartRef = useRef(null);
 
     useEffect(() => {
-        const revenueCtx = revenueChartRef.current.getContext('2d');
-        new Chart(revenueCtx, {
+        const accessoriesCtx = accessoriesChartRef.current.getContext('2d');
+        new Chart(accessoriesCtx, {
             type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                labels: ['Rings', 'Necklaces & Pendants', 'Earrings', 'Bracelets'],
                 datasets: [
                     {
-                        label: 'Earning',
-                        data: [200, 180, 210, 150, 190, 160, 220, 210, 230],
-                        backgroundColor: '#9b59b6',
-                    },
-                    {
-                        label: 'Expense',
-                        data: [-100, -90, -110, -70, -80, -60, -50, -40, -100],
-                        backgroundColor: '#e74c3c',
+                        label: 'Accessories Sold',
+                        data: [150, 50, 100, 75],
+                        backgroundColor: ['#9b59b6', '#3498db', '#e74c3c', '#2ecc71'],
                     }
                 ]
             },
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Items Sold'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Accessories'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        enabled: true
                     }
                 }
             }
@@ -97,14 +111,9 @@ const DashboardComponent = () => {
                 <div className={styles.popularProductsWrapper}>
                     <PopularProducts />
                 </div>
-                <div className={`${styles.card} ${styles.revenueReport}`}>
-                    <h3>Revenue Report</h3>
-                    <canvas ref={revenueChartRef} className={styles.revenueChart}></canvas>
-                    <div className={styles.budgetInfo}>
-                        <h3>$25,825</h3>
-                        <p>Budget: $56,800</p>
-                        <button className={`${styles.button} ${styles.increaseButton}`}>Increase Budget</button>
-                    </div>
+                <div className={`${styles.card} ${styles.salesReport}`}>
+                    <h3>Sales Report</h3>
+                    <canvas ref={accessoriesChartRef} className={styles.revenueChart}></canvas>
                 </div>
             </div>
         </div>
@@ -112,4 +121,3 @@ const DashboardComponent = () => {
 };
 
 export default DashboardComponent;
-    
