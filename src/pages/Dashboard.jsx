@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartLine, faUsers, faShoppingCart, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../css/Dashboard.module.css';
 
 const PopularProducts = () => {
@@ -15,12 +16,12 @@ const PopularProducts = () => {
     ];
 
     return (
-        <div className={styles.popularProducts}>
+        <div className={`${styles.popularProducts} card`}>
             <h3>Popular Products</h3>
             <p>Total 10.4k Visitors</p>
-            <ul>
+            <ul className="list-unstyled">
                 {products.map((product, index) => (
-                    <li key={index} className={styles.productItem}>
+                    <li key={index} className={`${styles.productItem} d-flex justify-content-between`}>
                         <span>{product.name}</span>
                         <span>{product.price}</span>
                     </li>
@@ -77,43 +78,55 @@ const DashboardComponent = () => {
     }, []);
 
     return (
-        <div className={styles.dashboard}>
-            <div className={styles.topSection}>
-                <div className={`${styles.card} ${styles.smallCard}`}>
-                    <h2>Congratulations John! 🎉</h2>
-                    <p>Best seller of the month</p>
-                    <h1>$48.9k</h1>
-                </div>
-                <div className={`${styles.card} ${styles.statistics}`}>
-                    <h2>Statistics</h2>
-                    <div className={styles.statsGrid}>
-                        <div className={styles.stat}>
-                            <FontAwesomeIcon icon={faChartLine} size="2x" color="#9b59b6" />
-                            <p>230k Sales</p>
-                        </div>
-                        <div className={styles.stat}>
-                            <FontAwesomeIcon icon={faUsers} size="2x" color="#2980b9" />
-                            <p>8.549k Customers</p>
-                        </div>
-                        <div className={styles.stat}>
-                            <FontAwesomeIcon icon={faShoppingCart} size="2x" color="#e74c3c" />
-                            <p>1.423k Products</p>
-                        </div>
-                        <div className={styles.stat}>
-                            <FontAwesomeIcon icon={faDollarSign} size="2x" color="#27ae60" />
-                            <p>$9745 Revenue</p>
+        <div className="container mt-4">
+            <div className="row mb-4">
+                <div className="col-lg-4 col-md-12 mb-3">
+                    <div className="card text-center">
+                        <div className="card-body">
+                            <h2>Congratulations John! 🎉</h2>
+                            <p>Best seller of the month</p>
+                            <h1>$48.9k</h1>
                         </div>
                     </div>
-                    <p className={styles.updated}>Updated 1 month ago</p>
+                </div>
+                <div className="col-lg-8 col-md-12 mb-3">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2>Statistics</h2>
+                            <div className="d-flex flex-wrap justify-content-between">
+                                <div className="text-center p-2">
+                                    <FontAwesomeIcon icon={faChartLine} size="2x" color="#9b59b6" />
+                                    <p>230k Sales</p>
+                                </div>
+                                <div className="text-center p-2">
+                                    <FontAwesomeIcon icon={faUsers} size="2x" color="#2980b9" />
+                                    <p>8.549k Customers</p>
+                                </div>
+                                <div className="text-center p-2">
+                                    <FontAwesomeIcon icon={faShoppingCart} size="2x" color="#e74c3c" />
+                                    <p>1.423k Products</p>
+                                </div>
+                                <div className="text-center p-2">
+                                    <FontAwesomeIcon icon={faDollarSign} size="2x" color="#27ae60" />
+                                    <p>$9745 Revenue</p>
+                                </div>
+                            </div>
+                            <p className="text-right text-muted">Updated 1 month ago</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className={styles.bottomSection}>
-                <div className={styles.popularProductsWrapper}>
+            <div className="row">
+                <div className="col-lg-4 col-md-12 mb-3">
                     <PopularProducts />
                 </div>
-                <div className={`${styles.card} ${styles.salesReport}`}>
-                    <h3>Sales Report</h3>
-                    <canvas ref={accessoriesChartRef} className={styles.revenueChart}></canvas>
+                <div className="col-lg-8 col-md-12 mb-3">
+                    <div className="card">
+                        <div className="card-body">
+                            <h3>Sales Report</h3>
+                            <canvas ref={accessoriesChartRef} className={styles.revenueChart}></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
