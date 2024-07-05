@@ -12,10 +12,12 @@ const OnlineThanksPage = () => {
 
     const clear = () => {
         const customer = JSON.parse(sessionStorage.getItem('customer'));
+        const token = sessionStorage.getItem('token');
 
         sessionStorage.clear();
 
-        sessionStorage.setItem('customer',JSON.stringify(customer));
+        sessionStorage.setItem('customer', JSON.stringify(customer));
+        sessionStorage.setItem('token', token);
     }
 
     return (
