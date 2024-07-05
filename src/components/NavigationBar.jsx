@@ -44,7 +44,7 @@ const NavigationBar = () => {
                                 {
                                     customer !== null
                                         ? <li className="nav-item">
-                                            <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/profile">PROFILE</Link>
+                                            <Link className={`${styles[`nav-link`]} nav-link mx-lg-2`} to="/profile">ACCOUNT</Link>
                                         </li>
                                         : <>
                                         </>

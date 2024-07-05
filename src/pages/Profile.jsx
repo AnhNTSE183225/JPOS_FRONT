@@ -70,7 +70,7 @@ const ProfilePage = () => {
             <div className={`${styles[`form-container`]}`}>
                 <div className={`row gap-3`}>
                     <p className='mb-5 fw-light' style={{ fontSize: '2rem' }}>My Personal Details</p>
-                    <div className="col p-0">
+                    <div className="col-md p-0">
                         <div className="form-floating">
                             <input
                                 type="name"
@@ -82,7 +82,7 @@ const ProfilePage = () => {
                             <label htmlFor="floatingInputGrid">Name</label>
                         </div>
                     </div>
-                    <div className="col p-0">
+                    <div className="col-md p-0">
                         <div className="form-floating">
                             <input
                                 type="email"
@@ -94,7 +94,7 @@ const ProfilePage = () => {
                             <label htmlFor="floatingInputGrid">Email address</label>
                         </div>
                     </div>
-                    <div className="col p-0">
+                    <div className="col-md p-0">
                         <div className="form-floating">
                             <input
                                 type="address"
