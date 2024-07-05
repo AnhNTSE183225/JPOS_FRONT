@@ -32,9 +32,6 @@ const BuildYourOwnNav = () => {
         return false;
     }
 
-    console.log(selectedDiamonds);
-    console.log(selectedProduct);
-
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
             <div className="row flex-nowrap">
@@ -100,23 +97,6 @@ const BuildYourOwnNav = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* {sessionStorage.getItem('diamondImages').split(',').map((image, index) => (
-                                                <div key={index} className="col-2 p-0" style={{boxSizing: 'border-box', height: '100%', marginRight: '5px'}}>
-                                                    <Link onClick={(e) => e.stopPropagation()} to={`/build-your-own/diamond-details/${sessionStorage.getItem('diamonds').split(',')[index]}`}>
-                                                        <img crossOrigin='anonymous' className='img-fluid' src={image} alt="" />
-                                                    </Link>
-                                                </div>
-                                            ))}
-                                            <div className="col-3 p-0" style={{boxSizing: 'border-box', height: '100%'}}>
-                                                <div className="container-fluid">
-                                                    <div className="row">
-                                                        <b>{sessionStorage.getItem('diamonds').split(',').length}/{sessionStorage.getItem('quantity')}</b>
-                                                    </div>
-                                                    <div className="row">
-                                                        <b>Total: <span className='text' style={{ color: '#48AAAD' }}>{formatPrice(calculateTotal())}</span></b>
-                                                    </div>
-                                                </div>
-                                            </div> */}
                                         </>
                                 }
                             </div>
