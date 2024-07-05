@@ -1,8 +1,10 @@
-import { faGem, faHammer, faRing } from "@fortawesome/free-solid-svg-icons";
+import { faClipboard, faFloppyDisk, faGem, faHammer, faPenToSquare, faRing, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { formatPrice, formatDate } from '/src/helper_function/ConvertFunction';
+
 
 const ManageDesignPrice = () => {
 
@@ -10,6 +12,7 @@ const ManageDesignPrice = () => {
     const [queryList, setQueryList] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const [search, setSearch] = useState('');
+    const [activeDesign, setActiveDesign] = useState({productDesignId: -1});
 
     const fetchData = async () => {
         try {
@@ -76,27 +79,60 @@ const ManageDesignPrice = () => {
                                             <td>{design.designName}</td>
                                             <td style={{ textTransform: 'capitalize' }}>{design.designType}</td>
                                             <td>
-                                                <ul>
-                                                    {
-                                                        design.productShellDesigns.map((shell, index2) => (
-                                                            <li key={index2} style={{ textTransform: 'capitalize' }}>
-                                                                {shell.shellName}
-                                                                <div className="input-group mb-3">
-                                                                    <span className="input-group-text"> <FontAwesomeIcon icon={faGem}/> </span>
-                                                                    <input value={shell.ediamondPrice} className="form-control" type="text" />
-                                                                </div>
-                                                                <div className="input-group mb-3">
-                                                                    <span className="input-group-text"> <FontAwesomeIcon icon={faRing}/></span>
-                                                                    <input value={shell.ematerialPrice} className="form-control" type="text" />
-                                                                </div>
-                                                                <div className="input-group mb-3">
-                                                                    <span className="input-group-text"> <FontAwesomeIcon icon={faHammer}/> </span>
-                                                                    <input value={shell.productionPrice} className="form-control" type="text" />
-                                                                </div>
-                                                            </li>
-                                                        ))
-                                                    }
-                                                </ul>
+                                                {
+                                                    activeDesign.productDesignId == design.productDesignId
+                                                        ? <>
+                                                            <ul>
+                                                                {
+                                                                    design.productShellDesigns.map((shell, index2) => (
+                                                                        <li key={index2} style={{ textTransform: 'capitalize' }}>
+                                                                            {shell.shellName}
+                                                                            <div className="input-group mb-3">
+                                                                                <span className="input-group-text"> <FontAwesomeIcon icon={faGem} /> </span>
+                                                                                <input value={shell.ediamondPrice} className="form-control" type="text" />
+                                                                            </div>
+                                                                            <div className="input-group mb-3">
+                                                                                <span className="input-group-text"> <FontAwesomeIcon icon={faRing} /></span>
+                                                                                <input value={shell.ematerialPrice} className="form-control" type="text" />
+                                                                            </div>
+                                                                            <div className="input-group mb-3">
+                                                                                <span className="input-group-text"> <FontAwesomeIcon icon={faHammer} /> </span>
+                                                                                <input value={shell.productionPrice} className="form-control" type="text" />
+                                                                            </div>
+                                                                        </li>
+                                                                    ))
+                                                                }
+                                                            </ul>
+                                                        </>
+                                                        : <>
+                                                            <ul>
+                                                                {
+                                                                    design.productShellDesigns.map((shell, index) => (
+                                                                        <li style={{ textTransform: 'capitalize' }}>
+                                                                            {shell.shellName}
+                                                                            <ul>
+                                                                                <li> <FontAwesomeIcon icon={faGem} /> {formatPrice(shell.ediamondPrice)}</li>
+                                                                                <li> <FontAwesomeIcon icon={faRing} /> {formatPrice(shell.ematerialPrice)} </li>
+                                                                                <li> <FontAwesomeIcon icon={faHammer} /> {formatPrice(shell.productionPrice)} </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                    ))
+                                                                }
+                                                            </ul>
+                                                        </>
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    activeDesign.productDesignId == design.productDesignId
+                                                        ? <>
+                                                            <button onClick={() => setActiveDesign({productDesignId: -1})} className="btn btn-danger"> <FontAwesomeIcon icon={faX} /> </button>
+                                                            <button className="btn btn-success"> <FontAwesomeIcon icon={faFloppyDisk}/> </button>
+                                                        </>
+                                                        : <>
+                                                            <button onClick={() => setActiveDesign(design)} className="btn btn-info"> <FontAwesomeIcon icon={faPenToSquare} /> </button>
+                                                        </>
+                                                }
                                             </td>
                                         </tr>
                                     ))

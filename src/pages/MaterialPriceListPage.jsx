@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchMaterialPrice } from "../helper_function/FetchPriceFunctions";
 import axios from "axios";
 import styles from '/src/css/MaterialPriceListPage.module.css';
-import { formatDate } from "../helper_function/ConvertFunction";
+import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 
 const MaterialPriceListPage = () => {
 
@@ -10,10 +10,7 @@ const MaterialPriceListPage = () => {
 
     const fetchData = async () => {
         try {
-            const headers = {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`, { headers });
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/material/all`);
             let priced_materials = []
             for (const material of response.data) {
                 priced_materials.push(
@@ -47,8 +44,8 @@ const MaterialPriceListPage = () => {
                     <table className="table table-bordered text-center">
                         <thead>
                             <tr>
-                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRECIOUS MATERIAL <span style={{fontWeight: "normal"}}>(carat)</span></th>
-                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRICE <span style={{fontWeight: "normal"}}>(USD)</span></th>
+                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRECIOUS MATERIAL <span style={{ fontWeight: "normal" }}>(carat)</span></th>
+                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRICE <span style={{ fontWeight: "normal" }}>(USD)</span></th>
                             </tr>
                         </thead>
                         <tbody className={`${styles[`content`]}`}>
@@ -58,12 +55,12 @@ const MaterialPriceListPage = () => {
                                     <tr key={index}>
                                         {
                                             value.materialName.replaceAll("_", " ").split(" ").map((word, i) => i === 0
-                                                    ? word.charAt(0).toUpperCase() + word.slice(1)
-                                                    : word.toUpperCase()
-                                                ).join(" ")
+                                                ? word.charAt(0).toUpperCase() + word.slice(1)
+                                                : word.toUpperCase()
+                                            ).join(" ")
                                         }
                                         <td>
-                                            {value.price}
+                                            {formatPrice(value.price)}
                                         </td>
                                     </tr>
                                 ))
