@@ -81,7 +81,7 @@ const LoginPage = () => {
                 <div className="mb-3">
                     <div className="d-flex justify-content-between align-items-center">
                         <label className="form-label">Password</label>
-                        <Link to="" className={styles.customLink}>Forgot Password?</Link>
+                        
                     </div>
                     <input
                         value={password}
