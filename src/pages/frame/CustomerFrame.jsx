@@ -8,7 +8,7 @@ const CustomerFrame = () => {
 
     const location = useLocation().pathname;
     const navigate = useNavigate();
-    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access'];
+    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access','/login','/register'];
 
     useEffect(() => {
         if (sessionStorage.getItem('customer') == null) {
