@@ -27,7 +27,7 @@ const Production = ({ order }) => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product`, imageUrls.join("|"), {headers});
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/complete-product`, imageUrls.join("|"), { headers });
                 if (!response.data || response.status === 204) {
                     toast.error("Something went wrong, can't submit");
                 } else {
@@ -44,11 +44,14 @@ const Production = ({ order }) => {
         setImageUrls([]);
         setProcessing(true);
         try {
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
             if (designFiles.length > 0) {
                 for (const file of designFiles) {
                     const formData = new FormData();
                     formData.append("file", file)
-                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData);
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData, { headers });
                     if (!response.data || response.status === 204) {
                         throw new Error("Upload file failed. Backend fail");
                     }

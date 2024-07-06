@@ -20,7 +20,7 @@ const CreateStaff = () => {
     const [name, setName] = useState('');
     const validateName = validateString(name, 8, 20);
     const [phone, setPhone] = useState('');
-    const validatePhone = validateString(phone, 9, 11, null, '^\d+$');
+    const validatePhone = validateString(phone, 9, 11, null, '^\\d+$');
     const [staffType, setStaffType] = useState(STAFF_TYPE[0]);
 
     const navigate = useNavigate();
@@ -86,12 +86,12 @@ const CreateStaff = () => {
                         </div>
                         <div className={`input-group mb-3 ${styles['input-group']}`}>
                             <span className='input-group-text'>Password</span>
-                            <input value={password} onChange={(e) => setPassword(e.target.value)} className='form-control' type="email" />
+                            <input value={password} onChange={(e) => setPassword(e.target.value)} className='form-control' type="text" />
                             <div className="form-text text-danger">{validatePassword.reason}</div>
                         </div>
                         <div className={`input-group mb-3 ${styles['input-group']}`}>
                             <span className='input-group-text'>Phone</span>
-                            <input value={phone} onChange={(e) => setPhone(e.target.value)} className='form-control' type="email" />
+                            <input value={phone} onChange={(e) => setPhone(e.target.value)} className='form-control' type="text" />
                             <div className="form-text text-danger">{validatePhone.reason}</div>
                         </div>
                         <div className={`input-group mb-3 ${styles['input-group']}`}>

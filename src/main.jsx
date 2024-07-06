@@ -29,8 +29,6 @@ import PaymentHandler from './PaymentHandler';
 import ManageRequestsPage from './pages/ManageRequestsPage';
 import ManageStaffPage from './pages/ManageStaffPage';
 import ManagePricePage from './pages/ManagePricePage';
-import CustomerTestPage from './pages/CustomerTestPage';
-import StaffTestPage from './pages/StaffTestPage';
 import OrderDetails from './components/OrderDetails';
 import CreateStaff from './pages/CreateStaff';
 import MaterialPriceListPage from './pages/MaterialPriceListPage';
@@ -127,10 +125,6 @@ const router = createBrowserRouter([
       {
         path: '/profile/your-orders/:orderId',
         element: <OrderDetails />
-      },
-      {
-        path: '/test',
-        element: <CustomerTestPage />
       }
     ]
   },
@@ -169,10 +163,6 @@ const router = createBrowserRouter([
       {
         path: 'manage-design-price',
         element: <ManageDesignPrice />
-      },
-      {
-        path: 'test',
-        element: <StaffTestPage />
       }
     ]
   },

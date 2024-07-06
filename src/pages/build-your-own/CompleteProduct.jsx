@@ -88,9 +88,6 @@ const CompleteProduct = () => {
             } else {
                 sessionStorage.setItem('currentOrderId', orderAmount.data.id);
                 sessionStorage.setItem('currentOrderType', orderAmount.data.orderType);
-
-                sessionStorage.removeItem('selected_product');
-                sessionStorage.removeItem('selected_diamonds');
                 makePayment(orderAmount.data.totalAmount * 0.3);
             }
         } catch (error) {

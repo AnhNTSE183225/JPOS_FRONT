@@ -32,7 +32,7 @@ const SHAPES_IMAGES = [
     { name: 'Pear', image: pear },
 ];
 const SHAPES = ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'];
-const CLARITIES = ['SI3', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+const CLARITIES = ['I3', 'I2', 'I1', 'SI3', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
 const COLORS = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
 const CUTS = ['Fair', 'Good', 'Very_Good', 'Excellent'];
 const MIN_PRICE = 200;
@@ -105,7 +105,7 @@ const ChooseDiamond = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query, {headers});
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query, { headers });
             if (!response.data || response.status === 204) {
                 toast.error(`Cannot fetch data`);
             } else {

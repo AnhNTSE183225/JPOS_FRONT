@@ -23,7 +23,7 @@ const ConfirmPaymentPage = ({ order }) => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/payment/${order.id}`,{headers});
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/payment/${order.id}`, { headers });
             if (!response.data || response.status === 204) {
                 toast.error("Cannot fetch previously paid amount");
             } else {
@@ -44,7 +44,7 @@ const ConfirmPaymentPage = ({ order }) => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/orders/${order.id}/complete`,{headers});
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/orders/${order.id}/complete`, {}, { headers });
             if (!response.data || response.status === 204) {
                 toast.error("Something happened, failed to confirm deposit");
             } else {
