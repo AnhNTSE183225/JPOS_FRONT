@@ -1,10 +1,22 @@
-import { Outlet, useLocation } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import NavigationBar from "../../components/NavigationBar";
 import Footer from "../../components/Footer";
 import { Toaster } from 'sonner';
 import { useEffect } from "react";
 
 const CustomerFrame = () => {
+
+    const location = useLocation().pathname;
+    const navigate = useNavigate();
+    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access'];
+
+    useEffect(() => {
+        if (sessionStorage.getItem('customer') == null) {
+            if (!allowedPaths.includes(location)) {
+                navigate('/unauthorized-access');
+            }
+        }
+    }, [])
 
     const ScrollToTop = () => {
         const { pathname } = useLocation();
@@ -16,17 +28,19 @@ const CustomerFrame = () => {
         return null;
     }
 
-    return (
-        <div>
-            <Toaster position="top-center" richColors expand={true} />
-            <NavigationBar />
-            <div style={{ paddingTop: '15vh' }}>
-                <Outlet />
+    if (sessionStorage.getItem('customer') != null || allowedPaths.includes(location)) {
+        return (
+            <div>
+                <Toaster position="top-center" richColors expand={true} />
+                <NavigationBar />
+                <div style={{ paddingTop: '15vh' }}>
+                    <Outlet />
+                </div>
+                <Footer />
+                <ScrollToTop />
             </div>
-            <Footer />
-            <ScrollToTop/>
-        </div>
-    )
+        )
+    }
 }
 
 export default CustomerFrame;

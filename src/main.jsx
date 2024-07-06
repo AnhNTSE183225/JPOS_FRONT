@@ -42,6 +42,7 @@ import ManageMaterials from './pages/admin/ManageMaterials';
 import ManageDesigns from './pages/admin/ManageDesigns';
 import EditDiamond from './pages/admin/EditDiamond';
 import WaitManager from './pages/request-details-components/WaitManager';
+import UnauthorizedAccess from './pages/UnauthorizedAccess';
 
 
 
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
       {
         path: 'online-completed',
         element: <OnlineThanksPage />
+      },
+      {
+        path: '/unauthorized-access',
+        element: <UnauthorizedAccess />
       },
       {
         path: 'build-your-own',
@@ -155,7 +160,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'manage-requests/quote/:orderId',
-        element: <WaitManager/>
+        element: <WaitManager />
       },
       {
         path: 'manage-price',
@@ -186,26 +191,26 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <Dashboard />
-      }, 
+      },
       {
         path: 'manage-customer',
         element: <ManageCustomer />
       },
       {
         path: 'manage-diamonds',
-        element: <ManageDiamonds/>
+        element: <ManageDiamonds />
       },
       {
         path: 'manage-diamonds/create',
-        element: <EditDiamond/>
+        element: <EditDiamond />
       },
       {
         path: 'manage-materials',
-        element: <ManageMaterials/>
+        element: <ManageMaterials />
       },
       {
         path: 'manage-designs',
-        element: <ManageDesigns/>
+        element: <ManageDesigns />
       }
     ]
   },

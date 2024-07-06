@@ -1,17 +1,28 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import SidebarAdmin from "../../components/SidebarAdmin";
 import { Toaster } from "sonner";
+import { useEffect } from "react";
 
 const AdminFrame = () => {
-    return (
-        <div style={{ fontSize: '20px' }}>
-            <Toaster position="top-center" richColors expand={false} />
-            <SidebarAdmin />
-            <div className="container-fluid" style={{ paddingLeft: '19rem', paddingTop: '1rem' }}>
-                <Outlet />
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (sessionStorage.getItem('admin') === null) {
+            navigate('/unauthorized-access');
+        }
+    }, [])
+
+    if (sessionStorage.getItem('admin') !== null) {
+        return (
+            <div style={{ fontSize: '20px' }}>
+                <Toaster position="top-center" richColors expand={false} />
+                <SidebarAdmin />
+                <div className="container-fluid" style={{ paddingLeft: '19rem', paddingTop: '1rem' }}>
+                    <Outlet />
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default AdminFrame;
