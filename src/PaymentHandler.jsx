@@ -27,9 +27,14 @@ const PaymentHandler = () => {
             } catch (error) {
                 console.log(`POST ${import.meta.env.VITE_jpos_back}/api/cancel-order/${sessionStorage.getItem('currentOrderId')}`)
                 await axios.post(`${import.meta.env.VITE_jpos_back}/api/cancel-order/${sessionStorage.getItem('currentOrderId')}`, {}, { headers });
+                if (sessionStorage.getItem('currentOrderType') == 'from_design') {
+                    navigate('/build-your-own/complete-product');
+                } else {
+                    navigate('/profile');
+                }
                 sessionStorage.removeItem('currentOrderId');
                 sessionStorage.removeItem('currentOrderType');
-                navigate('/build-your-own/complete-product');
+
             }
         }
 

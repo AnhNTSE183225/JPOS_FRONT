@@ -19,7 +19,7 @@ const CustomerOrdersPage = () => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`, {headers});
+                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`, { headers });
                 if (!response.data || response.status === 204) {
                     toast.info(`You currently have no orders`);
                 } else {
@@ -72,11 +72,23 @@ const CustomerOrdersPage = () => {
                                             <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
                                             <td>{order.status}</td>
                                             <td>
-                                                <Link to={`/profile/your-orders/${order.id}`}>
-                                                    <button className='fs-6'>
-                                                        View details
-                                                    </button>
-                                                </Link>
+                                                {
+                                                    order.status == 'wait_customer' || order.status == 'pending_design'
+                                                        ? <>
+                                                            <Link to={`/profile/your-request`}>
+                                                                <button className='fs-6'>
+                                                                    Go to requests
+                                                                </button>
+                                                            </Link>
+                                                        </>
+                                                        : <>
+                                                            <Link to={`/profile/your-orders/${order.id}`}>
+                                                                <button className='fs-6'>
+                                                                    View details
+                                                                </button>
+                                                            </Link>
+                                                        </>
+                                                }
                                             </td>
                                         </tr>
                                     ))

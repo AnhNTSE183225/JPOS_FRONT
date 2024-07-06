@@ -6,7 +6,7 @@ import empty_image from '/src/assets/empty_image.jpg';
 import styles from '/src/css/ManagerApproved.module.css';
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 
 const ManagerApproved = ({ order }) => {
@@ -14,25 +14,20 @@ const ManagerApproved = ({ order }) => {
   const navigate = useNavigate();
 
   const forwardQuotation = () => {
-    if (sessionStorage.getItem('staff') !== null) {
-      const headers = {
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      }
-      axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/forward-quotation`, { headers })
-        .then(
-          response => {
-            console.log(response.data);
-            navigate('/staff/request');
-          }
-        ).catch(
-          error => {
-            console.log(error);
-          }
-        )
-    } else {
-      toast.info('Logged out');
-      navigate('/login');
+    const headers = {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
     }
+    axios.post(`${import.meta.env.VITE_jpos_back}/api/${order.id}/forward-quotation`, {}, { headers })
+      .then(
+        response => {
+          console.log(response.data);
+          navigate('/staff/request');
+        }
+      ).catch(
+        error => {
+          console.log(error);
+        }
+      )
   }
 
   //--------------------------------IMAGE THING---------------------------------------------------
@@ -51,12 +46,13 @@ const ManagerApproved = ({ order }) => {
   return (
     <>
       <div className="container-fluid">
+        <div className="row">
+          <h1 className='fw-bold'>
+            <FontAwesomeIcon onClick={() => navigate(-1)} icon={faChevronLeft} className='me-3' id={`${styles['go-back-icon']}`} />
+            Forward quotation
+          </h1>
+        </div>
         <div className="row mt-3">
-          <div className="mb-2">
-            <h2>
-              Forward Quotation
-            </h2>
-          </div>
           <div className="col-md-8">
             <h4 className="text-center fw-bold mb-4 mt-4">CUSTOMER INFORMATION</h4><hr />
             <h5 className='fw-semibold'>Customer name</h5>

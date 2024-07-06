@@ -6,12 +6,15 @@ import empty_image from '/src/assets/empty_image.jpg';
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '/src/css/PendingDesign.module.css';
+import { validateString } from '../../helper_function/Validation';
+import { toast } from 'sonner';
 
 const PendingDesign = ({ order }) => {
 
     const navigate = useNavigate();
 
-    const [note, setNote] = useState();
+    const [note, setNote] = useState('');
+    const validateNote = validateString(note, 8, 512);
     const [processing, setProcessing] = useState(false);
 
     const handleSubmit = async (accepted) => {
@@ -22,11 +25,15 @@ const PendingDesign = ({ order }) => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
             if (accepted) {
-                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/acceptDesign`, {headers});
+                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/acceptDesign`, {}, { headers });
             } else {
-                response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/refuseDesign`, {
-                    note: note
-                },{headers});
+                if (validateNote.result) {
+                    response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/customers/${order.id}/refuseDesign`, {
+                        note: note
+                    }, { headers });
+                } else {
+                    toast.info(`You must give feedback on why you refuse`);
+                }
             }
             if (!response.data || response.status === 204) {
                 toast.error("Something went wrong, failed to submit");
@@ -91,6 +98,7 @@ const PendingDesign = ({ order }) => {
                 </div>
                 <div className="col mb-3">
                     <textarea placeholder='Leave notes....' style={{ resize: "none" }} maxLength={255} className="form-control" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
+                    <div className="form-text text-danger">{validateNote.reason}</div>
                 </div>
                 <div className='row  mb-3'>
                     <div className="col">

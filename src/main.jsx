@@ -41,6 +41,7 @@ import ManageDiamonds from './pages/admin/ManageDiamonds';
 import ManageMaterials from './pages/admin/ManageMaterials';
 import ManageDesigns from './pages/admin/ManageDesigns';
 import EditDiamond from './pages/admin/EditDiamond';
+import WaitManager from './pages/request-details-components/WaitManager';
 
 
 
@@ -151,6 +152,10 @@ const router = createBrowserRouter([
       {
         path: 'manage-requests/request/:orderId',
         element: <OrderDetails />
+      },
+      {
+        path: 'manage-requests/quote/:orderId',
+        element: <WaitManager/>
       },
       {
         path: 'manage-price',

@@ -88,7 +88,6 @@ const DesignerUploadPage = ({ order }) => {
     }
     //--------------------------------IMAGE THING---------------------------------------------------
 
-
     return (
         <>
             <div className="container">
@@ -121,6 +120,8 @@ const DesignerUploadPage = ({ order }) => {
                                     </div>
                                 </>
                         }
+                        <h5 className='fw-semibold'>Model feedback</h5>
+                        <textarea value={order.modelFeedback} style={{ resize: "none" }} maxLength={255} className="form-control" rows='5' cols='30' disabled={true}></textarea>
                     </div>
                     <div className="col-md-4">
                         <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />
@@ -166,21 +167,6 @@ const DesignerUploadPage = ({ order }) => {
 
                         <hr /><h5 className={styles.listItem}><span>Tax fee (10% VAT):</span> <span>{order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</span></h5>
                         <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
-                        {
-                            order.status == 'completed'
-                                ? <>
-                                    <h5 className="fw-bold">WARRANTY INFORMATION</h5>
-                                    <div>
-                                        <li>Customer ID: {('000' + order.customer.customerId).slice(-4)}</li>
-                                        <li>Product ID: {('000' + order.product.productId).slice(-4)}</li>
-                                        <li>Purchase date: {order.odate === null ? formatDate(order.orderDate) : formatDate(order.odate)}</li>
-                                        <li>Warranty: 4 years from purchase date</li>
-                                        <li>Terms: <a href="/" target="_blank">Read our terms here</a></li>
-                                    </div>
-                                </>
-                                : <>
-                                </>
-                        }
                     </div>
                 </div>
                 <div className="row mt-4">

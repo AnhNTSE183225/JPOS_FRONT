@@ -35,7 +35,7 @@ const ManageRequestsPage = () => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`,{headers});
+                const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`, { headers });
                 if (!response.data || response.status === 204) {
                     toast.error("Cannot fetch orders");
                 } else {
@@ -152,11 +152,23 @@ const ManageRequestsPage = () => {
                                         <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
                                         <td>{order.status.replaceAll("_", " ")}</td>
                                         <td>
-                                            <Link to={`/staff/manage-requests/request/${order.id}`} >
-                                                <button className="fs-6">
-                                                    VIEW DETAILS
-                                                </button>
-                                            </Link>
+                                            {
+                                                order.status == 'wait_manager'
+                                                    ? <>
+                                                        <Link to={`/staff/manage-requests/quote/${order.id}`} >
+                                                            <button className="fs-6">
+                                                                VIEW DETAILS
+                                                            </button>
+                                                        </Link>
+                                                    </>
+                                                    : <>
+                                                        <Link to={`/staff/manage-requests/request/${order.id}`} >
+                                                            <button className="fs-6">
+                                                                VIEW DETAILS
+                                                            </button>
+                                                        </Link>
+                                                    </>
+                                            }
                                         </td>
                                     </tr>
                                 ))}
