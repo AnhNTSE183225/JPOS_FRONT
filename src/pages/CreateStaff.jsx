@@ -69,42 +69,54 @@ const CreateStaff = () => {
                 </h1>
                 <div className="row mb-2">
                     <div className="col-lg-6">
-                        <div className={`input-group mb-3 ${styles['input-group']}`}>
-                            <span className='input-group-text'>Username</span>
-                            <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" className='form-control' />
+                        <div className="mb-3">
+                            <div className={`input-group ${styles['input-group']}`}>
+                                <span className='input-group-text'>Username</span>
+                                <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" className='form-control' />
+                            </div>
                             <div className="form-text text-danger">{validateUsername.reason}</div>
                         </div>
-                        <div className={`input-group mb-3 ${styles['input-group']}`}>
-                            <span className='input-group-text'>Name</span>
-                            <input value={name} onChange={(e) => setName(e.target.value)} className='form-control' type="text" />
+                        <div className="mb-3">
+                            <div className={`input-group ${styles['input-group']}`}>
+                                <span className='input-group-text'>Name</span>
+                                <input value={name} onChange={(e) => setName(e.target.value)} className='form-control' type="text" />
+                            </div>
                             <div className="form-text text-danger">{validateName.reason}</div>
                         </div>
-                        <div className={`input-group mb-3 ${styles['input-group']}`}>
-                            <span className='input-group-text'>Email</span>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} className='form-control' type="email" />
+                        <div className="mb-3">
+                            <div className={`input-group ${styles['input-group']}`}>
+                                <span className='input-group-text'>Email</span>
+                                <input value={email} onChange={(e) => setEmail(e.target.value)} className='form-control' type="email" />
+                            </div>
                             <div className="form-text text-danger">{validateEmail.reason}</div>
                         </div>
-                        <div className={`input-group mb-3 ${styles['input-group']}`}>
-                            <span className='input-group-text'>Password</span>
-                            <input value={password} onChange={(e) => setPassword(e.target.value)} className='form-control' type="text" />
+                        <div className="mb-3">
+                            <div className={`input-group ${styles['input-group']}`}>
+                                <span className='input-group-text'>Password</span>
+                                <input value={password} onChange={(e) => setPassword(e.target.value)} className='form-control' type="text" />
+                            </div>
                             <div className="form-text text-danger">{validatePassword.reason}</div>
                         </div>
-                        <div className={`input-group mb-3 ${styles['input-group']}`}>
-                            <span className='input-group-text'>Phone</span>
-                            <input value={phone} onChange={(e) => setPhone(e.target.value)} className='form-control' type="text" />
+                        <div className="mb-3">
+                            <div className={`input-group ${styles['input-group']}`}>
+                                <span className='input-group-text'>Phone</span>
+                                <input value={phone} onChange={(e) => setPhone(e.target.value)} className='form-control' type="text" />
+                            </div>
                             <div className="form-text text-danger">{validatePhone.reason}</div>
                         </div>
-                        <div className={`input-group mb-3 ${styles['input-group']}`}>
-                            <span className='input-group-text'>Staff type</span>
-                            <select value={staffType} onChange={(e) => setStaffType(e.target.value)} className='form-select'>
-                                {
-                                    STAFF_TYPE.map((staff_type, index) => (
-                                        <option key={index} value={staff_type}>
-                                            {staff_type}
-                                        </option>
-                                    ))
-                                }
-                            </select>
+                        <div className="mb-3">
+                            <div className={`input-group ${styles['input-group']}`}>
+                                <span className='input-group-text'>Staff type</span>
+                                <select value={staffType} onChange={(e) => setStaffType(e.target.value)} className='form-select'>
+                                    {
+                                        STAFF_TYPE.map((staff_type, index) => (
+                                            <option key={index} value={staff_type}>
+                                                {staff_type}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
                         </div>
                         <button className='btn btn-primary' onClick={handleCreate}>Create</button>
                     </div>

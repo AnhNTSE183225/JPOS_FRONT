@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { formatPrice, formatDate } from '/src/helper_function/ConvertFunction';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 
 const ManageDesignPrice = () => {
@@ -12,7 +13,19 @@ const ManageDesignPrice = () => {
     const [queryList, setQueryList] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const [search, setSearch] = useState('');
-    const [activeDesign, setActiveDesign] = useState({productDesignId: -1});
+
+    const [activeDesign, setActiveDesign] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const openDialog = (design) => {
+        setActiveDesign(design);
+        setOpen(true);
+    }
+
+    const closeDialog = () => {
+        setActiveDesign(null);
+        setOpen(false);
+    }
 
     const fetchData = async () => {
         try {
@@ -36,6 +49,10 @@ const ManageDesignPrice = () => {
     }, [])
 
     useEffect(() => {
+        fetchData();
+    }, [refresh])
+
+    useEffect(() => {
         if (search.length > 0) {
             let query_list = [...productDesigns];
             query_list = query_list.filter(design => design.designName.toLowerCase().includes(search.toLowerCase()) || design.productDesignId.toString() == search);
@@ -45,103 +62,80 @@ const ManageDesignPrice = () => {
         }
     }, [search])
 
-    console.log(productDesigns);
+    console.log(queryList);
 
     return (
         <div className="container-fluid">
             <div className="row mb-3">
-                <h1 className="p-0">MANAGE DESIGN PRICES</h1>
-                <div className="col-lg-4 p-0">
-                    <div className="input-group">
-                        <span className="input-group-text">Search</span>
-                        <input onChange={(e) => setSearch(e.target.value)} className="form-control" type="text" placeholder="Search id/name" />
-                    </div>
+                <div className="col">
+                    <h1>MANAGE DESIGN PRICES</h1>
+                </div>
+            </div>
+            <div className="row mb-3">
+                <div className="col-lg-4">
+                    <input type="text" className="form-control" placeholder="Search id/name" onChange={(e) => setSearch(e.target.value)} />
                 </div>
             </div>
             <div className="row mb-3">
                 <div className="col">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Shells</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                queryList != null
-                                    ? queryList.map((design, index) => (
-                                        <tr key={index}>
-                                            <td>{design.productDesignId}</td>
-                                            <td>{design.designName}</td>
-                                            <td style={{ textTransform: 'capitalize' }}>{design.designType}</td>
-                                            <td>
+                    <div className="container-fluid text-center">
+                        <div className="row mb-3 fw-bold">
+                            <div className="col-1">ID</div>
+                            <div className="col">Name</div>
+                            <div className="col">Type</div>
+                            <div className="col">Image</div>
+                            <div className="col">Options</div>
+                            <div className="col">Actions</div>
+                        </div>
+                        {
+                            queryList !== null
+                                ? queryList.map((design, index) => (
+                                    <div className="row mb-3" key={index}>
+                                        <div className="col-1 fw-bold d-flex justify-content-center align-items-center">{design.productDesignId}</div>
+                                        <div className="col d-flex justify-content-center align-items-center">{design.designName}</div>
+                                        <div className="col d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
+                                        <div className="col d-flex justify-content-center align-items-center"><img style={{ width: '6rem', height: '6rem' }} src={design.designFile} /></div>
+                                        <div className="col d-flex justify-content-center align-items-center">
+                                            <div className="container-fluid">
                                                 {
-                                                    activeDesign.productDesignId == design.productDesignId
-                                                        ? <>
-                                                            <ul>
-                                                                {
-                                                                    design.productShellDesigns.map((shell, index2) => (
-                                                                        <li key={index2} style={{ textTransform: 'capitalize' }}>
-                                                                            {shell.shellName}
-                                                                            <div className="input-group mb-3">
-                                                                                <span className="input-group-text"> <FontAwesomeIcon icon={faGem} /> </span>
-                                                                                <input value={shell.ediamondPrice} className="form-control" type="text" />
-                                                                            </div>
-                                                                            <div className="input-group mb-3">
-                                                                                <span className="input-group-text"> <FontAwesomeIcon icon={faRing} /></span>
-                                                                                <input value={shell.ematerialPrice} className="form-control" type="text" />
-                                                                            </div>
-                                                                            <div className="input-group mb-3">
-                                                                                <span className="input-group-text"> <FontAwesomeIcon icon={faHammer} /> </span>
-                                                                                <input value={shell.productionPrice} className="form-control" type="text" />
-                                                                            </div>
-                                                                        </li>
-                                                                    ))
-                                                                }
-                                                            </ul>
-                                                        </>
-                                                        : <>
-                                                            <ul>
-                                                                {
-                                                                    design.productShellDesigns.map((shell, index) => (
-                                                                        <li style={{ textTransform: 'capitalize' }}>
-                                                                            {shell.shellName}
-                                                                            <ul>
-                                                                                <li> <FontAwesomeIcon icon={faGem} /> {formatPrice(shell.ediamondPrice)}</li>
-                                                                                <li> <FontAwesomeIcon icon={faRing} /> {formatPrice(shell.ematerialPrice)} </li>
-                                                                                <li> <FontAwesomeIcon icon={faHammer} /> {formatPrice(shell.productionPrice)} </li>
-                                                                            </ul>
-                                                                        </li>
-                                                                    ))
-                                                                }
-                                                            </ul>
-                                                        </>
+                                                    design.productShellDesigns.map((shell, index2) => (
+                                                        <div className="row">
+                                                            <div className="col text-capitalize">
+                                                                {shell.shellName}
+                                                            </div>
+                                                        </div>
+                                                    ))
                                                 }
-                                            </td>
-                                            <td>
-                                                {
-                                                    activeDesign.productDesignId == design.productDesignId
-                                                        ? <>
-                                                            <button onClick={() => setActiveDesign({productDesignId: -1})} className="btn btn-danger"> <FontAwesomeIcon icon={faX} /> </button>
-                                                            <button className="btn btn-success"> <FontAwesomeIcon icon={faFloppyDisk}/> </button>
-                                                        </>
-                                                        : <>
-                                                            <button onClick={() => setActiveDesign(design)} className="btn btn-info"> <FontAwesomeIcon icon={faPenToSquare} /> </button>
-                                                        </>
-                                                }
-                                            </td>
-                                        </tr>
-                                    ))
-                                    : <></>
-                            }
-                        </tbody>
-                    </table>
+                                            </div>
+                                        </div>
+                                        <div className="col d-flex justify-content-center align-items-center"><button onClick={() => openDialog(design)} className="btn btn-primary">Edit</button></div>
+                                    </div>
+                                ))
+                                : <></>
+                        }
+                    </div>
                 </div>
             </div>
+            <Dialog open={open} onClose={closeDialog}>
+                <DialogTitle>Edit Design Price</DialogTitle>
+                <DialogContent>
+                    <div className="container-fluid">
+                        {
+                            activeDesign !== null
+                                ? activeDesign.productShellDesigns.map((shell, index) => (
+                                    <div className="row">
+                                        
+                                    </div>
+                                ))
+                                : <></>
+                        }
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button>Update</Button>
+                    <Button onClick={closeDialog}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

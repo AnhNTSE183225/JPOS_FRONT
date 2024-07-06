@@ -8,12 +8,14 @@ const CustomerFrame = () => {
 
     const location = useLocation().pathname;
     const navigate = useNavigate();
-    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access','/login','/register'];
+    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access','/login','/register','/build-your-own/choose-setting'];
 
     useEffect(() => {
         if (sessionStorage.getItem('customer') == null) {
             if (!allowedPaths.includes(location)) {
+                console.log(`Unathorized`);
                 navigate('/unauthorized-access');
+                return;
             }
         }
     }, [])
