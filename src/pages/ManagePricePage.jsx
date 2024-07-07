@@ -14,10 +14,12 @@ const ORIGINS = ['LAB_GROWN', 'NATURAL'];
 const CUTS = ['Fair', 'Good', 'Very_Good', 'Excellent'];
 const MIN_CARAT = 0.05;
 const CARAT_STEP = 0.1;
-const MAX_CARAT = 10;
+const MAX_CARAT = 10.05;
 let CARAT_RANGE = []
 for (let i = MIN_CARAT; i <= MAX_CARAT; i += CARAT_STEP) {
-    CARAT_RANGE = [...CARAT_RANGE, i.toFixed(2) + " - " + (i + CARAT_STEP).toFixed(2) + ' ct'];
+    let first_num = parseFloat(i).toFixed(2);
+    let second_num = parseFloat(i + CARAT_STEP).toFixed(2);
+    CARAT_RANGE = [...CARAT_RANGE, [first_num, second_num]];
 }
 
 //A single table
@@ -36,38 +38,10 @@ const ManagePricePage = () => {
     const [newPrice, setNewPrice] = useState(0.01);
 
     const [diamondPriceList, setDiamondPriceList] = useState(null);
-    const [queryList, setQueryList] = useState(null);
 
     const [selectedPrice, setSelectedPrice] = useState(undefined);
 
-    const [pageSize, setPageSize] = useState(50);
-    const [currentPageIndex, setCurrentPageIndex] = useState(0);
-
     const [refresh, setRefresh] = useState(false);
-
-    let pages = []
-    if (queryList !== null) {
-        let i = 0
-        for (; i < queryList.length; i += pageSize) {
-            pages.push(i);
-        }
-    }
-
-    const fetchData = async () => {
-        try {
-            const headers = {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`, { headers });
-            if (!response.data || response.status === 204) {
-                console.log(`Can't fetch from ${import.meta.env.VITE_jpos_back}/api/diamond-price/get-all`);
-            } else {
-                setDiamondPriceList(response.data);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const updatePrice = async () => {
         try {
@@ -125,6 +99,43 @@ const ManagePricePage = () => {
         }
     }
 
+    const fetchData = async () => {
+        try {
+            const s_shapes = shape == 'ALL' ? SHAPES : [shape];
+            const s_origins = origin == 'ALL' ? ORIGINS : [origin];
+            const s_cuts = cut == 'ALL' ? CUTS : [cut];
+            const s_clarity = clarity == 'ALL' ? CLARITIES : [clarity];
+            const s_color = color == 'ALL' ? COLORS : [color];
+            const s_from_carat = caratRange == 'ALL' ? MIN_CARAT : caratRange[0];
+            const s_to_carat = caratRange == 'ALL' ? MAX_CARAT : caratRange[1];
+
+            const response = await axios({
+                method: 'post',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                },
+                url: `${import.meta.env.VITE_jpos_back}/api/diamond-price/get-diamond-prices`,
+                data: {
+                    listOrigin: s_origins,
+                    listShape: s_shapes,
+                    listCut: s_cuts,
+                    listClarity: s_clarity,
+                    listColor: s_color,
+                    minCarat: s_from_carat,
+                    maxCarat: s_to_carat
+                }
+            })
+            if (response.status === 200) {
+                setDiamondPriceList(response.data.content);
+                setSelectedPrice(undefined);
+            } else {
+                console.log(`Error`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const resetFilters = () => {
         setShape('ALL');
         setOrigin('ALL');
@@ -132,43 +143,11 @@ const ManagePricePage = () => {
         setCut('ALL');
         setClarity('ALL');
         setColor('ALL');
-        setCurrentPageIndex(0);
     }
 
     useEffect(() => {
         fetchData();
-    }, [])
-
-    useEffect(() => {
-        if (diamondPriceList !== null) {
-            let query_list = [...diamondPriceList];
-            if (shape != 'ALL') {
-                query_list = query_list.filter(price => price.shape == shape);
-            }
-            if (origin != 'ALL') {
-                query_list = query_list.filter(price => price.origin == origin);
-            }
-            if (cut != 'ALL') {
-                query_list = query_list.filter(price => price.cut == cut);
-            }
-            if (caratRange != 'ALL') {
-                query_list = query_list.filter(price => price.caratWeightFrom == caratRange[0] && price.caratWeightTo == caratRange[1]);
-            }
-            if (clarity != 'ALL') {
-                query_list = query_list.filter(price => price.clarity == clarity);
-            }
-            if (color != 'ALL') {
-                query_list = query_list.filter(price => price.color == color);
-            }
-            setQueryList(query_list);
-            setCurrentPageIndex(0);
-        }
-    }, [shape, origin, caratRange, cut, clarity, color, diamondPriceList])
-
-    useEffect(() => {
-        setSelectedPrice(undefined);
-        fetchData();
-    }, [refresh])
+    }, [refresh, shape, origin, cut, clarity, color, caratRange])
 
     return (
         <div className="container-fluid" id={`${styles['manage-price']}`}>
@@ -209,8 +188,8 @@ const ManagePricePage = () => {
                         </span>
                         <select className="form-select" onChange={(e) => {
                             if (e.target.value !== 'ALL') {
-                                const values = e.target.value.split(" - ");
-                                setCaratRange([parseFloat(values[0]), parseFloat(values[1])]);
+                                const carat = e.target.value.split(",");
+                                setCaratRange([carat[0], carat[1]]);
                             } else {
                                 setCaratRange('ALL');
                             }
@@ -218,8 +197,8 @@ const ManagePricePage = () => {
                             <option value={'ALL'}>ALL</option>
                             {
                                 CARAT_RANGE.map((value, index) => (
-                                    <option key={index} value={value.replace(" ct", "")}>
-                                        {value}
+                                    <option key={index} value={value}>
+                                        {value[0] + " - " + value[1] + ' ct'}
                                     </option>
                                 ))
                             }
@@ -277,16 +256,7 @@ const ManagePricePage = () => {
                             }
                         </select>
                     </div>
-                    <nav>
-                        <ul className="pagination input-group">
-                            {
-                                pages.map((value, index) => (
-                                    <li key={index} style={{ cursor: 'pointer' }} className={`page-item`} onClick={() => setCurrentPageIndex(value)}><span className={`page-link ${value == currentPageIndex ? styles['active-page'] : ''}`}>{index + 1}</span></li>
-                                ))
-                            }
-                            <button className="btn btn-primary" onClick={resetFilters}>Reset filters</button>
-                        </ul>
-                    </nav>
+                    <button className="btn btn-primary" onClick={resetFilters}>Reset filters</button>
                 </div>
             </div>
             <div className="row">
@@ -305,8 +275,8 @@ const ManagePricePage = () => {
                         </thead>
                         <tbody>
                             {
-                                queryList !== null
-                                    ? queryList.slice(currentPageIndex, currentPageIndex + pageSize).map((value, index) => (
+                                diamondPriceList !== null
+                                    ? diamondPriceList.map((value, index) => (
                                         <tr key={index}>
                                             <td>{value.diamondPriceId}</td>
                                             <td>{value.origin}</td>
