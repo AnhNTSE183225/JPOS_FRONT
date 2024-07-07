@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import { formatDate, formatPrice } from '../helper_function/ConvertFunction';
 import styles from '/src/css/OrderDetails.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
@@ -7,7 +8,7 @@ import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
+import { Button } from "@mui/material";
 
 const AssignColumn = ({ order, fetchOrder }) => {
 
@@ -18,6 +19,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
     const [selectedSaleStaff, setSelectedSaleStaff] = useState('');
     const [selectedDesignStaff, setSelectedDesignStaff] = useState('');
     const [selectedProductionStaff, setSelectedProductionStaff] = useState('');
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -195,6 +197,12 @@ const OrderDetails = () => {
     const orderId = useParams().orderId;
     const [order, setOrder] = useState(null);
     const [warranty, setWarranty] = useState(null);
+
+    
+    const printRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => printRef.current,
+    })
 
     const staffType = location.includes("your-orders") ? 'customer' : 'manage';
 
@@ -428,14 +436,32 @@ const OrderDetails = () => {
                             <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
                             {
                                 warranty !== null
-                                    ? <>
+                                    ? <div ref={printRef}>
                                         <h4 className="text-center fw-bold mb-4 mt-4">WARRANTY INFORMATION</h4><hr />
-                                        <h5 className='fw-semibold'>CUSTOMER INFORMATION</h5>
-                                        <p className='fs-6 ms-4 m-0'><span className="fw-bold">Name:</span> {warranty.customer.name}</p>
-                                        <p className='fs-6 ms-4 m-0'><span className="fw-bold">Address:</span> {warranty.customer.address}</p>
-                                        <p className='fs-6 ms-4 m-0'><span className="fw-bold">Email:</span> {warranty.customer.account.email}</p>
-                                        
-                                    </>
+                                        <h5 className='fw-semibold m-0'>CUSTOMER INFORMATION</h5>
+
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Identification:</span> #{('000' + (warranty.customer.customerId)).slice(-4)}</p>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Name:</span> {warranty.customer.name}</p>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Address:</span> {warranty.customer.address}</p>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Email:</span> {warranty.customer.account.email}</p>
+
+                                        <h5 className='fw-semibold pt-3 m-0'>PRODUCT INFORMATION</h5>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Product ID:</span> #{('000' + (warranty.product.productId)).slice(-4)}</p>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Product Name:</span> <span className="text-end">{warranty.product.productName}</span></p>
+
+                                        <h5 className='fw-semibold pt-3 m-0'>EXTRA</h5>
+
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Purchase date:</span> <span className="">{formatDate(warranty.purchaseDate)}</span> </p>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">End of support date:</span> <span>{formatDate(warranty.purchaseDate)}</span> </p>
+                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Terms</span> <span>{warranty.terms}</span> </p>
+
+
+                                    </div>
+                                    : <></>
+                            }
+                            {
+                                warranty !== null
+                                    ? <Button onClick={handlePrint} className="mt-3 d-flex w-100">EXPORT TO PDF</Button>
                                     : <></>
                             }
                         </div>

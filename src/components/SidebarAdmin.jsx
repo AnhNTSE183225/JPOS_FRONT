@@ -23,11 +23,11 @@ const SidebarAdmin = () => {
                 </Link>
                 <ul className="nav nav-pills flex-column mb-auto">
                     <li>
-                        <Link to="/admin/dashboard" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('dashboard') ? styles['active'] : ''}`}>
+                        <Link to="/admin/dashboard" className={`${styles['nav-link']} nav-link py-3 pe-3 my-1 ${location.includes('dashboard') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faGauge} />
                             Dashboard
                         </Link>
-                        <Link to="/admin/manage-staff" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-staff') ? styles['active'] : ''}`}>
+                        <Link to="/admin/manage-staff" className={`${styles['nav-link']} nav-link py-3 pe-3 my-1 ${location.includes('manage-staff') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faUsers} />
                             Manage staff
                         </Link>
@@ -35,15 +35,15 @@ const SidebarAdmin = () => {
                             <FontAwesomeIcon className='me-3' icon={faUsers} />
                             Manage customer
                         </Link>
-                        <Link to="/admin/manage-diamonds" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-diamonds') ? styles['active'] : ''}`}>
+                        <Link to="/admin/manage-diamonds" className={`${styles['nav-link']} nav-link py-3 pe-3 my-1 ${location.includes('manage-diamonds') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faGem} />
                             Manage diamonds
                         </Link>
-                        <Link to="/admin/manage-materials" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-materials') ? styles['active'] : ''}`}>
+                        <Link to="/admin/manage-materials" className={`${styles['nav-link']} nav-link py-3 pe-3 my-1 ${location.includes('manage-materials') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faHammer} />
                             Manage materials
                         </Link>
-                        <Link to="/admin/manage-designs" className={`${styles['nav-link']} nav-link py-3 pe-5 my-1 ${location.includes('manage-designs') ? styles['active'] : ''}`}>
+                        <Link to="/admin/manage-designs" className={`${styles['nav-link']} nav-link py-3 pe-3 my-1 ${location.includes('manage-designs') ? styles['active'] : ''}`}>
                             <FontAwesomeIcon className='me-3' icon={faRing} />
                             Manage designs
                         </Link>

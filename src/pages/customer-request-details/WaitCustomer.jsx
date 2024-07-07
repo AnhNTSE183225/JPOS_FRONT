@@ -133,10 +133,12 @@ const WaitCustomer = ({ order }) => {
                                 <div key={diamond.diamondId}>
                                     <h5 className='fw-semibold mb-4'>Diamond #{diamond.diamondId}</h5>
                                     <div className='fs-6'>
+                                        <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
                                         <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
                                         <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
                                         <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
                                         <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
+                                        <p className={styles.listItem}><span>Carat weight:</span> <span>{diamond.caratWeight}</span></p>
                                     </div>
                                 </div>
                             )

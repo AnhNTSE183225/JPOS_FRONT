@@ -16,13 +16,12 @@ const PopularProducts = () => {
     ];
 
     return (
-        <div className={`${styles.popularProducts} card`}>
-            <h3>Popular Products</h3>
-            <p>Total 10.4k Visitors</p>
+        <div className={`${styles.popularProducts} card w-100 h-100`}>
+            <h3 className='mb-4'>Popular Products</h3>
             <ul className="list-unstyled">
                 {products.map((product, index) => (
-                    <li key={index} className={`${styles.productItem} d-flex justify-content-between`}>
-                        <span>{product.name}</span>
+                    <li key={index} className={`${styles.productItem} d-flex justify-content-between mb-4`}>
+                        <span className='text-truncate'>{product.name}</span>
                         <span>{product.price}</span>
                     </li>
                 ))}
@@ -33,10 +32,17 @@ const PopularProducts = () => {
 
 const DashboardComponent = () => {
     const accessoriesChartRef = useRef(null);
+    const chartInstanceRef = useRef(null);
 
     useEffect(() => {
         const accessoriesCtx = accessoriesChartRef.current.getContext('2d');
-        new Chart(accessoriesCtx, {
+
+        // Destroy the previous chart instance if it exists
+        if (chartInstanceRef.current) {
+            chartInstanceRef.current.destroy();
+        }
+
+        chartInstanceRef.current = new Chart(accessoriesCtx, {
             type: 'bar',
             data: {
                 labels: ['Rings', 'Necklaces & Pendants', 'Earrings', 'Bracelets'],
@@ -75,25 +81,30 @@ const DashboardComponent = () => {
                 }
             }
         });
+
+        // Clean up the chart instance on component unmount
+        return () => {
+            if (chartInstanceRef.current) {
+                chartInstanceRef.current.destroy();
+            }
+        };
     }, []);
 
     return (
         <div className="container mt-4">
             <div className="row mb-4">
-                <div className="col-lg-4 col-md-12 mb-3">
-                    <div className="card text-center">
+                <div className="col-lg-4 col-md-12 mb-3 d-flex">
+                    <div className="card h-100 w-100 text-center">
                         <div className="card-body">
-                            <h2>Congratulations John! 🎉</h2>
-                            <p>Best seller of the month</p>
-                            <h1>$48.9k</h1>
+                            <h2 className='d-flex justify-content-center align-items-center h-100 fs-1'>DASHBOARD</h2>
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-8 col-md-12 mb-3">
-                    <div className="card">
+                <div className="col-lg-8 col-md-12 mb-3 d-flex">
+                    <div className="card w-100 h-100">
                         <div className="card-body">
                             <h2>Statistics</h2>
-                            <div className="d-flex flex-wrap justify-content-between">
+                            <div className="d-flex justify-content-between">
                                 <div className="text-center p-2">
                                     <FontAwesomeIcon icon={faChartLine} size="2x" color="#9b59b6" />
                                     <p>230k Sales</p>
@@ -111,17 +122,16 @@ const DashboardComponent = () => {
                                     <p>$9745 Revenue</p>
                                 </div>
                             </div>
-                            <p className="text-right text-muted">Updated 1 month ago</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="row">
-                <div className="col-lg-4 col-md-12 mb-3">
+                <div className="col-lg-4 col-md-12 mb-3 d-flex">
                     <PopularProducts />
                 </div>
-                <div className="col-lg-8 col-md-12 mb-3">
-                    <div className="card">
+                <div className="col-lg-8 col-md-12 mb-3 d-flex">
+                    <div className="card w-100 h-100">
                         <div className="card-body">
                             <h3>Sales Report</h3>
                             <canvas ref={accessoriesChartRef} className={styles.revenueChart}></canvas>
