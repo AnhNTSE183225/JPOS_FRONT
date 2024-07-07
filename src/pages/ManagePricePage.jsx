@@ -5,6 +5,7 @@ import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
 import styles from '/src/css/ManagePricePage.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { CircularProgress, LinearProgress, Pagination } from "@mui/material";
 
 //Selection above
 const SHAPES = ['round', 'princess', 'cushion', 'emerald', 'oval', 'radiant', 'asscher', 'marquise', 'heart', 'pear'];
@@ -36,10 +37,12 @@ const ManagePricePage = () => {
     const [clarity, setClarity] = useState('ALL');
     const [color, setColor] = useState('ALL');
     const [newPrice, setNewPrice] = useState(0.01);
-
+    const [pageNo, setPageNo] = useState(0);
+    const [pageSize, setPageSize] = useState(0);
     const [diamondPriceList, setDiamondPriceList] = useState(null);
 
     const [selectedPrice, setSelectedPrice] = useState(undefined);
+    const [processing, setProcessing] = useState(false);
 
     const [refresh, setRefresh] = useState(false);
 
@@ -100,6 +103,7 @@ const ManagePricePage = () => {
     }
 
     const fetchData = async () => {
+        setProcessing(true);
         try {
             const s_shapes = shape == 'ALL' ? SHAPES : [shape];
             const s_origins = origin == 'ALL' ? ORIGINS : [origin];
@@ -114,7 +118,7 @@ const ManagePricePage = () => {
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 },
-                url: `${import.meta.env.VITE_jpos_back}/api/diamond-price/get-diamond-prices`,
+                url: `${import.meta.env.VITE_jpos_back}/api/diamond-price/get-diamond-prices?pageNo=${pageNo}`,
                 data: {
                     listOrigin: s_origins,
                     listShape: s_shapes,
@@ -127,6 +131,7 @@ const ManagePricePage = () => {
             })
             if (response.status === 200) {
                 setDiamondPriceList(response.data.content);
+                setPageSize(response.data.page.size)
                 setSelectedPrice(undefined);
             } else {
                 console.log(`Error`);
@@ -134,6 +139,7 @@ const ManagePricePage = () => {
         } catch (error) {
             console.log(error);
         }
+        setProcessing(false);
     }
 
     const resetFilters = () => {
@@ -147,7 +153,7 @@ const ManagePricePage = () => {
 
     useEffect(() => {
         fetchData();
-    }, [refresh, shape, origin, cut, clarity, color, caratRange])
+    }, [refresh, shape, origin, cut, clarity, color, caratRange, pageNo])
 
     return (
         <div className="container-fluid" id={`${styles['manage-price']}`}>
@@ -258,6 +264,19 @@ const ManagePricePage = () => {
                     </div>
                     <button className="btn btn-primary" onClick={resetFilters}>Reset filters</button>
                 </div>
+            </div>
+            <div className="row mb-3">
+                <Pagination
+                    className="d-flex justify-content-center align-items-center mb-5"
+                    count={pageSize}
+                    page={pageNo}
+                    onChange={(e, v) => setPageNo(v)}
+                />
+                {
+                    processing
+                        ? <LinearProgress color="secondary" />
+                        : <></>
+                }
             </div>
             <div className="row">
                 <div className="col">
