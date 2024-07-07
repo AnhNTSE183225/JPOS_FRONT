@@ -4,10 +4,13 @@ import styles from '/src/css/HistoryPage.module.css';
 import axios from 'axios';
 import OrderDetails from '../components/OrderDetails';
 import useDocumentTitle from '../components/Title';
+import { useNavigate } from 'react-router-dom';
 
 const HistoryPage = () => {
     const [orders, setOrders] = useState([]);
     const [currentOrderId, setCurrentOrderId] = useState(null);
+
+    const navigate = useNavigate();
 
     useDocumentTitle('History');
 
@@ -61,7 +64,7 @@ const HistoryPage = () => {
                                             <td>{formatPrice(order.totalAmount)}</td>
                                             <td>Completed</td>
                                             <td>
-                                                <button onClick={() => setCurrentOrderId(order.id)} className='fs-6'>
+                                                <button onClick={() => navigate(`${order.id}`)} className='fs-6'>
                                                     View details
                                                 </button>
                                             </td>
@@ -71,13 +74,6 @@ const HistoryPage = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div className="row">
-                    {currentOrderId == null ? (
-                        <h1>Please select an order to view its details</h1>
-                    ) : (
-                        <OrderDetails orderId={currentOrderId} staffType="staff"/>
-                    )}
                 </div>
             </div>
         </div>

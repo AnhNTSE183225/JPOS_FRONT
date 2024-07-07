@@ -156,7 +156,7 @@ const ConfirmPaymentPage = ({ order }) => {
                             <div className="col">
                                 70% Payment
                             </div>
-                            <div className="col">
+                            <div className="col text-end">
                                 {formatPrice(amountPaid)}
                             </div>
                         </div>

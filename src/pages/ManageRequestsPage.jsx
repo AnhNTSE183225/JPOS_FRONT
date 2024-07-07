@@ -39,8 +39,9 @@ const ManageRequestsPage = () => {
                 if (!response.data || response.status === 204) {
                     toast.error("Cannot fetch orders");
                 } else {
-                    setOrders(response.data);
-                    setQueryOrders(response.data);
+                    let orders = response.data.filter(order => order.status != 'cancelled');
+                    setOrders(orders);
+                    setQueryOrders(orders);
                 }
             } catch (error) {
                 console.log(error);

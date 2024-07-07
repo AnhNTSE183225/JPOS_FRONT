@@ -147,6 +147,10 @@ const router = createBrowserRouter([
         element: <HistoryPage /> // Staff
       },
       {
+        path: 'history/:orderId',
+        element: <OrderDetails/>
+      },
+      {
         path: 'request/select/:orderId',
         element: <RequestDetailPage />
       },

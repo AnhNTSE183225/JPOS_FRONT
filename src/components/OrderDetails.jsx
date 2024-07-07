@@ -194,8 +194,31 @@ const OrderDetails = () => {
     const navigate = useNavigate();
     const orderId = useParams().orderId;
     const [order, setOrder] = useState(null);
+    const [warranty, setWarranty] = useState(null);
 
     const staffType = location.includes("your-orders") ? 'customer' : 'manage';
+
+    const getWarranty = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                },
+                url: `${import.meta.env.VITE_jpos_back}/api/warranty/product/${order.product.productId}`
+            })
+            if (response.status === 200) {
+                setWarranty(response.data);
+            } else {
+                console.log(`Error`);
+                console.log(response);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    console.log(order);
 
     const fetchOrder = async () => {
         try {
@@ -214,9 +237,6 @@ const OrderDetails = () => {
             console.log(error);
         }
     }
-    useEffect(() => {
-        fetchOrder();
-    }, [orderId]);
 
     //--------------------------------IMAGE THING---------------------------------------------------
     const [activeReferenceImage, setActiveReferenceImage] = useState(0);
@@ -249,6 +269,21 @@ const OrderDetails = () => {
         }
     }
     //--------------------------------IMAGE THING---------------------------------------------------
+
+
+    useEffect(() => {
+        fetchOrder();
+    }, [orderId]);
+
+    useEffect(() => {
+        if (warranty == null) {
+            if (order !== null && order.status == 'completed') {
+                getWarranty();
+            }
+        }
+    }, [order])
+
+    console.log(warranty);
 
     if (order == null) {
         return (
@@ -392,19 +427,16 @@ const OrderDetails = () => {
                             <hr /><h5 className={styles.listItem}><span>Tax fee (10% VAT):</span> <span>{order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</span></h5>
                             <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
                             {
-                                order.status == 'completed'
+                                warranty !== null
                                     ? <>
-                                        <h5 className="fw-bold">WARRANTY INFORMATION</h5>
-                                        <div>
-                                            <li>Customer ID: {('000' + order.customer.customerId).slice(-4)}</li>
-                                            <li>Product ID: {('000' + order.product.productId).slice(-4)}</li>
-                                            <li>Purchase date: {order.odate === null ? formatDate(order.orderDate) : formatDate(order.odate)}</li>
-                                            <li>Warranty: 4 years from purchase date</li>
-                                            <li>Terms: <a href="/" target="_blank">Read our terms here</a></li>
-                                        </div>
+                                        <h4 className="text-center fw-bold mb-4 mt-4">WARRANTY INFORMATION</h4><hr />
+                                        <h5 className='fw-semibold'>CUSTOMER INFORMATION</h5>
+                                        <p className='fs-6 ms-4 m-0'><span className="fw-bold">Name:</span> {warranty.customer.name}</p>
+                                        <p className='fs-6 ms-4 m-0'><span className="fw-bold">Address:</span> {warranty.customer.address}</p>
+                                        <p className='fs-6 ms-4 m-0'><span className="fw-bold">Email:</span> {warranty.customer.account.email}</p>
+                                        
                                     </>
-                                    : <>
-                                    </>
+                                    : <></>
                             }
                         </div>
                     </div>
