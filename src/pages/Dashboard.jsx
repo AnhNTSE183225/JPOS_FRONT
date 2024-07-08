@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartLine, faUsers, faShoppingCart, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../css/Dashboard.module.css';
+import axios from 'axios';
+import { formatPrice, formatDate } from '/src/helper_function/ConvertFunction';
 
 const PopularProducts = () => {
     const products = [
@@ -33,11 +35,56 @@ const PopularProducts = () => {
 const DashboardComponent = () => {
     const accessoriesChartRef = useRef(null);
     const chartInstanceRef = useRef(null);
+    const [stats, setStats] = useState({
+        noCustomers: 0,
+        noOrders: 0,
+        noSales: 0,
+        revenue: 0.0
+    });
+    const [salesReport, setSalesReport] = useState([0, 0, 0, 0]);
 
-    useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/stats/get-statistics`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if (response.status === 200) {
+                setStats(response.data);
+            } else {
+                console.log('error');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const fetchSalesReport = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/stats/get-sales-report`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if (response.status === 200) {
+                setSalesReport(response.data);
+                startGraph();
+            } else {
+                console.log('error');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const startGraph = () => {
         const accessoriesCtx = accessoriesChartRef.current.getContext('2d');
 
-        // Destroy the previous chart instance if it exists
         if (chartInstanceRef.current) {
             chartInstanceRef.current.destroy();
         }
@@ -49,7 +96,7 @@ const DashboardComponent = () => {
                 datasets: [
                     {
                         label: 'Accessories Sold',
-                        data: [150, 50, 100, 75],
+                        data: salesReport,
                         backgroundColor: ['#9b59b6', '#3498db', '#e74c3c', '#2ecc71'],
                     }
                 ]
@@ -81,6 +128,14 @@ const DashboardComponent = () => {
                 }
             }
         });
+    }
+
+    useEffect(() => {
+        fetchData();
+        fetchSalesReport();
+        // Destroy the previous chart instance if it exists
+
+        startGraph();
 
         // Clean up the chart instance on component unmount
         return () => {
@@ -89,6 +144,10 @@ const DashboardComponent = () => {
             }
         };
     }, []);
+
+    useEffect(() => {
+        startGraph();
+    },[salesReport])
 
     return (
         <div className="container mt-4">
@@ -107,19 +166,19 @@ const DashboardComponent = () => {
                             <div className="d-flex justify-content-between">
                                 <div className="text-center p-2">
                                     <FontAwesomeIcon icon={faChartLine} size="2x" color="#9b59b6" />
-                                    <p>230k Sales</p>
+                                    <p>{stats.noSales} Sales</p>
                                 </div>
                                 <div className="text-center p-2">
                                     <FontAwesomeIcon icon={faUsers} size="2x" color="#2980b9" />
-                                    <p>8.549k Customers</p>
+                                    <p>{stats.noCustomers} Customers</p>
                                 </div>
                                 <div className="text-center p-2">
                                     <FontAwesomeIcon icon={faShoppingCart} size="2x" color="#e74c3c" />
-                                    <p>1.423k Products</p>
+                                    <p>{stats.noOrders} Orders</p>
                                 </div>
                                 <div className="text-center p-2">
                                     <FontAwesomeIcon icon={faDollarSign} size="2x" color="#27ae60" />
-                                    <p>$9745 Revenue</p>
+                                    <p>{formatPrice(stats.revenue)} Revenue</p>
                                 </div>
                             </div>
                         </div>

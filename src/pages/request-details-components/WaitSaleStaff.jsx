@@ -297,7 +297,7 @@ const WaitSaleStaff = ({ order }) => {
                             <div className="col-md">
                                 <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
                                     <option value=''>Choose product type</option>
-                                    {[`Engagement Ring`, `Wedding Ring`, `Earrings`, `Necklace`, `General Jewelry`].map(value => (<option key={value} value={value}>{value}</option>))}
+                                    {['ring','necklace','earrings','bracelets'].map(value => (<option key={value} value={value}>{value}</option>))}
                                 </select>
                             </div>
                         </div>

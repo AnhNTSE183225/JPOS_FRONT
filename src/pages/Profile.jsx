@@ -120,7 +120,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="row mt-5 gap-3">
                     <div className={`col ${styles['button-custom']}`} onClick={() => navigate("/profile/your-orders")} >
-                        View Order Details
+                        View Orders
                     </div>
                     <div className={`col ${styles['button-custom']}`} onClick={() => navigate("/profile/your-request")}>
                         View Request
