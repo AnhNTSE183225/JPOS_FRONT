@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { validateString } from "../../helper_function/Validation";
 import { INFINITY } from "chart.js/helpers";
+import useDocumentTitle from "../../components/Title";
 
 const ManageDesigns = () => {
     const [designs, setDesigns] = useState(null);
+    const [queryList, setQueryList] = useState(null);
     const [refresh, setRefresh] = useState(false);
-    const [search, setSearch] = useState(null);
+    const [search, setSearch] = useState('');
+
+    useDocumentTitle("Manage Designs");
 
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
     const [activeDesign, setActiveDesign] = useState({
@@ -46,6 +50,7 @@ const ManageDesigns = () => {
             const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/all`, { headers });
             if (response.status === 200) {
                 setDesigns(response.data);
+                setQueryList(response.data);
             } else {
                 console.log('error');
             }
@@ -91,6 +96,17 @@ const ManageDesigns = () => {
         fetchData();
     }, [refresh])
 
+    console.log(designs);
+
+    useEffect(() => {
+        if(search.length > 0) {
+            let query_list = [...designs].filter(q => q.designName.toLowerCase().includes(search.toLowerCase()) || q.productDesignId.toString() == search);
+            setQueryList(query_list);
+        } else {
+            setQueryList(designs);
+        }
+    },[search])
+
     return (
         <div className="container-fluid">
             <div className="row mb-3">
@@ -99,21 +115,28 @@ const ManageDesigns = () => {
                 </div>
             </div>
             <div className="row mb-3">
+                <div className="col" style={{maxWidth: '400px'}}>
+                    <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design..." className="form-control" type="text"/>
+                </div>
                 <div className="col">
-                    <div className="container-fluid text-center">
-                        <div className="row mb-3 fw-bold">
-                            <div className="col-1 d-flex justify-content-center align-items-center">ID</div>
+                    <button className="btn btn-primary">Create new design</button>
+                </div>
+            </div>
+            <div className="row mb-3">
+                <div className="col">
+                    <div className="container-fluid text-center border border-dark">
+                        <div className="row fw-bold">
+                            <div className="col-1 border border-dark d-flex justify-content-center align-items-center">ID</div>
                             <div className="col d-flex justify-content-center align-items-center">Name</div>
                             <div className="col d-flex justify-content-center align-items-center">Type</div>
                             <div className="col d-flex justify-content-center align-items-center">Image</div>
                             <div className="col d-flex justify-content-center align-items-center">Shells</div>
                             <div className="col d-flex justify-content-center align-items-center">Actions</div>
-                            <hr />
                         </div>
                         {
-                            designs != null
-                                ? designs.map((design, index) => (
-                                    <div className="row mb-3 border border-dark" key={index}>
+                            queryList != null
+                                ? queryList.map((design, index) => (
+                                    <div className="row border border-dark" key={index}>
                                         <div className="col-1 d-flex justify-content-center align-items-center fw-bold">{design.productDesignId}</div>
                                         <div className="col d-flex justify-content-center align-items-center">{design.designName}</div>
                                         <div className="col d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>

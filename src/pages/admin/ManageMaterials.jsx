@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { validateInteger, validateString } from "../../helper_function/Validation";
 import { INFINITY } from "chart.js/helpers";
+import useDocumentTitle from "../../components/Title";
 
 const ManageMaterials = () => {
     const [materials, setMaterials] = useState(null);
@@ -14,7 +15,7 @@ const ManageMaterials = () => {
     const validateMaterialId = validateInteger(activeMaterial.materialId, 1, INFINITY);
     const validateMaterialName = validateString(activeMaterial.materialName, 4, 50, null, '^[A-Za-z0-9_]+$');
 
-
+    useDocumentTitle("Manage Materials")
 
     const [open, setOpen] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);

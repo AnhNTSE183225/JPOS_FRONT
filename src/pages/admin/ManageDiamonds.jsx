@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import useDocumentTitle from "../../components/Title";
 
 const ManageDiamonds = () => {
     const [diamonds, setDiamonds] = useState(null);
@@ -19,6 +20,8 @@ const ManageDiamonds = () => {
         }
     }
 
+    useDocumentTitle("Manage Diamonds");
+;
     const navigate = useNavigate();
 
     const fetchData = async () => {
