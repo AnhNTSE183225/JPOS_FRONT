@@ -43,8 +43,12 @@ import ManageDesigns from './pages/admin/ManageDesigns';
 import EditDiamond from './pages/admin/EditDiamond';
 import WaitManager from './pages/request-details-components/WaitManager';
 import UnauthorizedAccess from './pages/UnauthorizedAccess';
+import { Provider, ErrorBoundary } from '@rollbar/react'
 
-
+const rollbarConfig = {
+  accessToken: 'e34f7c70e78448bba88c8da9405dd5ef',
+  environment: 'testenv',
+}
 
 const router = createBrowserRouter([
   {
@@ -148,7 +152,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'history/:orderId',
-        element: <OrderDetails/>
+        element: <OrderDetails />
       },
       {
         path: 'request/select/:orderId',
@@ -225,5 +229,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <Provider config={rollbarConfig}>
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
+  </Provider>
 );

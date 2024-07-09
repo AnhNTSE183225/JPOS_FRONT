@@ -11,7 +11,7 @@ const ProductCard = ({ design }) => {
 
     return (
         <div className={styles.card} onClick={handleClick}>
-            <img className='mx-auto' crossOrigin='anonymous' src={design.designFile} alt={design.designName} style={{width: '20vw',height: '20vw'}} />
+            <img className='img-fluid' crossOrigin='anonymous' src={design.designFile} alt={design.designName}/>
             <div className={styles.cardBody}>
                 <div className={styles.cardTitle}>{design.designName}</div>
             </div>
