@@ -76,18 +76,7 @@ const ChooseDiamond = () => {
     useDocumentTitle('Find The Right Diamond For You');
 
     const setup = async () => {
-        if (sessionStorage.getItem('selected_product') == null) {
-            toast.info(`Please pick a setting first`);
-            navigate('/build-your-own/choose-setting');
-        } else {
-            //let diamond_list = await fetchData(pageNo, pageSize);
-            let query = await fetchQuery();
-            let diamond_list = query.content;
-            let total_page = query.page.totalPages;
 
-            setTotalPage(total_page);
-            setDiamondList(diamond_list);
-        }
     }
     const fetchQuery = async () => {
         try {
@@ -102,14 +91,20 @@ const ChooseDiamond = () => {
                 minPrice: minPrice,
                 maxPrice: maxPrice
             }
-            const headers = {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            }
-            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query, { headers });
-            if (!response.data || response.status === 204) {
-                toast.error(`Cannot fetch data`);
+            const response = await axios({
+                method: 'post',
+                url: `${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`,
+                data: query,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            });
+            if (response.status === 200) {
+                console.log(response);
+                setTotalPage(response.data.pageable.pageSize);
+                setDiamondList(response.data.content );
             } else {
-                return response.data;
+                console.log('error');
             }
 
         } catch (error) {
@@ -117,11 +112,16 @@ const ChooseDiamond = () => {
         }
     }
     useEffect(() => {
-        setup();
+        if (sessionStorage.getItem('selected_product') == null) {
+            toast.info(`Please pick a setting first`);
+            navigate('/build-your-own/choose-setting');
+        } else {
+            fetchQuery();
+        }
     }, [])
 
     useEffect(() => {
-        setup();
+        fetchQuery();
     }, [pageNo, pageSize, activeShape, minCarat, maxCarat, beginColor, endColor, beginClarity, endClarity, beginCut, endCut, minPrice, maxPrice, origin])
 
     const resetFilters = () => {
@@ -158,6 +158,8 @@ const ChooseDiamond = () => {
             return JSON.parse(sessionStorage.getItem('selected_diamonds')).filter(d => d.diamondId == id).length > 0;
         }
     }
+
+    console.log(diamondList);
 
     return (
         <>
@@ -407,7 +409,7 @@ const ChooseDiamond = () => {
                             </div>
                         ))
                     ) : (
-                        <LinearProgress className='mt-5'/>
+                        <LinearProgress className='mt-5' />
                     )}
                 </div>
             </div>
