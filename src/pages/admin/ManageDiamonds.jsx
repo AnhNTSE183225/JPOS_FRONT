@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import useDocumentTitle from "../../components/Title";
+import styles from '../../css/ManageDiamonds.module.css';
 
 const ManageDiamonds = () => {
     const [diamonds, setDiamonds] = useState(null);
@@ -109,14 +110,14 @@ const ManageDiamonds = () => {
                 <table className="text-start table">
                     <thead className="text-center">
                         <tr>
-                            <th className="p-0 text-start">ID</th>
-                            <th className="p-0 text-start">Code</th>
-                            <th className="p-0 text-start">Name</th>
-                            <th className="p-0">Color</th>
-                            <th className="p-0">Cut</th>
-                            <th className="p-0">Clarity</th>
-                            <th className="p-0">Weight</th>
-                            <th className="p-0">Status</th>
+                            <th className="text-start">ID</th>
+                            <th className="text-start">Code</th>
+                            <th className="text-start">Name</th>
+                            <th className="">Color</th>
+                            <th className="">Cut</th>
+                            <th className="">Clarity</th>
+                            <th className="">Weight</th>
+                            <th className="">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,14 +125,14 @@ const ManageDiamonds = () => {
                             queryList !== null
                                 ? queryList.slice(pageNo, pageNo + pageSize).map((diamond, index) => (
                                     <tr key={index}>
-                                        <th className="p-0">{diamond.diamondId}</th>
-                                        <td className="p-0">{diamond.diamondCode}</td>
-                                        <td className="p-0">{diamond.diamondName}</td>
-                                        <td className="p-0 text-center">{diamond.color}</td>
-                                        <td className="p-0 text-center">{diamond.cut}</td>
-                                        <td className="p-0 text-center">{diamond.clarity}</td>
-                                        <td className="p-0 text-center">{diamond.caratWeight}</td>
-                                        <td className="p-0 text-center">
+                                        <th className="col-md-1">{diamond.diamondId}</th>
+                                        <td className="">{diamond.diamondCode}</td>
+                                        <td className="col-md-3">{diamond.diamondName}</td>
+                                        <td className="text-center">{diamond.color}</td>
+                                        <td className="text-center">{diamond.cut}</td>
+                                        <td className="text-center">{diamond.clarity}</td>
+                                        <td className="text-center">{diamond.caratWeight}</td>
+                                        <td className="text-center">
                                             <Switch
                                                 checked={diamond.active}
                                                 onChange={() => deleteFunction(diamond)}
