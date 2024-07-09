@@ -69,6 +69,7 @@ const ManageDesigns = () => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
+                console.log(activeDesign);
                 const response = await axios({
                     url: `${import.meta.env.VITE_jpos_back}/api/product-designs/update`,
                     method: 'put',
@@ -95,8 +96,6 @@ const ManageDesigns = () => {
     useEffect(() => {
         fetchData();
     }, [refresh])
-
-    console.log(designs);
 
     useEffect(() => {
         if(search.length > 0) {
