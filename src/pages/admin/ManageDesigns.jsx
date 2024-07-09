@@ -125,24 +125,24 @@ const ManageDesigns = () => {
                 <div className="col">
                     <div className="container-fluid text-center">
                         <div className="row fw-bold">
-                            <div className="col-1 border border-dark d-flex justify-content-center align-items-center">ID</div>
-                            <div className="col border border-dark d-flex justify-content-center align-items-center">Name</div>
-                            <div className="col border border-dark d-flex justify-content-center align-items-center">Type</div>
-                            <div className="col border border-dark d-flex justify-content-center align-items-center">Image</div>
-                            <div className="col border border-dark d-flex justify-content-center align-items-center">Shells</div>
-                            <div className="col border border-dark d-flex justify-content-center align-items-center">Actions</div>
+                            <div className="col-1  d-flex justify-content-center align-items-center">ID</div>
+                            <div className="col-md-3 d-flex justify-content-center align-items-center">Name</div>
+                            <div className="col  d-flex justify-content-center align-items-center">Type</div>
+                            <div className="col  d-flex justify-content-center align-items-center">Image</div>
+                            <div className="col-md-2  d-flex justify-content-center align-items-center">Shells</div>
+                            <div className="col d-flex justify-content-center align-items-center">Actions</div>
                         </div>
                         {
                             queryList != null
                                 ? queryList.map((design, index) => (
                                     <div className="row" key={index}>
-                                        <div className="col-1 border border-dark d-flex justify-content-center align-items-center fw-bold">{design.productDesignId}</div>
-                                        <div className="col border border-dark d-flex justify-content-center align-items-center">{design.designName}</div>
-                                        <div className="col border border-dark d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
-                                        <div className="col border border-dark d-flex justify-content-center align-items-center">
+                                        <div className="col-1  d-flex justify-content-center align-items-center fw-bold">{design.productDesignId}</div>
+                                        <div className="col-md-3 d-flex justify-content-center align-items-center">{design.designName}</div>
+                                        <div className="col d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
+                                        <div className="col d-flex justify-content-center align-items-center">
                                             <img src={design.designFile} alt="" style={{ width: '10vw', height: '10vw' }} />
                                         </div>
-                                        <div className="col border border-dark d-flex justify-content-center align-items-center">
+                                        <div className="col-md-2 d-flex justify-content-center align-items-center">
                                             <div className="container-fluid">
                                                 {
                                                     design.productShellDesigns.map((shell, index2) => (
@@ -155,8 +155,8 @@ const ManageDesigns = () => {
                                                 }
                                             </div>
                                         </div>
-                                        <div className="col border border-dark d-flex justify-content-center align-items-center">
-                                            <button onClick={() => openUpdateDialog(design)} className="btn btn-primary">
+                                        <div className="col d-flex justify-content-center align-items-center">
+                                            <button onClick={() => openUpdateDialog(design)} className="btn btn-primary w-100">
                                                 EDIT
                                             </button>
                                         </div>

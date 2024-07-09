@@ -20,16 +20,20 @@
     background-color: transparent;
     font-size: 4rem;
     transition: 0.3s;
-
 }
 
-#order-details button {
+.image-btn:hover {
+    transform: scale(1.1);
+}
+
+.custom-button {
     border: none;
     padding: 0.5rem 1rem;
     background-color: #48AAAD;
     color: white;
     transition: 0.3s;
 }
-#order-details button:hover {
+.custom-button:hover {
+    background-color: #327c7f;
     transform: scale(0.97);
 }

@@ -149,11 +149,11 @@ const CustomDesignPage = () => {
                                 </div>
                                 {
                                     processing
-                                        ? < button className="btn btn-primary mt-3" style={{backgroundColor: "#48AAAD", border: "none"}} type="button" disabled>
+                                        ? < button className={`w-100 ${styles['custom-button']}`} style={{ border: "none"}} type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className="btn btn-primary w-100 mt-3" style={{ backgroundColor: '#48AAAD', borderColor: '#48AAAD'}} onClick={uploadImages} >Upload image</button>
+                                        : <button className={`w-100 ${styles['custom-button']}`} style={{ borderColor: '#48AAAD'}} onClick={uploadImages} >Upload image</button>
                                 }
                             </div>
                             <div className="mb-3">
@@ -165,7 +165,7 @@ const CustomDesignPage = () => {
                                 <input className="form-control" type="number" min={500} value={budget} onChange={(e) => setBudget(e.target.value)} />
                             </div>
                             <div>
-                                <button className="btn btn-dark w-100" onClick={submitForm}>Submit</button>
+                                <button className={`w-100 ${styles['dark-custom-button']}`} onClick={submitForm}>Submit</button>
                             </div>
                         </div>
                     </div>

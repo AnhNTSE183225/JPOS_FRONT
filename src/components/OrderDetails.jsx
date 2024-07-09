@@ -180,7 +180,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
             {
                 (order.orderType == 'from_design' && (order.saleStaff == null || order.productionStaff == null)) || (order.orderType == 'customize' && (order.saleStaff == null || order.productionStaff == null || order.designStaff == null))
                     ? <div className="row">
-                        <button onClick={submitForm}>
+                        <button className={`${styles['custom-button']}`} onClick={submitForm}>
                             Assign
                         </button>
                     </div>
@@ -322,7 +322,7 @@ const OrderDetails = () => {
                                     : <>
                                         <div className="position-relative">
                                             <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                            <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                            <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles[`image-btn`]} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                             {
                                                 order.designFile.split("|").map((image, index) => {
                                                     if (index == activeReferenceImage) {
@@ -366,7 +366,7 @@ const OrderDetails = () => {
                                     : <>
                                         <div className="position-relative">
                                             <button onClick={() => handleFinalImageMove(false)} disabled={activeFinalImage == 0} hidden={order.productImage.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                            <button onClick={() => handleFinalImageMove(true)} disabled={activeFinalImage == order.productImage.split("|").length - 1} hidden={order.productImage.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                                            <button onClick={() => handleFinalImageMove(true)} disabled={activeFinalImage == order.productImage.split("|").length - 1} hidden={order.productImage.split("|").length <= 0} className={`${styles[`image-btn`]} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                             {
                                                 order.productImage.split("|").map((image, index) => {
                                                     if (index == activeFinalImage) {

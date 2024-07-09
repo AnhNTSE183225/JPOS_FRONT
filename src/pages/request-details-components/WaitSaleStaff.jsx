@@ -670,12 +670,12 @@ const WaitSaleStaff = ({ order }) => {
                         {diamondList.length > 0
                             ? diamondList.map((diamond, index) => (
                                 <tr key={index}>
-                                    <td>{diamond.diamond.diamondId}</td>
-                                    <td>{diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)}</td>
-                                    <td>{diamond.diamond.color}-{diamond.diamond.clarity} {diamond.diamond.cut.replace("_", " ")} {diamond.diamond.caratWeight} Carat</td>
-                                    <td>{formatPrice(diamond.latestPrice)}</td>
-                                    <td>{formatDate(diamond.effectiveDate)}</td>
-                                    <td>
+                                    <td className='col-md'>{diamond.diamond.diamondId}</td>
+                                    <td className='col-md'>{diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)}</td>
+                                    <td className='col-md'>{diamond.diamond.color}-{diamond.diamond.clarity} {diamond.diamond.cut.replace("_", " ")} {diamond.diamond.caratWeight} Carat</td>
+                                    <td className='col-md'>{formatPrice(diamond.latestPrice)}</td>
+                                    <td className='col-md'>{formatDate(diamond.effectiveDate)}</td>
+                                    <td className='col-md'>
                                         {
                                             chosenDiamonds.find(d => d.id == diamond.diamond.diamondId) == null
                                                 ? <>

@@ -16,7 +16,7 @@ const TableComponent = ({ requests }) => {
             <thead>
                 <tr id={`${styles['table-head']}`}>
                     <th>Order ID</th>
-                    <th>Customer Name</th>
+                    <th className='col-2'>Customer Name</th>
                     <th>Date</th>
                     <th>Budget/Price</th>
                     <th>Status</th>

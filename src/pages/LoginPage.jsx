@@ -64,8 +64,8 @@ const LoginPage = () => {
     return (
         <div className={`container-fluid d-flex align-items-center justify-content-center ${styles.fullHeight}`}>
             <div className={`card p-3 mt-3 ${styles.centerCard}`}>
-                <div className="mb-3">
-                    <h1>Login</h1>
+                <div className="mt-3 mb-3">
+                    <h2>LOGIN</h2>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Username</label>
@@ -92,13 +92,13 @@ const LoginPage = () => {
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        <button onClick={unionLogin} className="btn btn-dark w-100">
-                            Login
+                        <button onClick={unionLogin} className={`w-100 ${styles['button-custom']}`}>
+                            <span>Login</span>
                         </button>
                     </div>
                     <div className="col">
                         <Link to="/register">
-                            <button className="btn btn-light w-100">Register</button>
+                            <button className={`w-100 ${styles['button-custom']}`}><span>Register</span></button>
                         </Link>
                     </div>
                 </div>

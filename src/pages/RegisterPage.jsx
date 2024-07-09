@@ -81,7 +81,7 @@ const RegisterPage = () => {
         <div className={`container-fluid ${styles.fullHeight}`}>
             <div className={`card p-3 ${styles.centerCard}`}>
                 <div className='mb-3'>
-                    <h1>Register</h1>
+                    <h2>Register</h2>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Username</label>
@@ -110,10 +110,10 @@ const RegisterPage = () => {
                 </div>
                 <div className='mb-3 row'>
                     <div className='col'>
-                        <button onClick={customerRegister} className='btn btn-dark w-100'>Create account</button>
+                        <button onClick={customerRegister} className={`w-100 ${styles['button-custom']}`}><span>Create account</span></button>
                     </div>
                     <div className='col'>
-                        <Link to='/login'><button className='btn btn-light w-100'>Go to login</button></Link>
+                        <Link to='/login'><button className={`w-100 ${styles['button-custom']}`}><span>Go to login</span></button></Link>
                     </div>
                 </div>
             </div>

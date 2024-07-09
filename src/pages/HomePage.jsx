@@ -56,7 +56,7 @@ const HomePage = () => {
                                 toast.info('Please login to continue');
                                 navigate('/login');
                             }
-                        }}><button style={{ width: "100%" }}>SHOP SETTINGS</button></a>
+                        }}><button className={`${styles['home-btn']}`} style={{ width: "100%" }}>SHOP SETTINGS</button></a>
                     </div>
                 </section>
             </div>
