@@ -13,12 +13,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     border: 1px solid #48AAAD;
 }
-
-.cardImgTop {
-    width: 100%;
-    height: auto;
-}
-
 .cardBody {
     padding: 16px;
     text-align: center;

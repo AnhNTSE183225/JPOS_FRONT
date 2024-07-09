@@ -30,8 +30,16 @@ const HomePage = () => {
                         <p className='fs-4 fw-semibold text-center'>DESIGN YOUR OWN JEWELERY</p>
                         <p className='fs-6'>Bring your love to life with a handcrafted design that perfectly suits your relationship, budget and style.
                             Our expert artisans will pour their passion into every detail of your beautiful custom engagement ring.</p>
-                        <Link to="/custom-design"><button style={{ width: "45%" }}>SEND US YOUR DESIGN</button></Link>
-                        <Link to="/diamond-price-list"><button style={{ width: "45%" }}>DISCOVER DIAMOND PRICE LIST</button></Link>
+                        <div className="container-fluid">
+                            <div className="row p-0 gap-5">
+                                <div className="col p-0">
+                                    <Link to="/custom-design"><button className={`${styles['home-btn']}`}>SEND US YOUR DESIGN</button></Link>
+                                </div>
+                                <div className="col p-0">
+                                    <Link to="/diamond-price-list"><button className={`${styles['home-btn']}`}>DISCOVER DIAMOND PRICE LIST</button></Link>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
                 <section className={`mt-5 ${styles['row']}`}>

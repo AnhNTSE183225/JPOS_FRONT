@@ -48,7 +48,7 @@ const BuildYourOwnNav = () => {
                             : <>
                                 <div className="col">
                                     <div className="container-fluid">
-                                        <div className={`"row fw-bold " ${styles['text-ellipsis']}`}>
+                                        <div className={`"row fw-bold text-truncate`} style={{maxWidth: '10rem'}}>
                                             {selectedProduct.designName}
                                         </div>
                                         <div className="row justify-content-around">

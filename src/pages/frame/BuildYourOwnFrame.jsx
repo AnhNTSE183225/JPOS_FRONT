@@ -16,7 +16,7 @@ const BuildYourOwnFrame = () => {
         return (
             <>
                 <BuildYourOwnNav />
-                <Outlet />
+                <Outlet/>
             </>
         )
     }

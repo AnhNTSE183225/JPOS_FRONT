@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DiamondCard from './DiamondCard';
 import styles from '/src/css/ChooseDiamonds.module.css';
 import { formatPrice } from '../../helper_function/ConvertFunction';
-import { Pagination, Slider } from '@mui/material';
+import { CircularProgress, LinearProgress, Pagination, Slider } from '@mui/material';
 import useDocumentTitle from '../../components/Title';
 
 import asscher from '/src/assets/svg/Asscher.svg';
@@ -161,7 +161,7 @@ const ChooseDiamond = () => {
 
     return (
         <>
-            <div className={`${styles.container} container`}>
+            <div className={`${styles.container} container`} style={{ minWidth: '1000px' }}>
                 <div className="diamond-finder text-center">
                     <h3 className='ms-3' style={{ textAlign: 'center' }}>Diamond Finder</h3>
                     <p style={{ maxWidth: '550px', margin: '0 auto', textAlign: 'center' }}>Use our diamond search feature to find GIA-graded, conflict-free loose diamonds of the highest quality. Browse thousands of options and use the filters to narrow down the selection by carat, cut, colour, clarity, shape and price.</p>
@@ -396,7 +396,7 @@ const ChooseDiamond = () => {
 
                 </div>
                 <div className='row'>
-                    {diamondList !== undefined && diamondList !== null ? (
+                    {diamondList.length > 0 ? (
                         diamondList.map((entry, index) => (
                             <div key={index} className="col-md-4 col-lg-3 mb-4">
                                 <DiamondCard
@@ -407,7 +407,7 @@ const ChooseDiamond = () => {
                             </div>
                         ))
                     ) : (
-                        <div>No results available...</div>
+                        <LinearProgress className='mt-5'/>
                     )}
                 </div>
             </div>
