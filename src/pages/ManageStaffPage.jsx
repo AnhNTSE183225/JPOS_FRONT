@@ -224,9 +224,8 @@ const ManageStaffPage = () => {
         <div className="container-fluid" id={`${styles['manage-staff']}`}>
             <div className="row mb-3">
                 <h1 className="p-0">Company employees</h1>
-                <div className="col-3" id={`${styles['search-bar']}`}>
+                <div className="col-3 p-0">
                     <input placeholder={`Search Employee`} onChange={(e) => setSearch(e.target.value)} type="text" className="form-control" />
-                    <FontAwesomeIcon id={`${styles['search-icon']}`} icon={faSearch} />
                 </div>
                 <div className="col">
                     <button onClick={() => navigate("create")} className="btn btn-primary">Create new staff</button>

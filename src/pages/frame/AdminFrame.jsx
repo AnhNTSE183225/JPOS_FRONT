@@ -1,11 +1,13 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import SidebarAdmin from "../../components/SidebarAdmin";
 import { Toaster } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import axios from "axios";
 
 const AdminFrame = () => {
 
     const navigate = useNavigate();
+
     useEffect(() => {
         if (sessionStorage.getItem('admin') === null) {
             navigate('/unauthorized-access');

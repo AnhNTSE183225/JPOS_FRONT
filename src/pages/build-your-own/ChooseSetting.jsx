@@ -60,13 +60,13 @@ const ChooseSetting = () => {
                         <div className={`col ${activeCategory == null ? styles['active'] : ''}`} onClick={() => setActiveCategory(null)}>
                             ALL
                         </div>
-                        <div className={`col ${activeCategory == 'Necklace' ? styles['active'] : ''}`} onClick={() => setActiveCategory('Necklace')}>
+                        <div className={`col ${activeCategory == 'necklace' ? styles['active'] : ''}`} onClick={() => setActiveCategory('necklace')}>
                             NECKLACES & PENDANTS
                         </div>
-                        <div className={`col ${activeCategory == 'Earrings' ? styles['active'] : ''}`} onClick={() => setActiveCategory('Earrings')}>
+                        <div className={`col ${activeCategory == 'earrings' ? styles['active'] : ''}`} onClick={() => setActiveCategory('earrings')}>
                             EARRINGS
                         </div>
-                        <div className={`col ${activeCategory == 'Bracelets' ? styles['active'] : ''}`} onClick={() => setActiveCategory('Bracelets')}>
+                        <div className={`col ${activeCategory == 'bracelets' ? styles['active'] : ''}`} onClick={() => setActiveCategory('bracelets')}>
                             BRACELETS
                         </div>
                         <div className={`col ${activeCategory == 'ring' ? styles['active'] : ''}`} onClick={() => setActiveCategory('ring')}>

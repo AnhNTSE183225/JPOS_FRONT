@@ -8,6 +8,30 @@ import axios from 'axios';
 import { formatPrice, formatDate } from '/src/helper_function/ConvertFunction';
 
 const PopularProducts = () => {
+
+    const [productList, setProductList] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/stats/get-recently-purchased`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if (response.status === 200) {
+                setProductList(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
     const products = [
         { name: 'Four Stone Emerald Diamond Engagement Ring In Platinum', price: '$999.29' },
         { name: 'Channel Set Round Diamond Engagement Ring In 14k White Gold (2 Ct. Tw.)', price: '$72.40' },
@@ -19,14 +43,22 @@ const PopularProducts = () => {
 
     return (
         <div className={`${styles.popularProducts} card w-100 h-100`}>
-            <h3 className='mb-4'>Popular Products</h3>
+            <h3 className='mb-4'>Most Recent Products</h3>
             <ul className="list-unstyled">
-                {products.map((product, index) => (
-                    <li key={index} className={`${styles.productItem} d-flex justify-content-between mb-4`}>
-                        <span className='text-truncate'>{product.name}</span>
-                        <span>{product.price}</span>
-                    </li>
-                ))}
+                {
+                    productList.length > 0
+                        ? productList.map((product, index) => (
+                            <li key={index} className='fs-6 text-capitalize'>
+                                {product.productName} - {formatPrice(product.ediamondPrice + product.ematerialPrice + product.productionPrice)}
+                                <hr />
+                            </li>
+                        ))
+                        : <>
+                            <li>
+                                No recent products
+                            </li>
+                        </>
+                }
             </ul>
         </div>
     );
@@ -147,7 +179,7 @@ const DashboardComponent = () => {
 
     useEffect(() => {
         startGraph();
-    },[salesReport])
+    }, [salesReport])
 
     return (
         <div className="container mt-4">
