@@ -72,7 +72,7 @@ const PendingDesign = ({ order }) => {
                     <h1>A design staff has sent you a design</h1>
                 </div>
                 <div className="row mb-3">
-                    <div className="col-md-5 mx-auto">
+                    <div className="col-md-8 mx-auto">
                         {
                             order.modelFile === null
                                 ? <>
@@ -96,15 +96,15 @@ const PendingDesign = ({ order }) => {
                         }
                     </div>
                 </div>
-                <div className="col mb-3">
+                <div className="col-md mb-3">
                     <textarea placeholder='Leave notes....' style={{ resize: "none" }} maxLength={255} className="form-control" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
                     <div className="form-text text-danger">{validateNote.reason}</div>
                 </div>
                 <div className='row  mb-3'>
-                    <div className="col">
+                    <div className="col-md">
                         <button onClick={() => handleSubmit(true)} className='btn btn-success w-100'>Accept</button>
                     </div>
-                    <div className="col">
+                    <div className="col-md">
                         <button onClick={() => handleSubmit(false)} className='btn btn-danger w-100'>Decline</button>
                     </div>
                 </div>

@@ -175,7 +175,7 @@ const DesignerUploadPage = ({ order }) => {
                         <div>
                             <div className="mb-3">
                                 <input className="form-control mb-3" type="file" multiple={true} accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
-                                <div className={`position-relative`}>
+                                <div className={`position-relative `}>
                                     <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
                                     <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                     {
@@ -183,18 +183,18 @@ const DesignerUploadPage = ({ order }) => {
                                             ? imageUrls.map((image, index) => {
                                                 if (activeImage == index) {
                                                     return (
-                                                        <img key={index} src={image} crossOrigin="anonymous" />
+                                                        <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" />
                                                     )
                                                 } else {
                                                     return (
-                                                        <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                        <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
                                                     )
                                                 }
                                             })
                                             : <p>URL: Not provided</p>
                                     }
                                 </div>
-                                <div className="row">
+                                <div className="row mt-3">
                                     <div className="col">
                                         {
                                             processing

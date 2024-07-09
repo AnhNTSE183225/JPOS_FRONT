@@ -157,7 +157,7 @@ const CustomDesignPage = () => {
                                 }
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Describe details what you want</label>
+                                <label className="form-label">Describe details of what you want</label>
                                 <textarea style={{ resize: "none" }} maxLength={255} className="form-control" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
                             </div>
                             <div className="mb-3">
