@@ -5,12 +5,16 @@ import { toast } from "sonner";
 import { validateString } from "../../helper_function/Validation";
 import { INFINITY } from "chart.js/helpers";
 import useDocumentTitle from "../../components/Title";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faClipboard, faFloppyDisk, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 const ManageDesigns = () => {
     const [designs, setDesigns] = useState(null);
     const [queryList, setQueryList] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const [search, setSearch] = useState('');
+    const [materials, setMaterials] = useState([]);
 
     useDocumentTitle("Manage Designs");
 
@@ -42,6 +46,22 @@ const ManageDesigns = () => {
         });
     }
 
+    const fetchMaterials = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/public/material/all`
+            })
+            if (response.status === 200) {
+                setMaterials(response.data);
+            } else {
+                console.log('error');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const fetchData = async () => {
         try {
             const headers = {
@@ -66,9 +86,6 @@ const ManageDesigns = () => {
             validateDesignType.result
         ) {
             try {
-                const headers = {
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                }
                 console.log(activeDesign);
                 const response = await axios({
                     url: `${import.meta.env.VITE_jpos_back}/api/product-designs/update`,
@@ -93,18 +110,21 @@ const ManageDesigns = () => {
         }
     }
 
+    console.log(activeDesign);
+
     useEffect(() => {
         fetchData();
+        fetchMaterials();
     }, [refresh])
 
     useEffect(() => {
-        if(search.length > 0) {
+        if (search.length > 0) {
             let query_list = [...designs].filter(q => q.designName.toLowerCase().includes(search.toLowerCase()) || q.productDesignId.toString() == search);
             setQueryList(query_list);
         } else {
             setQueryList(designs);
         }
-    },[search])
+    }, [search])
 
     return (
         <div className="container-fluid">
@@ -114,11 +134,8 @@ const ManageDesigns = () => {
                 </div>
             </div>
             <div className="row mb-3">
-                <div className="col" style={{maxWidth: '400px'}}>
-                    <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design..." className="form-control" type="text"/>
-                </div>
-                <div className="col">
-                    <button className="btn btn-primary">Create new design</button>
+                <div className="col" style={{ maxWidth: '400px' }}>
+                    <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design..." className="form-control" type="text" />
                 </div>
             </div>
             <div className="row mb-3">
@@ -220,6 +237,94 @@ const ManageDesigns = () => {
                                 <div className="form-text text-danger">{validateDesignFile.reason}</div>
                             </div>
                         </div>
+                        <div className="row mb-3">
+                            <div className="col-2 d-flex justify-content-center align-items-center fw-bold">
+                                ID
+                            </div>
+                            <div className="col d-flex justify-content-center align-items-center fw-bold">
+                                Shells
+                            </div>
+                            <div className="col d-flex justify-content-center align-items-center fw-bold">
+                                Quantity
+                            </div>
+                            <div className="col-4 d-flex justify-content-center align-items-center fw-bold">
+                                Materials
+                            </div>
+                        </div>
+                        {
+                            activeDesign.productShellDesigns.length > 0
+                                ? activeDesign.productShellDesigns.map((shell, index) => (
+                                    <div key={index} className="row mb-3">
+                                        <div className="col-2 d-flex justify-content-center align-items-center fw-bold">
+                                            {shell.productShellDesignId}
+                                        </div>
+                                        <div className="col d-flex justify-content-center align-items-center text-capitalize">
+                                            <input type="text" className="form-control" value={shell.shellName} onChange={(e) => {
+                                                const shells = [...activeDesign.productShellDesigns];
+                                                shells[index].shellName = e.target.value;
+                                                setActiveDesign(s => ({
+                                                    ...s,
+                                                    productShellDesigns: shells
+                                                }))
+                                            }} />
+                                        </div>
+                                        <div className="col d-flex justify-content-center align-items-center">
+                                            <input className="form-control text-end" type="number" min={1} value={shell.diamondQuantity} onChange={(e) => {
+                                                const number = parseInt(e.target.value);
+                                                const shells = [...activeDesign.productShellDesigns];
+                                                shells[index].diamondQuantity = number;
+                                                setActiveDesign(s => ({
+                                                    ...s,
+                                                    productShellDesigns: shells
+                                                }))
+                                            }} />
+                                        </div>
+                                        <div className="col-4 d-flex justify-content-center align-items-center">
+                                            <div className="container-fluid">
+                                                <div className="row">
+                                                    {
+                                                        shell.productShellMaterials.map((material, index2) => (
+                                                            <div key={index2} className="col input-group">
+                                                                <select className="form-select" value={material.material.materialId} onChange={(e) => {
+                                                                    const materialId = parseInt(e.target.value);
+                                                                    const shells = [...activeDesign.productShellDesigns];
+                                                                    shells[index].productShellMaterials[index2].material = materials.find(m => m.materialId === materialId);
+                                                                    setActiveDesign(s => ({
+                                                                        ...s,
+                                                                        productShellDesigns: shells
+                                                                    }))
+                                                                }}>
+                                                                    {
+                                                                        materials.map((mats, index3) => (
+                                                                            <option key={index3} value={mats.materialId} >{mats.materialName}</option>
+                                                                        ))
+                                                                    }
+                                                                </select>
+                                                                <input type="number" step={0.01} min={0.1} value={material.weight} onChange={(e) => {
+                                                                    const number = parseFloat(e.target.value);
+                                                                    const shells = [...activeDesign.productShellDesigns];
+                                                                    shells[index].productShellMaterials[index2].weight = number;
+                                                                    setActiveDesign(s => ({
+                                                                        ...s,
+                                                                        productShellDesigns: shells
+                                                                    }))
+                                                                }} className="form-control" />
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                                : <>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            No shells
+                                        </div>
+                                    </div>
+                                </>
+                        }
                     </div>
                 </DialogContent>
                 <DialogActions>
