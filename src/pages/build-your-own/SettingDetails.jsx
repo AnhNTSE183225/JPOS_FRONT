@@ -31,7 +31,7 @@ const NoteComponent = ({ designType, note, setNote }) => {
                     </div>
                 </div>);
             break;
-        case 'Necklace':
+        case 'necklace':
             result = (
                 <div className="row">
                     <h3 className={`${styles["metal-type-title"]} col`}>Select necklace length</h3>

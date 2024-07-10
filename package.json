@@ -20,7 +20,6 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/material": "^5.15.20",
     "@popperjs/core": "^2.11.8",
-    "@rollbar/react": "^0.12.0-beta",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
@@ -30,7 +29,6 @@
     "react-router-dom": "^6.23.1",
     "react-to-print": "^2.15.1",
     "recharts": "^2.12.7",
-    "rollbar": "^2.26.4",
     "sonner": "^1.4.41"
   },
   "devDependencies": {
