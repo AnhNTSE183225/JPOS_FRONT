@@ -10,7 +10,7 @@ const HomePage = () => {
 
     const customer = sessionStorage.getItem('customer') != null ? JSON.parse(sessionStorage.getItem('customer')) : null;
     const navigate = useNavigate();
-
+    
     return (
         <>
             <div className={`${styles['home-page']}`}>

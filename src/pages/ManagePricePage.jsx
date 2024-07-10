@@ -130,8 +130,9 @@ const ManagePricePage = () => {
                 }
             })
             if (response.status === 200) {
+                console.log(response);
                 setDiamondPriceList(response.data.content);
-                setPageSize(response.data.page.size)
+                setPageSize(response.data.pageable.pageSize);
                 setSelectedPrice(undefined);
             } else {
                 console.log(`Error`);

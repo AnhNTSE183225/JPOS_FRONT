@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import { Toaster } from 'sonner';
 import { useEffect } from "react";
 
+
 const CustomerFrame = () => {
 
     const location = useLocation().pathname;
@@ -33,6 +34,7 @@ const CustomerFrame = () => {
     if (sessionStorage.getItem('customer') != null || allowedPaths.includes(location)) {
         return (
             <div>
+                {test.sayHello()}
                 <Toaster position="top-center" richColors expand={true} />
                 <NavigationBar />
                 <div style={{ paddingTop: '15vh' }}>
@@ -41,6 +43,7 @@ const CustomerFrame = () => {
                 <Footer />
                 <ScrollToTop />
             </div>
+
         )
     }
 }
