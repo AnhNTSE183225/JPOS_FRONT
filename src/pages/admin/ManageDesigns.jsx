@@ -144,19 +144,19 @@ const ManageDesigns = () => {
                         <div className="row fw-bold">
                             <div className="col-1  d-flex justify-content-center align-items-center">ID</div>
                             <div className="col-md-3 d-flex justify-content-center align-items-center">Name</div>
-                            <div className="col  d-flex justify-content-center align-items-center">Type</div>
-                            <div className="col  d-flex justify-content-center align-items-center">Image</div>
+                            <div className="col-md d-flex justify-content-center align-items-center">Type</div>
+                            <div className="col-md d-flex justify-content-center align-items-center">Image</div>
                             <div className="col-md-2  d-flex justify-content-center align-items-center">Shells</div>
-                            <div className="col d-flex justify-content-center align-items-center">Actions</div>
+                            <div className="col-md d-flex justify-content-center align-items-center">Actions</div>
                         </div>
                         {
                             queryList != null
                                 ? queryList.map((design, index) => (
                                     <div className="row" key={index}>
-                                        <div className="col-1  d-flex justify-content-center align-items-center fw-bold">{design.productDesignId}</div>
+                                        <div className="col-md-1  d-flex justify-content-center align-items-center fw-bold">{design.productDesignId}</div>
                                         <div className="col-md-3 d-flex justify-content-center align-items-center">{design.designName}</div>
-                                        <div className="col d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
-                                        <div className="col d-flex justify-content-center align-items-center">
+                                        <div className="col-md d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
+                                        <div className="col-md d-flex justify-content-center align-items-center">
                                             <img src={design.designFile} alt="" style={{ width: '10vw', height: '10vw' }} />
                                         </div>
                                         <div className="col-md-2 d-flex justify-content-center align-items-center">
@@ -164,7 +164,7 @@ const ManageDesigns = () => {
                                                 {
                                                     design.productShellDesigns.map((shell, index2) => (
                                                         <div key={index2} className="row">
-                                                            <div className="col text-capitalize">
+                                                            <div className="col-md text-capitalize">
                                                                 {shell.shellName.replace("shell", " ").trim()}
                                                             </div>
                                                         </div>
@@ -172,7 +172,7 @@ const ManageDesigns = () => {
                                                 }
                                             </div>
                                         </div>
-                                        <div className="col d-flex justify-content-center align-items-center">
+                                        <div className="col-md d-flex justify-content-center align-items-center">
                                             <button onClick={() => openUpdateDialog(design)} className="btn btn-primary w-100">
                                                 EDIT
                                             </button>
@@ -189,31 +189,31 @@ const ManageDesigns = () => {
                 <DialogContent>
                     <div className="container-fluid text-center my-3">
                         <div className="row mb-3">
-                            <div className="col-1 d-flex justify-content-center align-items-center">
+                            <div className="col-md-1 d-flex justify-content-center align-items-center">
                                 ID
                             </div>
-                            <div className="col d-flex justify-content-center align-items-center">
+                            <div className="col-md d-flex justify-content-center align-items-center">
                                 <input value={activeDesign.productDesignId} type="text" className="form-control" disabled />
                             </div>
-                            <div className="col d-flex justify-content-start align-items-center">
+                            <div className="col-md d-flex justify-content-start align-items-center">
                             </div>
                         </div>
                         <div className="row mb-3">
-                            <div className="col-1 d-flex justify-content-center align-items-center">
+                            <div className="col-md-1 d-flex justify-content-center align-items-center">
                                 Name
                             </div>
-                            <div className="col d-flex justify-content-center align-items-center">
+                            <div className="col-md d-flex justify-content-center align-items-center">
                                 <input value={activeDesign.designName} onChange={(e) => setActiveDesign(d => ({ ...d, designName: e.target.value }))} type="text" className="form-control" />
                             </div>
-                            <div className="col d-flex justify-content-start align-items-center">
+                            <div className="col-md d-flex justify-content-start align-items-center">
                                 <div className="form-text text-danger">{validateDesignName.reason}</div>
                             </div>
                         </div>
                         <div className="row mb-3">
-                            <div className="col-1 d-flex justify-content-center align-items-center">
+                            <div className="col-md-1 d-flex justify-content-center align-items-center">
                                 Type
                             </div>
-                            <div className="col d-flex justify-content-center align-items-center">
+                            <div className="col-md d-flex justify-content-center align-items-center">
                                 <select className="form-select" value={activeDesign.designType} onChange={(e) => setActiveDesign(d => ({ ...d, designType: e.target.value }))}>
                                     <option value="">Select</option>
                                     <option value="ring">Ring</option>
@@ -222,32 +222,32 @@ const ManageDesigns = () => {
                                     <option value="bracelets">Bracelets</option>
                                 </select>
                             </div>
-                            <div className="col d-flex justify-content-start align-items-center">
+                            <div className="col-md d-flex justify-content-start align-items-center">
                                 <div className="form-text text-danger">{!validateDesignType.result ? 'Please select one' : ''}</div>
                             </div>
                         </div>
                         <div className="row mb-3">
-                            <div className="col-1 d-flex justify-content-center align-items-center">
+                            <div className="col-md-1 d-flex justify-content-center align-items-center">
                                 Image
                             </div>
-                            <div className="col d-flex justify-content-center align-items-center">
+                            <div className="col-md d-flex justify-content-center align-items-center">
                                 <input value={activeDesign.designFile} onChange={(e) => setActiveDesign(d => ({ ...d, designFile: e.target.value }))} type="text" className="form-control" />
                             </div>
-                            <div className="col d-flex justify-content-start align-items-center">
+                            <div className="col-md d-flex justify-content-start align-items-center">
                                 <div className="form-text text-danger">{validateDesignFile.reason}</div>
                             </div>
                         </div>
                         <div className="row mb-3">
-                            <div className="col-2 d-flex justify-content-center align-items-center fw-bold">
+                            <div className="col-md-2 d-flex justify-content-center align-items-center fw-bold">
                                 ID
                             </div>
-                            <div className="col d-flex justify-content-center align-items-center fw-bold">
+                            <div className="col-md d-flex justify-content-center align-items-center fw-bold">
                                 Shells
                             </div>
-                            <div className="col d-flex justify-content-center align-items-center fw-bold">
+                            <div className="col-md d-flex justify-content-center align-items-center fw-bold">
                                 Quantity
                             </div>
-                            <div className="col-4 d-flex justify-content-center align-items-center fw-bold">
+                            <div className="col-md-4 d-flex justify-content-center align-items-center fw-bold">
                                 Materials
                             </div>
                         </div>
@@ -255,10 +255,10 @@ const ManageDesigns = () => {
                             activeDesign.productShellDesigns.length > 0
                                 ? activeDesign.productShellDesigns.map((shell, index) => (
                                     <div key={index} className="row mb-3">
-                                        <div className="col-2 d-flex justify-content-center align-items-center fw-bold">
+                                        <div className="col-md-2 d-flex justify-content-center align-items-center fw-bold">
                                             {shell.productShellDesignId}
                                         </div>
-                                        <div className="col d-flex justify-content-center align-items-center text-capitalize">
+                                        <div className="col-md d-flex justify-content-center align-items-center text-capitalize">
                                             <input type="text" className="form-control" value={shell.shellName} onChange={(e) => {
                                                 const shells = [...activeDesign.productShellDesigns];
                                                 shells[index].shellName = e.target.value;
@@ -268,7 +268,7 @@ const ManageDesigns = () => {
                                                 }))
                                             }} />
                                         </div>
-                                        <div className="col d-flex justify-content-center align-items-center">
+                                        <div className="col-md d-flex justify-content-center align-items-center">
                                             <input className="form-control text-end" type="number" min={1} value={shell.diamondQuantity} onChange={(e) => {
                                                 const number = parseInt(e.target.value);
                                                 const shells = [...activeDesign.productShellDesigns];
@@ -279,12 +279,12 @@ const ManageDesigns = () => {
                                                 }))
                                             }} />
                                         </div>
-                                        <div className="col-4 d-flex justify-content-center align-items-center">
+                                        <div className="col-md-4 d-flex justify-content-center align-items-center">
                                             <div className="container-fluid">
                                                 <div className="row">
                                                     {
                                                         shell.productShellMaterials.map((material, index2) => (
-                                                            <div key={index2} className="col input-group">
+                                                            <div key={index2} className="col-md input-group">
                                                                 <select className="form-select" value={material.material.materialId} onChange={(e) => {
                                                                     const materialId = parseInt(e.target.value);
                                                                     const shells = [...activeDesign.productShellDesigns];
@@ -319,7 +319,7 @@ const ManageDesigns = () => {
                                 ))
                                 : <>
                                     <div className="row mb-3">
-                                        <div className="col">
+                                        <div className="col-md">
                                             No shells
                                         </div>
                                     </div>
