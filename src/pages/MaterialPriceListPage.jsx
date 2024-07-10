@@ -23,6 +23,7 @@ const MaterialPriceListPage = () => {
             setMaterials(priced_materials);
         } catch (error) {
             console.log(error);
+            Rollbar.error("Failed to fetch material price list");
         }
     }
 

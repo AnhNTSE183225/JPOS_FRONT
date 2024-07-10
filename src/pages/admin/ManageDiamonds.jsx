@@ -81,8 +81,8 @@ const ManageDiamonds = () => {
     return (
         <div className="container-fluid">
             <div className="row mb-3">
-                <h1 className="p-0 mb-3">MANAGE DIAMONDS</h1>
-                <div className="col-lg-4 p-0">
+                <h1 className="p-0 mt-5 mb-5 text-center">MANAGE DIAMONDS</h1>
+                <div className="col-lg-4 p-0 ">
                     <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search" className="form-control" />
                 </div>
                 <div className="col">
@@ -125,17 +125,18 @@ const ManageDiamonds = () => {
                             queryList !== null
                                 ? queryList.slice(pageNo, pageNo + pageSize).map((diamond, index) => (
                                     <tr key={index}>
-                                        <th className="col-md-1">{diamond.diamondId}</th>
-                                        <td className="">{diamond.diamondCode}</td>
-                                        <td className="col-md-3">{diamond.diamondName}</td>
+                                        <td className="col-md-1">{diamond.diamondId}</td>
+                                        <td className="col-md-2">{diamond.diamondCode}</td>
+                                        <td className="col-md-4">{diamond.diamondName}</td>
                                         <td className="text-center">{diamond.color}</td>
-                                        <td className="text-center">{diamond.cut}</td>
+                                        <td className="text-center">{diamond.cut.replace("_", " ")}</td>
                                         <td className="text-center">{diamond.clarity}</td>
                                         <td className="text-center">{diamond.caratWeight}</td>
                                         <td className="text-center">
                                             <Switch
                                                 checked={diamond.active}
                                                 onChange={() => deleteFunction(diamond)}
+                                                style={{ color: diamond.active ? '#48AAAD' : 'red' }}
                                             />
                                         </td>
                                     </tr>

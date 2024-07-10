@@ -236,10 +236,10 @@ const ManageStaffPage = () => {
                 <table className="table text-center">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th className="col-md-1">ID</th>
                             <th>Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
+                            <th className="col-md-2">Username</th>
+                            <th className="col-md-3">Email</th>
                             <th>Department</th>
                             <th>Contact</th>
                             <th>Requests</th>
@@ -254,8 +254,8 @@ const ManageStaffPage = () => {
                                     <tr key={index}>
                                         <td>{value.staffId}</td>
                                         <td>{value.name}</td>
-                                        <td>{value.account.username}</td>
-                                        <td>{value.account.email}</td>
+                                        <td className="col-md-2">{value.account.username}</td>
+                                        <td className="col-md-3">{value.account.email}</td>
                                         <td>{DEPARTMENT[value.staffType]}</td>
                                         <td>{value.phone}</td>
                                         <td className="text-center">{requestsCount[index]}</td>
@@ -263,6 +263,7 @@ const ManageStaffPage = () => {
                                             <Switch
                                                 checked={value.account.status}
                                                 onChange={() => toggleAccount(value)}
+                                                style={{ color: value.account.status ? '#48AAAD' : 'red' }}
                                             />
                                         </td>
                                         <td className="text-center" id={`${styles['action-button']}`} onClick={(e) => {

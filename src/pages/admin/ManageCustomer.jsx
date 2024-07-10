@@ -94,7 +94,7 @@ const ManageCustomer = () => {
     return (
         <div className="container-fluid">
             <div className="row mb-3">
-                <h1 className="p-0" style={{ marginBottom: '1rem' }}>MANAGE CUSTOMERS</h1>
+                <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>MANAGE CUSTOMERS</h1>
                 <div className="col-lg-3" id={`${styles['manage-customer-search-bar']}`}>
                     <input onChange={(e) => setSearch(e.target.value)} className='form-control' placeholder='Search employees' type="text" />
                     <FontAwesomeIcon icon={faSearch} style={{
@@ -111,9 +111,9 @@ const ManageCustomer = () => {
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Address</th>
+                            <th className='col-md-3'>Address</th>
                             <th>Username</th>
-                            <th>Email</th>
+                            <th className='col-md-3'>Email</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -132,9 +132,10 @@ const ManageCustomer = () => {
                                             <Switch
                                                 checked={customer.account.status}
                                                 onChange={() => toggleAccount(customer)}
+                                                style={{ color: customer.account.status ? '#48AAAD' : 'red' }}
                                             />
                                         </td>
-                                        <td><button onClick={() => deleteCustomer(customer.customerId)} className='btn btn-danger'>Delete</button></td>
+                                        <td><button onClick={() => deleteCustomer(customer.customerId)} className='btn btn-danger w-100'>Delete</button></td>
                                     </tr>
                                 ))
                                 : <></>

@@ -130,7 +130,7 @@ const ManageDesigns = () => {
         <div className="container-fluid">
             <div className="row mb-3">
                 <div className="col">
-                    <h1 className="p-0">MANAGE DESIGN</h1>
+                    <h1 className="p-0 text-center mt-5 mb-5">MANAGE DESIGN</h1>
                 </div>
             </div>
             <div className="row mb-3">
@@ -139,49 +139,53 @@ const ManageDesigns = () => {
                 </div>
             </div>
             <div className="row mb-3">
-                <div className="col">
-                    <div className="container-fluid text-center">
-                        <div className="row fw-bold">
-                            <div className="col-1  d-flex justify-content-center align-items-center">ID</div>
-                            <div className="col-md-3 d-flex justify-content-center align-items-center">Name</div>
-                            <div className="col-md d-flex justify-content-center align-items-center">Type</div>
-                            <div className="col-md d-flex justify-content-center align-items-center">Image</div>
-                            <div className="col-md-2  d-flex justify-content-center align-items-center">Shells</div>
-                            <div className="col-md d-flex justify-content-center align-items-center">Actions</div>
-                        </div>
-                        {
-                            queryList != null
-                                ? queryList.map((design, index) => (
-                                    <div className="row" key={index}>
-                                        <div className="col-md-1  d-flex justify-content-center align-items-center fw-bold">{design.productDesignId}</div>
-                                        <div className="col-md-3 d-flex justify-content-center align-items-center">{design.designName}</div>
-                                        <div className="col-md d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
-                                        <div className="col-md d-flex justify-content-center align-items-center">
-                                            <img src={design.designFile} alt="" style={{ width: '10vw', height: '10vw' }} />
-                                        </div>
-                                        <div className="col-md-2 d-flex justify-content-center align-items-center">
-                                            <div className="container-fluid">
-                                                {
-                                                    design.productShellDesigns.map((shell, index2) => (
-                                                        <div key={index2} className="row">
-                                                            <div className="col-md text-capitalize">
-                                                                {shell.shellName.replace("shell", " ").trim()}
+                <div>
+                    <table className="table">
+                        <thead className="text-center">
+                            <tr>
+                                <th className="col-md-1">ID</th>
+                                <th className="col-md-3">Name</th>
+                                <th className="col-md-2">Type</th>
+                                <th className="col-md-3">Image</th>
+                                <th className="col-md-2">Shells</th>
+                                <th className="col-md-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                queryList != null
+                                    ? queryList.map((design, index) => (
+                                        <tr key={index}>
+                                            <td className="col-md-1 text-center align-content-lg-center">{design.productDesignId}</td>
+                                            <td className="col-md-3 align-content-lg-center">{design.designName}</td>
+                                            <td className="col-md-2 text-capitalize text-center align-content-lg-center">{design.designType}</td>
+                                            <td className="col-md-3 justify-content-center">
+                                                <img className="d-block mx-auto" src={design.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                            </td>
+                                            <td className="col-md-2 align-content-lg-center">
+                                                <div className="container-fluid text-center ">
+                                                    {
+                                                        design.productShellDesigns.map((shell, index2) => (
+                                                            <div key={index2}>
+                                                                <div className="text-capitalize">
+                                                                    {shell.shellName.replace("shell", " ").trim()}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
-                                        <div className="col-md d-flex justify-content-center align-items-center">
-                                            <button onClick={() => openUpdateDialog(design)} className="btn btn-primary w-100">
-                                                EDIT
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                                : <></>
-                        }
-                    </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td className="col-md-1 align-content-lg-center">
+                                                <button onClick={() => openUpdateDialog(design)} className="btn btn-primary w-100">
+                                                    EDIT
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    : <></>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <Dialog fullWidth={true} maxWidth="md" open={isOpenUpdate} onClose={closeUpdateDialog}>
