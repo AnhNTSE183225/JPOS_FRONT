@@ -34,7 +34,6 @@ const CustomerFrame = () => {
     if (sessionStorage.getItem('customer') != null || allowedPaths.includes(location)) {
         return (
             <div>
-                {test.sayHello()}
                 <Toaster position="top-center" richColors expand={true} />
                 <NavigationBar />
                 <div style={{ paddingTop: '15vh' }}>
