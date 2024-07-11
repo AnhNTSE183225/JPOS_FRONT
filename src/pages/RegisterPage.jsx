@@ -85,12 +85,12 @@ const RegisterPage = () => {
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Username</label>
-                    <textarea value={username} onChange={handleUsername} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}} value={username} onChange={handleUsername} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateUsername.reason}</div>
                 </div>
                 <div className="mb-3">
                     <label className='form-label'>Email</label>
-                    <textarea value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}} value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateEmail.reason}</div>
                 </div>
                 <div className='mb-3'>
@@ -100,12 +100,12 @@ const RegisterPage = () => {
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Name</label>
-                    <textarea value={fullName} onChange={handleFullName} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}} value={fullName} onChange={handleFullName} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateFullName.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Address</label>
-                    <textarea value={address} onChange={handleAddress} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}}  value={address} onChange={handleAddress} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateAddress.reason}</div>
                 </div>
                 <div className='mb-3 row'>

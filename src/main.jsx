@@ -43,6 +43,7 @@ import ManageDesigns from './pages/admin/ManageDesigns';
 import EditDiamond from './pages/admin/EditDiamond';
 import WaitManager from './pages/request-details-components/WaitManager';
 import UnauthorizedAccess from './pages/UnauthorizedAccess';
+import GoogleHandler from './GoogleHandler';
 
 
 const router = createBrowserRouter([
@@ -220,6 +221,10 @@ const router = createBrowserRouter([
   {
     path: '/payment-callback',
     element: <PaymentHandler />
+  },
+  {
+    path: '/google-callback',
+    element: <GoogleHandler/>
   }
 ]);
 

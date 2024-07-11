@@ -5,10 +5,13 @@ import axios from "axios";
 import styles from '/src/css/LoginPage.module.css';
 import { toast } from 'sonner';
 import useDocumentTitle from "../components/Title";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [HTMLContent, setHTMLContent] = useState('');
     const navigate = useNavigate();
 
 
@@ -32,13 +35,13 @@ const LoginPage = () => {
                     toast.error(`Invalid credentials. Please try again`);
                 } else {
                     if (response.data.account.customerId !== undefined) {
-                        sessionStorage.setItem('customer',JSON.stringify(response.data.account));
-                        sessionStorage.setItem('token',response.data.token);
+                        sessionStorage.setItem('customer', JSON.stringify(response.data.account));
+                        sessionStorage.setItem('token', response.data.token);
                         navigate("/");
                         return;
                     } else if (response.data.account.staffId !== undefined) {
-                        sessionStorage.setItem('staff',JSON.stringify(response.data.account));
-                        sessionStorage.setItem('token',response.data.token);
+                        sessionStorage.setItem('staff', JSON.stringify(response.data.account));
+                        sessionStorage.setItem('token', response.data.token);
                         if (response.data.account.staffType == 'manage') {
                             navigate("/staff/manage-requests")
                         } else {
@@ -46,8 +49,8 @@ const LoginPage = () => {
                         }
                         return;
                     } else if (response.data.account.role == 'admin') {
-                        sessionStorage.setItem('admin',JSON.stringify(response.data.account));
-                        sessionStorage.setItem('token',response.data.token);
+                        sessionStorage.setItem('admin', JSON.stringify(response.data.account));
+                        sessionStorage.setItem('token', response.data.token);
                         navigate('/admin/dashboard');
                         return;
                     }
@@ -61,11 +64,24 @@ const LoginPage = () => {
         }
     }
 
+    const loginGoogle = async () => {
+        try {
+            // const response = await axios({
+            //     method: 'get',
+            //     url: `http://localhost:8080/oauth2/authorization/google`,
+            // })
+            window.location.href = `http://localhost:8080/oauth2/authorization/google/login`
+        } catch (error) {
+            console.log(error);
+            console.log('error');
+        }A
+    }
+
     return (
         <div className={`container-fluid d-flex align-items-center justify-content-center ${styles.fullHeight}`}>
             <div className={`card p-3 mt-3 ${styles.centerCard}`}>
-                <div className="mt-3 mb-3">
-                    <h2>LOGIN</h2>
+                <div className="mt-3 mb-3 text-center">
+                    <h2 className="fw-bold">LOGIN</h2>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Username</label>
@@ -76,13 +92,11 @@ const LoginPage = () => {
                         className="form-control"
                         rows="1"
                         cols="30"
+                        style={{ resize: 'none' }}
                     ></textarea>
                 </div>
                 <div className="mb-3">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <label className="form-label">Password</label>
-                        
-                    </div>
+                    <label className="form-label">Password</label>
                     <input
                         value={password}
                         onChange={handlePassword}
@@ -102,9 +116,16 @@ const LoginPage = () => {
                         </Link>
                     </div>
                 </div>
-                {/* <div className="d-flex justify-content-end">
-                    <Link to="" onClick={loginStaff} className={styles.customLink}>Login as staff</Link>
-                </div> */}
+                <div className="row mb-3">
+                    <div className="col">
+                        <button onClick={loginGoogle} className={`w-100 ${styles['button-custom']}`}> <FontAwesomeIcon icon={faGoogle} /> Sign in with Google</button>
+                    </div>
+                </div>
+            </div>
+            <div className="row mb-3">
+                <div className="col" dangerouslySetInnerHTML={{ __html: HTMLContent }}>
+
+                </div>
             </div>
         </div>
     );
