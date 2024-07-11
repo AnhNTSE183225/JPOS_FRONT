@@ -5,10 +5,9 @@ import { faChartLine, faUsers, faShoppingCart, faDollarSign } from '@fortawesome
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../css/Dashboard.module.css';
 import axios from 'axios';
-import { formatPrice, formatDate } from '/src/helper_function/ConvertFunction';
+import { formatPrice } from '/src/helper_function/ConvertFunction';
 
 const PopularProducts = () => {
-
     const [productList, setProductList] = useState([]);
 
     const fetchData = async () => {
@@ -19,27 +18,18 @@ const PopularProducts = () => {
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-            })
+            });
             if (response.status === 200) {
                 setProductList(response.data);
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
         fetchData();
-    }, [])
-
-    const products = [
-        { name: 'Four Stone Emerald Diamond Engagement Ring In Platinum', price: '$999.29' },
-        { name: 'Channel Set Round Diamond Engagement Ring In 14k White Gold (2 Ct. Tw.)', price: '$72.40' },
-        { name: 'Seven Stone Oval Diamond Engagement Ring In Platinum (1 Ct.Tw.)', price: '$99' },
-        { name: 'Asscher-Cut Diamond Engagement Ring In 14k White Gold', price: '$249.99' },
-        { name: 'Two Stone Engagement Ring With Half Moon Diamond In 14k White Gold (1/2 Ct. Tw.)', price: '$79.40' },
-        { name: 'Studio Double Halo Gala Diamond Engagement Ring In Platinum (7/8 Ct. Tw.)', price: '$129.48' }
-    ];
+    }, []);
 
     return (
         <div className={`${styles.popularProducts} card w-100 h-100`}>
@@ -53,11 +43,7 @@ const PopularProducts = () => {
                                 <hr />
                             </li>
                         ))
-                        : <>
-                            <li>
-                                No recent products
-                            </li>
-                        </>
+                        : <li>No recent products</li>
                 }
             </ul>
         </div>
@@ -66,7 +52,10 @@ const PopularProducts = () => {
 
 const DashboardComponent = () => {
     const accessoriesChartRef = useRef(null);
+    const customBuildChartRef = useRef(null);
     const chartInstanceRef = useRef(null);
+    const customBuildChartInstanceRef = useRef(null);
+
     const [stats, setStats] = useState({
         noCustomers: 0,
         noOrders: 0,
@@ -83,7 +72,7 @@ const DashboardComponent = () => {
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-            })
+            });
             if (response.status === 200) {
                 setStats(response.data);
             } else {
@@ -92,7 +81,7 @@ const DashboardComponent = () => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     const fetchSalesReport = async () => {
         try {
@@ -102,7 +91,7 @@ const DashboardComponent = () => {
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-            })
+            });
             if (response.status === 200) {
                 setSalesReport(response.data);
                 startGraph();
@@ -112,7 +101,7 @@ const DashboardComponent = () => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     const startGraph = () => {
         const accessoriesCtx = accessoriesChartRef.current.getContext('2d');
@@ -134,6 +123,19 @@ const DashboardComponent = () => {
                 ]
             },
             options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Accessories Sales Report'
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -148,48 +150,92 @@ const DashboardComponent = () => {
                             text: 'Accessories'
                         }
                     }
-                },
+                }
+            }
+        });
+    };
+
+    const startCustomBuildGraph = () => {
+        const customBuildCtx = customBuildChartRef.current.getContext('2d');
+
+        if (customBuildChartInstanceRef.current) {
+            customBuildChartInstanceRef.current.destroy();
+        }
+
+        customBuildChartInstanceRef.current = new Chart(customBuildCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Custom Design', 'Build Jewelry'],
+                datasets: [
+                    {
+                        label: 'Custom vs Build',
+                        data: [30, 70], // hardcoded data
+                        backgroundColor: ['#ff6384', '#36a2eb'],
+                    }
+                ]
+            },
+            options: {
                 plugins: {
+                    title: {
+                        display: true,
+                        text: 'Custom vs Build Jewelry Report'
+                    },
                     legend: {
                         display: true,
-                        position: 'top'
+                        position: 'bottom'
                     },
                     tooltip: {
-                        enabled: true
+                        enabled: true,
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.label || '';
+                                const value = context.raw || '';
+                                if (context.label === 'Custom Design') {
+                                    return `Custom Design: ${value}`;
+                                } else if (context.label === 'Build Jewelry') {
+                                    return `Build Jewelry: ${value}`;
+                                }
+                                return `${label}: ${value}`;
+                            }
+                        }
+                    }
+                },
+                onClick: function (event, elements) {
+                    if (elements.length > 0) {
+                        const clickedElementIndex = elements[0].index;
+                        const label = customBuildChartInstanceRef.current.data.labels[clickedElementIndex];
+                        alert(label);
                     }
                 }
             }
         });
-    }
+    };
 
     useEffect(() => {
         fetchData();
         fetchSalesReport();
-        // Destroy the previous chart instance if it exists
-
         startGraph();
+        startCustomBuildGraph();
 
-        // Clean up the chart instance on component unmount
         return () => {
             if (chartInstanceRef.current) {
                 chartInstanceRef.current.destroy();
+            }
+            if (customBuildChartInstanceRef.current) {
+                customBuildChartInstanceRef.current.destroy();
             }
         };
     }, []);
 
     useEffect(() => {
         startGraph();
-    }, [salesReport])
+    }, [salesReport]);
 
     return (
         <div className="container mt-4">
             <div className="row mb-4">
                 <div className="col-lg-4 col-md-12 mb-3 d-flex">
-                    <div className="card h-100 w-100 text-center">
-                        <div className="card-body">
-                            <h2 className='d-flex justify-content-center align-items-center h-100 fs-1'>DASHBOARD</h2>
-                        </div>
-                    </div>
+                    <PopularProducts />
                 </div>
                 <div className="col-lg-8 col-md-12 mb-3 d-flex">
                     <div className="card w-100 h-100">
@@ -219,7 +265,11 @@ const DashboardComponent = () => {
             </div>
             <div className="row">
                 <div className="col-lg-4 col-md-12 mb-3 d-flex">
-                    <PopularProducts />
+                    <div className="card h-100 w-100 text-center">
+                        <div className="card-body">
+                            <canvas ref={customBuildChartRef} className={styles.customBuildChart}></canvas>
+                        </div>
+                    </div>
                 </div>
                 <div className="col-lg-8 col-md-12 mb-3 d-flex">
                     <div className="card w-100 h-100">
