@@ -118,7 +118,7 @@ const LoginPage = () => {
                 </div>
                 <div className="row mb-3">
                     <div className="col">
-                        <button onClick={loginGoogle} className={`w-100 ${styles['button-custom']}`}> <FontAwesomeIcon icon={faGoogle} /> Sign in with Google</button>
+                        <button onClick={loginGoogle} className={`w-100 ${styles['button-custom']}`}> <span><FontAwesomeIcon icon={faGoogle} /> Sign in with Google</span></button>
                     </div>
                 </div>
             </div>

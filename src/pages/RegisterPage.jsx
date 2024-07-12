@@ -16,7 +16,7 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const validatePassword = validateString(password,8,16);
     const [fullName, setFullName] = useState('');
-    const validateFullName = validateString(fullName,8,20);
+    const validateFullName = validateString(fullName,1,20);
     const [address, setAddress] = useState('');
     const validateAddress = validateString(address,10,100);
     const navigate = useNavigate();

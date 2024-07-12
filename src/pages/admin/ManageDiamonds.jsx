@@ -42,6 +42,7 @@ const ManageDiamonds = () => {
         }
     }
 
+
     const deleteFunction = async (selectedDiamond) => {
         try {
             const headers = {

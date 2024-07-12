@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { Switch } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
+import { faEllipsisVertical} from "@fortawesome/free-solid-svg-icons";
 
 const ManageCustomer = () => {
 
@@ -12,6 +15,10 @@ const ManageCustomer = () => {
     const [listQuery, setListQuery] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const [search, setSearch] = useState(null);
+    const [anchor, setAnchor] = useState(null);
+    const open = Boolean(anchor);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [activeCustomer, setActiveCustomer] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -29,6 +36,70 @@ const ManageCustomer = () => {
             console.log(error);
             toast.error(`Something went wrong, cannot fetch customers...`);
         }
+    }
+
+    const UpdateDialog = () => {
+        const [username, setUsername] = useState(activeCustomer !== null ? activeCustomer.account.username : '');
+        const [name, setName] = useState(activeCustomer !== null ? activeCustomer.name : '');
+        const [address, setAddress] = useState(activeCustomer !== null ? activeCustomer.address : '');
+
+        const updateCustomer = async () => {
+            try {
+                console.log(`${import.meta.env.VITE_jpos_back}/api/update`);
+                const headers = {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update`, {
+                    ...activeCustomer,
+                    account: {
+                        ...activeCustomer.account,
+                        username: username
+                    },
+                    address: address,
+                    name: name,
+                    
+                }, {
+                    headers
+                })
+                if (!response.data || response.status === 204) {
+                    console.log(`Can't update`);
+                } else {
+                    if (response.data > 0) {
+                        toast.success(`Update successful`);
+                    }
+                    fetchData();
+                    setOpenDialog(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        return (
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                <DialogTitle>
+                    Update Customer
+                </DialogTitle>
+                <DialogContent>
+                    <div className="input-group mt-1 mb-3">
+                        <span className={`input-group-text ${styles['input-label']}`}>UserName</span>
+                        <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    </div>
+                    <div className="input-group mt-1 mb-3">
+                        <span className={`input-group-text ${styles['input-label']}`}>Name</span>
+                        <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div className="input-group mt-1 mb-3">
+                        <span className={`input-group-text ${styles['input-label']}`}>Address</span>
+                        <input className="form-control" type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={updateCustomer}>Submit</Button>
+                    <Button onClick={() => setOpenDialog(false)} >Cancel</Button>
+                </DialogActions>
+            </Dialog>
+        )
     }
 
     const toggleAccount = async (customer) => {
@@ -135,13 +206,26 @@ const ManageCustomer = () => {
                                                 style={{ color: customer.account.status ? '#48AAAD' : 'red' }}
                                             />
                                         </td>
-                                        <td><button onClick={() => deleteCustomer(customer.customerId)} className='btn btn-danger w-100'>Delete</button></td>
+                                        <td className="text-center" id={`${styles['action-button']}`} onClick={(e) => {
+                                            setAnchor(anchor ? null : e.currentTarget);
+                                            setActiveCustomer(customer);
+                                        }} ><FontAwesomeIcon icon={faEllipsisVertical} /></td>
                                     </tr>
                                 ))
                                 : <></>
                         }
                     </tbody>
                 </table>
+                <BasePopup open={open} anchor={anchor}>
+                    <div className={`${styles['popup-div']}`}>
+                        <button onClick={() => {
+                            setOpenDialog(true);
+                            setAnchor(null);
+                        }}>Update</button>
+                        <button onClick={() => deleteCustomer(activeCustomer.customerId)}>Delete</button>
+                    </div>
+                </BasePopup>
+                <UpdateDialog />
             </div>
         </div>
     )

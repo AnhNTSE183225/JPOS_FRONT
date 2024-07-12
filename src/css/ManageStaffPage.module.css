@@ -17,11 +17,17 @@
 .popup-div button{
     display: block;
     width: 5rem;
-    border: none;
+    cursor: pointer;
+    background-color: white;
+    text-align: center;
+    color: black;
+    border: 1px solid black;
+    transition: 0.3s;
 }
 
 .popup-div button:hover {
-    background-color: gray;
+    background-color: black;
+    color: white;
 }
 
 .input-label {
