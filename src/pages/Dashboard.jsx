@@ -63,6 +63,7 @@ const DashboardComponent = () => {
         revenue: 0.0
     });
     const [salesReport, setSalesReport] = useState([0, 0, 0, 0]);
+    const [orderType, setOrderType] = useState([0,0]);
 
     const fetchData = async () => {
         try {
@@ -169,7 +170,7 @@ const DashboardComponent = () => {
                 datasets: [
                     {
                         label: 'Custom vs Build',
-                        data: [30, 70], // hardcoded data
+                        data: orderType, // hardcoded data
                         backgroundColor: ['#ff6384', '#36a2eb'],
                     }
                 ]
@@ -200,22 +201,45 @@ const DashboardComponent = () => {
                         }
                     }
                 },
-                onClick: function (event, elements) {
-                    if (elements.length > 0) {
-                        const clickedElementIndex = elements[0].index;
-                        const label = customBuildChartInstanceRef.current.data.labels[clickedElementIndex];
-                        alert(label);
-                    }
-                }
+                // onClick: function (event, elements) {
+                //     if (elements.length > 0) {
+                //         const clickedElementIndex = elements[0].index;
+                //         const label = customBuildChartInstanceRef.current.data.labels[clickedElementIndex];
+                //         alert(label);
+                //     }
+                // }
             }
         });
     };
+
+    const fetchOrderType = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/api/order/all`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if(response.status === 200) {
+                const from_design = (response.data.filter(o => o.orderType == 'from_design')).length;
+                const total = (response.data.length);
+
+                setOrderType([100-Math.round((from_design*100)/total),Math.round((from_design*100)/total)]);
+            } else {
+                console.log('error');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         fetchData();
         fetchSalesReport();
         startGraph();
         startCustomBuildGraph();
+        fetchOrderType();
 
         return () => {
             if (chartInstanceRef.current) {
@@ -230,6 +254,10 @@ const DashboardComponent = () => {
     useEffect(() => {
         startGraph();
     }, [salesReport]);
+
+    useEffect(() => {
+        startCustomBuildGraph(); 
+    }, [orderType])
 
     return (
         <div className="container mt-4">
