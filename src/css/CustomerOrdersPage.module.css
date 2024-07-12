@@ -33,11 +33,16 @@
 }
 
 .request-page button {
-    font-weight: 400;
-    text-transform: uppercase;
-    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
     background-color: #48AAAD;
-    border-radius: 10px;
+    color: white;
+    transition: 0.3s;
+}
+
+.request-page button:hover {
+    background-color: #327c7f;
+    transform: scale(0.97);
 }
 
 .detail {
