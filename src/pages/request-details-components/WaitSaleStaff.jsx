@@ -9,7 +9,21 @@ import styles from '/src/css/WaitSaleStaff.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import { fetchDiamondPrice, fetchMaterialPrice } from '../../helper_function/FetchPriceFunctions';
 import useDocumentTitle from '../../components/Title';
-import { Slider } from '@mui/material';
+import { LinearProgress, Pagination, Slider } from '@mui/material';
+
+const DEFAULT_PAGE_NO = 0;
+const DEFAULT_PAGE_SIZE = 40;
+
+const MIN_CARAT = 0.05;
+const MAX_CARAT = 5.05;
+const CARAT_STEP = 0.1 * 3;
+let carat_ranges = []
+
+for (let i = MIN_CARAT; i <= MAX_CARAT; i += CARAT_STEP) {
+    let first_num = i.toFixed(2);
+    let second_num = (i + CARAT_STEP).toFixed(2);
+    carat_ranges = [...carat_ranges, first_num + "-" + second_num];
+}
 
 const WaitSaleStaff = ({ order }) => {
 
@@ -36,8 +50,7 @@ const WaitSaleStaff = ({ order }) => {
     const [minPrice, setMinPrice] = useState(200);
     const [maxPrice, setMaxPrice] = useState(5000000);
 
-    const [minCarat, setMinCarat] = useState(0.05);
-    const [maxCarat, setMaxCarat] = useState(10);
+    const [carat, setCarat] = useState(0);
 
     const colors = ['K', 'J', 'I', 'H', 'G', 'F', 'E', 'D'];
     const [beginColor, setBeginColor] = useState(0);
@@ -54,47 +67,114 @@ const WaitSaleStaff = ({ order }) => {
     const [origin, setOrigin] = useState('NATURAL')
     const origins = ['NATURAL', 'LAB_GROWN']
 
-    const [pageNo, setPageNo] = useState(0);
-    const [pageSize, setPageSize] = useState(40);
+    const [pageNo, setPageNo] = useState(DEFAULT_PAGE_NO);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const totalPage = parseInt(diamondList.length / pageSize) + 1
 
     const [processing, setProcessing] = useState(false);
+    const [isFinishedLoading, setIsFinishedLoading] = useState(true);
 
     useDocumentTitle("Manager Request Quotation");
+
+    const DiamondList = () => {
+        if (diamondList.length > 0) {
+            return diamondList.slice(pageNo * pageSize, pageNo * pageSize + pageSize).map((diamond, index) => (
+                <tr key={index}>
+                    <td className='col-md'>{diamond.diamond.diamondId}</td>
+                    <td className='col-md'>{diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)}</td>
+                    <td className='col-md'>{diamond.diamond.color}-{diamond.diamond.clarity} {diamond.diamond.cut.replace("_", " ")} {diamond.diamond.caratWeight} Carat</td>
+                    <td className='col-md'>{formatPrice(diamond.latestPrice)}</td>
+                    <td className='col-md'>{formatDate(diamond.effectiveDate)}</td>
+                    <td className='col-md'>
+                        {
+                            chosenDiamonds.find(d => d.id == diamond.diamond.diamondId) == null
+                                ? <>
+                                    <button
+                                        className='btn btn-success'
+                                        onClick={() => {
+                                            setChosenDiamonds(l => [...l,
+                                            {
+                                                id: diamond.diamond.diamondId,
+                                                name: `${diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)} ${diamond.diamond.color}-${diamond.diamond.clarity} ${diamond.diamond.cut.replace("_", " ")} ${diamond.diamond.caratWeight} Carat`,
+                                                price: diamond.latestPrice
+                                            }
+                                            ])
+                                            setTotalDiamondPrice(p => p + diamond.latestPrice);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faPlus} />
+                                    </button>
+                                </>
+                                : <>
+                                    <button
+                                        className='btn btn-danger'
+                                        onClick={() => {
+                                            setChosenDiamonds(l => l.filter(entry => entry.id !== diamond.diamond.diamondId));
+                                            setTotalDiamondPrice(p => p - diamond.latestPrice);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faMinus} />
+                                    </button>
+                                </>
+                        }
+                    </td>
+                </tr>
+            ))
+        } else if (isFinishedLoading) {
+            return (
+                <tr>
+                    <td colSpan={6}><p className='fs-4 text-center'>No diamonds available for this setting.</p></td>
+                </tr>
+            )
+        } else {
+            return (
+                <tr>
+                    <td colSpan={6}>
+                        <LinearProgress />
+                    </td>
+                </tr>
+            )
+        }
+    }
+
+    const fetchQuery = async () => {
+        setIsFinishedLoading(false);
+        let carat_split = carat_ranges[carat].split("-");
+        const query = {
+            origin: origin,
+            shapeList: shape == "all" ? shapes : [shape],
+            colorList: [...colors.slice(beginColor, endColor), colors[endColor]],
+            clarityList: [...clarities.slice(beginClarity, endClarity), clarities[endClarity]],
+            cutList: [...cuts.slice(beginCut, endCut), cuts[endCut]],
+            minCarat: parseFloat(carat_split[0]),
+            maxCarat: parseFloat(carat_split[1]),
+            minPrice: minPrice,
+            maxPrice: maxPrice
+        }
+        try {
+            console.log(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C`)
+            const headers = {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+            const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C`, query, { headers });
+            if (!response.data || response.status === 204) {
+                console.log(`Cannot fetch diamonds`);
+            } else {
+                setDiamondList(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        setIsFinishedLoading(true);
+    }
+
+    useEffect(() => {
+        fetchQuery();
+    }, [shape, origin, beginColor, endColor, beginClarity, endClarity, carat, minPrice, maxPrice])
 
     useEffect(() => {
         fetchMaterials();
     }, [])
-
-    useEffect(() => {
-        const update = async () => {
-            const query = {
-                origin: origin,
-                shapeList: shape == "all" ? shapes : [shape],
-                colorList: [...colors.slice(beginColor, endColor), colors[endColor]],
-                clarityList: [...clarities.slice(beginClarity, endClarity), clarities[endClarity]],
-                cutList: [...cuts.slice(beginCut, endCut), cuts[endCut]],
-                minCarat: minCarat,
-                maxCarat: maxCarat,
-                minPrice: minPrice,
-                maxPrice: maxPrice
-            }
-            try {
-                console.log(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`)
-                const headers = {
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C?pageNo=${pageNo}&pageSize=${pageSize}`, query, {headers});
-                if (!response.data || response.status === 204) {
-                    console.log(`Cannot fetch diamonds`);
-                } else {
-                    setDiamondList(response.data.content);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        update();
-    }, [pageNo, pageSize, shape, origin, beginColor, endColor, beginClarity, endClarity, minCarat, maxCarat, minPrice, maxPrice])
 
     const finalSubmit = async () => {
         if (productName.trim().length > 0 &&
@@ -121,7 +201,7 @@ const WaitSaleStaff = ({ order }) => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/product/save`, productDTO, {headers});
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/product/save`, productDTO, { headers });
                 if (!response.data || response.status === 204) {
                     throw new Error(`Product creation failed. Backend did not return id`);
                 }
@@ -138,8 +218,8 @@ const WaitSaleStaff = ({ order }) => {
                     qmaterialPrice: totalMaterialPrice
                 }
 
-                
-                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}/${response.data}`, finalOrder, {headers});
+
+                const response2 = await axios.post(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}/${response.data}`, finalOrder, { headers });
                 if (!response.data || response.status === 204) {
                     throw new Error(`Order update failed. Backend did not return order`);
                 }
@@ -198,7 +278,7 @@ const WaitSaleStaff = ({ order }) => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`, {headers});
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/material/all`, { headers });
             if (response.status === 204) {
                 console.log("No data");
             } else {
@@ -297,7 +377,7 @@ const WaitSaleStaff = ({ order }) => {
                             <div className="col-md">
                                 <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
                                     <option value=''>Choose product type</option>
-                                    {['ring','necklace','earrings','bracelets'].map(value => (<option key={value} value={value}>{value}</option>))}
+                                    {['ring', 'necklace', 'earrings', 'bracelets'].map(value => (<option key={value} value={value}>{value}</option>))}
                                 </select>
                             </div>
                         </div>
@@ -403,32 +483,20 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="row mb-2">
                             <div className="col-md-3 fs-6 ms-4">Carat</div>
                             <Slider
-                                value={[minCarat, maxCarat]}
+                                value={carat}
                                 min={0}
-                                max={10.0}
-                                step={0.05}
-                                onChange={(e) => {
-                                    setMinCarat(e.target.value[0]);
-                                    setMaxCarat(e.target.value[1]);
-                                }}
+                                step={1}
+                                max={carat_ranges.length - 1}
                                 style={{
                                     color: '#2D9596',
                                 }}
-                                className='col-md me-5'
-                                valueLabelDisplay='auto'
-                                marks={
-                                    [
-                                        {
-                                            value: 0,
-                                            label: 'Min: 0'
-                                        },
-                                        {
-                                            value: 10.0,
-                                            label: 'Max: 10'
-                                        }
-                                    ]
-                                }
+                                onChange={(e) => {
+                                    setCarat(e.target.value);
+                                }}
+                                className='col me-5'
+                                valueLabelDisplay='off'
                             />
+                            <p className='text-center fs-3'>{carat_ranges[carat].replace("-", " - ")}</p>
                         </div>
 
                         <div className="row mb-2">
@@ -650,10 +718,9 @@ const WaitSaleStaff = ({ order }) => {
 
                 </div>
             </div>
-            {/* <div className="row mb-2">
-                <input name="pageNo" type="number" min={0} value={pageNo} onChange={(e) => setPageNo(e.target.value)} className='col mx-5 form-control' />
-                <input name="pageSize" type="number" min={10} value={pageSize} onChange={(e) => setPageSize(e.target.value)} className='col mx-5 form-control' />
-            </div> */}
+            <Pagination count={totalPage} page={pageNo + 1} onChange={(event, value) => {
+                setPageNo(value - 1)
+            }} />
             <div className="row mb-2 px-3">
                 <table className='table col-md text-center'>
                     <thead>
@@ -667,51 +734,7 @@ const WaitSaleStaff = ({ order }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {diamondList.length > 0
-                            ? diamondList.map((diamond, index) => (
-                                <tr key={index}>
-                                    <td className='col-md'>{diamond.diamond.diamondId}</td>
-                                    <td className='col-md'>{diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)}</td>
-                                    <td className='col-md'>{diamond.diamond.color}-{diamond.diamond.clarity} {diamond.diamond.cut.replace("_", " ")} {diamond.diamond.caratWeight} Carat</td>
-                                    <td className='col-md'>{formatPrice(diamond.latestPrice)}</td>
-                                    <td className='col-md'>{formatDate(diamond.effectiveDate)}</td>
-                                    <td className='col-md'>
-                                        {
-                                            chosenDiamonds.find(d => d.id == diamond.diamond.diamondId) == null
-                                                ? <>
-                                                    <button
-                                                        className='btn btn-success'
-                                                        onClick={() => {
-                                                            setChosenDiamonds(l => [...l,
-                                                            {
-                                                                id: diamond.diamond.diamondId,
-                                                                name: `${diamond.diamond.shape.charAt(0).toUpperCase() + diamond.diamond.shape.slice(1)} ${diamond.diamond.color}-${diamond.diamond.clarity} ${diamond.diamond.cut.replace("_", " ")} ${diamond.diamond.caratWeight} Carat`,
-                                                                price: diamond.latestPrice
-                                                            }
-                                                            ])
-                                                            setTotalDiamondPrice(p => p + diamond.latestPrice);
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon icon={faPlus} />
-                                                    </button>
-                                                </>
-                                                : <>
-                                                    <button
-                                                        className='btn btn-danger'
-                                                        onClick={() => {
-                                                            setChosenDiamonds(l => l.filter(entry => entry.id !== diamond.diamond.diamondId));
-                                                            setTotalDiamondPrice(p => p - diamond.latestPrice);
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon icon={faMinus} />
-                                                    </button>
-                                                </>
-                                        }
-                                    </td>
-                                </tr>
-                            ))
-                            : <></>
-                        }
+                        <DiamondList />
                     </tbody>
                 </table>
             </div>
