@@ -54,7 +54,7 @@ const CustomerOrdersPage = () => {
                                     <th>Order Date</th>
                                     <th>Total Price</th>
                                     <th>Status</th>
-                                    <th>#</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>

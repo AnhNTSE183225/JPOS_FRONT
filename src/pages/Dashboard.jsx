@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../css/Dashboard.module.css';
 import axios from 'axios';
 import { formatPrice } from '/src/helper_function/ConvertFunction';
+import useDocumentTitle from "../components/Title";
 
 const PopularProducts = () => {
     const [productList, setProductList] = useState([]);
@@ -30,6 +31,7 @@ const PopularProducts = () => {
     useEffect(() => {
         fetchData();
     }, []);
+    useDocumentTitle("Dashboard")
 
     return (
         <div className={`${styles.popularProducts} card w-100 h-100`}>

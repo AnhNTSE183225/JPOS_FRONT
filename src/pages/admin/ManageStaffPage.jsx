@@ -7,6 +7,7 @@ import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import axios from "axios";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Switch } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import useDocumentTitle from "../../components/Title";
 
 const DEPARTMENT = {
     'sale': 'Sales',
@@ -31,6 +32,7 @@ const ManageStaffPage = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [activeStaff, setActiveStaff] = useState(null);
     const [refresh, setRefresh] = useState(false);
+    useDocumentTitle("Manage Staffs")
 
     const UpdateDialog = () => {
 
@@ -223,7 +225,7 @@ const ManageStaffPage = () => {
     return (
         <div className="container-fluid" id={`${styles['manage-staff']}`}>
             <div className="row mb-3">
-                <h1 className="p-0">Company employees</h1>
+            <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>COMPANY EMPLOYEES</h1>
                 <div className="col-3 p-0">
                     <input placeholder={`Search Employee`} onChange={(e) => setSearch(e.target.value)} type="text" className="form-control" />
                 </div>

@@ -119,7 +119,7 @@ const ManageMaterials = () => {
         <div className="container-fluid">
             <div className="row mb-3">
                 <div className="col">
-                    <h1>MANAGE MATERIALS</h1>
+                <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>MANAGE MATERIALS</h1>
                 </div>
             </div>
             <div className="row-mb-3">
@@ -129,34 +129,38 @@ const ManageMaterials = () => {
             </div>
             <div className="row mb-3">
                 <div className="col">
-                    <div className="container-fluid">
-                        <div className="row mb-3 fw-bold">
-                            <div className="col-1 d-flex justify-content-center align-items-center">ID</div>
-                            <div className="col-3 d-flex justify-content-start align-items-center">Name</div>
-                            <div className="col-1 d-flex justify-content-center align-items-center">Actions</div>
-                        </div>
-                        {
-                            materials != null
-                                ? materials.map((material, index) => (
-                                    <div key={index} className="row mb-3">
-                                        <div className="col-1 d-flex justify-content-center align-items-center fw-bold">
-                                            {material.materialId}
+                    <table className="table text-center">
+                        <thead>
+                            <tr>
+                                <th className="col-1">ID</th>
+                                <th className="col-3">Name</th>
+                                <th className="col-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                materials != null
+                                    ? materials.map((material, index) => (
+                                        <tr key={index}>
+                                            <td className="col-1">
+                                                {material.materialId}
+                                            </td>
+                                            <td className="col-3 text-capitalize">
+                                                {material.materialName.replace("_", " ")}
+                                            </td>
+                                            <td className="col-1 align-items-center">
+                                                <Button onClick={() => openDialog(material)}>EDIT</Button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    : <td className="row mb-3">
+                                        <div className="col">
+                                            <CircularProgress />
                                         </div>
-                                        <div className="col-3 d-flex justify-content-start align-items-center text-capitalize">
-                                            {material.materialName.replace("_", " ")}
-                                        </div>
-                                        <div className="col-1 d-flex justify-content-center align-items-center">
-                                            <Button onClick={() => openDialog(material)}>EDIT</Button>
-                                        </div>
-                                    </div>
-                                ))
-                                : <div className="row mb-3">
-                                    <div className="col">
-                                        <CircularProgress />
-                                    </div>
-                                </div>
-                        }
-                    </div>
+                                    </td>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <Dialog maxWidth="xl" open={open} onClose={closeDialog}>
