@@ -71,6 +71,7 @@ const DiamondPriceListPage = () => {
                 console.log(`Error`);
             }
         } catch (error) {
+            Rollbar.error(error);
             console.log(error);
         }
     }
