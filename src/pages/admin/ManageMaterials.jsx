@@ -119,7 +119,7 @@ const ManageMaterials = () => {
         <div className="container-fluid">
             <div className="row mb-3">
                 <div className="col">
-                    <h1>MANAGE MATERIALS</h1>
+                <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>MANAGE MATERIALS</h1>
                 </div>
             </div>
             <div className="row-mb-3">

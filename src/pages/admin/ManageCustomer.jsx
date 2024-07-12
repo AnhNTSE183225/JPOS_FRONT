@@ -8,6 +8,7 @@ import { Switch } from '@mui/material';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import { faEllipsisVertical} from "@fortawesome/free-solid-svg-icons";
+import useDocumentTitle from "../../components/Title";
 
 const ManageCustomer = () => {
 
@@ -19,6 +20,8 @@ const ManageCustomer = () => {
     const open = Boolean(anchor);
     const [openDialog, setOpenDialog] = useState(false);
     const [activeCustomer, setActiveCustomer] = useState(null);
+
+    useDocumentTitle("Manage Customers")
 
     const fetchData = async () => {
         try {
