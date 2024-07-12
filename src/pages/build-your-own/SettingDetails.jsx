@@ -8,6 +8,30 @@ import { formatPrice } from "../../helper_function/ConvertFunction";
 import { fetchMaterialPrice } from "../../helper_function/FetchPriceFunctions";
 import { toast } from "sonner";
 
+import asscher from '/src/assets/svg/Asscher.svg';
+import cushion from '/src/assets/svg/Cushion.svg';
+import emerald from '/src/assets/svg/Emerald.svg';
+import heart from '/src/assets/svg/Heart.svg';
+import marquise from '/src/assets/svg/Marquise.svg';
+import oval from '/src/assets/svg/Oval.svg';
+import pear from '/src/assets/svg/Pear.svg';
+import princess from '/src/assets/svg/Princess.svg';
+import radiant from '/src/assets/svg/Radiant.svg';
+import round from '/src/assets/svg/Round.svg';
+
+const SHAPES_IMAGES = [
+    { name: 'Round', image: round },
+    { name: 'Princess', image: princess },
+    { name: 'Cushion', image: cushion },
+    { name: 'Emerald', image: emerald },
+    { name: 'Oval', image: oval },
+    { name: 'Radiant', image: radiant },
+    { name: 'Asscher', image: asscher },
+    { name: 'Marquise', image: marquise },
+    { name: 'Heart', image: heart },
+    { name: 'Pear', image: pear },
+];
+
 const NoteComponent = ({ designType, note, setNote }) => {
     let result = null;
 
@@ -91,7 +115,7 @@ const SettingDetails = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${designId}`,{headers});
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${designId}`, { headers });
             if (!response.data || response.status === 204) {
                 console.error('Error, cannot fetch, wrong id or something');
             } else {
@@ -114,7 +138,7 @@ const SettingDetails = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shell.productShellDesignId}`,{headers});
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shell.productShellDesignId}`, { headers });
             if (!response.data || response.status === 204) {
                 toast.error("Error cannot fetch materials");
             } else {
@@ -146,7 +170,7 @@ const SettingDetails = () => {
                 note: note,
                 price: settingPrice
             }
-            sessionStorage.setItem('selected_product',JSON.stringify(selected_product));
+            sessionStorage.setItem('selected_product', JSON.stringify(selected_product));
             sessionStorage.removeItem('selected_diamonds');
             navigate("/build-your-own/choose-diamond");
         } else {
@@ -185,15 +209,15 @@ const SettingDetails = () => {
                                     <div className={styles["more-info-content"]}>
                                         <h5>Can Be Set With:</h5>
                                         <ul>
-                                            {['Round', 'Princess', 'Cushion', 'Emerald', 'Oval', 'Radiant', 'Asscher', 'Marquise', 'Heart', 'Pear'].map(shape => (
-                                                <div key={shape}>
+                                            {SHAPES_IMAGES.map((shape, index) => (
+                                                <div key={index}>
                                                     <div className="d-flex align-items-center">
                                                         <img
-                                                            src={`/src/assets/svg/${shape}.svg`}
-                                                            alt={shape}
+                                                            src={shape.image}
+                                                            alt={shape.name}
                                                             style={{ maxWidth: '20px', maxHeight: '20px', marginRight: '5px' }}
                                                         />
-                                                        <span>{shape} 0.20 - 8.00 Carat</span>
+                                                        <span>{shape.name} 0.20 - 8.00 Carat</span>
                                                     </div>
                                                 </div>
                                             ))}
