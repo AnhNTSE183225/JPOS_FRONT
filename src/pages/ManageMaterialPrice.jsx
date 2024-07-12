@@ -69,13 +69,12 @@ const ManageMaterialPrice = () => {
             } else {
                 const object = {
                     materialId: activePrice,
-                    effectiveDate: formatBackendDate(activeDate),
                     materialPrice: newPrice
                 }
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/materialPrices/update`, object, {headers});
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/materialPrices/add`, object, {headers});
                 if (!response.data || response.status === 204) {
                     toast.error(`Cannot update`);
                 } else {
