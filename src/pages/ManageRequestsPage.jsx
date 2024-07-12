@@ -7,11 +7,13 @@ import OrderDetails from "../components/OrderDetails";
 import WaitManager from '../pages/request-details-components/WaitManager';
 import useDocumentTitle from "../components/Title";
 import { Link } from "react-router-dom";
+import { LinearProgress } from "@mui/material";
 
 const ManageRequestsPage = () => {
     const [orders, setOrders] = useState([]);
     const [queryOrders, setQueryOrders] = useState([]);
     const [activeStatus, setActiveStatus] = useState(null);
+    const [loading, setLoading] = useState(false);
     // const [activeOrder, setActiveOrder] = useState(null);
     const orderStatus = [
         'Waiting for Sales Staff',
@@ -29,8 +31,58 @@ const ManageRequestsPage = () => {
 
     useDocumentTitle("Manage Requests");
 
+    const TableComponent = () => {
+        if (queryOrders.length > 0 && !loading) {
+            return (
+                queryOrders.map(order => (
+                    <tr key={order.id}>
+                        <td>{order.id}</td>
+                        <td>{order.customer.name}</td>
+                        <td>{formatDate(order.orderDate)}</td>
+                        <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
+                        <td>{order.status.replaceAll("_", " ")}</td>
+                        <td>
+                            {
+                                order.status == 'wait_manager'
+                                    ? <>
+                                        <Link to={`/staff/manage-requests/quote/${order.id}`} >
+                                            <button className="fs-6">
+                                                VIEW DETAILS
+                                            </button>
+                                        </Link>
+                                    </>
+                                    : <>
+                                        <Link to={`/staff/manage-requests/request/${order.id}`} >
+                                            <button className="fs-6">
+                                                VIEW DETAILS
+                                            </button>
+                                        </Link>
+                                    </>
+                            }
+                        </td>
+                    </tr>
+                ))
+            )
+        } else if (loading) {
+            return (
+                <tr>
+                    <td colSpan={6}>
+                        <LinearProgress />
+                    </td>
+                </tr>
+            )
+        } else {
+            return (
+                <tr>
+                    <td colSpan="6">You have no orders.</td>
+                </tr>
+            )
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
@@ -46,6 +98,7 @@ const ManageRequestsPage = () => {
             } catch (error) {
                 console.log(error);
             }
+            setLoading(false);
         }
 
         fetchData();
@@ -141,38 +194,7 @@ const ManageRequestsPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.length <= 0
-                                ? <tr>
-                                    <td colSpan="6">You have no orders.</td>
-                                </tr>
-                                : queryOrders.map(order => (
-                                    <tr key={order.id}>
-                                        <td>{order.id}</td>
-                                        <td>{order.customer.name}</td>
-                                        <td>{formatDate(order.orderDate)}</td>
-                                        <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
-                                        <td>{order.status.replaceAll("_", " ")}</td>
-                                        <td>
-                                            {
-                                                order.status == 'wait_manager'
-                                                    ? <>
-                                                        <Link to={`/staff/manage-requests/quote/${order.id}`} >
-                                                            <button className="fs-6">
-                                                                VIEW DETAILS
-                                                            </button>
-                                                        </Link>
-                                                    </>
-                                                    : <>
-                                                        <Link to={`/staff/manage-requests/request/${order.id}`} >
-                                                            <button className="fs-6">
-                                                                VIEW DETAILS
-                                                            </button>
-                                                        </Link>
-                                                    </>
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
+                            <TableComponent />
                         </tbody>
                     </table>
                 </div>

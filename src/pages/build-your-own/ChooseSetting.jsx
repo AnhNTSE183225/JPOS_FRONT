@@ -6,6 +6,7 @@ import axios from 'axios';
 import ProductCard from './ProductCard';
 import styles from '/src/css/ChooseSettings.module.css';
 import useDocumentTitle from '../../components/Title';
+import { CircularProgress, LinearProgress } from '@mui/material';
 
 const ChooseSetting = () => {
 
@@ -83,7 +84,13 @@ const ChooseSetting = () => {
                         ))}
                     </div>
                 ) : (
-                    <div>Loading...</div>
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col d-flex justify-content-center align-items-center">
+                                <CircularProgress/>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </div>
         </>

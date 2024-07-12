@@ -18,6 +18,7 @@ import pear from '/src/assets/svg/Pear.svg';
 import princess from '/src/assets/svg/Princess.svg';
 import radiant from '/src/assets/svg/Radiant.svg';
 import round from '/src/assets/svg/Round.svg';
+import { CircularProgress } from "@mui/material";
 
 const SHAPES_IMAGES = [
     { name: 'Round', image: round },
@@ -192,7 +193,9 @@ const SettingDetails = () => {
     };
 
     if (productDesign === null) {
-        return <div className={styles.loading}>Loading...</div>;
+        return <div className={styles.loading}>
+            <CircularProgress/>
+        </div>;
     } else {
         return (
             <div className="container">

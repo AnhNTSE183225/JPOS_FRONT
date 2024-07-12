@@ -3,12 +3,15 @@ import { fetchMaterialPrice } from "../helper_function/FetchPriceFunctions";
 import axios from "axios";
 import styles from '/src/css/MaterialPriceListPage.module.css';
 import { formatDate, formatPrice } from "../helper_function/ConvertFunction";
+import { CircularProgress, LinearProgress } from "@mui/material";
 
 const MaterialPriceListPage = () => {
 
-    const [materials, setMaterials] = useState(null);
+    const [materials, setMaterials] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const fetchData = async () => {
+        setLoading(true);
         try {
             const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/material/all`);
             let priced_materials = []
@@ -23,14 +26,14 @@ const MaterialPriceListPage = () => {
             setMaterials(priced_materials);
         } catch (error) {
             console.log(error);
-            Rollbar.error("Failed to fetch material price list");
         }
+        setLoading(false);
     }
 
     useEffect(() => {
         fetchData();
     }, [])
-    
+
     return (
         <div className={`container ${styles[`list-page`]}`}>
             <div className={`${styles[`page-title`]}`}>
@@ -40,7 +43,7 @@ const MaterialPriceListPage = () => {
                 <p>Last Updated: {formatDate(new Date())}</p>
             </div>
             {
-                materials !== null
+                materials.length > 0 && !loading
                     ?
                     <table className="table table-bordered text-center">
                         <thead>
@@ -50,7 +53,6 @@ const MaterialPriceListPage = () => {
                             </tr>
                         </thead>
                         <tbody className={`${styles[`content`]}`}>
-
                             {
                                 materials.map((value, index) => (
                                     <tr key={index}>
@@ -71,7 +73,13 @@ const MaterialPriceListPage = () => {
 
                         </tbody>
                     </table>
-                    : <></>
+                    : <div className="container-fluid">
+                        <div className="row">
+                            <div className="col d-flex justify-content-center align-items-center">
+                                <CircularProgress />
+                            </div>
+                        </div>
+                    </div>
             }
         </div>
     )

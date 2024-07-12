@@ -155,7 +155,7 @@ const ChooseDiamond = () => {
 
     const DiamondList = () => {
 
-        if (diamondList.length > 0) {
+        if (isFinishedLoading && diamondList.length > 0) {
             return diamondList.slice(pageNo*pageSize,pageNo*pageSize + pageSize).map((entry, index) => (
                 <div key={index} className="col-md-4 col-lg-3 mb-4">
                     <DiamondCard
@@ -189,7 +189,7 @@ useEffect(() => {
 
 useEffect(() => {
     fetchQuery();
-}, [activeShape, carat, beginColor, endColor, beginClarity, endClarity, beginCut, endCut, minPrice, maxPrice])
+}, [origin, activeShape, carat, beginColor, endColor, beginClarity, endClarity, beginCut, endCut, minPrice, maxPrice])
 
 console.log(diamondList);
 

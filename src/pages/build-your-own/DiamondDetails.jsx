@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { fetchDiamondPrice } from '../../helper_function/FetchPriceFunctions';
 import { formatPrice } from '../../helper_function/ConvertFunction';
 import { faUnity } from '@fortawesome/free-brands-svg-icons';
+import { CircularProgress } from '@mui/material';
 
 const DiamondDetails = () => {
     const { diamondId } = useParams();
@@ -144,7 +145,15 @@ const DiamondDetails = () => {
 
 
     if (diamond === null || diamondPrice == null) {
-        return <div>Loading...</div>;
+        return (
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col d-flex justify-content-center align-items-center">
+                        <CircularProgress/>
+                    </div>
+                </div>
+            </div>
+        )
     } else {
 
         return (
