@@ -94,7 +94,7 @@ const ManageMaterials = () => {
     const handleSearch = (e) => {
         setSearch(e.target.value);
         const filtered = materials.filter(material =>
-            material.materialName.toLowerCase().includes(e.target.value.toLowerCase())
+            material.materialName.toLowerCase().includes(e.target.value.toLowerCase().replace(" ","_"))
         );
         setFilteredMaterials(filtered);
     };
