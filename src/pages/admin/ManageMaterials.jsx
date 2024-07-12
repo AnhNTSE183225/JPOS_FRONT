@@ -1,4 +1,4 @@
-import {  Button,CircularProgress,Dialog,DialogActions,DialogContent,DialogTitle} from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, setRef } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -7,216 +7,211 @@ import { INFINITY } from "chart.js/helpers";
 import useDocumentTitle from "../../components/Title";
 
 const ManageMaterials = () => {
-    const [materials, setMaterials] = useState([]);
-    const [filteredMaterials, setFilteredMaterials] = useState([]);
+    const [materials, setMaterials] = useState(null);
     const [refresh, setRefresh] = useState(false);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(null);
+
     const [activeMaterial, setActiveMaterial] = useState({ materialId: -1, materialName: '' });
-    const [open, setOpen] = useState(false);
-    const [openCreate, setOpenCreate] = useState(false);
-
-    useDocumentTitle("Manage Materials");
-
     const validateMaterialId = validateInteger(activeMaterial.materialId, 1, INFINITY);
     const validateMaterialName = validateString(activeMaterial.materialName, 4, 50, null, '^[A-Za-z0-9_]+$');
 
+    useDocumentTitle("Manage Materials")
+
+    const [open, setOpen] = useState(false);
+    const [openCreate, setOpenCreate] = useState(false);
+
     const openDialog = (material) => {
-        setActiveMaterial(material);
+        setActiveMaterial(JSON.parse(JSON.stringify(material)));
         setOpen(true);
-    };
+    }
 
     const openDialogCreate = () => {
         setActiveMaterial({ materialId: -1, materialName: '' });
         setOpenCreate(true);
-    };
+    }
 
     const closeDialog = () => {
         setActiveMaterial({ materialId: -1, materialName: '' });
         setOpen(false);
         setOpenCreate(false);
-    };
+    }
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/material/all`);
-            setMaterials(response.data);
-            setFilteredMaterials(response.data);
+            console.log(`${import.meta.env.VITE_jpos_back}/public/material/all`)
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/public/material/all`,
+            })
+            if (response.status === 200) {
+                setMaterials(response.data);
+            } else {
+                console.log(`Error`);
+            }
         } catch (error) {
-            console.error("Error fetching materials:", error);
-            toast.error("Failed to fetch materials.");
+            console.log(error);
         }
-    };
+    }
 
-    const updateMaterial = async () => {
-        if (validateMaterialId.result && validateMaterialName.result) {
+    const update = async () => {
+        if (
+            validateMaterialId.result &&
+            validateMaterialName.result
+        ) {
             try {
-                const response = await axios.put(
-                    `${import.meta.env.VITE_jpos_back}/api/material/${activeMaterial.materialId}`,
-                    activeMaterial,
-                    { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
-                );
+                const response = await axios({
+                    method: 'put',
+                    url: `${import.meta.env.VITE_jpos_back}/api/material/${activeMaterial.materialId}`,
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    },
+                    data: activeMaterial
+                });
                 if (response.status === 200) {
-                    toast.success("Update complete");
+                    toast.success(`Update complete`);
                     closeDialog();
-                    setRefresh(prev => !prev);
+                } else {
+                    console.log('error');
                 }
+                setRefresh(r => !r);
             } catch (error) {
-                console.error("Error updating material:", error);
-                toast.error("Unable to update material.");
+                console.log(error);
+                toast.error(`Unable to update`);
             }
         } else {
-            toast.error("Please fulfill all requirements.");
+            toast.error(`Please fulfill all requirements`);
         }
-    };
+    }
 
-    const createMaterial = async () => {
+    const create = async () => {
         if (validateMaterialName.result) {
             try {
-                const response = await axios.post(
-                    `${import.meta.env.VITE_jpos_back}/api/material/add`,
-                    activeMaterial,
-                    { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
-                );
+                const response = await axios({
+                    method: 'post',
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    },
+                    url: `${import.meta.env.VITE_jpos_back}/api/material/add`,
+                    data: activeMaterial
+                })
                 if (response.status === 200) {
-                    toast.success("Create complete");
+                    toast.success('Create complete');
                     closeDialog();
-                    setRefresh(prev => !prev);
+                } else {
+                    console.log('error');
                 }
+                setRefresh(r => !r);
             } catch (error) {
-                console.error("Error creating material:", error);
-                toast.error("Unable to create material.");
+                console.log(error);
             }
         } else {
-            toast.error("Please fulfill all requirements.");
+            toast.error(`Please fulfill all requirements`);
         }
-    };
-
-    const handleSearch = (e) => {
-        setSearch(e.target.value);
-        const filtered = materials.filter(material =>
-            material.materialName.toLowerCase().includes(e.target.value.toLowerCase().replace(" ","_"))
-        );
-        setFilteredMaterials(filtered);
-    };
+    }
 
     useEffect(() => {
         fetchData();
-    }, [refresh]);
+    }, [refresh])
 
-    const MaterialDialog = ({ open, title, onConfirm }) => (
-        <Dialog maxWidth="xl" open={open} onClose={closeDialog}>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <div className="container">
-                    <div className="row mb-3">
-                        <div className="col-3 d-flex align-items-center">
-                            <label htmlFor="materialName">Name</label>
-                        </div>
-                        <div className="col-9">
-                            <input
-                                id="materialName"
-                                className="form-control"
-                                onChange={(e) => setActiveMaterial(m => ({ ...m, materialName: e.target.value }))}
-                                value={activeMaterial.materialName}
-                                type="text"
-                            />
-                        </div>
-                    </div>
-                    {validateMaterialName.reason && (
-                        <div className="row mb-3">
-                            <div className="col">
-                                <div className="text-danger text-end">{validateMaterialName.reason}</div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <Button variant="contained" color="primary" onClick={onConfirm}>
-                    {title.split(' ')[0]}
-                </Button>
-                <Button variant="outlined" onClick={closeDialog}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
-    );
+    console.log(materials);
 
     return (
-        <div className="container">
-            <div className="row mb-4">
+        <div className="container-fluid">
+            <div className="row mb-3">
                 <div className="col">
-                    <h1 className="text-center">Manage Materials</h1>
+                    <h1>MANAGE MATERIALS</h1>
                 </div>
             </div>
-            <div className="row mb-3 align-items-center">
-                <div className="col-auto">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        placeholder="Search materials..." 
-                        value={search}
-                        onChange={handleSearch}
-                    />
-                </div>
-                <div className="col-auto">
-                    <Button variant="contained" color="primary" onClick={openDialogCreate}>
-                        Create New Material
-                    </Button>
+            <div className="row-mb-3">
+                <div className="col">
+                    <Button onClick={openDialogCreate}>Create new material</Button>
                 </div>
             </div>
             <div className="row mb-3">
                 <div className="col">
-                    <div className="table-responsive">
-                        <table className="table">
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th scope="col" className="text-center">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col" className="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredMaterials.length ? (
-                                    filteredMaterials.map((material, index) => (
-                                        <tr key={index} style={{ backgroundColor: 'transparent' }}>
-                                            <td className="text-center">{material.materialId}</td>
-                                            <td>{material.materialName.replace("_", " ")}</td>
-                                            <td className="text-center">
-                                                <Button 
-                                                    variant="outlined" 
-                                                    color="primary" 
-                                                    onClick={() => openDialog(material)}
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="3" className="text-center">
-                                            <CircularProgress />
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                    <div className="container-fluid">
+                        <div className="row mb-3 fw-bold">
+                            <div className="col-1 d-flex justify-content-center align-items-center">ID</div>
+                            <div className="col-3 d-flex justify-content-start align-items-center">Name</div>
+                            <div className="col-1 d-flex justify-content-center align-items-center">Actions</div>
+                        </div>
+                        {
+                            materials != null
+                                ? materials.map((material, index) => (
+                                    <div key={index} className="row mb-3">
+                                        <div className="col-1 d-flex justify-content-center align-items-center fw-bold">
+                                            {material.materialId}
+                                        </div>
+                                        <div className="col-3 d-flex justify-content-start align-items-center text-capitalize">
+                                            {material.materialName.replace("_", " ")}
+                                        </div>
+                                        <div className="col-1 d-flex justify-content-center align-items-center">
+                                            <Button onClick={() => openDialog(material)}>EDIT</Button>
+                                        </div>
+                                    </div>
+                                ))
+                                : <div className="row mb-3">
+                                    <div className="col">
+                                        <CircularProgress />
+                                    </div>
+                                </div>
+                        }
                     </div>
                 </div>
             </div>
+            <Dialog maxWidth="xl" open={open} onClose={closeDialog}>
+                <DialogTitle>EDIT MATERIAL</DialogTitle>
+                <DialogContent>
+                    <div className="container-fluid my-5">
+                        <div className="row">
+                            <div className="col d-flex justify-content-start align-items-center">
+                                Name
+                            </div>
+                            <div className="col">
+                                <input className="form-control" onChange={(e) => setActiveMaterial(m => ({ ...m, materialName: e.target.value }))} value={activeMaterial.materialName} type="text" />
 
-            <MaterialDialog 
-                open={open} 
-                title="Edit Material" 
-                onConfirm={updateMaterial} 
-            />
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <div className="form-text text-end text-danger">{validateMaterialName.reason}</div>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={update}>UPDATE</Button>
+                    <Button onClick={closeDialog}>CANCEL</Button>
+                </DialogActions>
+            </Dialog>
 
-            <MaterialDialog 
-                open={openCreate} 
-                title="Create Material" 
-                onConfirm={createMaterial} 
-            />
+            <Dialog maxWidth="xl" open={openCreate} onClose={closeDialog}>
+                <DialogTitle>CREATE MATERIAL</DialogTitle>
+                <DialogContent>
+                    <div className="container-fluid my-5">
+                        <div className="row">
+                            <div className="col d-flex justify-content-start align-items-center">
+                                Name
+                            </div>
+                            <div className="col">
+                                <input className="form-control" onChange={(e) => setActiveMaterial(m => ({ ...m, materialName: e.target.value }))} value={activeMaterial.materialName} type="text" />
+
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col">
+                                <div className="form-text text-end text-danger">{validateMaterialName.reason}</div>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={create}>CREATE</Button>
+                    <Button onClick={closeDialog}>CANCEL</Button>
+                </DialogActions>
+            </Dialog>
         </div>
-    );
-};
+    )
+}
 
 export default ManageMaterials;

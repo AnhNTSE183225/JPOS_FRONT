@@ -1,4 +1,4 @@
-import { setRef, Switch } from "@mui/material";
+import { Pagination, setRef, Switch } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,22 +7,15 @@ import useDocumentTitle from "../../components/Title";
 import styles from '../../css/ManageDiamonds.module.css';
 
 const ManageDiamonds = () => {
-    const [diamonds, setDiamonds] = useState(null);
-    const [queryList, setQueryList] = useState(null);
+    const [diamonds, setDiamonds] = useState([]);
+    const [queryList, setQueryList] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const [search, setSearch] = useState('');
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(50);
-    let pages = []
-    if (queryList !== null) {
-        let i = 0
-        for (; i < queryList.length; i += pageSize) {
-            pages.push(i);
-        }
-    }
+    const totalPage = parseInt(diamonds.length / pageSize) + 1
 
     useDocumentTitle("Manage Diamonds");
-;
     const navigate = useNavigate();
 
     const fetchData = async () => {
@@ -69,7 +62,7 @@ const ManageDiamonds = () => {
     }, [refresh])
 
     useEffect(() => {
-        if (search.length > 0 && diamonds != null) {
+        if (search.length > 0) {
             let query_list = [...diamonds];
             query_list = query_list.filter(d => d.diamondId.toString() == search || d.diamondCode.toLowerCase().includes(search.toLowerCase()) || d.diamondName.toLowerCase().includes(search.toLowerCase()));
             setQueryList(query_list);
@@ -87,23 +80,9 @@ const ManageDiamonds = () => {
                     <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search" className="form-control" />
                 </div>
                 <div className="col">
-                    <div className="input-group">
-                        <span className="input-group-text">Page</span>
-                        {
-                            pages.map((page,index) => {
-                                if(page == pageNo) {
-                                    return (
-                                        <button key={index} className="btn btn-primary" style={{border: '1px solid #dee2e6'}}>{index+1}</button>
-                                    )
-                                } else {
-                                    return (
-                                        <button key={index} onClick={() => setPageNo(page)} className="btn btn-light" style={{border: '1px solid #dee2e6'}}>{index+1}</button>
-                                    )
-                                }
-                            })
-                        }
-                        <span className="input-group-text"></span>
-                    </div>
+                    <Pagination count={totalPage} page={pageNo + 1} onChange={(event, value) => {
+                        setPageNo(value - 1)
+                    }} />
                 </div>
             </div>
             <div className="row mb-3">
@@ -124,7 +103,7 @@ const ManageDiamonds = () => {
                     <tbody>
                         {
                             queryList !== null
-                                ? queryList.slice(pageNo, pageNo + pageSize).map((diamond, index) => (
+                                ? queryList.slice(pageNo * pageSize, pageNo * pageSize + pageSize).map((diamond, index) => (
                                     <tr key={index}>
                                         <td className="col-md-1">{diamond.diamondId}</td>
                                         <td className="col-md-2">{diamond.diamondCode}</td>
