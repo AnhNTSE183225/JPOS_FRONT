@@ -136,11 +136,15 @@ const CustomDesignPage = () => {
                                             ? imageUrls.map((image, index) => {
                                                 if (activeImage == index) {
                                                     return (
-                                                        <img key={index} src={image} crossOrigin="anonymous" style={{maxWidth: "35rem", height: "auto"}} />
+                                                        <div className="d-flex justify-content-center align-items-center mb-3">
+                                                            <img key={index} src={image} crossOrigin="anonymous" style={{maxWidth: "35rem", height: "auto"}} />
+                                                        </div>
                                                     )
                                                 } else {
                                                     return (
-                                                        <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                        <div className="d-flex justify-content-center align-items-center mb-3">
+                                                            <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                        </div>
                                                     )
                                                 }
                                             })
