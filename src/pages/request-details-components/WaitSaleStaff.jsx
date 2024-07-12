@@ -76,6 +76,8 @@ const WaitSaleStaff = ({ order }) => {
 
     useDocumentTitle("Manager Request Quotation");
 
+    console.log(diamondList);
+
     const DiamondList = () => {
         if (diamondList.length > 0) {
             return diamondList.slice(pageNo * pageSize, pageNo * pageSize + pageSize).map((diamond, index) => (
@@ -151,8 +153,9 @@ const WaitSaleStaff = ({ order }) => {
             minPrice: minPrice,
             maxPrice: maxPrice
         }
+        console.log(query);
         try {
-            console.log(`${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C`)
+            setDiamondList([]);
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
@@ -160,7 +163,7 @@ const WaitSaleStaff = ({ order }) => {
             if (!response.data || response.status === 204) {
                 console.log(`Cannot fetch diamonds`);
             } else {
-                setDiamondList(response.data);
+                setDiamondList(d => response.data);
             }
         } catch (error) {
             console.log(error);

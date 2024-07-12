@@ -34,7 +34,7 @@ const PopularProducts = () => {
     useDocumentTitle("Dashboard")
 
     return (
-        <div className={`${styles.popularProducts} card w-100 h-100`}>
+        <div className={`${styles.popularProducts} card w-100 h-100 overflow-auto position-relative`} style={{maxHeight: '200px'}}>
             <h3 className='mb-4'>Most Recent Products</h3>
             <ul className="list-unstyled">
                 {
