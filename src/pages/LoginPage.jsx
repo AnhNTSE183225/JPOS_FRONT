@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import styles from '/src/css/LoginPage.module.css';
@@ -12,16 +12,34 @@ const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [HTMLContent, setHTMLContent] = useState('');
+    const usernameRef = useRef(null);
+    const passwordRef = useRef(null);
     const navigate = useNavigate();
 
-
     useDocumentTitle("Login");
+
+    useEffect(() => {
+        if (usernameRef.current) {
+            usernameRef.current.focus();
+        }
+    }, []);
+
     const handleUsername = (event) => {
         setUsername(event.target.value);
     };
 
     const handlePassword = (event) => {
         setPassword(event.target.value);
+    };
+
+    const handleKeyPress = (event, field) => {
+        if (event.key === 'Enter') {
+            if (field === 'username') {
+                passwordRef.current.focus();
+            } else if (field === 'password') {
+                unionLogin();
+            }
+        }
     };
 
     const unionLogin = async () => {
@@ -62,20 +80,16 @@ const LoginPage = () => {
         } else {
             toast.info("Please fill in all forms!");
         }
-    }
+    };
 
     const loginGoogle = async () => {
         try {
-            // const response = await axios({
-            //     method: 'get',
-            //     url: `http://localhost:8080/oauth2/authorization/google`,
-            // })
-            window.location.href = `http://localhost:8080/oauth2/authorization/google`
+            window.location.href = `http://localhost:8080/oauth2/authorization/google`;
         } catch (error) {
             console.log(error);
             console.log('error');
-        }A
-    }
+        }
+    };
 
     return (
         <div className={`container-fluid d-flex align-items-center justify-content-center ${styles.fullHeight}`}>
@@ -93,6 +107,8 @@ const LoginPage = () => {
                         rows="1"
                         cols="30"
                         style={{ resize: 'none' }}
+                        ref={usernameRef}
+                        onKeyDown={(e) => handleKeyPress(e, 'username')}
                     ></textarea>
                 </div>
                 <div className="mb-3">
@@ -102,6 +118,8 @@ const LoginPage = () => {
                         onChange={handlePassword}
                         type="password"
                         className="form-control"
+                        ref={passwordRef}
+                        onKeyDown={(e) => handleKeyPress(e, 'password')}
                     />
                 </div>
                 <div className="mb-3 row">
