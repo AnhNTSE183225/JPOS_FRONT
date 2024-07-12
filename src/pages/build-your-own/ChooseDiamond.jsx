@@ -100,6 +100,7 @@ const ChooseDiamond = () => {
                 minPrice: minPrice,
                 maxPrice: maxPrice
             }
+            console.log(query);
             const response = await axios({
                 method: 'post',
                 url: `${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C`,
@@ -109,7 +110,7 @@ const ChooseDiamond = () => {
                 }
             });
             if (response.status === 200) {
-                setDiamondList(response.data);
+                setDiamondList(d => response.data);
             } else {
                 console.log('error');
             }
@@ -189,6 +190,8 @@ useEffect(() => {
 useEffect(() => {
     fetchQuery();
 }, [activeShape, carat, beginColor, endColor, beginClarity, endClarity, beginCut, endCut, minPrice, maxPrice])
+
+console.log(diamondList);
 
 return (
     <>

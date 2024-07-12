@@ -70,7 +70,7 @@ const LoginPage = () => {
             //     method: 'get',
             //     url: `http://localhost:8080/oauth2/authorization/google`,
             // })
-            window.location.href = `http://localhost:8080/oauth2/authorization/google/login`
+            window.location.href = `http://localhost:8080/oauth2/authorization/google`
         } catch (error) {
             console.log(error);
             console.log('error');
