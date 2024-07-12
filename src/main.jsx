@@ -112,8 +112,7 @@ const router = createBrowserRouter([
           {
             path: 'setting-details/:designId',
             element: <SettingDetails />
-          },
-
+          }
         ]
       },
       {
@@ -131,6 +130,14 @@ const router = createBrowserRouter([
       {
         path: '/profile/your-orders/:orderId',
         element: <OrderDetails />
+      },
+      {
+        path: '/payment-callback',
+        element: <PaymentHandler />
+      },
+      {
+        path: '/google-callback',
+        element: <GoogleHandler />
       }
     ]
   },
@@ -218,14 +225,6 @@ const router = createBrowserRouter([
       }
     ]
   },
-  {
-    path: '/payment-callback',
-    element: <PaymentHandler />
-  },
-  {
-    path: '/google-callback',
-    element: <GoogleHandler/>
-  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

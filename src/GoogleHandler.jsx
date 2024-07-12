@@ -27,15 +27,18 @@ const GoogleHandler = () => {
                     sessionStorage.setItem('token', response.data.token);
                 }
             } else {
-                const response = await axios({
-                    method: 'post',
-                    url: `${import.meta.env.VITE_jpos_back}/api/v1/auth/authenticate`,
-                    data: resp
-                });
-                if (response.status === 200) {
-                    sessionStorage.setItem('customer', JSON.stringify(response.data.account));
-                    sessionStorage.setItem('token', response.data.token);
-                }
+                console.log(resp);
+                sessionStorage.setItem('customer', JSON.stringify(resp.account));
+                sessionStorage.setItem('token',resp.token);
+                // const response = await axios({
+                //     method: 'post',
+                //     url: `${import.meta.env.VITE_jpos_back}/api/v1/auth/authenticate`,
+                //     data: resp
+                // });
+                // if (response.status === 200) {
+                //     sessionStorage.setItem('customer', JSON.stringify(response.data.account));
+                //     sessionStorage.setItem('token', response.data.token);
+                // }
             }
 
             //toast.info("Please finish your registration");
