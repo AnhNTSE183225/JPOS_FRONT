@@ -213,7 +213,7 @@ const SettingDetails = () => {
                                 <b>Flexible Payment Options:</b> 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
                             </div>
                             <div className="row">
-                                <h3 className={`${styles["metal-type-title"]} col`}>Select ring size</h3>
+                                <h3 className={`${styles["metal-type-title"]} col`}>Configurations</h3>
                                 <div className="col">
                                     <select className="form-select" onChange={(e) => setNote(e.target.value)}>
                                         <option value="Choose">Choose</option>
