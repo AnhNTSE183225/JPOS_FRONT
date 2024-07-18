@@ -7,8 +7,9 @@ import axios from 'axios';
 import { Switch } from '@mui/material';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
-import { faEllipsisVertical} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import useDocumentTitle from "../../components/Title";
+import { validateString } from '../../helper_function/Validation';
 
 const ManageCustomer = () => {
 
@@ -42,39 +43,54 @@ const ManageCustomer = () => {
     }
 
     const UpdateDialog = () => {
-        const [username, setUsername] = useState(activeCustomer !== null ? activeCustomer.account.username : '');
-        const [name, setName] = useState(activeCustomer !== null ? activeCustomer.name : '');
-        const [address, setAddress] = useState(activeCustomer !== null ? activeCustomer.address : '');
+        const [username, setUsername] = useState('');
+        const validateUsername = validateString(username, 8, 16, null, '^[a-zA-Z0-9]+$');
+        const [name, setName] = useState('');
+        const validateName = validateString(name, 1, 20);
+        const [address, setAddress] = useState('');
+        const validateAddress = validateString(address, 10, 100);
+        const [email, setEmail] = useState('');
+        const validateEmail = validateString(email, 8, 254, '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
 
         const updateCustomer = async () => {
-            try {
-                console.log(`${import.meta.env.VITE_jpos_back}/api/update`);
-                const headers = {
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                }
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update`, {
-                    ...activeCustomer,
-                    account: {
-                        ...activeCustomer.account,
-                        username: username
-                    },
-                    address: address,
-                    name: name,
-                    
-                }, {
-                    headers
-                })
-                if (!response.data || response.status === 204) {
-                    console.log(`Can't update`);
-                } else {
-                    if (response.data > 0) {
-                        toast.success(`Update successful`);
+            if (
+                validateUsername.result &&
+                validateName.result &&
+                validateAddress.result &&
+                validateEmail.result
+            ) {
+                try {
+                    console.log(`${import.meta.env.VITE_jpos_back}/api/update`);
+                    const headers = {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                     }
-                    fetchData();
-                    setOpenDialog(false);
+                    const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/update`, {
+                        ...activeCustomer,
+                        account: {
+                            ...activeCustomer.account,
+                            username: username,
+                            email: email,
+                        },
+                        address: address,
+                        name: name,
+
+                    }, {
+                        headers
+                    })
+                    if (!response.data || response.status === 204) {
+                        console.log(`Can't update`);
+                    } else {
+                        if (response.data > 0) {
+                            toast.success(`Update successful`);
+                        }
+                        fetchData();
+                        setOpenDialog(false);
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
+            } else {
+                toast.info(`Please fulfill all requirements`);
             }
         }
 
@@ -95,6 +111,10 @@ const ManageCustomer = () => {
                     <div className="input-group mt-1 mb-3">
                         <span className={`input-group-text ${styles['input-label']}`}>Address</span>
                         <input className="form-control" type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                    </div>
+                    <div className="input-group mt-1 mb-3">
+                        <span className={`input-group-text ${styles['input-label']}`}>Email</span>
+                        <input className="form-control" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                 </DialogContent>
                 <DialogActions>
@@ -171,23 +191,18 @@ const ManageCustomer = () => {
                 <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>MANAGE CUSTOMERS</h1>
                 <div className="col-lg-3" id={`${styles['manage-customer-search-bar']}`}>
                     <input onChange={(e) => setSearch(e.target.value)} className='form-control' placeholder='Search employees' type="text" />
-                    <FontAwesomeIcon icon={faSearch} style={{
-                        color: 'grey',
-                        position: 'absolute',
-                        top: '20%',
-                        right: '3%'
-                    }} />
+                    
                 </div>
             </div>
             <div className="row mb-3">
-                <table className='table text-center'>
-                    <thead>
+                <table className='table'>
+                    <thead className='text-center'>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th className='col-md-3'>Address</th>
+                            <th className='col-md-1'>ID</th>
+                            <th className='col-md-2'>Name</th>
+                            <th>Address</th>
                             <th>Username</th>
-                            <th className='col-md-3'>Email</th>
+                            <th>Email</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -197,8 +212,8 @@ const ManageCustomer = () => {
                             listQuery != null
                                 ? listQuery.map((customer, index) => (
                                     <tr key={index}>
-                                        <td>{customer.customerId}</td>
-                                        <td>{customer.name}</td>
+                                        <td className="col-md-1 text-center align-content-lg-center">{customer.customerId}</td>
+                                        <td className="col-md-2 align-content-lg-center">{customer.name}</td>
                                         <td>{customer.address}</td>
                                         <td>{customer.account.username}</td>
                                         <td>{customer.account.email}</td>

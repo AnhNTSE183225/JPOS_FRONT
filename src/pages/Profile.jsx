@@ -6,13 +6,17 @@ import useDocumentTitle from '../components/Title';
 import styles from '../css/Profile.module.css';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { validateString } from '../helper_function/Validation';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
     const customer = sessionStorage.getItem('customer') != null ? JSON.parse(sessionStorage.getItem('customer')) : null
-    const [name, setName] = useState(customer != null ? customer.name : null);
-    const [email, setEmail] = useState(customer != null ? customer.account.email : null);
-    const [address, setAddress] = useState(customer != null ? customer.address : null);
+    const [name, setName] = useState('');
+    const validateName = validateString(name, 1, 20);
+    const [address, setAddress] = useState('');
+    const validateAddress = validateString(address, 10, 100);
+    const [email, setEmail] = useState('');
+    const validateEmail = validateString(email, 8, 254, '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
     const [refresh, setRefresh] = useState(false);
     useDocumentTitle("My Account");
 
@@ -25,10 +29,11 @@ const ProfilePage = () => {
     }, [refresh])
 
     const saveChanges = async () => {
-        if (customer != null &&
-            customer.name.length > 0 &&
-            customer.account.email.length > 0 &&
-            customer.address.length > 0
+        if (
+            
+            validateName.result &&
+            validateAddress.result &&
+            validateEmail.result
         ) {
             try {
                 const headers = {
@@ -55,7 +60,12 @@ const ProfilePage = () => {
                 console.log(error);
             }
         } else {
-            toast.info(`Fields can't be empty`);
+            if(!validateName.result) 
+                toast.error("Name field error: "+ validateName.reason);
+            if(!validateEmail.result)
+                toast.error("Email field error: "+ validateEmail.reason);
+            if(!validateAddress.result)
+                toast.error("Address field error: "+ validateAddress.reason);
         }
     }
 

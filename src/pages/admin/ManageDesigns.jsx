@@ -157,7 +157,7 @@ const ManageDesigns = () => {
                                     ? queryList.map((design, index) => (
                                         <tr key={index}>
                                             <td className="col-md-1 text-center align-content-lg-center">{design.productDesignId}</td>
-                                            <td className="col-md-3 align-content-lg-center">{design.designName}</td>
+                                            <td className="col-md-4 align-content-lg-center">{design.designName}</td>
                                             <td className="col-md-2 text-capitalize text-center align-content-lg-center">{design.designType}</td>
                                             <td className="col-md-3 justify-content-center">
                                                 <img className="d-block mx-auto" src={design.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
