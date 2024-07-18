@@ -18,9 +18,7 @@ const CustomerFrame = () => {
                 navigate('/unauthorized-access');
                 return;
             }
-        } else {
-            console.log(JSON.parse(sessionStorage.getItem('customer')));
-        }
+        } 
     }, [])
 
 

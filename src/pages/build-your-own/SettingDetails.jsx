@@ -33,50 +33,6 @@ const SHAPES_IMAGES = [
     { name: 'Pear', image: pear },
 ];
 
-const NoteComponent = ({ designType, note, setNote }) => {
-    let result = null;
-
-    const ringSizes = [6, 7, 8, 9];
-    const necklaceLengths = ["16 inches", "18 inches", "20 inches"];
-
-    switch (designType) {
-        case 'ring':
-            result = (
-                <div className="row">
-                    <h3 className={`${styles["metal-type-title"]} col`}>Select ring size</h3>
-                    <div className="col">
-                        <select className="form-select" onChange={(e) => setNote(e.target.value)}>
-                            <option value="Choose">Choose</option>
-                            {ringSizes.map((size) => (
-                                <option key={size} value={`Ring size: ${size}`}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>);
-            break;
-        case 'necklace':
-            result = (
-                <div className="row">
-                    <h3 className={`${styles["metal-type-title"]} col`}>Select necklace length</h3>
-                    <div className="col">
-                        <select className="form-select" onChange={(e) => setNote(e.target.value)}>
-                            <option value="Choose">Choose</option>
-                            {necklaceLengths.map((length) => (
-                                <option key={length} value={`Necklace length: ${length}`}>
-                                    {length}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>);
-            break;
-        default:
-            result = (<></>);
-    }
-    return result;
-}
 
 const SettingDetails = () => {
     const navigate = useNavigate();
@@ -86,6 +42,7 @@ const SettingDetails = () => {
     const [showShellDetails, setShowShellDetails] = useState(false);
     const [settingPrice, setSettingPrice] = useState(null);
     const [showMoreInfo, setShowMoreInfo] = useState(false);
+    const [noteOptions, setNoteOptions] = useState([]);
     const [note, setNote] = useState('Choose');
 
     useEffect(() => {
@@ -106,6 +63,25 @@ const SettingDetails = () => {
     useEffect(() => {
         if (productDesign) {
             document.title = productDesign.designName;
+            const fetchConfigurations = async () => {
+                try {
+                    const response = await axios({
+                        method: 'get',
+                        url: `${import.meta.env.VITE_jpos_back}/api/product-designs/get-configurations?designType=${productDesign.designType}`,
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                        }
+                    })
+                    if (response.status === 200) {
+                        setNoteOptions(response.data);
+                    } else {
+                        console.log('error fetching');
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            fetchConfigurations();
         } else {
             document.title = 'Setting Details';
         }
@@ -194,7 +170,7 @@ const SettingDetails = () => {
 
     if (productDesign === null) {
         return <div className={styles.loading}>
-            <CircularProgress/>
+            <CircularProgress />
         </div>;
     } else {
         return (
@@ -220,7 +196,7 @@ const SettingDetails = () => {
                                                             alt={shape.name}
                                                             style={{ maxWidth: '20px', maxHeight: '20px', marginRight: '5px' }}
                                                         />
-                                                        <span>{shape.name} 0.20 - 8.00 Carat</span>
+                                                        <span>{shape.name} 0.05 - 10.05 Carat</span>
                                                     </div>
                                                 </div>
                                             ))}
@@ -236,7 +212,19 @@ const SettingDetails = () => {
                             <div className={styles.option}>
                                 <b>Flexible Payment Options:</b> 3 Interest-Free Payments of {formatPrice(settingPrice / 3)}
                             </div>
-                            <NoteComponent note={note} setNote={setNote} designType={productDesign.designType} />
+                            <div className="row">
+                                <h3 className={`${styles["metal-type-title"]} col`}>Select ring size</h3>
+                                <div className="col">
+                                    <select className="form-select" onChange={(e) => setNote(e.target.value)}>
+                                        <option value="Choose">Choose</option>
+                                        {noteOptions.map((config, index) => (
+                                            <option key={index} value={config.configInfo}>
+                                                {config.configInfo}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
                             <div className={styles["metal-type-section"]}>
                                 <h3 className={styles["metal-type-title"]}>Metal Type: </h3>
                                 <div className={styles["shell-list"]}>
