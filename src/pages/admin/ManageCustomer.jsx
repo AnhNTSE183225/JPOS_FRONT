@@ -85,7 +85,9 @@ const ManageCustomer = () => {
                         toast.success('Updated successfully');
                     }
                 } catch (error) {
-                    console.log(error);
+                    if(error.response.status === 406) {
+                        toast.error(`The email ${email} is already linked to another account!`);
+                    }
                 }
             } else {
                 if (!validateUsername.result) {

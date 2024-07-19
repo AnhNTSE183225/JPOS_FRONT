@@ -57,7 +57,9 @@ const ProfilePage = () => {
                     toast.success(`Changes saved`);
                 }
             } catch (error) {
-                console.log(error);
+                if(error.response.status === 406) {
+                    toast.error(`The email ${email} is already linked to another account!`);
+                }
             }
         } else {
             if(!validateName.result) 
