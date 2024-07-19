@@ -51,8 +51,8 @@ const SidebarAdmin = () => {
                 </ul>
                 <div className="dropdown">
                     <a href="#" className={`${styles['user']} d-flex align-items-center text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
-                        <strong>{admin.username}</strong>
+                        
+                        <h3><strong>{admin.username}</strong></h3>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                         <li><a onClick={logout} className="dropdown-item" href="#">Sign out</a></li>
