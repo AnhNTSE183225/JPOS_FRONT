@@ -141,7 +141,7 @@ const ManageDesignPrice = () => {
                 </div>
             </div>
             <Dialog open={open} onClose={closeDialog}>
-                <DialogTitle>Edit Design Price</DialogTitle>
+                <DialogTitle className="text-center fs-3">Edit Design Price</DialogTitle>
                 <DialogContent>
                     <div className="container-fluid">
                         <div className="row mb-3">
@@ -162,12 +162,16 @@ const ManageDesignPrice = () => {
                                             <input className="form-control" type="number" value={shell.ediamondPrice}
                                                 onChange={(e) => {
                                                     const newPrice = parseFloat(e.target.value);
-                                                    const updatedDesigns = [...activeDesign.productShellDesigns];
-                                                    updatedDesigns[index].ediamondPrice = newPrice;
-                                                    setActiveDesign({
-                                                        ...activeDesign,
-                                                        productShellDesigns: updatedDesigns
-                                                    });
+                                                    if (newPrice >= 0 && newPrice !== null) {
+                                                        const updatedDesigns = [...activeDesign.productShellDesigns];
+                                                        updatedDesigns[index].ediamondPrice = newPrice;
+                                                        setActiveDesign({
+                                                            ...activeDesign,
+                                                            productShellDesigns: updatedDesigns
+                                                        });
+                                                    } else {
+                                                        toast.error(`Price must be greater than 0 or empty.`);
+                                                    }
                                                 }}
                                             />
                                         </div>
@@ -175,12 +179,16 @@ const ManageDesignPrice = () => {
                                             <input className="form-control" type="number" value={shell.ematerialPrice}
                                                 onChange={(e) => {
                                                     const newPrice = parseFloat(e.target.value);
-                                                    const updatedDesigns = [...activeDesign.productShellDesigns];
-                                                    updatedDesigns[index].ematerialPrice = newPrice;
-                                                    setActiveDesign({
-                                                        ...activeDesign,
-                                                        productShellDesigns: updatedDesigns
-                                                    });
+                                                    if (newPrice >= 0 && newPrice !== null) {
+                                                        const updatedDesigns = [...activeDesign.productShellDesigns];
+                                                        updatedDesigns[index].ematerialPrice = newPrice;
+                                                        setActiveDesign({
+                                                            ...activeDesign,
+                                                            productShellDesigns: updatedDesigns
+                                                        });
+                                                    } else {
+                                                        toast.error(`Price must be greater than 0 or empty.`);
+                                                    }
                                                 }}
                                             />
                                         </div>
@@ -188,12 +196,16 @@ const ManageDesignPrice = () => {
                                             <input className="form-control" type="number" value={shell.productionPrice}
                                                 onChange={(e) => {
                                                     const newPrice = parseFloat(e.target.value);
-                                                    const updatedDesigns = [...activeDesign.productShellDesigns];
-                                                    updatedDesigns[index].productionPrice = newPrice;
-                                                    setActiveDesign({
-                                                        ...activeDesign,
-                                                        productShellDesigns: updatedDesigns
-                                                    });
+                                                    if (newPrice >= 0 && newPrice !== null) {
+                                                        const updatedDesigns = [...activeDesign.productShellDesigns];
+                                                        updatedDesigns[index].productionPrice = newPrice;
+                                                        setActiveDesign({
+                                                            ...activeDesign,
+                                                            productShellDesigns: updatedDesigns
+                                                        });
+                                                    } else {
+                                                        toast.error(`Price must be greater than 0 or empty.`);
+                                                    }
                                                 }}
                                             />
                                         </div>

@@ -63,7 +63,7 @@ const ManageMaterialPrice = () => {
     }
 
     const updatePrice = async () => {
-        if(newPrice >= 0 && newPrice != null) {
+        if(newPrice >= 0 && newPrice !== null) {
             try {
                 if (activePrice == null || activeDate == null || newPrice == null) {
                     toast.error(`Missing fields!`);
@@ -89,7 +89,7 @@ const ManageMaterialPrice = () => {
                 console.log(error);
             }
         } else {
-            toast.error(`New price must be greater than 0`);
+            toast.error(`New price must be greater than 0 or empty.`);
         }
     }
 
