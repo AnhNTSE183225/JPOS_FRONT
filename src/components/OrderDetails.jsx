@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight, faLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
+import img1 from '../assets/FullLogo.png';
+import img2 from '../assets/carpentry.webp';
 
 const AssignColumn = ({ order, fetchOrder }) => {
 
@@ -475,27 +477,64 @@ const OrderDetails = () => {
                             }
                             {
                                 warranty !== null
-                                    ? <div ref={printRef}>
-                                        <h4 className="text-center fw-bold mb-4 mt-4">WARRANTY INFORMATION</h4><hr />
-                                        <h5 className='fw-semibold m-0'>CUSTOMER INFORMATION</h5>
-
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Identification:</span> #{('000' + (warranty.customer.customerId)).slice(-4)}</p>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Name:</span> {warranty.customer.name}</p>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Address:</span> {warranty.customer.address}</p>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Email:</span> {warranty.customer.account.email}</p>
-
-                                        <h5 className='fw-semibold pt-3 m-0'>PRODUCT INFORMATION</h5>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Product ID:</span> #{('000' + (warranty.product.productId)).slice(-4)}</p>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Product Name:</span> <span className="text-end">{warranty.product.productName}</span></p>
-
-                                        <h5 className='fw-semibold pt-3 m-0'>EXTRA</h5>
-
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Purchase date:</span> <span className="">{formatDate(warranty.purchaseDate)}</span> </p>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">End of support date:</span> <span>{formatDate(warranty.purchaseDate)}</span> </p>
-                                        <p className='fs-6 ms-4 m-0 d-flex justify-content-between'><span className="fw-bold">Terms</span> <span>{warranty.terms}</span> </p>
-
-
+                                    ? <div ref={printRef} className="container mt-4">
+                                    <div className="row justify-content-center mb-4">
+                                      <div className="text-center">
+                                        <img src={img1} className="img-fluid w-25" alt="Logo" />
+                                      </div>
                                     </div>
+                                    <h4 className="text-center fw-bold mb-3 fs-3">WARRANTY INFORMATION</h4>
+                                    <hr />
+                                    <h5 className='fw-semibold mb-4 fs-4'>CUSTOMER INFORMATION</h5>
+                                    
+                                    <div className='fs-5 ms-4'>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Identification:</span>
+                                        <span>#{('000' + (warranty.customer.customerId)).slice(-4)}</span>
+                                      </p>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Name:</span>
+                                        <span>{warranty.customer.name}</span>
+                                      </p>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Address:</span>
+                                        <span>{warranty.customer.address}</span>
+                                      </p>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Email:</span>
+                                        <span>{warranty.customer.account.email}</span>
+                                      </p>
+                                    </div>
+                                    
+                                    <h5 className='fw-semibold mt-5 mb-4 fs-4'>PRODUCT INFORMATION</h5>
+                                    <div className='fs-5 ms-4'>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Product ID:</span>
+                                        <span>#{('000' + (warranty.product.productId)).slice(-4)}</span>
+                                      </p>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Product Name:</span>
+                                        <span>{warranty.product.productName}</span>
+                                      </p>
+                                    </div>
+                                    
+                                    <h5 className='fw-semibold mt-5 mb-4 fs-4'>EXTRA</h5>
+                                    <div className='fs-5 ms-4'>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">Purchase date:</span>
+                                        <span>{formatDate(warranty.purchaseDate)}</span>
+                                      </p>
+                                      <p className='d-flex justify-content-between mb-2'>
+                                        <span className="fw-bold">End of support date:</span>
+                                        <span>{formatDate(warranty.endOfSupportDate)}</span>
+                                      </p>
+                                      
+                                    </div>
+                                    <div className="text-center">
+                                        <img src={img2} className="img-fluid w-25" alt="Logo" />
+                                      </div>
+                                  </div>
+                    
                                     : <></>
                             }
                             {
