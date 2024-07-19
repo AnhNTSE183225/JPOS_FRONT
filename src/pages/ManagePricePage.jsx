@@ -47,60 +47,72 @@ const ManagePricePage = () => {
     const [refresh, setRefresh] = useState(false);
 
     const updatePrice = async () => {
-        try {
-            const headers = {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            }
-            const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/diamond-price/update`, selectedPrice, { headers });
-            if (!response.data || response.status === 204) {
-                console.log(`Can't update`);
-                toast.error(`Something wen't wrong, you cannot update`);
-            } else {
-                setRefresh(r => !r);
-                toast.success('Update successfully');
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const createNewPrice = async () => {
-        try {
-            if (
-                shape == 'ALL' ||
-                origin == 'ALL' ||
-                caratRange == 'ALL' ||
-                cut == 'ALL' ||
-                color == 'ALL' ||
-                clarity == 'ALL'
-            ) {
-                toast.info(`Put in all values of filter to proceed creating new price`);
-            } else {
-                const object = {
-                    origin: origin,
-                    caratWeightFrom: caratRange[0],
-                    caratWeightTo: caratRange[1],
-                    shape: shape,
-                    color: color,
-                    clarity: clarity,
-                    cut: cut,
-                    price: newPrice
-                }
+        if (selectedPrice && selectedPrice.price >= 0) {
+            try {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`, object, { headers });
+                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/diamond-price/update`, selectedPrice, { headers });
                 if (!response.data || response.status === 204) {
-                    toast.error(`Error creating`);
+                    console.log(`Can't update`);
+                    toast.error(`Something went wrong, you cannot update`);
                 } else {
-                    toast.success(`Creation completed`);
                     setRefresh(r => !r);
+                    toast.success('Update successfully');
                 }
+            } catch (error) {
+                console.log(error);
+                toast.error(`Error updating price`);
             }
-        } catch (error) {
-            console.log(error);
+        } else {
+            toast.error(`Price cannot be empty or negative.`);
         }
     }
+    
+
+    const createNewPrice = async () => {
+        if (newPrice >= 0) {
+            try {
+                if (
+                    shape === 'ALL' ||
+                    origin === 'ALL' ||
+                    caratRange === 'ALL' ||
+                    cut === 'ALL' ||
+                    color === 'ALL' ||
+                    clarity === 'ALL'
+                ) {
+                    toast.info(`Put in all values of filter to proceed creating new price`);
+                } else {
+                    const object = {
+                        origin: origin,
+                        caratWeightFrom: caratRange[0],
+                        caratWeightTo: caratRange[1],
+                        shape: shape,
+                        color: color,
+                        clarity: clarity,
+                        cut: cut,
+                        price: newPrice
+                    }
+                    const headers = {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/add`, object, { headers });
+                    if (!response.data || response.status === 204) {
+                        toast.error(`Error creating`);
+                    } else {
+                        toast.success(`Creation completed`);
+                        setRefresh(r => !r);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error(`Error creating new price`);
+            }
+        } else {
+            toast.error(`Price cannot be empty or negative.`);
+        }
+    }
+    
 
     const fetchData = async () => {
         setProcessing(true);
@@ -158,7 +170,7 @@ const ManagePricePage = () => {
 
     return (
         <div className="container-fluid" id={`${styles['manage-price']}`}>
-            <h1 className="p-0">Manage price</h1>
+            <h1 className="p-0 mt-5 mb-5 text-center">Manage price</h1>
             <div className="row mb-3">
                 <div className="col-lg-6 mb-3">
                     <div className="input-group mb-3">

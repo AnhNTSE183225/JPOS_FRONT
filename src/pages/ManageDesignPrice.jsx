@@ -87,7 +87,7 @@ const ManageDesignPrice = () => {
     return (
         <div className="container-fluid">
             <div className="row mb-3">
-                <div className="col">
+                <div className="p-0 mt-5 mb-5 text-center">
                     <h1>MANAGE DESIGN PRICES</h1>
                 </div>
             </div>

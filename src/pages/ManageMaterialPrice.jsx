@@ -63,29 +63,33 @@ const ManageMaterialPrice = () => {
     }
 
     const updatePrice = async () => {
-        try {
-            if (activePrice == null || activeDate == null || newPrice == null) {
-                toast.error(`Missing fields!`);
-            } else {
-                const object = {
-                    materialId: activePrice,
-                    materialPrice: newPrice
-                }
-                const headers = {
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/materialPrices/add`, object, {headers});
-                if (!response.data || response.status === 204) {
-                    toast.error(`Cannot update`);
+        if(newPrice >= 0 && newPrice != null) {
+            try {
+                if (activePrice == null || activeDate == null || newPrice == null) {
+                    toast.error(`Missing fields!`);
                 } else {
-                    setActiveDate(null);
-                    setActivePrice(null);
-                    setNewPrice(null);
-                    setRefresh(r => !r);
+                    const object = {
+                        materialId: activePrice,
+                        materialPrice: newPrice
+                    }
+                    const headers = {
+                        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/materialPrices/add`, object, {headers});
+                    if (!response.data || response.status === 204) {
+                        toast.error(`Cannot update`);
+                    } else {
+                        setActiveDate(null);
+                        setActivePrice(null);
+                        setNewPrice(null);
+                        setRefresh(r => !r);
+                    }
                 }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
+        } else {
+            toast.error(`New price must be greater than 0`);
         }
     }
 
@@ -99,7 +103,7 @@ const ManageMaterialPrice = () => {
 
     return (
         <div className="container-fluid" id={`${styles['manage-material-price']}`}>
-            <h1 className="p-0">Manage material prices</h1>
+            <h1 className="p-0 mt-5 mb-5 text-center">Manage material prices</h1>
             <div className="row mb-3">
                 <div className="col">
                     <table className="text-center">
