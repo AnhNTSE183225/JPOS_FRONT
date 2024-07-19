@@ -8,6 +8,7 @@ import axios from "axios";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Switch } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useDocumentTitle from "../../components/Title";
+import { validateString } from "../../helper_function/Validation";
 
 const DEPARTMENT = {
     'sale': 'Sales',
@@ -37,53 +38,89 @@ const ManageStaffPage = () => {
     const UpdateDialog = () => {
 
         const [name, setName] = useState(activeStaff !== null ? activeStaff.name : '');
+        const [email, setEmail] = useState(activeStaff != null ? activeStaff.account.email : '');
+        const [password, setPassword] = useState('');
         const [phone, setPhone] = useState(activeStaff !== null ? activeStaff.phone : '');
         const [staffType, setStaffType] = useState(activeStaff !== null ? activeStaff.staffType : '');
 
+        const validateEmail = validateString(email, 8, 254, '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
+        const validatePassword = validateString(password, 8, 16);
+        const validateName = validateString(name, 8, 20);
+        const validatePhone = validateString(phone, 9, 11, null, '^\\d+$');
+
         const updateStaff = async () => {
-            try {
-                console.log(`${import.meta.env.VITE_jpos_back}/api/staff/update`);
-                const headers = {
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                }
-                const response = await axios.put(`${import.meta.env.VITE_jpos_back}/api/staff/update`, {
-                    ...activeStaff,
-                    name: name,
-                    phone: phone,
-                    staffType: staffType
-                }, {
-                    headers
-                })
-                if (!response.data || response.status === 204) {
-                    console.log(`Can't update`);
-                } else {
-                    if (response.data > 0) {
-                        toast.success(`Update successful`);
+            if (
+                validateEmail.result &&
+                (validatePassword.result || password.length == 0) &&
+                validateName.result &&
+                validatePhone.result
+            ) {
+                try {
+                    const object = {
+                        ...activeStaff,
+                        name: name,
+                        phone: phone,
+                        staffType: staffType,
+                        account: {
+                            ...activeStaff.account,
+                            email: email,
+                            password: password.length == 0 ? activeStaff.account.password : password
+                        }
                     }
-                    fetchData();
-                    setOpenDialog(false);
+                    const response = await axios({
+                        url: `${import.meta.env.VITE_jpos_back}/api/staff/update`,
+                        method: 'put',
+                        data: object,
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                        }
+                    })
+                    if (response.status === 200) {
+                        if (response.data > 0) {
+                            toast.success(`Update successful`);
+                        }
+                        fetchData();
+                        setOpenDialog(false);
+                        toast.success("Updated successfully");
+                    }
+                } catch (error) {
+                    if (error.response.status === 406) {
+                        toast.error(`The email ${email} is already linked to another account!`);
+                    }
                 }
-            } catch (error) {
-                console.log(error);
+            } else {
+                toast.info(`Please fulfill all requirements`);
             }
         }
 
         return (
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)} fullWidth={true}>
                 <DialogTitle>
                     Update Staff
                 </DialogTitle>
                 <DialogContent>
-                    <div className="input-group mt-1 mb-3">
-                        <span className={`input-group-text ${styles['input-label']}`}>Name</span>
-                        <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    <div className="mb-3">
+                        <label className="form-label">Name</label>
+                        <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
+                        <div className="form-text text-danger">{validateName.reason}</div>
                     </div>
-                    <div className="input-group mt-1 mb-3">
-                        <span className={`input-group-text ${styles['input-label']}`}>Phone</span>
-                        <input className="form-control" type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <div className="mb-3">
+                        <label className="form-label">Email address</label>
+                        <input type="text" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <div className="form-text text-danger">{validateEmail.reason}</div>
                     </div>
-                    <div className="input-group mt-1 mb-3">
-                        <span className={`input-group-text ${styles['input-label']}`}>Dept.</span>
+                    <div className="mb-3">
+                        <label className="form-label">New password</label>
+                        <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <div className="form-text text-danger">{validatePassword.reason}</div>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Phone</label>
+                        <input type="text" className="form-control" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                        <div className="form-text text-danger">{validatePhone.reason}</div>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Department</label>
                         <select className="form-select" type="text" value={staffType} onChange={(e) => setStaffType(e.target.value)} >
                             {
                                 ['sale', 'design', 'produce', 'manage'].map((value, index) => (
@@ -118,7 +155,7 @@ const ManageStaffPage = () => {
                     headers
                 }
             )
-            if(response.status === 200) {
+            if (response.status === 200) {
                 toast.success(`Changed staff's status`);
             } else {
                 toast.error(`Can't change status`);
@@ -189,10 +226,10 @@ const ManageStaffPage = () => {
     const deleteStaff = async (id) => {
         try {
             const headers = {
-                'Authorization' : `Bearer ${sessionStorage.getItem('token')}`
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.delete(`${import.meta.env.VITE_jpos_back}/api/staff/delete/${id}`, {headers});
-            if(response.status === 200) {
+            const response = await axios.delete(`${import.meta.env.VITE_jpos_back}/api/staff/delete/${id}`, { headers });
+            if (response.status === 200) {
                 toast.success(`Delete successfully`);
             } else {
                 toast.error(`Unable to delete staff`);
@@ -220,12 +257,12 @@ const ManageStaffPage = () => {
 
     useEffect(() => {
         fetchData();
-    },[refresh])
+    }, [refresh])
 
     return (
         <div className="container-fluid" id={`${styles['manage-staff']}`}>
             <div className="row mb-3">
-            <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>COMPANY EMPLOYEES</h1>
+                <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>COMPANY EMPLOYEES</h1>
                 <div className="col-3 p-0">
                     <input placeholder={`Search Employee`} onChange={(e) => setSearch(e.target.value)} type="text" className="form-control" />
                 </div>

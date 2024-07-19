@@ -39,6 +39,7 @@ const ManagePricePage = () => {
     const [newPrice, setNewPrice] = useState(0.01);
     const [pageNo, setPageNo] = useState(0);
     const [pageSize, setPageSize] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
     const [diamondPriceList, setDiamondPriceList] = useState(null);
 
     const [selectedPrice, setSelectedPrice] = useState(undefined);
@@ -133,6 +134,7 @@ const ManagePricePage = () => {
                 console.log(response);
                 setDiamondPriceList(response.data.content);
                 setPageSize(response.data.pageable.pageSize);
+                setTotalPages(response.data.totalPages);
                 setSelectedPrice(undefined);
             } else {
                 console.log(`Error`);
@@ -269,7 +271,7 @@ const ManagePricePage = () => {
             <div className="row mb-3">
                 <Pagination
                     className="d-flex justify-content-center align-items-center mb-5"
-                    count={pageSize}
+                    count={totalPages}
                     page={pageNo}
                     onChange={(e, v) => setPageNo(v)}
                 />
