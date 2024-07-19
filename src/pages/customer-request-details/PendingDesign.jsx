@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { formatPrice } from '../../helper_function/ConvertFunction';
 import empty_image from '/src/assets/empty_image.jpg';
-import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft, faCaretRight, faLeftLong } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '/src/css/PendingDesign.module.css';
 import { validateString } from '../../helper_function/Validation';
@@ -68,7 +68,8 @@ const PendingDesign = ({ order }) => {
                     : <></>
             }
             <div className="container-fluid p-3">
-                <div className="row">
+            <FontAwesomeIcon className={`${styles['back-icon']} position-absolute`} icon={faLeftLong} onClick={() => navigate(-1)} />
+                <div className="row mt-5">
                     <h1>A design staff has sent you a design</h1>
                 </div>
                 <div className="row mb-3">
