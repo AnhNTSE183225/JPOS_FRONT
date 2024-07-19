@@ -49,11 +49,11 @@
 
 .status-circle:hover {
     transform: scale(1.1);
-    /* Scale up on hover */
+    background-color: #999797;
 }
 
-.status-circle .active {
-    color: green;
+.status-circle.active {
+    background-color: #999797
 }
 
 .status-circle span {

@@ -298,13 +298,13 @@ const ManagePricePage = () => {
                     <table className="text-center">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Origin</th>
-                                <th>Range</th>
+                                <th className="col-md-1">ID</th>
+                                <th className="col-md-1">Origin</th>
+                                <th className="col-md-1">Range</th>
                                 <th>Shape</th>
                                 <th>Traits</th>
-                                <th>Price</th>
-                                <th>Eff.Date</th>
+                                <th className="col-md-2">Price</th>
+                                <th className="col-md-2">Eff.Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -312,12 +312,12 @@ const ManagePricePage = () => {
                                 diamondPriceList !== null
                                     ? diamondPriceList.map((value, index) => (
                                         <tr key={index}>
-                                            <td>{value.diamondPriceId}</td>
-                                            <td>{value.origin}</td>
-                                            <td>{value.caratWeightFrom.toFixed(2)} - {value.caratWeightTo.toFixed(2)}</td>
+                                            <td className="col-md-1">{value.diamondPriceId}</td>
+                                            <td className="col-md-1">{value.origin}</td>
+                                            <td className="col-md-1">{value.caratWeightFrom.toFixed(2)} - {value.caratWeightTo.toFixed(2)}</td>
                                             <td>{value.shape}</td>
                                             <td>{value.color}-{value.clarity} {value.cut.replace("_", " ")}</td>
-                                            <td>
+                                            <td className="col-md-2">
                                                 <div className="input-group">
                                                     {
                                                         selectedPrice !== undefined
@@ -336,7 +336,7 @@ const ManagePricePage = () => {
                                                     }
                                                 </div>
                                             </td>
-                                            <td>{formatDate(value.effectiveDate)}</td>
+                                            <td className="col-md-2">{formatDate(value.effectiveDate)}</td>
                                         </tr>
                                     ))
                                     : <></>

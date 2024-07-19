@@ -101,21 +101,21 @@ const ManageDesignPrice = () => {
                     <div className="container-fluid" style={{ minWidth: '1120px' }}>
                         <div className="row mb-3 fw-bold">
                             <div className="col-1 d-flex justify-content-center align-items-center">ID</div>
-                            <div className="col d-flex justify-content-start align-items-center">Name</div>
-                            <div className="col d-flex justify-content-center align-items-center">Type</div>
+                            <div className="col-md-3 d-flex justify-content-start align-items-center">Name</div>
+                            <div className="col-md-1 d-flex justify-content-center align-items-center">Type</div>
                             <div className="col d-flex justify-content-center align-items-center">Image</div>
-                            <div className="col d-flex justify-content-center align-items-center">Options</div>
-                            <div className="col d-flex justify-content-center align-items-center">Actions</div>
+                            <div className="col-md-3 d-flex justify-content-center align-items-center">Options</div>
+                            <div className="col-md-2 d-flex justify-content-center align-items-center">Actions</div>
                         </div>
                         {
                             queryList !== null
                                 ? queryList.map((design, index) => (
                                     <div className="row mb-3" key={index}>
-                                        <div className="col-1 fw-bold d-flex justify-content-center align-items-center">{design.productDesignId}</div>
-                                        <div className="col d-flex justify-content-start align-items-center">{design.designName}</div>
-                                        <div className="col d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
+                                        <div className="col-md-1 fw-bold d-flex justify-content-center align-items-center">{design.productDesignId}</div>
+                                        <div className="col-md-3 d-flex justify-content-start align-items-center">{design.designName}</div>
+                                        <div className="col-md-1 d-flex justify-content-center align-items-center text-capitalize">{design.designType}</div>
                                         <div className="col d-flex justify-content-center align-items-center"><img style={{ width: '6rem', height: '6rem' }} src={design.designFile} /></div>
-                                        <div className="col d-flex justify-content-center align-items-center">
+                                        <div className="col-md-3 d-flex justify-content-center align-items-center">
                                             <div className="container-fluid">
                                                 {
                                                     design.productShellDesigns.map((shell, index2) => (
@@ -132,7 +132,7 @@ const ManageDesignPrice = () => {
                                                 }
                                             </div>
                                         </div>
-                                        <div className="col d-flex justify-content-center align-items-center"><Button onClick={() => openDialog(design)}>Edit</Button></div>
+                                        <div className="col-md-2 d-flex justify-content-center align-items-center"><Button onClick={() => openDialog(design)}>Edit</Button></div>
                                     </div>
                                 ))
                                 : <></>
