@@ -477,17 +477,17 @@ const OrderDetails = () => {
                             }
                             {
                                 warranty !== null
-                                    ? <div ref={printRef} className="container mt-4">
+                                    ? <div ref={printRef} className="container mt-5">
                                     <div className="row justify-content-center mb-4">
                                       <div className="text-center">
                                         <img src={img1} className="img-fluid w-25" alt="Logo" />
                                       </div>
                                     </div>
-                                    <h4 className="text-center fw-bold mb-3 fs-3">WARRANTY INFORMATION</h4>
+                                    <h4 className="text-center fw-bold mb-3 fs-4">WARRANTY INFORMATION</h4>
                                     <hr />
-                                    <h5 className='fw-semibold mb-4 fs-4'>CUSTOMER INFORMATION</h5>
+                                    <h5 className='fw-semibold mb-4 fs-5'>CUSTOMER INFORMATION</h5>
                                     
-                                    <div className='fs-5 ms-4'>
+                                    <div className='fs-6'>
                                       <p className='d-flex justify-content-between mb-2'>
                                         <span className="fw-bold">Identification:</span>
                                         <span>#{('000' + (warranty.customer.customerId)).slice(-4)}</span>
@@ -504,22 +504,22 @@ const OrderDetails = () => {
                                         <span className="fw-bold">Email:</span>
                                         <span>{warranty.customer.account.email}</span>
                                       </p>
-                                    </div>
+                                    </div><hr />
                                     
-                                    <h5 className='fw-semibold mt-5 mb-4 fs-4'>PRODUCT INFORMATION</h5>
-                                    <div className='fs-5 ms-4'>
+                                    <h5 className='fw-semibold mt-5 mb-4 fs-5'>PRODUCT INFORMATION</h5>
+                                    <div className='fs-6'>
                                       <p className='d-flex justify-content-between mb-2'>
                                         <span className="fw-bold">Product ID:</span>
                                         <span>#{('000' + (warranty.product.productId)).slice(-4)}</span>
                                       </p>
                                       <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Product Name:</span>
-                                        <span>{warranty.product.productName}</span>
+                                        <span className="fw-bold col-md-6">Product Name:</span>
+                                        <span className="col-md-6 text-break">{warranty.product.productName}</span>
                                       </p>
-                                    </div>
+                                    </div><hr />
                                     
-                                    <h5 className='fw-semibold mt-5 mb-4 fs-4'>EXTRA</h5>
-                                    <div className='fs-5 ms-4'>
+                                    <h5 className='fw-semibold mt-5 mb-4 fs-5'>EXTRA</h5>
+                                    <div className='fs-6'>
                                       <p className='d-flex justify-content-between mb-2'>
                                         <span className="fw-bold">Purchase date:</span>
                                         <span>{formatDate(warranty.purchaseDate)}</span>
@@ -529,7 +529,7 @@ const OrderDetails = () => {
                                         <span>{formatDate(warranty.endOfSupportDate)}</span>
                                       </p>
                                       
-                                    </div>
+                                    </div><hr />
                                     <div className="text-center">
                                         <img src={img2} className="img-fluid w-25" alt="Logo" />
                                       </div>
@@ -539,7 +539,7 @@ const OrderDetails = () => {
                             }
                             {
                                 warranty !== null
-                                    ? <Button onClick={handlePrint} className="mt-3 d-flex w-100">EXPORT TO PDF</Button>
+                                    ? <Button onClick={handlePrint} className="mt-5 d-flex w-100">EXPORT TO PDF</Button>
                                     : <></>
                             }
                         </div>
