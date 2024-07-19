@@ -1,4 +1,10 @@
 export const validateString = (content, minLength = 1, maxLength = Infinity, regex = null, allowedChars = null) => {
+    if(content.trim().length == 0) {
+        return {
+            result: false,
+            reason: ``
+        }
+    }
     if (content.trim().length < minLength) {
         return {
             result: false,

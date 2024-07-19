@@ -4,7 +4,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { Switch } from '@mui/material';
+import { CircularProgress, Switch } from '@mui/material';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
@@ -43,13 +43,13 @@ const ManageCustomer = () => {
     }
 
     const UpdateDialog = () => {
-        const [username, setUsername] = useState('');
+        const [username, setUsername] = useState(activeCustomer !== null ? activeCustomer.account.username : '');
+        const [name, setName] = useState(activeCustomer !== null ? activeCustomer.name : '');
+        const [address, setAddress] = useState(activeCustomer !== null ? activeCustomer.address : '');
+        const [email, setEmail] = useState(activeCustomer !== null ? activeCustomer.account.email : '');
         const validateUsername = validateString(username, 8, 16, null, '^[a-zA-Z0-9]+$');
-        const [name, setName] = useState('');
         const validateName = validateString(name, 1, 20);
-        const [address, setAddress] = useState('');
         const validateAddress = validateString(address, 10, 100);
-        const [email, setEmail] = useState('');
         const validateEmail = validateString(email, 8, 254, '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
 
         const updateCustomer = async () => {
@@ -73,24 +73,33 @@ const ManageCustomer = () => {
                         },
                         address: address,
                         name: name,
-
                     }, {
                         headers
                     })
-                    if (!response.data || response.status === 204) {
-                        console.log(`Can't update`);
-                    } else {
+                    if (response.status === 200) {
                         if (response.data > 0) {
                             toast.success(`Update successful`);
                         }
                         fetchData();
                         setOpenDialog(false);
+                        toast.success('Updated successfully');
                     }
                 } catch (error) {
                     console.log(error);
                 }
             } else {
-                toast.info(`Please fulfill all requirements`);
+                if (!validateUsername.result) {
+                    toast.error('Username: ' + validateUsername.reason);
+                }
+                if (!validateName.result) {
+                    toast.error('Name: ' + validateName.reason);
+                }
+                if (!validateAddress.result) {
+                    toast.error('Address: ' + validateAddress.reason);
+                }
+                if (!validateEmail.result) {
+                    toast.error('Email: ' + validateEmail.reason);
+                }
             }
         }
 
@@ -191,49 +200,55 @@ const ManageCustomer = () => {
                 <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>MANAGE CUSTOMERS</h1>
                 <div className="col-lg-3" id={`${styles['manage-customer-search-bar']}`}>
                     <input onChange={(e) => setSearch(e.target.value)} className='form-control' placeholder='Search employees' type="text" />
-                    
                 </div>
             </div>
             <div className="row mb-3">
-                <table className='table'>
-                    <thead className='text-center'>
-                        <tr>
-                            <th className='col-md-1'>ID</th>
-                            <th className='col-md-2'>Name</th>
-                            <th>Address</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div className="col">
+                    <div className="container-fluid">
+                        <div className="row mb-3 fw-bold border-bottom border-black">
+                            <div className="col-1 d-flex justify-content-center align-items-center">ID</div>
+                            <div className="col-2 d-flex justify-content-start align-items-center">Name</div>
+                            <div className="col d-flex justify-content-start align-items-center">Address</div>
+                            <div className="col d-flex justify-content-start align-items-center">Username</div>
+                            <div className="col d-flex justify-content-start align-items-center">Email</div>
+                            <div className="col d-flex justify-content-center align-items-center">Status</div>
+                            <div className="col d-flex justify-content-center align-items-center">Actions</div>
+                        </div>
                         {
                             listQuery != null
                                 ? listQuery.map((customer, index) => (
-                                    <tr key={index}>
-                                        <td className="col-md-1 text-center align-content-lg-center">{customer.customerId}</td>
-                                        <td className="col-md-2 align-content-lg-center">{customer.name}</td>
-                                        <td>{customer.address}</td>
-                                        <td>{customer.account.username}</td>
-                                        <td>{customer.account.email}</td>
-                                        <td>
+                                    <div className="row mb-3 border-bottom" key={index}>
+                                        <div className="col-1 text-break d-flex justify-content-center align-items-center">{customer.customerId}</div>
+                                        <div className="col-2 text-break d-flex justify-content-start align-items-center">{customer.name}</div>
+                                        <div className="col text-break d-flex justify-content-start align-items-center">{customer.address}</div>
+                                        <div className="col text-break d-flex justify-content-start align-items-center">{customer.account.username}</div>
+                                        <div className="col text-break d-flex justify-content-start align-items-center">{customer.account.email}</div>
+                                        <div className="col text-break d-flex justify-content-center align-items-center">
                                             <Switch
                                                 checked={customer.account.status}
                                                 onChange={() => toggleAccount(customer)}
                                                 style={{ color: customer.account.status ? '#48AAAD' : 'red' }}
                                             />
-                                        </td>
-                                        <td className="text-center" id={`${styles['action-button']}`} onClick={(e) => {
+                                        </div>
+                                        <div className="col text-center d-flex justify-content-center align-items-center" id={`${styles['action-button']}`} onClick={(e) => {
                                             setAnchor(anchor ? null : e.currentTarget);
                                             setActiveCustomer(customer);
-                                        }} ><FontAwesomeIcon icon={faEllipsisVertical} /></td>
-                                    </tr>
+                                        }}>
+                                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                                        </div>
+                                    </div>
                                 ))
-                                : <></>
+                                : <>
+                                    <div className="row">
+                                        <div className="col d-flex justify-content-center align-items-center">
+                                            <CircularProgress />
+                                        </div>
+                                    </div>
+                                </>
                         }
-                    </tbody>
-                </table>
+                    </div>
+
+                </div>
                 <BasePopup open={open} anchor={anchor}>
                     <div className={`${styles['popup-div']}`}>
                         <button onClick={() => {

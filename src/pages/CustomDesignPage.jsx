@@ -74,8 +74,8 @@ const CustomDesignPage = () => {
             navigate("/login");
         } else {
             if (description.trim().length > 0 &&
-                budget >= 500 &&
-                imageUrls.length > 0
+                budget >= 500
+                /*&& imageUrls.length > 0*/
             ) {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
@@ -83,7 +83,7 @@ const CustomDesignPage = () => {
                 axios.post(`${import.meta.env.VITE_jpos_back}/api/send-request`,
                     {
                         customerId: customer.customerId,
-                        designFile: imageUrls.join("|"),
+                        /*designFile: imageUrls.join("|"),*/
                         description: description,
                         budget: budget
                     },

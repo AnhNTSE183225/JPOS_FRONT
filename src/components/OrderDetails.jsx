@@ -196,9 +196,10 @@ const OrderDetails = () => {
     const navigate = useNavigate();
     const orderId = useParams().orderId;
     const [order, setOrder] = useState(null);
+    const [payment, setPayment] = useState(null);
     const [warranty, setWarranty] = useState(null);
 
-    
+
     const printRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => printRef.current,
@@ -217,16 +218,11 @@ const OrderDetails = () => {
             })
             if (response.status === 200) {
                 setWarranty(response.data);
-            } else {
-                console.log(`Error`);
-                console.log(response);
             }
         } catch (error) {
             console.log(error);
         }
     }
-
-    console.log(order);
 
     const fetchOrder = async () => {
         try {
@@ -243,6 +239,44 @@ const OrderDetails = () => {
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const fetchPayment = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/api/payment/info/${orderId}`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if (response.status === 200) {
+                setPayment(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const cancelOrder = async () => {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${import.meta.env.VITE_jpos_back}/api/cancel-order/${orderId}`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if(response.status === 200) {
+                toast.success('Order cancelled successfully');
+                navigate(-1);
+            } else {
+                toast.error('Failed to cancel order');
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Failed to cancel order');
         }
     }
 
@@ -281,6 +315,7 @@ const OrderDetails = () => {
 
     useEffect(() => {
         fetchOrder();
+        fetchPayment();
     }, [orderId]);
 
     useEffect(() => {
@@ -290,8 +325,6 @@ const OrderDetails = () => {
             }
         }
     }, [order])
-
-    console.log(warranty);
 
     if (order == null) {
         return (
@@ -434,6 +467,12 @@ const OrderDetails = () => {
 
                             <hr /><h5 className={styles.listItem}><span>Tax fee (10% VAT):</span> <span>{order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</span></h5>
                             <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
+                            {
+                                payment == null
+                                    ? <Button onClick={cancelOrder} className="border border-danger text-danger mt-3 d-flex w-100">CANCEL ORDER</Button>
+                                    : <>
+                                    </>
+                            }
                             {
                                 warranty !== null
                                     ? <div ref={printRef}>
