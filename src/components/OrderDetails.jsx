@@ -508,13 +508,13 @@ const OrderDetails = () => {
                                     
                                     <h5 className='fw-semibold mt-5 mb-4 fs-5'>PRODUCT INFORMATION</h5>
                                     <div className='fs-6'>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Product ID:</span>
-                                        <span>#{('000' + (warranty.product.productId)).slice(-4)}</span>
+                                      <p className="row">
+                                        <span className="col fw-bold">Product ID:</span>
+                                        <span className="col text-end">#{('000' + (warranty.product.productId)).slice(-4)}</span>
                                       </p>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold col-md-6">Product Name:</span>
-                                        <span className="col-md-6 text-break">{warranty.product.productName}</span>
+                                      <p className="row">
+                                        <span className="col fw-bold">Product Name:</span>
+                                        <span className="col text-end">{warranty.product.productName}</span>
                                       </p>
                                     </div><hr />
                                     
