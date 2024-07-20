@@ -327,7 +327,6 @@ const OrderDetails = () => {
             }
         }
     }, [order])
-
     if (order == null) {
         return (
             <>
@@ -432,15 +431,20 @@ const OrderDetails = () => {
                                     <div key={diamond.diamondId}>
                                         <h5 className='fw-semibold mb-4'>Diamond #{diamond.diamondId}</h5>
                                         <div className='fs-6'>
+                                            <p className={styles.listItem}><span>Diamond Code:</span><span>{diamond.diamondCode}</span></p>
+                                            <p className={styles.listItem}><span>Diamond Name:</span><span>{diamond.diamondName}</span></p>
                                             <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
                                             <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
                                             <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
                                             <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
+                                            <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
+                                            <p className={styles.listItem}><span>Proportions:</span> <span>{diamond.proportions}</span></p>
                                         </div>
                                     </div>
                                 )
                                 : <></>
                             }
+                            
                             <h5 className={styles.listItem}><span>Quotation price:</span> <span style={{ color: 'red' }}>{order.qdiamondPrice === null ? 'None' : formatPrice(order.qdiamondPrice)}</span></h5>
                             <h5 className={styles.listItem}><span>Order price:</span> <span style={{ color: '#48AAAD' }}>{order.odiamondPrice === null ? 'None' : formatPrice(order.odiamondPrice)}</span></h5>
                             <hr />

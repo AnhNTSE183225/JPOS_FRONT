@@ -44,6 +44,7 @@ import EditDiamond from './pages/admin/EditDiamond';
 import WaitManager from './pages/request-details-components/WaitManager';
 import UnauthorizedAccess from './pages/UnauthorizedAccess';
 import GoogleHandler from './GoogleHandler';
+import CreateDiamond from './pages/admin/CreateDiamond';
 
 
 const router = createBrowserRouter([
@@ -213,6 +214,10 @@ const router = createBrowserRouter([
       },
       {
         path: 'manage-diamonds/create',
+        element: <CreateDiamond/>
+      },
+      {
+        path: 'manage-diamonds/edit/:diamondId',
         element: <EditDiamond />
       },
       {

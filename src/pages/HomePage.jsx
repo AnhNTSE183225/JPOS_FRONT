@@ -20,7 +20,7 @@ const HomePage = () => {
                     <div className={`${styles[`overlay-content-video`]} col-xl-4`}>
                         <p className='fs-4 text-center'>ENTER THE BIJOUX UNIVERSE</p>
                         <p className='fs-6 text-center'>Introducing Our Glamorous Collections</p>
-                        <a className='text-center' href="/build-your-own/choose-setting"><button>EXPLORE FINE JEWELERY</button></a>
+                        <Link to="/build-your-own/choose-setting"><button>EXPLORE FINE JEWELERY</button></Link>
                     </div>
                 </section>
                 <section className={`${styles['row']}`}>

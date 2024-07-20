@@ -1,20 +1,14 @@
-.status-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    /* Increased gap between status items */
-    margin-bottom: 20px;
-    /* Increase bottom margin for spacing */
-}
-
 .status-line {
     display: flex;
     justify-content: center;
     width: 100%;
-    gap: 1rem;
     flex-wrap: wrap;
     /* Increased gap between status items */
+}
+
+.font-small{
+    font-size: 0.7rem;
+
 }
 
 .status-item {
@@ -22,7 +16,6 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin: 0 10px;
     width: 4rem;
     /* Adjust margin for spacing */
 }
@@ -30,7 +23,7 @@
 
 .status-circle {
     cursor: pointer;
-    background-color: rgb(239, 239, 239);
+    background-color: transparent;
     border-radius: 50%;
     width: 40px;
     /* Adjusted size for the circle */
@@ -39,32 +32,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+    border: black 1px solid;
     position: relative;
-    /* Relative positioning for z-index */
     z-index: 1;
-    /* Ensure circles are above lines */
 }
 
 .status-circle:hover {
     transform: scale(1.1);
-    background-color: #999797;
+    color: white;
+    background-color: black;
 }
 
 .status-circle.active {
-    background-color: #999797
+    color: white;
+    background-color: black;
 }
 
 .status-circle span {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     font-weight: bold;
 }
 
 .status-label {
     margin-top: 5px;
     /* Adjusted spacing between circle and label */
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #555;
     /* Text color */
     max-width: 100px;
@@ -81,13 +74,6 @@
     color: white;
 }
 
-#manage-request th:first-child {
-    border-radius: 10px 0 0 0;
-}
-
-#manage-request th:last-child {
-    border-radius: 0 10px 0 0;
-}
 
 #manage-request table {
     font-size: 1.1rem;
@@ -104,9 +90,6 @@ td {
     background-color: aliceblue;
 }
 
-#manage-request thead {
-    background-color: #48AAAD;
-}
 
 #manage-request button {
     font-weight: semibold;
@@ -123,10 +106,29 @@ td {
     transform: scale(0.95);
 }
 
-.circle-style {
+.view-circle {
+    cursor: pointer;
+    background-color: transparent;
+    
+    width: 40px;
+    /* Adjusted size for the circle */
+    height: 40px;
+    /* Adjusted size for the circle */
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-    margin-bottom: '20px';
+    transition: 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.view-circle:hover {
+    transform: scale(1.1);
+    color: white;
+    background-color: black;
+}
+
+.view-circle.active {
+    color: white;
+    background-color: black;
 }

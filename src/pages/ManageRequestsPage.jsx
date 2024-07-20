@@ -8,6 +8,8 @@ import WaitManager from '../pages/request-details-components/WaitManager';
 import useDocumentTitle from "../components/Title";
 import { Link } from "react-router-dom";
 import { LinearProgress } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faList } from "@fortawesome/free-solid-svg-icons";
 
 const ManageRequestsPage = () => {
     const [orders, setOrders] = useState([]);
@@ -35,7 +37,7 @@ const ManageRequestsPage = () => {
         if (queryOrders.length > 0 && !loading) {
             return (
                 queryOrders.map(order => (
-                    <tr key={order.id}>
+                    <tr className="fs-6" key={order.id}>
                         <td>{order.id}</td>
                         <td>{order.customer.name}</td>
                         <td>{formatDate(order.orderDate)}</td>
@@ -46,14 +48,14 @@ const ManageRequestsPage = () => {
                                 order.status == 'wait_manager'
                                     ? <>
                                         <Link to={`/staff/manage-requests/quote/${order.id}`} >
-                                            <button className="fs-6">
+                                            <button className={`${styles[`font-small`]}`}>
                                                 VIEW DETAILS
                                             </button>
                                         </Link>
                                     </>
                                     : <>
                                         <Link to={`/staff/manage-requests/request/${order.id}`} >
-                                            <button className="fs-6">
+                                            <button className={`${styles[`font-small`]}`}>
                                                 VIEW DETAILS
                                             </button>
                                         </Link>
@@ -152,6 +154,7 @@ const ManageRequestsPage = () => {
 
     return (
         <div id={styles['manage-request']} className="container-fluid">
+
             <div className="row my-3">
                 <div className="col">
                     <div className={`${styles['circle-style']}`}>
@@ -159,32 +162,38 @@ const ManageRequestsPage = () => {
                             <div className={`${styles['status-item']}`}>
                                 <div
                                     onClick={() => setActiveStatus(null)}
-                                    className={`${styles['status-circle']}`}
+                                    className={`${styles['view-circle']}`}
                                 >
-                                    <span className="fw-bold">0</span>
+                                    <span><FontAwesomeIcon icon={faList} /></span>
                                 </div>
                                 <p className={styles['status-label']}>View all</p>
                             </div>
                             {orderStatus.map((status, index) => (
-                                <div key={index} className={`${styles['status-item']} `}>
-                                    <div
-                                        onClick={() => setActiveStatus(status)}
-                                        className={`${styles['status-circle']} ${activeStatus === status ? styles['active'] : ''}`}
-                                    >
-                                        <span className="fw-bold">{index + 1}</span>
+                                <React.Fragment key={index}>
+                                    <div className={`${styles['status-item']} `}>
+                                        <div
+                                            onClick={() => setActiveStatus(status)}
+                                            className={`${styles['status-circle']} ${activeStatus === status ? styles['active'] : ''}`}
+                                        >
+                                            <span className="fw-bold">{index + 1}</span>
+                                        </div>
+                                        <p className={styles['status-label']}>{status}</p>
                                     </div>
-                                    <p className={styles['status-label']}>{status}</p>
-                                </div>
+                                    {index < orderStatus.length - 1 && (
+                                        <span className={styles['separator']}>{'>'}</span>
+                                    )}
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
                 </div>
             </div>
+
             <div className="row my-3">
                 <div className="col">
                     <table>
                         <thead>
-                            <tr className={styles['table-head']}>
+                            <tr className={`${styles['table-head']} fs-6`}>
                                 <th>Order ID</th>
                                 <th>Customer Name</th>
                                 <th>Date</th>

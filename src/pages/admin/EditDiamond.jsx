@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
+
 const EditDiamond = () => {
+    const diamondId = useParams().diamondId;
     const [diamond, setDiamond] = useState(null);
     const navigate = useNavigate();
 

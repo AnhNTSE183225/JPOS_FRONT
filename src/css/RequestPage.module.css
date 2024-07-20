@@ -3,17 +3,10 @@
     background-color: #48AAAD;
     color: white;
 }
-#table-head th:first-child {
-    border-radius: 10px 0 0 0;
-}
-
-#table-head th:last-child {
-    border-radius: 0 10px 0 0;
-}
 .request-table {
     font-size: 1.3rem;
     text-align: center;
-    box-shadow: 0px 1.908px 19.078px 0px rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.10);
     width: 100%;
 }
 
@@ -22,17 +15,14 @@
     padding: 1rem;
 }
 
-.request-table thead {
-    background-color: green;
-}
-
 .request-table button {
     font-weight: bold;
     color: white;
     background-color: #48AAAD;
-    border-radius: 20px;
+    transition: 0.3s;
 }
 .request-table button:hover {
+    transform: scale(0.97);
     background-color: #63d0d4;
     color: white;
 }

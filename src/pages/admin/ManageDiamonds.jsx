@@ -1,4 +1,4 @@
-import { Pagination, setRef, Switch } from "@mui/material";
+import { Button, Pagination, setRef, Switch } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -83,6 +83,11 @@ const ManageDiamonds = () => {
                     <Pagination count={totalPage} page={pageNo + 1} onChange={(event, value) => {
                         setPageNo(value - 1)
                     }} />
+                </div>
+                <div className="col-md">
+                    <Button onClick={() => {
+                        navigate('create')
+                    }}>Create new diamond</Button>
                 </div>
             </div>
             <div className="row mb-3">

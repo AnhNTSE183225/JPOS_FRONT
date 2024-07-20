@@ -15,18 +15,18 @@ const TableComponent = ({ requests }) => {
         <table className={`${styles['request-table']}`}>
             <thead>
                 <tr id={`${styles['table-head']}`}>
-                    <th>Order ID</th>
+                    <th className='col-md-1'>Order ID</th>
                     <th className='col-2'>Customer Name</th>
                     <th>Date</th>
                     <th>Budget/Price</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th className='col-md-1'>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {requests.map(request => (
                     <tr key={request.id}>
-                        <td>{request.id}</td>
+                        <td className='col-md-1'>{request.id}</td>
                         <td>{request.customer.name}</td>
                         <td>{formatDate(request.orderDate)}</td>
                         <td>{request.totalAmount !== null ? `Price: ${formatPrice(request.totalAmount)}` : `Budget: ${formatPrice(request.budget)}`}</td>
@@ -83,7 +83,7 @@ const RequestPage = () => {
 
     return (
         <div>
-            <h1 className='fw-bold'>Custom Requests</h1>
+            
             <TableComponent requests={requests} />
         </div>
     )
