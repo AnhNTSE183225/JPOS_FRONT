@@ -172,7 +172,7 @@ const DashboardComponent = () => {
                 datasets: [
                     {
                         label: 'Custom vs Build',
-                        data: orderType, // hardcoded data
+                        data: orderType,
                         backgroundColor: ['#ff6384', '#36a2eb'],
                     }
                 ]
@@ -227,7 +227,7 @@ const DashboardComponent = () => {
                 const from_design = (response.data.filter(o => o.orderType == 'from_design')).length;
                 const total = (response.data.length);
 
-                setOrderType([100-Math.round((from_design*100)/total),Math.round((from_design*100)/total)]);
+                setOrderType([total, from_design]);
             } else {
                 console.log('error');
             }
@@ -262,7 +262,7 @@ const DashboardComponent = () => {
     }, [orderType])
 
     return (
-        <div className="container mt-4">
+        <div className="container-fluid">
             <div className="row mb-4">
                 <div className="col-lg-4 col-md-12 mb-3 d-flex">
                     <PopularProducts />

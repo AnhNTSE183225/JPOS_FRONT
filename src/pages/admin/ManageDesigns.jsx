@@ -110,8 +110,6 @@ const ManageDesigns = () => {
         }
     }
 
-    console.log(activeDesign);
-
     useEffect(() => {
         fetchData();
         fetchMaterials();
@@ -136,6 +134,9 @@ const ManageDesigns = () => {
             <div className="row mb-3">
                 <div className="col" style={{ maxWidth: '400px' }}>
                     <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design..." className="form-control" type="text" />
+                </div>
+                <div className="col">
+                    <button>Add new design</button>
                 </div>
             </div>
             <div className="row mb-3">

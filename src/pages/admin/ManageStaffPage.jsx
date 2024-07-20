@@ -1,9 +1,6 @@
-import { faEllipsisVertical, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from '/src/css/ManageStaffPage.module.css';
 import { useEffect, useState } from "react";
 import { toast } from 'sonner';
-import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
 import axios from "axios";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Switch } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -24,11 +21,7 @@ const ManageStaffPage = () => {
 
     const [employees, setEmployees] = useState(null);
     const [queryList, setQueryList] = useState(null);
-    const [requestsCount, setRequestsCount] = useState(null);
     const [search, setSearch] = useState('');
-
-    const [anchor, setAnchor] = useState(null);
-    const open = Boolean(anchor);
 
     const [openDialog, setOpenDialog] = useState(false);
     const [activeStaff, setActiveStaff] = useState(null);
@@ -93,49 +86,63 @@ const ManageStaffPage = () => {
             }
         }
 
-        return (
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)} fullWidth={true}>
-                <DialogTitle>
-                    Update Staff
-                </DialogTitle>
-                <DialogContent>
-                    <div className="mb-3">
-                        <label className="form-label">Name</label>
-                        <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
-                        <div className="form-text text-danger">{validateName.reason}</div>
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Email address</label>
-                        <input type="text" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <div className="form-text text-danger">{validateEmail.reason}</div>
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">New password</label>
-                        <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <div className="form-text text-danger">{validatePassword.reason}</div>
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Phone</label>
-                        <input type="text" className="form-control" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                        <div className="form-text text-danger">{validatePhone.reason}</div>
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Department</label>
-                        <select className="form-select" type="text" value={staffType} onChange={(e) => setStaffType(e.target.value)} >
-                            {
-                                ['sale', 'design', 'produce', 'manage'].map((value, index) => (
-                                    <option key={index} value={value}>{DEPARTMENT[value]}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={updateStaff}>Submit</Button>
-                    <Button onClick={() => setOpenDialog(false)} >Cancel</Button>
-                </DialogActions>
-            </Dialog>
-        )
+        if (activeStaff != null) {
+            return (
+                <Dialog sx={{
+                    "& .MuiDialog-paper": {
+                        borderRadius: "0",
+                    }
+                }} open={openDialog} onClose={() => setOpenDialog(false)} fullWidth={true}>
+                    <DialogTitle className="text-uppercase text-center text-white" style={{ backgroundColor: '#D3D3D3' }}>
+                        Edit {activeStaff.name}
+                    </DialogTitle>
+                    <DialogContent>
+                        <div className="container-fluid mt-3">
+                            <div className="row">
+                                <div className="col">
+                                    <label className="form-label">Name</label>
+                                    <input type="text" className="form-control rounded-0" value={name} onChange={(e) => setName(e.target.value)} />
+                                    <div className="form-text text-danger">{validateName.reason}</div>
+                                </div>
+                                <div className="col">
+                                    <label className="form-label">Email address</label>
+                                    <input type="text" className="form-control rounded-0" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    <div className="form-text text-danger">{validateEmail.reason}</div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <label className="form-label">New password</label>
+                                    <input type="password" className="form-control rounded-0" placeholder="Enter new password..." onChange={(e) => setPassword(e.target.value)} />
+                                    <div className="form-text text-danger">{validatePassword.reason}</div>
+                                </div>
+                                <div className="col">
+                                    <label className="form-label">Phone</label>
+                                    <input type="text" className="form-control rounded-0" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                    <div className="form-text text-danger">{validatePhone.reason}</div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <label className="form-label">Department</label>
+                                    <select className="form-select rounded-0" type="text" value={staffType} onChange={(e) => setStaffType(e.target.value)} >
+                                        {
+                                            ['sale', 'design', 'produce', 'manage'].map((value, index) => (
+                                                <option className="rounded-0" key={index} value={value}>{DEPARTMENT[value]}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <button className={`btn rounded-0 ${styles['staffButton']}`} onClick={updateStaff}>Save</button>
+                        <button className={`btn rounded-0 ${styles['staffButton']}`} onClick={() => setOpenDialog(false)} >Cancel</button>
+                    </DialogActions>
+                </Dialog >
+            )
+        }
     }
 
     const toggleAccount = async (staff) => {
@@ -176,51 +183,12 @@ const ManageStaffPage = () => {
                 toast.info(`No info`);
             } else {
                 let employees = response.data;
-                let requests_count = [];
-                for (let i = 0; i < employees.length; i++) {
-                    requests_count.push(await (fetchRequestsCount(employees[i].staffType, employees[i].staffId)));
-                }
                 setEmployees(employees);
                 setQueryList(employees);
-                setRequestsCount(requests_count);
             }
         } catch (error) {
             console.log(error);
         }
-    }
-    const fetchRequestsCount = async (type, id) => {
-        let orders_count = 0;
-        let response = null;
-        const headers = {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-        }
-        switch (type) {
-            case 'sale':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${id}`, { headers });
-                if (!response.data || response.status === 204) {
-                    orders_count = 0;
-                } else {
-                    orders_count = response.data.length;
-                }
-                break;
-            case 'design':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${id}`, { headers });
-                if (!response.data || response.status === 204) {
-                    orders_count = 0;
-                } else {
-                    orders_count = response.data.length;
-                }
-                break;
-            case 'produce':
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${id}`, { headers });
-                if (!response.data || response.status === 204) {
-                    orders_count = 0;
-                } else {
-                    orders_count = response.data.length;
-                }
-                break;
-        }
-        return orders_count;
     }
 
     const deleteStaff = async (id) => {
@@ -242,10 +210,6 @@ const ManageStaffPage = () => {
     }
 
     useEffect(() => {
-        fetchData();
-    }, [])
-
-    useEffect(() => {
         if (search.length > 0) {
             let query_list = [...employees];
             query_list = query_list.filter(staff => (staff.staffId.toString() == search || staff.name.toLowerCase().includes(search.toLowerCase())));
@@ -262,42 +226,39 @@ const ManageStaffPage = () => {
     return (
         <div className="container-fluid" id={`${styles['manage-staff']}`}>
             <div className="row mb-3">
-                <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>COMPANY EMPLOYEES</h1>
                 <div className="col-3 p-0">
-                    <input placeholder={`Search Employee`} onChange={(e) => setSearch(e.target.value)} type="text" className="form-control" />
+                    <input placeholder={`Search Employee`} onChange={(e) => setSearch(e.target.value)} type="text" className="form-control rounded-0" />
                 </div>
                 <div className="col">
-                    <button onClick={() => navigate("create")} className="btn btn-primary">Create new staff</button>
+                    <button className={`btn rounded-0 ${styles['staffButton']}`} onClick={() => navigate("create")}>Create new staff</button>
                 </div>
             </div>
             <div className="row mb-3">
 
-                <table className="table text-center">
+                <table className="table border text-center fs-6">
                     <thead>
                         <tr>
-                            <th className="col-md-1">ID</th>
-                            <th>Name</th>
-                            <th className="col-md-2">Username</th>
-                            <th className="col-md-3">Email</th>
-                            <th>Department</th>
-                            <th>Contact</th>
-                            <th>Requests</th>
+                            <th style={{width: '5%'}}>ID</th>
+                            <th className="text-start">Name</th>
+                            <th className="text-start">Username</th>
+                            <th className="text-start">Email</th>
+                            <th className="text-start">Department</th>
+                            <th className="text-start">Contact</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            queryList != null && requestsCount != null
+                            queryList != null
                                 ? queryList.map((value, index) => (
                                     <tr key={index}>
-                                        <td>{value.staffId}</td>
-                                        <td>{value.name}</td>
-                                        <td className="col-md-2">{value.account.username}</td>
-                                        <td className="col-md-3">{value.account.email}</td>
-                                        <td>{DEPARTMENT[value.staffType]}</td>
-                                        <td>{value.phone}</td>
-                                        <td className="text-center">{requestsCount[index]}</td>
+                                        <td style={{width: '5%'}}>{value.staffId}</td>
+                                        <td className="text-start">{value.name}</td>
+                                        <td className="text-start">{value.account.username}</td>
+                                        <td className="text-start">{value.account.email}</td>
+                                        <td className="text-start">{DEPARTMENT[value.staffType]}</td>
+                                        <td className="text-start">{value.phone}</td>
                                         <td className="text-center">
                                             <Switch
                                                 checked={value.account.status}
@@ -305,25 +266,18 @@ const ManageStaffPage = () => {
                                                 style={{ color: value.account.status ? '#48AAAD' : 'red' }}
                                             />
                                         </td>
-                                        <td className="text-center" id={`${styles['action-button']}`} onClick={(e) => {
-                                            setAnchor(anchor ? null : e.currentTarget);
-                                            setActiveStaff(value);
-                                        }} ><FontAwesomeIcon icon={faEllipsisVertical} /></td>
+                                        <td>
+                                            <button className={`btn rounded-0 ${styles['staffButton']}`} onClick={() => {
+                                                setActiveStaff(value);
+                                                setOpenDialog(true);
+                                            }}>Edit</button>
+                                        </td>
                                     </tr>
                                 ))
                                 : <></>
                         }
                     </tbody>
                 </table>
-                <BasePopup open={open} anchor={anchor}>
-                    <div className={`${styles['popup-div']}`}>
-                        <button onClick={() => {
-                            setOpenDialog(true);
-                            setAnchor(null);
-                        }}>Update</button>
-                        <button onClick={() => deleteStaff(activeStaff.staffId)}>Delete</button>
-                    </div>
-                </BasePopup>
                 <UpdateDialog />
             </div>
         </div>
