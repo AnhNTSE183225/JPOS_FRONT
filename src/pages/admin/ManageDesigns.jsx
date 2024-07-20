@@ -3,11 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { validateString } from "../../helper_function/Validation";
-import { INFINITY } from "chart.js/helpers";
 import useDocumentTitle from "../../components/Title";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import { faClipboard, faFloppyDisk, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import styles from '/src/css/ManageDesigns.module.css';
 
 const ManageDesigns = () => {
     const [designs, setDesigns] = useState(null);
@@ -26,9 +23,9 @@ const ManageDesigns = () => {
         designType: 'None',
         productShellDesigns: []
     })
-    const validateDesignFile = validateString(activeDesign.designFile, 16, INFINITY);
-    const validateDesignName = validateString(activeDesign.designName, 4, INFINITY);
-    const validateDesignType = validateString(activeDesign.designType, 1, INFINITY);
+    const validateDesignFile = validateString(activeDesign.designFile, 16, Math.INFINITY);
+    const validateDesignName = validateString(activeDesign.designName, 4, Math.INFINITY);
+    const validateDesignType = validateString(activeDesign.designType, 1, Math.INFINITY);
 
     const openUpdateDialog = (design) => {
         setIsOpenUpdate(true);
@@ -127,21 +124,16 @@ const ManageDesigns = () => {
     return (
         <div className="container-fluid">
             <div className="row mb-3">
+                <div className="col p-0" style={{ maxWidth: '400px' }}>
+                    <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design... &#128270;" className="form-control rounded-0" type="text" />
+                </div>
                 <div className="col">
-                    <h1 className="p-0 text-center mt-5 mb-5">MANAGE DESIGN</h1>
+                    <button className={`btn rounded-0 ${styles['staffButton']}`}>Add new design</button>
                 </div>
             </div>
             <div className="row mb-3">
-                <div className="col" style={{ maxWidth: '400px' }}>
-                    <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design..." className="form-control" type="text" />
-                </div>
-                <div className="col">
-                    <button>Add new design</button>
-                </div>
-            </div>
-            <div className="row mb-3">
-                <div>
-                    <table className="table">
+                <div className="col p-0">
+                    <table className="table border">
                         <thead className="text-center">
                             <tr>
                                 <th className="col-md-1">ID</th>
@@ -157,13 +149,13 @@ const ManageDesigns = () => {
                                 queryList != null
                                     ? queryList.map((design, index) => (
                                         <tr key={index}>
-                                            <td className="col-md-1 text-center align-content-lg-center">{design.productDesignId}</td>
-                                            <td className="col-md-4 align-content-lg-center">{design.designName}</td>
-                                            <td className="col-md-2 text-capitalize text-center align-content-lg-center">{design.designType}</td>
-                                            <td className="col-md-3 justify-content-center">
+                                            <td className="text-center align-content-lg-center">{design.productDesignId}</td>
+                                            <td className="align-content-lg-center">{design.designName}</td>
+                                            <td className="text-capitalize text-center align-content-lg-center">{design.designType}</td>
+                                            <td className="justify-content-center">
                                                 <img className="d-block mx-auto" src={design.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
                                             </td>
-                                            <td className="col-md-2 align-content-lg-center">
+                                            <td className="align-content-lg-center">
                                                 <div className="container-fluid text-center ">
                                                     {
                                                         design.productShellDesigns.map((shell, index2) => (
@@ -176,8 +168,8 @@ const ManageDesigns = () => {
                                                     }
                                                 </div>
                                             </td>
-                                            <td className="col-md-1 align-content-lg-center">
-                                                <button onClick={() => openUpdateDialog(design)} className="btn btn-primary w-100">
+                                            <td className="align-content-lg-center">
+                                                <button onClick={() => openUpdateDialog(design)} className={`btn rounded-0 ${styles['staffButton']}`}>
                                                     EDIT
                                                 </button>
                                             </td>
@@ -190,56 +182,36 @@ const ManageDesigns = () => {
                 </div>
             </div>
             <Dialog fullWidth={true} maxWidth="md" open={isOpenUpdate} onClose={closeUpdateDialog}>
-                <DialogTitle>EDIT DESIGN</DialogTitle>
+                <DialogTitle className="text-center">EDIT DESIGN</DialogTitle>
                 <DialogContent>
-                    <div className="container-fluid text-center my-3">
+                    <div className="container-fluid">
                         <div className="row mb-3">
-                            <div className="col-md-1 d-flex justify-content-center align-items-center">
-                                ID
+                            <div className="col">
+                                <label className="form-label">Design ID</label>
+                                <input value={activeDesign.productDesignId} type="text" className="form-control rounded-0" disabled />
                             </div>
-                            <div className="col-md d-flex justify-content-center align-items-center">
-                                <input value={activeDesign.productDesignId} type="text" className="form-control" disabled />
-                            </div>
-                            <div className="col-md d-flex justify-content-start align-items-center">
+                            <div className="col">
+                                <label className="form-label">Design Name</label>
+                                <input value={activeDesign.designName} onChange={(e) => setActiveDesign(d => ({ ...d, designName: e.target.value }))} type="text" className="form-control rounded-0" />
+                                <span className="form-text text-danger">{validateDesignName.reason}</span>
                             </div>
                         </div>
                         <div className="row mb-3">
-                            <div className="col-md-1 d-flex justify-content-center align-items-center">
-                                Name
-                            </div>
-                            <div className="col-md d-flex justify-content-center align-items-center">
-                                <input value={activeDesign.designName} onChange={(e) => setActiveDesign(d => ({ ...d, designName: e.target.value }))} type="text" className="form-control" />
-                            </div>
-                            <div className="col-md d-flex justify-content-start align-items-center">
-                                <div className="form-text text-danger">{validateDesignName.reason}</div>
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col-md-1 d-flex justify-content-center align-items-center">
-                                Type
-                            </div>
-                            <div className="col-md d-flex justify-content-center align-items-center">
-                                <select className="form-select" value={activeDesign.designType} onChange={(e) => setActiveDesign(d => ({ ...d, designType: e.target.value }))}>
+                            <div className="col">
+                                <label className="form-label">Type</label>
+                                <select className="form-select rounded-0" value={activeDesign.designType} onChange={(e) => setActiveDesign(d => ({ ...d, designType: e.target.value }))}>
                                     <option value="">Select</option>
                                     <option value="ring">Ring</option>
                                     <option value="necklace">Necklace</option>
                                     <option value="earrings">Earrings</option>
                                     <option value="bracelets">Bracelets</option>
                                 </select>
+                                <span className="text-danger form-text">{!validateDesignType.result ? 'Please select one' : ''}</span>
                             </div>
-                            <div className="col-md d-flex justify-content-start align-items-center">
-                                <div className="form-text text-danger">{!validateDesignType.result ? 'Please select one' : ''}</div>
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col-md-1 d-flex justify-content-center align-items-center">
-                                Image
-                            </div>
-                            <div className="col-md d-flex justify-content-center align-items-center">
-                                <input value={activeDesign.designFile} onChange={(e) => setActiveDesign(d => ({ ...d, designFile: e.target.value }))} type="text" className="form-control" />
-                            </div>
-                            <div className="col-md d-flex justify-content-start align-items-center">
-                                <div className="form-text text-danger">{validateDesignFile.reason}</div>
+                            <div className="col">
+                                <label className="form-label">Image</label>
+                                <input value={activeDesign.designFile} onChange={(e) => setActiveDesign(d => ({ ...d, designFile: e.target.value }))} type="text" className="form-control rounded-0" />
+                                <span className="text-danger form-text">{validateDesignFile.reason}</span>
                             </div>
                         </div>
                         <div className="row mb-3">
