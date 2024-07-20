@@ -235,10 +235,10 @@ const ManageStaffPage = () => {
             </div>
             <div className="row mb-3">
 
-                <table className="table border text-center fs-6">
+                <table className="table border text-center align-middle fs-6">
                     <thead>
                         <tr>
-                            <th style={{width: '5%'}}>ID</th>
+                            <th >ID</th>
                             <th className="text-start">Name</th>
                             <th className="text-start">Username</th>
                             <th className="text-start">Email</th>
@@ -253,7 +253,7 @@ const ManageStaffPage = () => {
                             queryList != null
                                 ? queryList.map((value, index) => (
                                     <tr key={index}>
-                                        <td style={{width: '5%'}}>{value.staffId}</td>
+                                        <td >{value.staffId}</td>
                                         <td className="text-start">{value.name}</td>
                                         <td className="text-start">{value.account.username}</td>
                                         <td className="text-start">{value.account.email}</td>
