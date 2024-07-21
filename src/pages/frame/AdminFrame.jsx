@@ -8,7 +8,7 @@ import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 const AdminFrame = () => {
 
     const navigate = useNavigate();
-    const[width, setWidth] = useState('230px');
+    const[width, setWidth] = useState('100px');
 
     const styling = {
         width: width,

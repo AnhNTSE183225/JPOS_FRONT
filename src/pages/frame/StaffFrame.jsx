@@ -1,11 +1,21 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { Toaster } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const StaffFrame = () => {
 
     const navigate = useNavigate();
+    const [width, setWidth] = useState('100px');
+
+    const styling = {
+        width: width,
+        position: 'fixed',
+        color: '#48AAAD',
+        transition: '0.3s',
+        borderRight: '1px solid #dee2e6'
+    };
+
     useEffect(() => {
         if (sessionStorage.getItem('staff') === null) {
             navigate('/unauthorized-access');
@@ -14,10 +24,10 @@ const StaffFrame = () => {
 
     if (sessionStorage.getItem('staff') !== null) {
         return (
-            <div style={{ fontSize: '20px' }}>
+            <div style={{ fontSize: '16px' }}>
                 <Toaster position="top-center" richColors expand={true} />
-                <Sidebar />
-                <div className="container-fluid" style={{ paddingLeft: '19rem', paddingTop: '1rem' }}>
+                <Sidebar styling={styling} width={width} setWidth={setWidth} />
+                <div className="p-3" style={{ marginLeft: width, transition: '0.3s' }}>
                     <Outlet />
                 </div>
             </div>
