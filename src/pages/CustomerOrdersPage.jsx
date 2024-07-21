@@ -72,7 +72,7 @@ const CustomerOrdersPage = () => {
                                             <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
                                             <td>{order.status}</td>
                                             <td>
-                                                {
+                                                {/* {
                                                     order.status == 'wait_customer' || order.status == 'pending_design'
                                                         ? <>
                                                             <Link to={`/profile/your-request`}>
@@ -82,13 +82,14 @@ const CustomerOrdersPage = () => {
                                                             </Link>
                                                         </>
                                                         : <>
-                                                            <Link to={`/profile/your-orders/${order.id}`}>
-                                                                <button className='fs-6'>
-                                                                    View details
-                                                                </button>
-                                                            </Link>
+
                                                         </>
-                                                }
+                                                } */}
+                                                <Link to={`/profile/your-orders/${order.id}`}>
+                                                    <button className='fs-6'>
+                                                        View details
+                                                    </button>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))

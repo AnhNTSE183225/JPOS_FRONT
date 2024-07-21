@@ -569,7 +569,7 @@ const OrderDetails = () => {
                             }
                             {
                                 warranty !== null
-                                    ? <Button onClick={handlePrint} className="mt-5 d-flex w-100">EXPORT TO PDF</Button>
+                                    ? <button onClick={handlePrint} className="btn btn-primary rounded-0 mt-5 w-100">EXPORT TO PDF</button>
                                     : <></>
                             }
                         </div>

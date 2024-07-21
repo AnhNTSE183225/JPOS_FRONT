@@ -69,7 +69,7 @@ const ManagePricePage = () => {
             toast.error(`Price cannot be empty or negative.`);
         }
     }
-    
+
 
     const createNewPrice = async () => {
         if (newPrice >= 0) {
@@ -113,7 +113,7 @@ const ManagePricePage = () => {
             toast.error(`Price cannot be empty or negative.`);
         }
     }
-    
+
 
     const fetchData = async () => {
         setProcessing(true);
@@ -294,16 +294,16 @@ const ManagePricePage = () => {
             </div>
             <div className="row">
                 <div className="col">
-                    <table className="text-center">
-                        <thead>
+                    <table className="table text-center border align-middle">
+                        <thead className="">
                             <tr>
-                                <th className="col-md-1">ID</th>
-                                <th className="col-md-1">Origin</th>
-                                <th className="col-md-1">Range</th>
+                                <th>ID</th>
+                                <th>Origin</th>
+                                <th>Range</th>
                                 <th>Shape</th>
                                 <th>Traits</th>
-                                <th className="col-md-2">Price</th>
-                                <th className="col-md-2">Eff.Date</th>
+                                <th>Price ($)</th>
+                                <th>Eff.Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -311,12 +311,12 @@ const ManagePricePage = () => {
                                 diamondPriceList !== null
                                     ? diamondPriceList.map((value, index) => (
                                         <tr key={index}>
-                                            <td className="col-md-1">{value.diamondPriceId}</td>
-                                            <td className="col-md-1">{value.origin}</td>
-                                            <td className="col-md-1">{value.caratWeightFrom.toFixed(2)} - {value.caratWeightTo.toFixed(2)}</td>
+                                            <td >{value.diamondPriceId}</td>
+                                            <td >{value.origin}</td>
+                                            <td >{value.caratWeightFrom.toFixed(2)} - {value.caratWeightTo.toFixed(2)}</td>
                                             <td>{value.shape}</td>
                                             <td>{value.color}-{value.clarity} {value.cut.replace("_", " ")}</td>
-                                            <td className="col-md-2">
+                                            <td >
                                                 <div className="input-group">
                                                     {
                                                         selectedPrice !== undefined
@@ -335,7 +335,7 @@ const ManagePricePage = () => {
                                                     }
                                                 </div>
                                             </td>
-                                            <td className="col-md-2">{formatDate(value.effectiveDate)}</td>
+                                            <td >{formatDate(value.effectiveDate)}</td>
                                         </tr>
                                     ))
                                     : <></>

@@ -36,7 +36,7 @@ const ManageRequestsPage = () => {
     const TableComponent = () => {
         if (queryOrders.length > 0 && !loading) {
             return (
-                queryOrders.map(order => (
+                queryOrders.sort((a,b) => b.id - a.id).map(order => (
                     <tr className="fs-6" key={order.id}>
                         <td>{order.id}</td>
                         <td>{order.customer.name}</td>

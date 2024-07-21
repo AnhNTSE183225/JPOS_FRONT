@@ -47,14 +47,12 @@ const ManageCustomer = () => {
         const [name, setName] = useState(activeCustomer !== null ? activeCustomer.name : '');
         const [address, setAddress] = useState(activeCustomer !== null ? activeCustomer.address : '');
         const [email, setEmail] = useState(activeCustomer !== null ? activeCustomer.account.email : '');
-        const validateUsername = validateString(username, 8, 16, null, '^[a-zA-Z0-9]+$');
         const validateName = validateString(name, 1, 20);
         const validateAddress = validateString(address, 10, 100);
         const validateEmail = validateString(email, 8, 254, '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
 
         const updateCustomer = async () => {
             if (
-                validateUsername.result &&
                 validateName.result &&
                 validateAddress.result &&
                 validateEmail.result
@@ -85,7 +83,7 @@ const ManageCustomer = () => {
                         toast.success('Updated successfully');
                     }
                 } catch (error) {
-                    if(error.response.status === 406) {
+                    if (error.response.status === 406) {
                         toast.error(`The email ${email} is already linked to another account!`);
                     }
                 }
@@ -113,7 +111,7 @@ const ManageCustomer = () => {
                 <DialogContent>
                     <div className="input-group mt-1 mb-3">
                         <span className={`input-group-text ${styles['input-label']}`}>UserName</span>
-                        <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <input className="form-control" type="text" value={username} disabled={true} />
                     </div>
                     <div className="input-group mt-1 mb-3">
                         <span className={`input-group-text ${styles['input-label']}`}>Name</span>
