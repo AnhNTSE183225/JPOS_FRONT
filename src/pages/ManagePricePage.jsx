@@ -172,12 +172,11 @@ const ManagePricePage = () => {
 
     return (
         <div className="container-fluid" id={`${styles['manage-price']}`}>
-            <h1 className="p-0 mt-5 mb-5 text-center">Manage price</h1>
             <div className="row mb-3">
                 <div className="col-lg-6 mb-3">
                     <div className="input-group mb-3">
-                        <span className={`input-group-text ${styles['select-label']}`}>Shape</span>
-                        <select value={shape} onChange={(e) => setShape(e.target.value)} type="text" className="form-select" >
+                        <span className={`input-group-text rounded-0 ${styles['select-label']}`}>Shape</span>
+                        <select value={shape} onChange={(e) => setShape(e.target.value)} type="text" className="form-select rounded-0" >
                             <option value={'ALL'}>ALL</option>
                             {
                                 SHAPES.map((value, index) => (
@@ -189,10 +188,10 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group mb-3">
-                        <span className={`input-group-text ${styles['select-label']}`}>
+                        <span className={`input-group-text rounded-0 ${styles['select-label']}`}>
                             Origin
                         </span>
-                        <select value={origin} onChange={(e) => setOrigin(e.target.value)} className="form-select">
+                        <select value={origin} onChange={(e) => setOrigin(e.target.value)} className="form-select rounded-0">
                             <option value={'ALL'}>ALL</option>
                             {
                                 ORIGINS.map((value, index) => (
@@ -204,10 +203,10 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group mb-3">
-                        <span className={`input-group-text ${styles['select-label']}`}>
+                        <span className={`input-group-text rounded-0 ${styles['select-label']}`}>
                             Range
                         </span>
-                        <select className="form-select" onChange={(e) => {
+                        <select className="form-select rounded-0" onChange={(e) => {
                             if (e.target.value !== 'ALL') {
                                 const carat = e.target.value.split(",");
                                 setCaratRange([carat[0], carat[1]]);
@@ -226,17 +225,17 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group">
-                        <button onClick={createNewPrice} className={`btn btn-primary ${styles['select-label']}`}>Create new price</button>
-                        <span className="input-group-text">$</span>
-                        <input type="number" min={0.01} step={0.01} className="form-control" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} />
+                        <button onClick={createNewPrice} className={`btn btn-primary ${styles['select-label']} rounded-0`}>Create new price</button>
+                        <span className="input-group-text rounded-0">$</span>
+                        <input type="number" min={0.01} step={0.01} className="form-control rounded-0" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} />
                     </div>
                 </div>
                 <div className="col-lg-6 mb-3">
                     <div className="input-group mb-3">
-                        <span className={`input-group-text ${styles['select-label']}`}>
+                        <span className={`input-group-text rounded-0 ${styles['select-label']}`}>
                             Cut
                         </span>
-                        <select value={cut} onChange={(e) => setCut(e.target.value)} className="form-select">
+                        <select value={cut} onChange={(e) => setCut(e.target.value)} className="form-select rounded-0">
                             <option value={'ALL'}>ALL</option>
                             {
                                 CUTS.map((value, index) => (
@@ -248,10 +247,10 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group mb-3">
-                        <span className={`input-group-text ${styles['select-label']}`}>
+                        <span className={`input-group-text rounded-0 ${styles['select-label']}`}>
                             Color
                         </span>
-                        <select className="form-select" value={color} onChange={(e) => setColor(e.target.value)}>
+                        <select className="form-select rounded-0" value={color} onChange={(e) => setColor(e.target.value)}>
                             <option value={'ALL'}>ALL</option>
                             {
                                 COLORS.map((value, index) => (
@@ -263,10 +262,10 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group mb-3">
-                        <span className={`input-group-text ${styles['select-label']}`}>
+                        <span className={`input-group-text rounded-0 ${styles['select-label']}`}>
                             Clarity
                         </span>
-                        <select className="form-select" value={clarity} onChange={(e) => setClarity(e.target.value)}>
+                        <select className="form-select rounded-0" value={clarity} onChange={(e) => setClarity(e.target.value)}>
                             <option value={'ALL'}>ALL</option>
                             {
                                 CLARITIES.map((value, index) => (
@@ -277,7 +276,7 @@ const ManagePricePage = () => {
                             }
                         </select>
                     </div>
-                    <button className="btn btn-primary" onClick={resetFilters}>Reset filters</button>
+                    <button className="btn btn-primary rounded-0" onClick={resetFilters}>Reset filters</button>
                 </div>
             </div>
             <div className="row mb-3">
@@ -322,15 +321,15 @@ const ManagePricePage = () => {
                                                     {
                                                         selectedPrice !== undefined
                                                             ? selectedPrice.diamondPriceId == value.diamondPriceId
-                                                                ? <input min={0.01} step={0.05} value={selectedPrice.price} onChange={(e) => setSelectedPrice(p => ({ ...p, price: e.target.value }))} type="number" className="form-control text-end" />
-                                                                : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control text-end" disabled />
-                                                            : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control text-end" disabled />
+                                                                ? <input min={0.01} step={0.05} value={selectedPrice.price} onChange={(e) => setSelectedPrice(p => ({ ...p, price: e.target.value }))} type="number" className="form-control rounded-0 text-end" />
+                                                                : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control rounded-0 text-end" disabled />
+                                                            : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control rounded-0 text-end" disabled />
                                                     }
-                                                    <button onClick={() => setSelectedPrice(value)} className="btn btn-primary"> <FontAwesomeIcon icon={faPenToSquare} /> </button>
+                                                    <button onClick={() => setSelectedPrice(value)} className="btn btn-primary rounded-0"> <FontAwesomeIcon icon={faPenToSquare} /> </button>
                                                     {
                                                         selectedPrice !== undefined
                                                             ? selectedPrice.diamondPriceId == value.diamondPriceId
-                                                                ? <button onClick={updatePrice} className="btn btn-primary"> <FontAwesomeIcon icon={faFloppyDisk} /> </button>
+                                                                ? <button onClick={updatePrice} className="btn btn-primary rounded-0"> <FontAwesomeIcon icon={faFloppyDisk} /> </button>
                                                                 : <></>
                                                             : <></>
                                                     }

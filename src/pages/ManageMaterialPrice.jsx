@@ -103,10 +103,9 @@ const ManageMaterialPrice = () => {
 
     return (
         <div className="container-fluid" id={`${styles['manage-material-price']}`}>
-            <h1 className="p-0 mt-5 mb-5 text-center">Manage material prices</h1>
             <div className="row mb-3">
                 <div className="col">
-                    <table className="text-center">
+                    <table className="text-center table border align-middle">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -140,7 +139,7 @@ const ManageMaterialPrice = () => {
                                                                     type="number"
                                                                     step={0.05}
                                                                     min={0.01}
-                                                                    className="form-control text-end"
+                                                                    className="form-control text-end rounded-0"
                                                                     value={
                                                                         materialPrices
                                                                             .filter(price => price.materialPriceId.materialId == material.materialId)
@@ -149,7 +148,7 @@ const ManageMaterialPrice = () => {
                                                                     disabled={true}
                                                                 />
                                                                 <button
-                                                                    className="btn btn-primary"
+                                                                    className="btn btn-primary rounded-0"
                                                                     onClick={() => {
                                                                         setActivePrice(material.materialId);
                                                                         setNewPrice(materialPrices
@@ -168,7 +167,7 @@ const ManageMaterialPrice = () => {
                                                                     type="number"
                                                                     step={0.05}
                                                                     min={0.01}
-                                                                    className="form-control text-end"
+                                                                    className="form-control text-end rounded-0"
                                                                     value={newPrice}
                                                                     onChange={(e) => setNewPrice(e.target.value)}
                                                                 />
@@ -177,7 +176,7 @@ const ManageMaterialPrice = () => {
                                                                     onClick={updatePrice}
                                                                 > <FontAwesomeIcon icon={faFloppyDisk} /> </button>
                                                                 <button
-                                                                    className="btn btn-danger"
+                                                                    className="btn btn-danger rounded-0"
                                                                     onClick={() => {
                                                                         setActivePrice(null);
                                                                         setActiveDate(null);
