@@ -1,0 +1,9 @@
+#back-btn {
+    font-size: 2rem;
+    transition: 0.3s ;
+    cursor: pointer;
+}
+
+#back-btn:hover {
+    transform: scale(1.3);
+}

@@ -72,7 +72,7 @@ const SidebarAdmin = ({ styling, width, setWidth }) => {
                         : <div className="dropdown">
                             <a href="#" className={`${styles['user']} d-flex align-items-center text-decoration-none dropdown-toggle`} id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 
-                                <h3><strong>{admin.username}</strong></h3>
+                                <h4 className='text-capitalize'><strong>{admin.username}</strong></h4>
                             </a>
                             <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                                 <li><a onClick={logout} className="dropdown-item" href="#">Sign out</a></li>
