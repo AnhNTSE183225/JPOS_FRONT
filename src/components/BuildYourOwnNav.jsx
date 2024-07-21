@@ -31,6 +31,15 @@ const BuildYourOwnNav = () => {
         }
         return false;
     }
+    const removeDesign = () => {
+        let selectedProduct = JSON.parse(sessionStorage.getItem('selected_product'));
+        if (selectedProduct.length > 0) {
+            sessionStorage.setItem('selected_product', JSON.stringify(selectedProduct));
+        } else {
+            sessionStorage.removeItem('selected_product');
+        }
+        navigate("/build-your-own/choose-setting");
+    }
 
     return (
         <div className="container mt-4" id={styles['build-your-own-nav']} style={{ paddingBottom: '5vh' }}>
@@ -53,6 +62,11 @@ const BuildYourOwnNav = () => {
                                         </div>
                                         <div className="row justify-content-around">
                                             <b className='text' style={{ color: '#48AAAD' }}>{formatPrice(selectedProduct.price)}</b>
+                                        </div>
+                                        <div className={`row`}>
+                                            <div className='col-1'>
+                                                <button onClick={removeDesign} className={`fs-6 ${styles[`remove-button`]}`}><u>Remove</u></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
