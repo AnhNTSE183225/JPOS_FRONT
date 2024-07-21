@@ -63,3 +63,8 @@
         max-width: 100%;
     }
 }
+
+.summary {
+    border: 1px solid rgb(168, 168, 168);
+    padding: 2rem;
+}

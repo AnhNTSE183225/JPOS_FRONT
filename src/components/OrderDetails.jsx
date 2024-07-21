@@ -444,8 +444,12 @@ const OrderDetails = () => {
                                             <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
                                             <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
                                             <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
+                                            <p className={styles.listItem}><span>Carat weight:</span> <span>{diamond.caratWeight}</span></p>
                                             <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
                                             <p className={styles.listItem}><span>Proportions:</span> <span>{diamond.proportions}</span></p>
+                                            <p className={styles.listItem}><span>Fluorescence:</span> <span>{diamond.fluorescence}</span></p>
+                                            <p className={styles.listItem}><span>Symmetry:</span> <span>{diamond.symmetry}</span></p>
+                                            <p className={styles.listItem}><span>Polish:</span> <span>{diamond.polish}</span></p>
                                         </div>
                                     </div>
                                 )

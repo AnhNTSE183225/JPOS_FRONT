@@ -20,7 +20,14 @@ const HomePage = () => {
                     <div className={`${styles[`overlay-content-video`]} col-xl-4`}>
                         <p className='fs-4 text-center'>ENTER THE BIJOUX UNIVERSE</p>
                         <p className='fs-6 text-center'>Introducing Our Glamorous Collections</p>
-                        <Link to="/build-your-own/choose-setting"><button>EXPLORE FINE JEWELERY</button></Link>
+                        <a href="#" onClick={() => {
+                            if (customer != null) {
+                                navigate('/build-your-own/choose-setting');
+                            } else {
+                                toast.info('Please login to continue');
+                                navigate('/login');
+                            }
+                        }}><button className={`${styles['home-btn']}`} style={{ width: "100%" }}>EXPLORE FINE JEWELERY</button></a>
                     </div>
                 </section>
                 <section className={`${styles['row']}`}>

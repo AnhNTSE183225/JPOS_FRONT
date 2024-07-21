@@ -41,15 +41,15 @@ const CustomerOrdersPage = () => {
 
     return (
         <div className={`${styles['request-page']}`}>
-            <h1 className='fw-bold text-center mb-4'>My Orders</h1>
-            <div className='container-fluid'>
+            <h1 className='text-center mb-4'>MY ORDERS</h1>
+            <div className='container-fluid' style={{padding: '0 3rem'}}>
                 <div className="row">
                     <div className={`${styles['table-container']}`}>
                         <table>
                             <thead>
-                                <tr className={`${styles['table-head']}`}>
-                                    <th>Order ID</th>
-                                    <th>Product Name</th>
+                                <tr className={`fs-6 ${styles['table-head']}`}>
+                                    <th className="col-md-1">Order ID</th>
+                                    <th className="col-md-3">Product Name</th>
                                     <th>Product Type</th>
                                     <th>Order Date</th>
                                     <th>Total Price</th>
@@ -57,7 +57,7 @@ const CustomerOrdersPage = () => {
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="fs-6">
                                 {orders.length <= 0 ? (
                                     <tr>
                                         <td colSpan="7">You have no orders.</td>
@@ -65,8 +65,8 @@ const CustomerOrdersPage = () => {
                                 ) : (
                                     orders.map(order => (
                                         <tr key={order.id}>
-                                            <td>{order.id}</td>
-                                            <td>{order.product && order.product.productName ? order.product.productName : `Description: ${order.description}`}</td>
+                                            <td className="col-md-1">{order.id}</td>
+                                            <td className="col-md-3">{order.product && order.product.productName ? order.product.productName : `Description: ${order.description}`}</td>
                                             <td>{order.product && order.product.productType ? order.product.productType : 'TBD'}</td>
                                             <td>{formatDate(order.orderDate)}</td>
                                             <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
