@@ -41,7 +41,7 @@ const MAX_PRICE = 5000000;
 const PRICE_STEP = 200;
 
 const MIN_CARAT = 0.05;
-const MAX_CARAT = 5.05;
+const MAX_CARAT = 10.05;
 const CARAT_STEP = 0.1 * 3;
 let carat_ranges = []
 

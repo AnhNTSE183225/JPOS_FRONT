@@ -8,6 +8,7 @@ import empty_image from '/src/assets/empty_image.jpg';
 import styles from '/src/css/DesignerUploadPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { LinearProgress } from '@mui/material';
 
 const DesignerUploadPage = ({ order }) => {
     const [designFiles, setDesignFiles] = useState([]);
@@ -29,7 +30,7 @@ const DesignerUploadPage = ({ order }) => {
                     const headers = {
                         'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                     }
-                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData, {headers});
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData, { headers });
                     if (!response.data || response.status === 204) {
                         throw new Error("Upload file failed. Backend fail");
                     }
@@ -53,7 +54,7 @@ const DesignerUploadPage = ({ order }) => {
                 const headers = {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
-                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/designs/upload/${order.id}`,imageUrls.join("|"),{headers});
+                const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/designs/upload/${order.id}`, imageUrls.join("|"), { headers });
                 if (!response.data || response.status === 204) {
                     throw new Error("Upload file failed. Backend fail");
                 }
@@ -195,27 +196,22 @@ const DesignerUploadPage = ({ order }) => {
                                     }
                                 </div>
                                 <div className="row mt-3">
-                                    <div className="col">
-                                        {
-                                            processing
-                                                ? < button className="btn btn-primary" type="button" disabled>
-                                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                                    <span role="status">Loading...</span>
-                                                </button>
-                                                : <button className="btn btn-dark w-100" onClick={uploadImages} >Upload image</button>
-                                        }
-
-                                    </div>
-                                    <div className="col">
-                                        {
-                                            processing
-                                                ? < button className="btn btn-primary" type="button" disabled>
-                                                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                                    <span role="status">Loading...</span>
-                                                </button>
-                                                : <button className="btn btn-dark w-100" onClick={submit} >Submit</button>
-                                        }
-                                    </div>
+                                    {
+                                        !processing
+                                            ? <>
+                                                <div className="col">
+                                                    <button className="btn btn-dark w-100 rounded-0" onClick={uploadImages} >Upload image</button>
+                                                </div>
+                                                <div className="col">
+                                                    <button className="btn btn-dark w-100 rounded-0" onClick={submit} >Submit</button>
+                                                </div>
+                                            </>
+                                            : <>
+                                                <div className="col">
+                                                    <LinearProgress />
+                                                </div>
+                                            </>
+                                    }
                                 </div>
                             </div>
                         </div>

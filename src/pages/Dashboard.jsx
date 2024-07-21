@@ -34,7 +34,7 @@ const PopularProducts = () => {
     useDocumentTitle("Dashboard")
 
     return (
-        <div className={`${styles.popularProducts} card w-100 h-100 overflow-auto position-relative`} style={{maxHeight: '200px'}}>
+        <div className={`${styles.popularProducts} card w-100 h-100 overflow-auto position-relative rounded-0`} style={{ maxHeight: '200px' }}>
             <h3 className='mb-4'>Most Recent Products</h3>
             <ul className="list-unstyled">
                 {
@@ -65,7 +65,7 @@ const DashboardComponent = () => {
         revenue: 0.0
     });
     const [salesReport, setSalesReport] = useState([0, 0, 0, 0]);
-    const [orderType, setOrderType] = useState([0,0]);
+    const [orderType, setOrderType] = useState([0, 0]);
 
     const fetchData = async () => {
         try {
@@ -105,6 +105,8 @@ const DashboardComponent = () => {
             console.log(error);
         }
     };
+
+    
 
     const startGraph = () => {
         const accessoriesCtx = accessoriesChartRef.current.getContext('2d');
@@ -202,14 +204,7 @@ const DashboardComponent = () => {
                             }
                         }
                     }
-                },
-                // onClick: function (event, elements) {
-                //     if (elements.length > 0) {
-                //         const clickedElementIndex = elements[0].index;
-                //         const label = customBuildChartInstanceRef.current.data.labels[clickedElementIndex];
-                //         alert(label);
-                //     }
-                // }
+                }
             }
         });
     };
@@ -223,7 +218,7 @@ const DashboardComponent = () => {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
             })
-            if(response.status === 200) {
+            if (response.status === 200) {
                 const from_design = (response.data.filter(o => o.orderType == 'from_design')).length;
                 const total = (response.data.length);
 
@@ -258,7 +253,7 @@ const DashboardComponent = () => {
     }, [salesReport]);
 
     useEffect(() => {
-        startCustomBuildGraph(); 
+        startCustomBuildGraph();
     }, [orderType])
 
     return (
@@ -268,8 +263,8 @@ const DashboardComponent = () => {
                     <PopularProducts />
                 </div>
                 <div className="col-lg-8 col-md-12 mb-3 d-flex">
-                    <div className="card w-100 h-100">
-                        <div className="card-body">
+                    <div className="card w-100 h-100 rounded-0">
+                        <div className="card-body rounded-0">
                             <h2>Statistics</h2>
                             <div className="d-flex justify-content-between">
                                 <div className="text-center p-2">
@@ -295,20 +290,23 @@ const DashboardComponent = () => {
             </div>
             <div className="row">
                 <div className="col-lg-4 col-md-12 mb-3 d-flex">
-                    <div className="card h-100 w-100 text-center">
+                    <div className="card h-100 w-100 text-center rounded-0">
                         <div className="card-body">
                             <canvas ref={customBuildChartRef} className={styles.customBuildChart}></canvas>
                         </div>
                     </div>
                 </div>
                 <div className="col-lg-8 col-md-12 mb-3 d-flex">
-                    <div className="card w-100 h-100">
+                    <div className="card w-100 h-100 rounded-0">
                         <div className="card-body">
-                            <h3>Sales Report</h3>
+                            <h3>Products</h3>
                             <canvas ref={accessoriesChartRef} className={styles.revenueChart}></canvas>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="row">
+
             </div>
         </div>
     );

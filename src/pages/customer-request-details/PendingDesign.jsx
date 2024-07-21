@@ -98,15 +98,15 @@ const PendingDesign = ({ order }) => {
                     </div>
                 </div>
                 <div className="col-md mb-3">
-                    <textarea placeholder='Leave notes....' style={{ resize: "none" }} maxLength={255} className="form-control" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
+                    <textarea placeholder='Leave notes....' style={{ resize: "none" }} maxLength={255} className="form-control rounded-0" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
                     <div className="form-text text-danger">{validateNote.reason}</div>
                 </div>
                 <div className='row  mb-3'>
                     <div className="col-md">
-                        <button onClick={() => handleSubmit(true)} className='btn btn-success w-100'>Accept</button>
+                        <button onClick={() => handleSubmit(true)} className='btn btn-success w-100 rounded-0'>Accept</button>
                     </div>
                     <div className="col-md">
-                        <button onClick={() => handleSubmit(false)} className='btn btn-danger w-100'>Decline</button>
+                        <button onClick={() => handleSubmit(false)} className='btn btn-danger w-100 rounded-0'>Decline</button>
                     </div>
                 </div>
             </div>
