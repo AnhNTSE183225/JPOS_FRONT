@@ -16,14 +16,15 @@ const ChooseSetting = () => {
 
     useDocumentTitle('Build Your Own Ring');
     useEffect(() => {
-        if (sessionStorage.getItem('customer') !== null) {
+        // if (sessionStorage.getItem('customer') !== null) {
 
-            fetchData();
-        } else {
-            toast.info(`Please log in to continue`);
-            navigate('/login');
-            return;
-        }
+        //     fetchData();
+        // } else {
+        //     toast.info(`Please log in to continue`);
+        //     navigate('/login');
+        //     return;
+        // }
+        fetchData();
     }, [activeCategory])
 
     const fetchData = async () => {
@@ -31,7 +32,7 @@ const ChooseSetting = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/all`, { headers });
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/product-designs/all`);
             if (!response.data || response.status === 204) {
                 toast.error("NO items in database");
             } else {

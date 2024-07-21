@@ -9,16 +9,26 @@ const CustomerFrame = () => {
 
     const location = useLocation().pathname;
     const navigate = useNavigate();
-    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access', '/login', '/register', '/google-callback', '/build-your-own/choose-setting'];
+    const allowedPaths = ['/', '/diamond-price-list', '/material-price-list', '/custom-design', '/unauthorized-access', '/login', '/register', '/google-callback', '/build-your-own/choose-setting', '/build-your-own/choose-setting',];
 
     useEffect(() => {
         if (sessionStorage.getItem('customer') == null) {
-            if (!allowedPaths.includes(location)) {
+            if (!(
+                location.includes('/') ||
+                location.includes('/diamond-price-list') ||
+                location.includes('/material-price-list') ||
+                location.includes('/custom-design') ||
+                location.includes('/unauthorized-access') ||
+                location.includes('/login') ||
+                location.includes('/register') ||
+                location.includes('/google-callback') ||
+                location.includes('/build-your-own')
+            )) {
                 console.log(`Unathorized`);
                 navigate('/unauthorized-access');
                 return;
             }
-        } 
+        }
     }, [])
 
 
@@ -32,20 +42,18 @@ const CustomerFrame = () => {
         return null;
     }
 
-    if (sessionStorage.getItem('customer') != null || allowedPaths.includes(location)) {
-        return (
-            <div>
-                <Toaster position="top-center" richColors expand={true} />
-                <NavigationBar />
-                <div style={{ paddingTop: '15vh' }}>
-                    <Outlet />
-                </div>
-                <Footer />
-                <ScrollToTop />
+    return (
+        <div>
+            <Toaster position="top-center" richColors expand={true} />
+            <NavigationBar />
+            <div style={{ paddingTop: '15vh' }}>
+                <Outlet />
             </div>
+            <Footer />
+            <ScrollToTop />
+        </div>
 
-        )
-    }
+    )
 }
 
 export default CustomerFrame;

@@ -83,10 +83,7 @@ const DiamondDetails = () => {
 
     const fetchDiamond = async () => {
         try {
-            const headers = {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/diamond/get-by-id/${diamondId}`, { headers });
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/diamond/get-by-id/${diamondId}`);
             if (!response.data || response.status === 204) {
                 console.error(`Cannot find diamond with ID ${diamondId}`);
             } else {

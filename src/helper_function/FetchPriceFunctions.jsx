@@ -18,7 +18,7 @@ export const fetchDiamondPrice = async (origin, shape, caratWeight, color, clari
     const headers = {
         'Authorization': `Bearer ${sessionStorage.getItem('token')}`
     }
-    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/diamond-price/get-single-price`,
+    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/public/diamond-price/get-single-price`,
         {
             origin: origin,
             cut: cut,
@@ -26,9 +26,6 @@ export const fetchDiamondPrice = async (origin, shape, caratWeight, color, clari
             caratWeight: caratWeight,
             color: color,
             shape: shape
-        },
-        {
-            headers
         }
     )
     if (!response.data || response.status === 204) {

@@ -8,6 +8,7 @@ import { faCaretLeft, faCaretRight, faChevronLeft } from '@fortawesome/free-soli
 import styles from '/src/css/Production.module.css';
 import empty_image from '/src/assets/empty_image.jpg';
 import useDocumentTitle from '../../components/Title';
+import { LinearProgress } from '@mui/material';
 
 const Production = ({ order }) => {
 
@@ -197,20 +198,20 @@ const Production = ({ order }) => {
                             }
                         </div>
                         <div className="row mt-3">
-                            <div className="col">
-                                {
-                                    processing
-                                        ? < button className={`w-100 ${styles[`custom-button`]}`} type="button" disabled>
-                                            <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                            <span role="status">Loading...</span>
-                                        </button>
-                                        : <button className={`w-100 ${styles[`custom-button`]}`} onClick={uploadImages} >Upload image</button>
-                                }
-
-                            </div>
-                            <div className="col">
-                                <button className={`w-100 ${styles[`custom-button`]}`} onClick={handleSubmit}>Submit order</button>
-                            </div>
+                            {
+                                processing
+                                    ? <>
+                                        <div className="col">
+                                            <LinearProgress />
+                                        </div>
+                                    </>
+                                    : <>
+                                        <div className="col">
+                                            <button className={`w-100 ${styles[`custom-button`]}`} onClick={uploadImages} >Upload image</button>
+                                            <button className={`w-100 ${styles[`custom-button`]}`} onClick={handleSubmit}>Submit order</button>
+                                        </div>
+                                    </>
+                            }
                         </div>
                     </div>
                 </div>

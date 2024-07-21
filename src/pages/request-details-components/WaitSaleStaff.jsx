@@ -16,7 +16,7 @@ const DEFAULT_PAGE_SIZE = 40;
 
 const MIN_CARAT = 0.05;
 const MAX_CARAT = 5.05;
-const CARAT_STEP = 0.1 * 3;
+const CARAT_STEP = 0.1;
 let carat_ranges = []
 
 for (let i = MIN_CARAT; i <= MAX_CARAT; i += CARAT_STEP) {
@@ -56,7 +56,7 @@ const WaitSaleStaff = ({ order }) => {
     const [beginColor, setBeginColor] = useState(0);
     const [endColor, setEndColor] = useState(colors.length - 1);
 
-    const clarities = ['SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+    const clarities = ['I3','I2','I1','SI3','SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
     const [beginClarity, setBeginClarity] = useState(0);
     const [endClarity, setEndClarity] = useState(clarities.length - 1);
 
@@ -163,6 +163,7 @@ const WaitSaleStaff = ({ order }) => {
             if (!response.data || response.status === 204) {
                 console.log(`Cannot fetch diamonds`);
             } else {
+                console.log(response.data);
                 setDiamondList(d => response.data);
             }
         } catch (error) {

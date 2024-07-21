@@ -4,22 +4,19 @@ import { useEffect } from "react";
 
 const BuildYourOwnFrame = () => {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    useEffect(() => {
-        if (sessionStorage.getItem('customer') === null) {
-            navigate('/unauthorized-access');
-        }
-    }, [])
-
-    if (sessionStorage.getItem('customer') !== null) {
-        return (
-            <>
-                <BuildYourOwnNav />
-                <Outlet/>
-            </>
-        )
-    }
+    // useEffect(() => {
+    //     if (sessionStorage.getItem('customer') === null) {
+    //         navigate('/unauthorized-access');
+    //     }
+    // }, [])
+    return (
+        <>
+            <BuildYourOwnNav />
+            <Outlet/>
+        </>
+    )
 }
 
 export default BuildYourOwnFrame;

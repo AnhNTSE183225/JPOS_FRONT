@@ -67,10 +67,7 @@ const SettingDetails = () => {
                 try {
                     const response = await axios({
                         method: 'get',
-                        url: `${import.meta.env.VITE_jpos_back}/api/product-designs/get-configurations?designType=${productDesign.designType}`,
-                        headers: {
-                            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                        }
+                        url: `${import.meta.env.VITE_jpos_back}/public/product-designs/get-configurations?designType=${productDesign.designType}`
                     })
                     if (response.status === 200) {
                         setNoteOptions(response.data);
@@ -92,7 +89,7 @@ const SettingDetails = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-designs/${designId}`, { headers });
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/product-designs/${designId}`);
             if (!response.data || response.status === 204) {
                 console.error('Error, cannot fetch, wrong id or something');
             } else {
@@ -115,7 +112,7 @@ const SettingDetails = () => {
             const headers = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
-            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/product-shell-material/${shell.productShellDesignId}`, { headers });
+            const response = await axios.get(`${import.meta.env.VITE_jpos_back}/public/product-shell-material/${shell.productShellDesignId}`);
             if (!response.data || response.status === 204) {
                 toast.error("Error cannot fetch materials");
             } else {

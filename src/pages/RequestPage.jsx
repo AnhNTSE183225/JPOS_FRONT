@@ -24,7 +24,7 @@ const TableComponent = ({ requests }) => {
                 </tr>
             </thead>
             <tbody>
-                {requests.map(request => (
+                {requests.filter((a, b) => b.id - a.id).map(request => (
                     <tr key={request.id}>
                         <td className='col-md-1'>{request.id}</td>
                         <td>{request.customer.name}</td>
@@ -55,19 +55,19 @@ const RequestPage = () => {
 
         switch (staff.staffType) {
             case "sale":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/orders/${staff.staffId}`, { headers });
                 break;
             case "manage":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/manager/orders`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/manager/orders`, { headers });
                 break;
             case "design":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${staff.staffId}`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/designs/orders/${staff.staffId}`, { headers });
                 break;
             case "produce":
-                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${staff.staffId}`,{headers});
+                response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/production/orders/${staff.staffId}`, { headers });
                 break;
             default:
-                response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`,{headers});
+                response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`, { headers });
         }
 
         if (response.status === 204) {
@@ -83,7 +83,7 @@ const RequestPage = () => {
 
     return (
         <div>
-            
+
             <TableComponent requests={requests} />
         </div>
     )

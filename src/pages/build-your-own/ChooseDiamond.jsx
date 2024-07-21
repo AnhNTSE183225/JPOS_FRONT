@@ -103,11 +103,8 @@ const ChooseDiamond = () => {
             console.log(query);
             const response = await axios({
                 method: 'post',
-                url: `${import.meta.env.VITE_jpos_back}/api/diamond/get-diamond-with-price-by-4C`,
-                data: query,
-                headers: {
-                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-                }
+                url: `${import.meta.env.VITE_jpos_back}/public/diamond/get-diamond-with-price-by-4C`,
+                data: query
             });
             if (response.status === 200) {
                 setDiamondList(d => response.data);
