@@ -14,29 +14,24 @@
     color: white;
 }
 
-.history-page th:first-child {
-    border-radius: 10px 0 0 0;
-}
-
-.history-page th:last-child {
-    border-radius: 0 10px 0 0;
-}
-
 .history-page thead {
     position: sticky;
     top: 0;
     z-index: 1;
 }
 
-.history-page .table-head th, .history-page td {
+.history-page .table-head th,
+.history-page td {
     background-clip: padding-box;
     padding: 1rem;
 }
 
-.history-page button {
-    font-weight: 400;
-    text-transform: uppercase;
-    color: white;
+.staffButton {
     background-color: #48AAAD;
-    border-radius: 10px;
+    color: white;
+}
+
+.staffButton:hover {
+    background-color: rgba(72, 170, 173, 70%);
+    color: white;
 }

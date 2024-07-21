@@ -79,33 +79,33 @@ const RegisterPage = () => {
 
     return (
         <div className={`container-fluid ${styles.fullHeight}`}>
-            <div className={`card p-3 ${styles.centerCard}`}>
+            <div className={`card p-3 ${styles.centerCard} rounded-0`}>
                 <div className='mb-3'>
                     <h2>Register</h2>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Username</label>
-                    <textarea style={{resize: 'none'}} value={username} onChange={handleUsername} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}} value={username} onChange={handleUsername} maxLength={255} className="form-control rounded-0" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateUsername.reason}</div>
                 </div>
                 <div className="mb-3">
                     <label className='form-label'>Email</label>
-                    <textarea style={{resize: 'none'}} value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}} value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} className="form-control rounded-0" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateEmail.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Password</label>
-                    <input value={password} onChange={handlePassword} type="password" className='form-control' />
+                    <input value={password} onChange={handlePassword} type="password" className='form-control rounded-0' />
                     <div className="form-text text-danger">{validatePassword.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Name</label>
-                    <textarea style={{resize: 'none'}} value={fullName} onChange={handleFullName} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}} value={fullName} onChange={handleFullName} maxLength={255} className="form-control rounded-0" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateFullName.reason}</div>
                 </div>
                 <div className='mb-3'>
                     <label className='form-label'>Address</label>
-                    <textarea style={{resize: 'none'}}  value={address} onChange={handleAddress} maxLength={255} className="form-control" rows='1' cols='30'></textarea>
+                    <textarea style={{resize: 'none'}}  value={address} onChange={handleAddress} maxLength={255} className="form-control rounded-0" rows='1' cols='30'></textarea>
                     <div className="form-text text-danger">{validateAddress.reason}</div>
                 </div>
                 <div className='mb-3 row'>

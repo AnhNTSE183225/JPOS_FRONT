@@ -117,7 +117,7 @@ const CustomDesignPage = () => {
             }
         }
     }
-
+    
     return (
         <>
             <div className="container">
@@ -127,7 +127,7 @@ const CustomDesignPage = () => {
                         <div>
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
-                                <input type="file" className="form-control mb-3" multiple accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
+                                <input type="file" className="form-control rounded-0 mb-3" multiple accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
                                 <div className={`position-relative`}>
                                     <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft}/></button>
                                     <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length-1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight}/></button>
@@ -162,11 +162,11 @@ const CustomDesignPage = () => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Describe details of what you want</label>
-                                <textarea style={{ resize: "none" }} maxLength={255} className="form-control" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
+                                <textarea style={{ resize: "none" }} maxLength={255} className="form-control rounded-0" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">What's your budget? Minimum value: $500</label>
-                                <input className="form-control" type="number" min={500} value={budget} onChange={(e) => setBudget(e.target.value)} />
+                                <input className="form-control rounded-0" type="number" min={500} value={budget} onChange={(e) => setBudget(e.target.value)} />
                             </div>
                             <div>
                                 <button className={`w-100 ${styles['dark-custom-button']}`} onClick={submitForm}>Submit</button>

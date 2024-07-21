@@ -93,7 +93,7 @@ const LoginPage = () => {
 
     return (
         <div className={`container-fluid d-flex align-items-center justify-content-center ${styles.fullHeight}`}>
-            <div className={`card p-3 mt-3 ${styles.centerCard}`}>
+            <div className={`card p-3 mt-3 ${styles.centerCard} rounded-0`}>
                 <div className="mt-3 mb-3 text-center">
                     <h2 className="fw-bold">LOGIN</h2>
                 </div>
@@ -103,7 +103,7 @@ const LoginPage = () => {
                         value={username}
                         onChange={handleUsername}
                         maxLength={255}
-                        className="form-control"
+                        className="form-control rounded-0"
                         rows="1"
                         cols="30"
                         style={{ resize: 'none' }}
@@ -117,7 +117,7 @@ const LoginPage = () => {
                         value={password}
                         onChange={handlePassword}
                         type="password"
-                        className="form-control"
+                        className="form-control rounded-0"
                         ref={passwordRef}
                         onKeyDown={(e) => handleKeyPress(e, 'password')}
                     />

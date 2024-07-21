@@ -35,13 +35,12 @@ const HistoryPage = () => {
 
     return (
         <div className={`${styles['history-page']}`}>
-            <h1 className='fw-bold'>History</h1>
-            <div className='container-fluid'>
-                <div className="row">
+            <div className='container-fluid p-0'>
+                <div className="row p-0">
                     <div className={`${styles['table-container']}`}>
-                        <table>
+                        <table className='border'>
                             <thead>
-                                <tr className={`${styles['table-head']}`}>
+                                <tr className={`${styles['table-head']} rounded-0`}>
                                     <th>Order ID</th>
                                     <th>Customer Name</th>
                                     <th>Date</th>
@@ -64,8 +63,8 @@ const HistoryPage = () => {
                                             <td>{formatPrice(order.totalAmount)}</td>
                                             <td>Completed</td>
                                             <td>
-                                                <button onClick={() => navigate(`${order.id}`)} className='fs-6'>
-                                                    View details
+                                                <button onClick={() => navigate(`${order.id}`)} className={`btn rounded-0 fs-6 ${styles['staffButton']}`}>
+                                                    VIEW DETAILS
                                                 </button>
                                             </td>
                                         </tr>

@@ -11,6 +11,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import img1 from '../assets/FullLogo.png';
 import img2 from '../assets/carpentry.webp';
+import { fetchOrderStatus } from "../helper_function/EnumFunction";
 
 const AssignColumn = ({ order, fetchOrder }) => {
 
@@ -200,6 +201,7 @@ const OrderDetails = () => {
     const [order, setOrder] = useState(null);
     const [payment, setPayment] = useState(null);
     const [warranty, setWarranty] = useState(null);
+    const [listOrderStatus, setListOrderStatus] = useState([]);
 
 
     const printRef = useRef();
@@ -207,7 +209,7 @@ const OrderDetails = () => {
         content: () => printRef.current,
     })
 
-    const staffType = location.includes("your-orders") ? 'customer' : 'manage';
+    const staffType = location.includes("your-orders") ? 'customer' : location.includes('manage-requests') ? 'manage' : 'staff';
 
     const getWarranty = async () => {
         try {
@@ -233,11 +235,13 @@ const OrderDetails = () => {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
             }
             const response = await axios.get(`${import.meta.env.VITE_jpos_back}/api/sales/order-select/${orderId}`, { headers });
+            const list_order_status = await fetchOrderStatus();
             if (!response.data || response.status == 204) {
                 toast.error(`Error fetching order`);
             } else {
                 //console.log(response.data);
                 setOrder(response.data);
+                setListOrderStatus(list_order_status);
             }
         } catch (error) {
             console.log(error);
@@ -270,7 +274,7 @@ const OrderDetails = () => {
                     'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                 }
             })
-            if(response.status === 200) {
+            if (response.status === 200) {
                 toast.success('Order cancelled successfully');
                 navigate(-1);
             } else {
@@ -327,6 +331,9 @@ const OrderDetails = () => {
             }
         }
     }, [order])
+
+    console.log(payment);
+
     if (order == null) {
         return (
             <>
@@ -444,7 +451,7 @@ const OrderDetails = () => {
                                 )
                                 : <></>
                             }
-                            
+
                             <h5 className={styles.listItem}><span>Quotation price:</span> <span style={{ color: 'red' }}>{order.qdiamondPrice === null ? 'None' : formatPrice(order.qdiamondPrice)}</span></h5>
                             <h5 className={styles.listItem}><span>Order price:</span> <span style={{ color: '#48AAAD' }}>{order.odiamondPrice === null ? 'None' : formatPrice(order.odiamondPrice)}</span></h5>
                             <hr />
@@ -474,71 +481,86 @@ const OrderDetails = () => {
                             <hr /><h5 className={styles.listItem}><span>Tax fee (10% VAT):</span> <span>{order.taxFee === null ? 'None' : formatPrice(order.taxFee)}</span></h5>
                             <h5 className={styles.listItem}><span>TOTAL PRICE {formatDate(order.qdate)}:</span> <span style={{ color: '#48AAAD' }}>{order.totalAmount === null ? "None" : formatPrice(order.totalAmount)}</span></h5>
                             {
-                                payment == null
-                                    ? <Button onClick={cancelOrder} className="border border-danger text-danger mt-3 d-flex w-100">CANCEL ORDER</Button>
+                                payment != null
+                                    ? <div className="border-bottom">
+                                        <h4 className="text-center fw-bold mb-4 mt-4">PAYMENT INFORMATION</h4><hr />
+                                        <p className={styles.listItem}><span>Payment ID:</span> <span>#{('000' + payment.id).slice(-4)}</span></p>
+                                        <p className={styles.listItem}><span>Payment date:</span> <span>{formatDate(payment.paymentDate)}</span></p>
+                                        <p className={styles.listItem}><span>Payment method:</span> <span>{payment.paymentMethod}</span></p>
+                                        <p className={styles.listItem}><span>Paid:</span> <span>{formatPrice(payment.amountPaid)}</span></p>
+                                        <p className={styles.listItem}><span>Total:</span> <span>{formatPrice(payment.amountTotal)}</span></p>
+                                        <p className={styles.listItem}><span>Needs to pay:</span> <span>{formatPrice(payment.amountTotal-payment.amountPaid)}</span></p>
+                                        <p className={styles.listItem}><span>Payment status:</span> <span>{payment.paymentStatus}</span></p>
+                                    </div>
                                     : <>
+
                                     </>
+                            }
+                            {
+                                listOrderStatus.slice(7).includes(order.status) || staffType == 'staff'
+                                    ? <></>
+                                    : <button onClick={cancelOrder} className="btn btn-danger rounded-0 w-100">Cancel Order</button>
                             }
                             {
                                 warranty !== null
                                     ? <div ref={printRef} className="container mt-5">
-                                    <div className="row justify-content-center mb-4">
-                                      <div className="text-center">
-                                        <img src={img1} className="img-fluid w-25" alt="Logo" />
-                                      </div>
+                                        <div className="row justify-content-center mb-4">
+                                            <div className="text-center">
+                                                <img src={img1} className="img-fluid w-25" alt="Logo" />
+                                            </div>
+                                        </div>
+                                        <h4 className="text-center fw-bold mb-3 fs-4">WARRANTY INFORMATION</h4>
+                                        <hr />
+                                        <h5 className='fw-semibold mb-4 fs-5'>CUSTOMER INFORMATION</h5>
+
+                                        <div className='fs-6'>
+                                            <p className='d-flex justify-content-between mb-2'>
+                                                <span className="fw-bold">Identification:</span>
+                                                <span>#{('000' + (warranty.customer.customerId)).slice(-4)}</span>
+                                            </p>
+                                            <p className='d-flex justify-content-between mb-2'>
+                                                <span className="fw-bold">Name:</span>
+                                                <span>{warranty.customer.name}</span>
+                                            </p>
+                                            <p className='d-flex justify-content-between mb-2'>
+                                                <span className="fw-bold">Address:</span>
+                                                <span>{warranty.customer.address}</span>
+                                            </p>
+                                            <p className='d-flex justify-content-between mb-2'>
+                                                <span className="fw-bold">Email:</span>
+                                                <span>{warranty.customer.account.email}</span>
+                                            </p>
+                                        </div><hr />
+
+                                        <h5 className='fw-semibold mt-5 mb-4 fs-5'>PRODUCT INFORMATION</h5>
+                                        <div className='fs-6'>
+                                            <p className="row">
+                                                <span className="col fw-bold">Product ID:</span>
+                                                <span className="col text-end">#{('000' + (warranty.product.productId)).slice(-4)}</span>
+                                            </p>
+                                            <p className="row">
+                                                <span className="col fw-bold">Product Name:</span>
+                                                <span className="col text-end">{warranty.product.productName}</span>
+                                            </p>
+                                        </div><hr />
+
+                                        <h5 className='fw-semibold mt-5 mb-4 fs-5'>EXTRA</h5>
+                                        <div className='fs-6'>
+                                            <p className='d-flex justify-content-between mb-2'>
+                                                <span className="fw-bold">Purchase date:</span>
+                                                <span>{formatDate(warranty.purchaseDate)}</span>
+                                            </p>
+                                            <p className='d-flex justify-content-between mb-2'>
+                                                <span className="fw-bold">End of support date:</span>
+                                                <span>{formatDate(warranty.endOfSupportDate)}</span>
+                                            </p>
+
+                                        </div><hr />
+                                        <div className="text-center">
+                                            <img src={img2} className="img-fluid w-25" alt="Logo" />
+                                        </div>
                                     </div>
-                                    <h4 className="text-center fw-bold mb-3 fs-4">WARRANTY INFORMATION</h4>
-                                    <hr />
-                                    <h5 className='fw-semibold mb-4 fs-5'>CUSTOMER INFORMATION</h5>
-                                    
-                                    <div className='fs-6'>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Identification:</span>
-                                        <span>#{('000' + (warranty.customer.customerId)).slice(-4)}</span>
-                                      </p>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Name:</span>
-                                        <span>{warranty.customer.name}</span>
-                                      </p>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Address:</span>
-                                        <span>{warranty.customer.address}</span>
-                                      </p>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Email:</span>
-                                        <span>{warranty.customer.account.email}</span>
-                                      </p>
-                                    </div><hr />
-                                    
-                                    <h5 className='fw-semibold mt-5 mb-4 fs-5'>PRODUCT INFORMATION</h5>
-                                    <div className='fs-6'>
-                                      <p className="row">
-                                        <span className="col fw-bold">Product ID:</span>
-                                        <span className="col text-end">#{('000' + (warranty.product.productId)).slice(-4)}</span>
-                                      </p>
-                                      <p className="row">
-                                        <span className="col fw-bold">Product Name:</span>
-                                        <span className="col text-end">{warranty.product.productName}</span>
-                                      </p>
-                                    </div><hr />
-                                    
-                                    <h5 className='fw-semibold mt-5 mb-4 fs-5'>EXTRA</h5>
-                                    <div className='fs-6'>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">Purchase date:</span>
-                                        <span>{formatDate(warranty.purchaseDate)}</span>
-                                      </p>
-                                      <p className='d-flex justify-content-between mb-2'>
-                                        <span className="fw-bold">End of support date:</span>
-                                        <span>{formatDate(warranty.endOfSupportDate)}</span>
-                                      </p>
-                                      
-                                    </div><hr />
-                                    <div className="text-center">
-                                        <img src={img2} className="img-fluid w-25" alt="Logo" />
-                                      </div>
-                                  </div>
-                    
+
                                     : <></>
                             }
                             {
