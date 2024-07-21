@@ -1,9 +1,6 @@
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 20px;
-    margin: 0 2vw;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
@@ -16,9 +13,9 @@
     padding: 20px;
     box-sizing: border-box;
 }
-.image-container {
+/* .image-container {
     top: -10%;
-}
+} */
 .diamondImage {
     margin-bottom: 0;
     width: auto;
@@ -43,17 +40,19 @@
 
 .button {
     padding: 10px 20px;
-    background-color: #48AAAD;
+    background-color: black;
     color: white;
-    border: none;
+    border: 1px solid black;
+    
     cursor: pointer;
     width: 100%;
     transition: 0.3s;
 }
 
 .button:hover {
-    background-color: #327c7f;
-    transform: scale(0.98);
+    background-color: transparent;
+    color: black;
+    transform: scale(0.97);
 }
 /* Media Queries */
 @media (max-width: 768px) {

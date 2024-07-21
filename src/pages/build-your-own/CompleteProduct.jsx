@@ -122,70 +122,73 @@ const CompleteProduct = () => {
         <>
             <div className='container'>
                 <div className='row'>
-                    <h1 className='text-center' style={{ color: '#48AAAD', fontFamily: 'Cambria' }}>MY BIJOUX ORDER</h1>
+                    <h1 className='text-center mb-4 mt-5' style={{ fontFamily: 'Cambria' }}>MY BIJOUX ORDER</h1>
                 </div>
-                <div className={`row ${styles.container}`}>
-                    <div className={`col-md ${styles.imageSection}`}>
-                        <div className='row position-relative'>
-                            <div className={`${styles['image-container']} position-absolute left-0`} style={{ height: '20%' }}>
-                                {selectedDiamonds.map(d =>
-                                    <img key={d.diamondId} src={d.image.split("|")[0]} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
-                                )}
+                <div className='row mt-5'>
+                    <div className={`col-md-8 ${styles.container}`} style={{backgroundColor: 'aliceblue', padding: '2rem'}}>
+                        <div className={`${styles.imageSection}`}>
+                            <div className='row position-relative'>
+                                <div className={`${styles['image-container']} position-absolute left-0`} style={{height: '20%' }}>
+                                    {selectedDiamonds.map(d =>
+                                        <img key={d.diamondId} src={d.image.split("|")[0]} alt="Diamond" className={`${styles['diamondImage']} p-0 me-1`} />
+                                    )}
+                                </div>
+                                <img src={selectedProduct.designFile} className={styles.productImage} alt="Product Design" />
                             </div>
-                            <img src={selectedProduct.designFile} className={styles.productImage} alt="Product Design" />
+                        </div>
+                        <div className={`${styles.detailsSection}`}>
+
+                            <p className='fs-4' style={{}}>{selectedProduct.designName} in {selectedProduct.selectedShell.shellName}</p>
+                            <br />
+                            <p className='fs-5'><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></p>
+                            <ul>
+                                {selectedDiamonds.map(d =>
+                                    <li key={d.diamondId} style={{ listStyle: 'none' }}>
+                                        {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
+
+                                    </li>
+
+                                )}
+                            </ul>
+                            <p className='fs-5'><FontAwesomeIcon icon={faRing} /> <i>Materials</i></p>
+                            <ul>
+                                {
+                                    materials.map(m =>
+                                        <li key={m.material.materialId} style={{ listStyle: 'none' }}>
+                                            {m.material.materialName} - {m.weight} carat
+                                        </li>
+                                    )
+                                }
+                            </ul>
+
+                            <p className='fw-bold fs-5 mt-4' style={{display: 'flex', justifyContent: 'space-between' }}>
+                                <span>Product price:</span>
+                                <span style={{color: '#48AAAD'}}>
+                                    {estimatedPrice === null
+                                    ? 'Estimating price...'
+                                    : formatPrice(estimatedPrice)
+                                }
+                                </span>
+                            </p>
+
                         </div>
                     </div>
-                    <div className={`col-md ${styles.detailsSection}`}>
+                    <div className='col-md-4'>
+                        <div className={`${styles[`summary`]}`}>
+                            <p className="fs-5 fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</p>
 
-                        <h4 className='fs-2' style={{ color: '#48AAAD' }}>{selectedProduct.designName} in {selectedProduct.selectedShell.shellName}</h4>
-                        <br />
-                        <h5><FontAwesomeIcon icon={faGem} /> <i>Diamonds</i></h5>
-                        <ul>
-                            {selectedDiamonds.map(d =>
-                                <li key={d.diamondId} style={{ listStyle: 'none' }}>
-                                    {d.caratWeight} Carat {d.diamondName} {d.shape} Shape <br /> {d.cut} Cut {d.clarity} Clarity {d.color} Color <br /> Stock#:{d.diamondCode}
-
-                                </li>
-
-                            )}
-                        </ul>
-                        <h5><FontAwesomeIcon icon={faRing} /> <i>Materials</i></h5>
-                        <ul>
-                            {
-                                materials.map(m =>
-                                    <li key={m.material.materialId} style={{ listStyle: 'none' }}>
-                                        {m.material.materialName} - {m.weight} carat
-                                    </li>
-                                )
-                            }
-                        </ul>
-                        <p className='fw-semibold fst-italic fs-5'>Product price: </p>
-                        <h5 className='fw-bold text' style={{ color: '#48AAAD', marginLeft: '1vw' }}>
-                            {estimatedPrice === null
-                                ? 'Estimating price...'
-                                : formatPrice(estimatedPrice)
-                            }
-                        </h5>
-
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-md-6'>
-                    </div>
-                    <div className={`col-md-6 ${styles[`summary`]}`}>
-                        <h4 className="fst-italic fw-semibold "><FontAwesomeIcon icon={faClipboardList} /> SUMMARY</h4>
-
-                        <div>
                             <div>
-                                <div style={{ marginLeft: '1vw' }}>
-                                    <p className='fs-6'>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
-                                    <p className='fs-6'>US & Int. Shipping: Free (Premium Shipping)</p>
-                                    <p className='fs-6'>Taxes/Duties Estimate: 10% VAT</p>
-                                </div>
-                                <hr />
-                                <p className='fs-4'>ESTIMATED TOTAL: <span style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</span></p>
-                                <div className='row'>
-                                    <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay 30% - {estimatedPrice !== null ? formatPrice(estimatedPrice * 1.1 * 0.3) : 'Estimating price...'}</button></div>
+                                <div>
+                                    <div style={{ marginLeft: '1vw' }}>
+                                        <p className='fs-6'>Subtotal: {estimatedPrice ? formatPrice(estimatedPrice) : 'Estimating price...'}</p>
+                                        <p className='fs-6'>US & Int. Shipping: Free (Premium Shipping)</p>
+                                        <p className='fs-6'>Taxes/Duties Estimate: 10% VAT</p>
+                                    </div>
+                                    <hr />
+                                    <p className='fs-4'>ESTIMATED TOTAL: <span style={{ color: '#48AAAD', marginLeft: '1vw', marginTop: '1vw' }}>{(estimatedPrice + estimatedPrice * 0.1) ? formatPrice(estimatedPrice + estimatedPrice * 0.1) : 'Estimating price...'}</span></p>
+                                    <div className='row'>
+                                        <div className='col d-flex'><button onClick={clickPay} className={styles.button}>Pay 30% - {estimatedPrice !== null ? formatPrice(estimatedPrice * 1.1 * 0.3) : 'Estimating price...'}</button></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
