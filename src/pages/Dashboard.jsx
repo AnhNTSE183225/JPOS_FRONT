@@ -5,7 +5,7 @@ import { faChartLine, faUsers, faShoppingCart, faDollarSign } from '@fortawesome
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../css/Dashboard.module.css';
 import axios from 'axios';
-import { formatPrice } from '/src/helper_function/ConvertFunction';
+import { formatPrice, formatDate, formatDateOnly } from '/src/helper_function/ConvertFunction';
 import useDocumentTitle from "../components/Title";
 
 const PopularProducts = () => {
@@ -58,6 +58,9 @@ const DashboardComponent = () => {
     const chartInstanceRef = useRef(null);
     const customBuildChartInstanceRef = useRef(null);
 
+    const lineGraphChartRef = useRef(null);
+    const lineGraphInstanceRef = useRef(null);
+
     const [stats, setStats] = useState({
         noCustomers: 0,
         noOrders: 0,
@@ -66,6 +69,25 @@ const DashboardComponent = () => {
     });
     const [salesReport, setSalesReport] = useState([0, 0, 0, 0]);
     const [orderType, setOrderType] = useState([0, 0]);
+    const [listPayment, setListPayment] = useState([]);
+    const [timeRange, setTimeRange] = useState(5);
+
+    const fetchPayment = async () => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${import.meta.env.VITE_jpos_back}/stats/get-payment-by-date`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if (response.status === 200) {
+                setListPayment(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const fetchData = async () => {
         try {
@@ -106,7 +128,46 @@ const DashboardComponent = () => {
         }
     };
 
-    
+    const startLineGraph = () => {
+        const lineGraphCTX = lineGraphChartRef.current.getContext("2d");
+
+        if (lineGraphInstanceRef.current) {
+            lineGraphInstanceRef.current.destroy();
+        }
+
+        let raw_data = [...listPayment].sort((a, b) => a[0] - a[1]);
+        let processed_data = []
+        let sum = 0
+        for (let i = 0; i < raw_data.length; i++) {
+            sum += raw_data[i][1];
+            processed_data = [...processed_data, {
+                date: formatDateOnly(raw_data[i][0]),
+                value: sum
+            }]
+        }
+
+        lineGraphInstanceRef.current = new Chart(lineGraphCTX, {
+            type: 'line',
+            data: {
+                labels: processed_data.map(d => d.date),
+                datasets: [
+                    {
+                        label: "Revenue",
+                        data: processed_data.map(d => d.value),
+                        borderColor: "#48AAAD",
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Chart JS Line Chart Example'
+                }
+            }
+        });
+
+    }
 
     const startGraph = () => {
         const accessoriesCtx = accessoriesChartRef.current.getContext('2d');
@@ -236,7 +297,9 @@ const DashboardComponent = () => {
         fetchSalesReport();
         startGraph();
         startCustomBuildGraph();
+        startLineGraph();
         fetchOrderType();
+        fetchPayment();
 
         return () => {
             if (chartInstanceRef.current) {
@@ -255,6 +318,10 @@ const DashboardComponent = () => {
     useEffect(() => {
         startCustomBuildGraph();
     }, [orderType])
+
+    useEffect(() => {
+        startLineGraph();
+    }, [listPayment])
 
     return (
         <div className="container-fluid">
@@ -306,7 +373,9 @@ const DashboardComponent = () => {
                 </div>
             </div>
             <div className="row">
-
+                <div className="col">
+                    <canvas ref={lineGraphChartRef}></canvas>
+                </div>
             </div>
         </div>
     );

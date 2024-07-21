@@ -178,7 +178,15 @@ const SettingDetails = () => {
                 <div className={styles.container} id={styles["setting-details"]}>
                     <div className={styles.content}>
                         <div className={`col-md-6 ${styles["image-section"]}`}>
-                            <img src={productDesign.designFile} alt="Ring" />
+                            {
+                                selectedShell != null
+                                    ? selectedShell.image != null
+                                        ? selectedShell.image.length > 0
+                                            ? <img src={selectedShell.image} />
+                                            : <img src={productDesign.designFile} />
+                                        : <img src={productDesign.designFile} />
+                                    : <img src={productDesign.designFile} />
+                            }
                             <div className={styles["more-info-section"]}>
                                 <div className={styles["toggle-button"]} onClick={toggleMoreInfo}>
                                     <h5>{showMoreInfo ? 'Less Information' : 'More Information'}</h5>

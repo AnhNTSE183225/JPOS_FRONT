@@ -69,6 +69,46 @@ const ManageDesigns = () => {
         }
     }
 
+    const addDesign = async () => {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${import.meta.env.VITE_jpos_back}/api/product-designs/add`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                },
+                data: {
+                    designFile: 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=',
+                    designName: 'New Design',
+                    designType: listDesignType[0],
+                    productShellDesigns: []
+                }
+            })
+            if (response.status === 200) {
+                setRefresh(r => !r);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const deleteDesign = async (id) => {
+        try {
+            const response = await axios({
+                method: 'delete',
+                url: `${import.meta.env.VITE_jpos_back}/api/product-designs/${id}`,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+            if (response.status === 200) {
+                setRefresh(r => !r);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const UpdateDialog = () => {
         const id = activeDesign.productDesignId;
         const [designFile, setDesignFile] = useState(activeDesign.designFile);
@@ -212,6 +252,21 @@ const ManageDesigns = () => {
                                                 </div>
                                                 <div className="row mb-1">
                                                     <div className="col">
+                                                        <label className="form-label">Shell Name</label>
+                                                        <input className="form-control rounded-0" disabled={activeShell !== index} type="text" value={shell.shellName} onChange={(e) => {
+                                                            let value = e.target.value;
+                                                            if (value == null || value.length <= 0) {
+                                                                toast.error("Name cannot be empty");
+                                                            } else {
+                                                                const shell_list = [...productShellDesigns];
+                                                                shell_list[index].shellName = value;
+                                                                setProductShellDesigns(shell_list);
+                                                            }
+                                                        }} />
+                                                    </div>
+                                                </div>
+                                                <div className="row mb-1">
+                                                    <div className="col">
                                                         <label className="form-label">Diamond quantity</label>
                                                         <input disabled={activeShell !== index} type="number" min={1} value={shell.diamondQuantity} onChange={(e) => {
                                                             try {
@@ -294,7 +349,7 @@ const ManageDesigns = () => {
                                                             } catch (error) {
                                                                 console.log(error);
                                                             }
-                                                        }}/>
+                                                        }} />
                                                     </div>
                                                 </div>
                                                 <div className="row mb-1">
@@ -369,6 +424,14 @@ const ManageDesigns = () => {
                                 <button onClick={addNewShell} className="btn btn-success rounded-0 w-100">Add a new shell</button>
                             </div>
                         </div>
+                        <div className="row mt-5 mb-3">
+                            <div className="col">
+                                <button className="btn btn-danger rounded-0 w-100" onClick={() => {
+                                    deleteDesign(id);
+                                    closeUpdateDialog();
+                                }}>Delete this design</button>
+                            </div>
+                        </div>
                     </div>
                 </DialogContent>
                 <DialogActions>
@@ -403,7 +466,7 @@ const ManageDesigns = () => {
                     <input onChange={(e) => setSearch(e.target.value)} placeholder="Search for design... &#128270;" className="form-control rounded-0" type="text" />
                 </div>
                 <div className="col">
-                    <button className={`btn rounded-0 ${styles['staffButton']}`}>Add new design</button>
+                    <button onClick={addDesign} className={`btn rounded-0 ${styles['staffButton']}`}>Add new design</button>
                 </div>
             </div>
             <div className="row mb-3">
@@ -422,7 +485,7 @@ const ManageDesigns = () => {
                         <tbody>
                             {
                                 queryList != null
-                                    ? queryList.map((design, index) => (
+                                    ? queryList.sort((a, b) => b.productDesignId - a.productDesignId).map((design, index) => (
                                         <tr key={index}>
                                             <td className="text-center align-content-lg-center">{design.productDesignId}</td>
                                             <td className="align-content-lg-center">{design.designName}</td>
