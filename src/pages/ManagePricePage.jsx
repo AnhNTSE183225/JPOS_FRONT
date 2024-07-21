@@ -225,7 +225,7 @@ const ManagePricePage = () => {
                         </select>
                     </div>
                     <div className="input-group">
-                        <button onClick={createNewPrice} className={`btn btn-primary ${styles['select-label']} rounded-0`}>Create new price</button>
+                        <button onClick={createNewPrice} className={`btn btn-primary ${styles['manage-price-button']} ${styles['select-label']} rounded-0`}>Create new price</button>
                         <span className="input-group-text rounded-0">$</span>
                         <input type="number" min={0.01} step={0.01} className="form-control rounded-0" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} />
                     </div>
@@ -276,7 +276,7 @@ const ManagePricePage = () => {
                             }
                         </select>
                     </div>
-                    <button className="btn btn-primary rounded-0" onClick={resetFilters}>Reset filters</button>
+                    <button className={`btn btn-primary rounded-0 ${styles['manage-price-button']}`} onClick={resetFilters}>Reset filters</button>
                 </div>
             </div>
             <div className="row mb-3">
@@ -325,11 +325,11 @@ const ManagePricePage = () => {
                                                                 : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control rounded-0 text-end" disabled />
                                                             : <input min={0.01} step={0.05} value={value.price} type="number" className="form-control rounded-0 text-end" disabled />
                                                     }
-                                                    <button onClick={() => setSelectedPrice(value)} className="btn btn-primary rounded-0"> <FontAwesomeIcon icon={faPenToSquare} /> </button>
+                                                    <button onClick={() => setSelectedPrice(value)} className={`btn btn-primary rounded-0 ${styles['manage-price-button']}`}> <FontAwesomeIcon icon={faPenToSquare} /> </button>
                                                     {
                                                         selectedPrice !== undefined
                                                             ? selectedPrice.diamondPriceId == value.diamondPriceId
-                                                                ? <button onClick={updatePrice} className="btn btn-primary rounded-0"> <FontAwesomeIcon icon={faFloppyDisk} /> </button>
+                                                                ? <button onClick={updatePrice} className={`btn btn-primary rounded-0 ${styles['manage-price-button']}`}> <FontAwesomeIcon icon={faFloppyDisk} /> </button>
                                                                 : <></>
                                                             : <></>
                                                     }

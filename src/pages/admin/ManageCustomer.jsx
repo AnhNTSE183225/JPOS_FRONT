@@ -88,9 +88,6 @@ const ManageCustomer = () => {
                     }
                 }
             } else {
-                if (!validateUsername.result) {
-                    toast.error('Username: ' + validateUsername.reason);
-                }
                 if (!validateName.result) {
                     toast.error('Name: ' + validateName.reason);
                 }

@@ -18,12 +18,12 @@
     text-transform: capitalize;
 }
 
-#manage-price button {
+.manage-price-button {
     background-color: #48AAAD;
     border-color: #48AAAD;
 }
 
-#manage-price button:hover {
+.manage-price-button:hover {
     background-color: #409396;
 }
 
