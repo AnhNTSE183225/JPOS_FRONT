@@ -195,7 +195,9 @@ const DiamondDetails = () => {
                                     <p className={styles.specItem}><span>Clarity:</span><span>{diamond.clarity}</span></p>
                                     <p className={styles.specItem}><span>Carat Weight:</span><span>{diamond.caratWeight}</span></p>
                                     <p className={styles.specItem}><span>Polish:</span><span>{diamond.polish}</span></p>
-                                    <p className={styles.specItem}><span>Symmetry</span><span>{diamond.symmetry}</span></p>
+                                    <p className={styles.specItem}><span>Symmetry:</span><span>{diamond.symmetry}</span></p>
+                                    <p className={styles.specItem}><span>Fluorescence:</span><span>{diamond.fluorescence}</span></p>
+                                    <p className={styles.specItem}><span>Origin:</span><span>{diamond.origin}</span></p>
                                 </div>
 
                             </div>
