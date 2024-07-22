@@ -48,7 +48,7 @@ const MaterialPriceListPage = () => {
                     <table className="table table-bordered text-center">
                         <thead>
                             <tr>
-                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRECIOUS MATERIAL <span style={{ fontWeight: "normal" }}>(carat)</span></th>
+                                <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRECIOUS MATERIAL <span style={{ fontWeight: "normal" }}>(g)</span></th>
                                 <th style={{ backgroundColor: "#48AAAD", color: "white" }}>PRICE <span style={{ fontWeight: "normal" }}>(USD)</span></th>
                             </tr>
                         </thead>

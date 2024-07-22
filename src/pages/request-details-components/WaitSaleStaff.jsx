@@ -56,7 +56,7 @@ const WaitSaleStaff = ({ order }) => {
     const [beginColor, setBeginColor] = useState(0);
     const [endColor, setEndColor] = useState(colors.length - 1);
 
-    const clarities = ['I3','I2','I1','SI3','SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
+    const clarities = ['I3', 'I2', 'I1', 'SI3', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF', 'FL'];
     const [beginClarity, setBeginClarity] = useState(0);
     const [endClarity, setEndClarity] = useState(clarities.length - 1);
 
@@ -92,7 +92,7 @@ const WaitSaleStaff = ({ order }) => {
                             chosenDiamonds.find(d => d.id == diamond.diamond.diamondId) == null
                                 ? <>
                                     <button
-                                        className='btn btn-success'
+                                        className='btn btn-success rounded-0'
                                         onClick={() => {
                                             setChosenDiamonds(l => [...l,
                                             {
@@ -109,7 +109,7 @@ const WaitSaleStaff = ({ order }) => {
                                 </>
                                 : <>
                                     <button
-                                        className='btn btn-danger'
+                                        className='btn btn-danger rounded-0'
                                         onClick={() => {
                                             setChosenDiamonds(l => l.filter(entry => entry.id !== diamond.diamond.diamondId));
                                             setTotalDiamondPrice(p => p - diamond.latestPrice);
@@ -333,11 +333,11 @@ const WaitSaleStaff = ({ order }) => {
                         <p className='fs-5 fw-semibold'>
                             Description
                         </p>
-                        <textarea maxLength={255} readOnly value={order.description} style={{ resize: "none" }} className="form-control mb-3 px-3 fs-6" rows='5' cols='30' aria-label="description"></textarea>
+                        <textarea readOnly value={order.description.trim()} style={{ resize: "none" }} className="form-control mb-3 px-3 fs-6 rounded-0" rows='10' cols='30' aria-label="description"></textarea>
                         <p className='fs-5 fw-semibold'>
                             Budget
                         </p>
-                        <p className="px-3 fs-6">{order.budget}</p>
+                        <p className="px-3 fs-6">{formatPrice(order.budget)}</p>
                     </div>
                     <div className='col-md'>
                         <p className='fs-5 fw-semibold'>
@@ -346,21 +346,23 @@ const WaitSaleStaff = ({ order }) => {
                         {
                             order.designFile === null
                                 ? <>
-                                    <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                    <img className='img-fluid d-block mx-auto' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: 'auto', height: '400px' }} />
                                 </>
                                 : <>
-                                    <div className="position-relative">
-                                        <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                        <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                        {
-                                            order.designFile.split("|").map((image, index) => {
-                                                if (index == activeReferenceImage) {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                } else {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                }
-                                            })
-                                        }
+                                    <div className="d-flex justify-content-between border">
+                                        <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                        <div style={{height: '400px'}}>
+                                            {
+                                                order.designFile.split("|").map((image, index) => {
+                                                    if (index == activeReferenceImage) {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                                    } else {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                        <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                     </div>
                                 </>
                         }
@@ -374,12 +376,12 @@ const WaitSaleStaff = ({ order }) => {
                         <p className='fs-5 fw-semibold'>Basic information</p>
                         <div className="row mb-2">
                             <div className="col-md fs-6 ms-4">Product name</div>
-                            <div className="col-md"><input className='form-control' type='text' placeholder='Enter name...' value={productName} onChange={(e) => setProductName(e.target.value)} /></div>
+                            <div className="col-md"><input className='form-control rounded-0' type='text' placeholder='Enter name...' value={productName} onChange={(e) => setProductName(e.target.value)} /></div>
                         </div>
                         <div className="row mb-2">
                             <div className="col-md fs-6 ms-4">Product type</div>
                             <div className="col-md">
-                                <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select">
+                                <select value={productType} onChange={(e) => setProductType(e.target.value)} className="form-select rounded-0">
                                     <option value=''>Choose product type</option>
                                     {['ring', 'necklace', 'earrings', 'bracelets'].map(value => (<option key={value} value={value}>{value}</option>))}
                                 </select>
@@ -389,7 +391,7 @@ const WaitSaleStaff = ({ order }) => {
 
                         <div className="row mb-2">
                             <div className="col-md fs-6 ms-4">Shape</div>
-                            <select value={shape} onChange={(e) => setShape(e.target.value)} className='form-select col mx-3 fs-6 ms-4'>
+                            <select value={shape} onChange={(e) => setShape(e.target.value)} className='form-select rounded-0 col mx-3 fs-6 ms-4'>
                                 <option value="all">All</option>
                                 {shapes.map((value, index) =>
                                     <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1)}</option>
@@ -399,7 +401,7 @@ const WaitSaleStaff = ({ order }) => {
 
                         <div className="row mb-2">
                             <div className="col-md fs-6 ms-4">Origin</div>
-                            <select value={origin} onChange={(e) => setOrigin(e.target.value)} className='form-select col mx-3 fs-6 ms-4'>
+                            <select value={origin} onChange={(e) => setOrigin(e.target.value)} className='form-select rounded-0 col mx-3 fs-6 ms-4'>
                                 {origins.map((value, index) =>
                                     <option key={index} value={value}>{value.charAt(0).toUpperCase() + value.slice(1).toLowerCase().replaceAll("_", " ")}</option>
                                 )}
@@ -562,7 +564,7 @@ const WaitSaleStaff = ({ order }) => {
                             Material
                         </p>
                         <div className="col-md mb-2">
-                            <select value={currentMaterial} onChange={handleMaterial} className="form-select">
+                            <select value={currentMaterial} onChange={handleMaterial} className="form-select rounded-0">
                                 <option value=''>Choose material</option>
                                 {materialList.map(
                                     material => (
@@ -572,14 +574,14 @@ const WaitSaleStaff = ({ order }) => {
                             </select>
                         </div>
                         <p className='fs-5 fw-semibold'>
-                            Weight
+                            Weight (g)
                         </p>
                         <div className="col-md mb-2">
                             <input
                                 value={materialWeight}
                                 onChange={handleMaterialWeight}
                                 type="number"
-                                className="form-control"
+                                className="form-control rounded-0"
                                 id="floatingInputValue"
                                 placeholder="0.0"
                                 step="0.1"
@@ -628,7 +630,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="form-floating col-md mb-2">
                             <input
                                 type="number"
-                                className="form-control"
+                                className="form-control rounded-0"
                                 id="floatingInputValue"
                                 placeholder="1.0"
                                 value={extraPrice.diamond}
@@ -643,7 +645,7 @@ const WaitSaleStaff = ({ order }) => {
                         <div className="form-floating col-md mb-2">
                             <input
                                 type="number"
-                                className="form-control"
+                                className="form-control rounded-0"
                                 id="floatingInputValue"
                                 placeholder="1.0"
                                 value={extraPrice.material}
@@ -668,7 +670,7 @@ const WaitSaleStaff = ({ order }) => {
                         <form className="form-floating col-md mb-2">
                             <input
                                 type="number"
-                                className="form-control"
+                                className="form-control rounded-0"
                                 id="floatingInputValue"
                                 placeholder="1.0"
                                 value={extraPrice.production}
@@ -688,7 +690,7 @@ const WaitSaleStaff = ({ order }) => {
                         <form className="form-floating col-md mb-2">
                             <input
                                 type="number"
-                                className="form-control"
+                                className="form-control rounded-0"
                                 id="floatingInputValue"
                                 placeholder="1.0"
                                 step="0.1"
@@ -711,7 +713,7 @@ const WaitSaleStaff = ({ order }) => {
                     </div>
                     {
                         processing
-                            ? <button className="btn btn-secondary" type="button" disabled>
+                            ? <button className={` w-100 ${styles['custom-button']}`} type="button" disabled>
                                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                 <span role="status">Loading...</span>
                             </button>

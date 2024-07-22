@@ -28,13 +28,18 @@ const CustomDesignPage = () => {
 
     const [activeImage, setActiveImage] = useState(0);
 
-    useDocumentTitle("Custom Your Own Design");
+    useDocumentTitle("Design Your Own Jewelry");
 
     const handleDescription = (event) => {
         setDescription(event.target.value);
     }
 
     const uploadImages = async () => {
+        if (sessionStorage.getItem('customer') == null) {
+            toast.info(`Please sign in to continue`);
+            navigate("/login");
+            return;
+        }
         setImageUrls([]);
         setProcessing(true);
         try {
@@ -45,7 +50,7 @@ const CustomDesignPage = () => {
                     const headers = {
                         'Authorization': `Bearer ${sessionStorage.getItem('token')}`
                     }
-                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData, {headers});
+                    const response = await axios.post(`${import.meta.env.VITE_jpos_back}/api/upload`, formData, { headers });
                     if (!response.data || response.status === 204) {
                         throw new Error("Upload file failed. Backend fail");
                     }
@@ -117,7 +122,7 @@ const CustomDesignPage = () => {
             }
         }
     }
-    
+
     return (
         <>
             <div className="container">
@@ -128,41 +133,39 @@ const CustomDesignPage = () => {
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
                                 <input type="file" className="form-control rounded-0 mb-3" multiple accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
-                                <div className={`position-relative`}>
-                                    <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft}/></button>
-                                    <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length-1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight}/></button>
-                                    {
-                                        imageUrls.length > 0
-                                            ? imageUrls.map((image, index) => {
-                                                if (activeImage == index) {
-                                                    return (
-                                                        <div className="d-flex justify-content-center align-items-center mb-3">
-                                                            <img key={index} src={image} crossOrigin="anonymous" style={{maxWidth: "35rem", height: "auto"}} />
-                                                        </div>
-                                                    )
-                                                } else {
-                                                    return (
-                                                        <div className="d-flex justify-content-center align-items-center mb-3">
-                                                            <img key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
-                                                        </div>
-                                                    )
-                                                }
-                                            })
-                                            : <p>URL: Not provided</p>
-                                    }
+                                <div className="d-flex justify-content-between align-items-center border mb-3">
+                                    <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                    <div style={{ height: '400px', width: '400px' }}>
+                                        {
+                                            imageUrls.length > 0
+                                                ? imageUrls.map((image, index) => {
+                                                    if (activeImage == index) {
+                                                        return (
+                                                            <img className="img-fluid" key={index} src={image} crossOrigin="anonymous" style={{ width: 'auto', height: "100%" }} />
+                                                        )
+                                                    } else {
+                                                        return (
+                                                            <img className="img-fluid" key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
+                                                        )
+                                                    }
+                                                })
+                                                : <p className="m-3">Image Not provided</p>
+                                        }
+                                    </div>
+                                    <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                 </div>
                                 {
                                     processing
-                                        ? < button className={`w-100 ${styles['custom-button']}`} style={{ border: "none"}} type="button" disabled>
+                                        ? < button className={`w-100 ${styles['custom-button']}`} style={{ border: "none" }} type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                             <span role="status">Loading...</span>
                                         </button>
-                                        : <button className={`w-100 ${styles['custom-button']}`} style={{ borderColor: '#48AAAD'}} onClick={uploadImages} >Upload image</button>
+                                        : <button className={`w-100 ${styles['custom-button']}`} style={{ borderColor: '#48AAAD' }} onClick={uploadImages} >Upload image</button>
                                 }
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Describe details of what you want</label>
-                                <textarea style={{ resize: "none" }} maxLength={255} className="form-control rounded-0" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
+                                <textarea style={{ resize: "none" }} className="form-control rounded-0" value={description} onChange={handleDescription} rows='5' cols='30' aria-label="description"></textarea>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">What's your budget? Minimum value: $500</label>

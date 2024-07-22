@@ -42,7 +42,7 @@ const CustomerOrdersPage = () => {
     return (
         <div className={`${styles['request-page']}`}>
             <h1 className='text-center mb-4'>MY ORDERS</h1>
-            <div className='container-fluid' style={{padding: '0 3rem'}}>
+            <div className='container-fluid' style={{ padding: '0 3rem' }}>
                 <div className="row">
                     <div className={`${styles['table-container']}`}>
                         <table>
@@ -63,16 +63,16 @@ const CustomerOrdersPage = () => {
                                         <td colSpan="7">You have no orders.</td>
                                     </tr>
                                 ) : (
-                                    orders.map(order => (
+                                    orders.sort((a, b) => b.orderDate - a.orderDate).map(order => (
                                         <tr key={order.id}>
                                             <td className="col-md-1">{order.id}</td>
                                             <td className="col-md-3">{order.product && order.product.productName ? order.product.productName : `Description: ${order.description}`}</td>
-                                            <td>{order.product && order.product.productType ? order.product.productType : 'TBD'}</td>
+                                            <td className="text-capitalize">{order.product && order.product.productType ? order.product.productType : 'TBD'}</td>
                                             <td>{formatDate(order.orderDate)}</td>
                                             <td>{order.totalAmount != null ? formatPrice(order.totalAmount) : 'TBD'}</td>
-                                            <td>{order.status}</td>
+                                            <td className="text-capitalize">{order.status.replaceAll("_", " ")}</td>
                                             <td>
-                                                {/* {
+                                                {
                                                     order.status == 'wait_customer' || order.status == 'pending_design'
                                                         ? <>
                                                             <Link to={`/profile/your-request`}>
@@ -82,14 +82,18 @@ const CustomerOrdersPage = () => {
                                                             </Link>
                                                         </>
                                                         : <>
-
+                                                            <Link to={`/profile/your-orders/${order.id}`}>
+                                                                <button className='fs-6'>
+                                                                    View details
+                                                                </button>
+                                                            </Link>
                                                         </>
-                                                } */}
-                                                <Link to={`/profile/your-orders/${order.id}`}>
+                                                }
+                                                {/* <Link to={`/profile/your-orders/${order.id}`}>
                                                     <button className='fs-6'>
                                                         View details
                                                     </button>
-                                                </Link>
+                                                </Link> */}
                                             </td>
                                         </tr>
                                     ))

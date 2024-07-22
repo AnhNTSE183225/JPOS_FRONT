@@ -109,21 +109,24 @@ const Production = ({ order }) => {
                         {
                             order.modelFile === null
                                 ? <>
-                                    <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                    <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: '600px' }} />
                                 </>
                                 : <>
-                                    <div className="container position-relative">
-                                        <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                        <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                        {
-                                            order.modelFile.split("|").map((image, index) => {
-                                                if (index == activeProductionImage) {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                } else {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                }
-                                            })
-                                        }
+                                    <div className="d-flex justify-content-between">
+                                        <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                        <div style={{ height: '600px' }}>
+                                            {
+                                                order.modelFile.split("|").map((image, index) => {
+                                                    if (index == activeProductionImage) {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                                    } else {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                        <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
+
                                     </div>
                                 </>
                         }
@@ -135,10 +138,18 @@ const Production = ({ order }) => {
                                 <div key={diamond.diamondId}>
                                     <h5 className='fw-semibold mb-4'>Diamond #{diamond.diamondId}</h5>
                                     <div className='fs-6'>
+                                        <p className={styles.listItem}><span>Diamond Code:</span><span>{diamond.diamondCode}</span></p>
+                                        <p className={`${styles.listItem}`}><span className="w-50">Diamond Name:</span><span className="text-end w-50">{diamond.diamondName}</span></p>
                                         <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
                                         <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
                                         <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
-                                        <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
+                                        <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut.replaceAll("_", " ")}</span></p>
+                                        <p className={styles.listItem}><span>Carat weight:</span> <span>{diamond.caratWeight}</span></p>
+                                        <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
+                                        <p className={styles.listItem}><span>Proportions:</span> <span>{diamond.proportions}</span></p>
+                                        <p className={styles.listItem}><span>Fluorescence:</span> <span>{diamond.fluorescence.replaceAll("_", " ")}</span></p>
+                                        <p className={`${styles.listItem}`}><span>Symmetry:</span> <span>{diamond.symmetry.replaceAll("_", " ")}</span></p>
+                                        <p className={styles.listItem}><span>Polish:</span> <span>{diamond.polish.replaceAll("_", " ")}</span></p>
                                     </div>
                                 </div>
                             )
@@ -178,24 +189,26 @@ const Production = ({ order }) => {
                     <div className="col text-center">
                         <label className="form-label ">Upload completed image of product</label>
                         <input className="form-control mb-3" multiple={true} type="file" onChange={(e) => setDesignFiles(e.target.files)} />
-                        <div className={`position-relative`}>
-                            <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                            <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                            {
-                                imageUrls.length > 0
-                                    ? imageUrls.map((image, index) => {
-                                        if (activeImage == index) {
-                                            return (
-                                                <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" />
-                                            )
-                                        } else {
-                                            return (
-                                                <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
-                                            )
-                                        }
-                                    })
-                                    : <p>URL: Not provided</p>
-                            }
+                        <div className={`d-flex justify-content-between`}>
+                            <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                            <div style={{ height: '600px' }}>
+                                {
+                                    imageUrls.length > 0
+                                        ? imageUrls.map((image, index) => {
+                                            if (activeImage == index) {
+                                                return (
+                                                    <img className='img-fluid' style={{ width: 'auto', height: '100%' }} key={index} src={image} crossOrigin="anonymous" />
+                                                )
+                                            } else {
+                                                return (
+                                                    <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                )
+                                            }
+                                        })
+                                        : <p>URL: Not provided</p>
+                                }
+                            </div>
+                            <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                         </div>
                         <div className="row mt-3">
                             {
@@ -208,6 +221,9 @@ const Production = ({ order }) => {
                                     : <>
                                         <div className="col">
                                             <button className={`w-100 ${styles[`custom-button`]}`} onClick={uploadImages} >Upload image</button>
+
+                                        </div>
+                                        <div className="col">
                                             <button className={`w-100 ${styles[`custom-button`]}`} onClick={handleSubmit}>Submit order</button>
                                         </div>
                                     </>

@@ -200,10 +200,10 @@ const WaitManager = () => {
                             <h4>Total: <span style={{ color: '#48AAAD' }}>{formatPrice(totalAmount)}</span></h4>
                             <div className="row">
                                 <div className="col d-flex">
-                                    <button onClick={acceptQuote} className={styles.button}>Accept</button>
+                                    <button onClick={acceptQuote} className={`${styles.button} rounded-0`}>Accept</button>
                                 </div>
                                 <div className="col d-flex">
-                                    <button onClick={refuseQuote} className={`${styles.button} ${styles["secondary-button"]}`}>Refuse</button>
+                                    <button onClick={refuseQuote} className={`${styles.button} rounded-0 ${styles["secondary-button"]}`}>Refuse</button>
                                 </div>
                             </div>
                         </div>

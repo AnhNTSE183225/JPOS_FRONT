@@ -119,7 +119,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
                     {
                         order.saleStaff == null
                             ? <>
-                                <select className={`form-select`} value={selectedSaleStaff} onChange={(e) => setSelectedSaleStaff(e.target.value)}>
+                                <select className={`form-select rounded-0`} value={selectedSaleStaff} onChange={(e) => setSelectedSaleStaff(e.target.value)}>
                                     <option value=''>Select a staff</option>
                                     {saleStaff.map((staff, index) =>
                                         <option key={index} value={staff.staffId}>{staff.name} - {staff.phone}</option>
@@ -144,7 +144,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
                                 {
                                     order.designStaff == null
                                         ? <>
-                                            <select className={`form-select`} value={selectedDesignStaff} onChange={(e) => setSelectedDesignStaff(e.target.value)}>
+                                            <select className={`form-select rounded-0`} value={selectedDesignStaff} onChange={(e) => setSelectedDesignStaff(e.target.value)}>
                                                 <option value=''>Select a staff</option>
                                                 {designStaff.map((staff, index) =>
                                                     <option key={index} value={staff.staffId}>{staff.name} - {staff.phone}</option>
@@ -167,7 +167,7 @@ const AssignColumn = ({ order, fetchOrder }) => {
                     {
                         order.productionStaff == null
                             ? <>
-                                <select className={`form-select`} value={selectedProductionStaff} onChange={(e) => setSelectedProductionStaff(e.target.value)}>
+                                <select className={`form-select rounded-0`} value={selectedProductionStaff} onChange={(e) => setSelectedProductionStaff(e.target.value)}>
                                     <option value=''>Select a staff</option>
                                     {productionStaff.map((staff, index) =>
                                         <option key={index} value={staff.staffId}>{staff.name} - {staff.phone}</option>
@@ -352,27 +352,31 @@ const OrderDetails = () => {
                             <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                             <h5 className='fw-semibold'>Customer address</h5>
                             <p className='fs-6 ms-4'>{order.customer.address}</p>
-                            <h5 className='fw-semibold'>Note</h5>
-                            <p className='fs-6 ms-4'>{order.note}</p>
+                            <h5 className='fw-semibold'>Budget</h5>
+                            <p className='fs-6 ms-4 text-justify'>{formatPrice(order.budget)}</p>
+                            <h5 className='fw-semibold'>Description</h5>
+                            <p className='fs-6 text-justify'>{order.description}</p>
                             <h5 className='fw-semibold'>Reference images</h5>
                             {
                                 order.designFile === null
                                     ? <>
-                                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: 'auto', height: '600px' }} />
                                     </>
                                     : <>
-                                        <div className="position-relative">
-                                            <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                            <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles[`image-btn`]} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                            {
-                                                order.designFile.split("|").map((image, index) => {
-                                                    if (index == activeReferenceImage) {
-                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                    } else {
-                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                    }
-                                                })
-                                            }
+                                        <div className="d-flex justify-content-between">
+                                            <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                            <div style={{ height: '600px' }}>
+                                                {
+                                                    order.designFile.split("|").map((image, index) => {
+                                                        if (index == activeReferenceImage) {
+                                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                                        } else {
+                                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                        }
+                                                    })
+                                                }
+                                            </div>
+                                            <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles[`image-btn`]}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                         </div>
                                     </>
                             }
@@ -380,21 +384,23 @@ const OrderDetails = () => {
                             {
                                 order.modelFile === null
                                     ? <>
-                                        <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                                        <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: 'auto', height: '600px' }} />
                                     </>
                                     : <>
-                                        <div className="container position-relative">
-                                            <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                            <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                            {
-                                                order.modelFile.split("|").map((image, index) => {
-                                                    if (index == activeProductionImage) {
-                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                    } else {
-                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                    }
-                                                })
-                                            }
+                                        <div className="d-flex justify-content-between">
+                                            <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                            <div style={{ height: '600px' }}>
+                                                {
+                                                    order.modelFile.split("|").map((image, index) => {
+                                                        if (index == activeProductionImage) {
+                                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                                        } else {
+                                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                        }
+                                                    })
+                                                }
+                                            </div>
+                                            <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                         </div>
                                     </>
                             }
@@ -402,21 +408,24 @@ const OrderDetails = () => {
                             {
                                 order.productImage === null
                                     ? <>
-                                        <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: '100%', height: 'auto' }} />
+                                        <img className='img-fluid' src={order.productImage === null ? empty_image : order.productImage} alt="" style={{ width: 'auto', height: '600px' }} />
                                     </>
                                     : <>
-                                        <div className="position-relative">
-                                            <button onClick={() => handleFinalImageMove(false)} disabled={activeFinalImage == 0} hidden={order.productImage.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                            <button onClick={() => handleFinalImageMove(true)} disabled={activeFinalImage == order.productImage.split("|").length - 1} hidden={order.productImage.split("|").length <= 0} className={`${styles[`image-btn`]} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                            {
-                                                order.productImage.split("|").map((image, index) => {
-                                                    if (index == activeFinalImage) {
-                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                    } else {
-                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                    }
-                                                })
-                                            }
+                                        <div className="d-flex justify-content-between">
+                                            <button onClick={() => handleFinalImageMove(false)} disabled={activeFinalImage == 0} hidden={order.productImage.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                            <div style={{ height: '600px' }}>
+                                                {
+                                                    order.productImage.split("|").map((image, index) => {
+                                                        if (index == activeFinalImage) {
+                                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                                        } else {
+                                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                        }
+                                                    })
+                                                }
+                                            </div>
+                                            <button onClick={() => handleFinalImageMove(true)} disabled={activeFinalImage == order.productImage.split("|").length - 1} hidden={order.productImage.split("|").length <= 0} className={`${styles[`image-btn`]}`}><FontAwesomeIcon icon={faCaretRight} /></button>
+
                                         </div>
                                     </>
                             }
@@ -439,17 +448,17 @@ const OrderDetails = () => {
                                         <h5 className='fw-semibold mb-4'>Diamond #{diamond.diamondId}</h5>
                                         <div className='fs-6'>
                                             <p className={styles.listItem}><span>Diamond Code:</span><span>{diamond.diamondCode}</span></p>
-                                            <p className={styles.listItem}><span>Diamond Name:</span><span>{diamond.diamondName}</span></p>
+                                            <p className={`${styles.listItem}`}><span className="w-50">Diamond Name:</span><span className="text-end w-50">{diamond.diamondName}</span></p>
                                             <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
                                             <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
                                             <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
-                                            <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
+                                            <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut.replaceAll("_", " ")}</span></p>
                                             <p className={styles.listItem}><span>Carat weight:</span> <span>{diamond.caratWeight}</span></p>
                                             <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
                                             <p className={styles.listItem}><span>Proportions:</span> <span>{diamond.proportions}</span></p>
-                                            <p className={styles.listItem}><span>Fluorescence:</span> <span>{diamond.fluorescence}</span></p>
-                                            <p className={styles.listItem}><span>Symmetry:</span> <span>{diamond.symmetry}</span></p>
-                                            <p className={styles.listItem}><span>Polish:</span> <span>{diamond.polish}</span></p>
+                                            <p className={styles.listItem}><span>Fluorescence:</span> <span>{diamond.fluorescence.replaceAll("_", " ")}</span></p>
+                                            <p className={`${styles.listItem}`}><span>Symmetry:</span> <span>{diamond.symmetry.replaceAll("_", " ")}</span></p>
+                                            <p className={styles.listItem}><span>Polish:</span> <span>{diamond.polish.replaceAll("_", " ")}</span></p>
                                         </div>
                                     </div>
                                 )
@@ -493,7 +502,7 @@ const OrderDetails = () => {
                                         <p className={styles.listItem}><span>Payment method:</span> <span>{payment.paymentMethod}</span></p>
                                         <p className={styles.listItem}><span>Paid:</span> <span>{formatPrice(payment.amountPaid)}</span></p>
                                         <p className={styles.listItem}><span>Total:</span> <span>{formatPrice(payment.amountTotal)}</span></p>
-                                        <p className={styles.listItem}><span>Needs to pay:</span> <span>{formatPrice(payment.amountTotal-payment.amountPaid)}</span></p>
+                                        <p className={styles.listItem}><span>Needs to pay:</span> <span>{formatPrice(payment.amountTotal - payment.amountPaid)}</span></p>
                                         <p className={styles.listItem}><span>Payment status:</span> <span>{payment.paymentStatus}</span></p>
                                     </div>
                                     : <>

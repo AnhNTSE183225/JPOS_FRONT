@@ -191,11 +191,11 @@ const WaitCustomer = ({ order }) => {
                                 </>
                         }
                         {processing
-                            ? <button className="btn btn-primary w-100" type="button" disabled>
+                            ? <button className={`btn rounded-0 w-100 ${styles['submit-button']}`} type="button" disabled>
                                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                 <span role="status">Loading...</span>
                             </button>
-                            : <button onClick={clickPay} className={`btn w-100 ${styles['submit-button']}`}>
+                            : <button onClick={clickPay} className={`btn rounded-0 w-100 ${styles['submit-button']}`}>
                                 Accept quotation & pay {formatPrice((currentDiamondPrice + currentMaterialPrice + order.ematerialPrice + order.ediamondPrice + order.productionPrice) * order.markupRate * 1.1 * 0.3)} (30% price)
                             </button>
                         }

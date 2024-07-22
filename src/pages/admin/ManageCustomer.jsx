@@ -194,15 +194,14 @@ const ManageCustomer = () => {
     return (
         <div className="container-fluid">
             <div className="row mb-3">
-                <h1 className="p-0 text-center mt-5 mb-5" style={{ marginBottom: '1rem' }}>MANAGE CUSTOMERS</h1>
                 <div className="col-lg-3" id={`${styles['manage-customer-search-bar']}`}>
-                    <input onChange={(e) => setSearch(e.target.value)} className='form-control' placeholder='Search employees' type="text" />
+                    <input onChange={(e) => setSearch(e.target.value)} className='form-control rounded-0' placeholder='Search customer &#128270;' type="text" />
                 </div>
             </div>
             <div className="row mb-3">
-                <div className="col">
-                    <div className="container-fluid">
-                        <div className="row mb-3 fw-bold border-bottom border-black">
+                <div className="col p-0">
+                    <div className="container-fluid border">
+                        <div className="row py-2 mb-3 fw-bold border-bottom border-black">
                             <div className="col-1 d-flex justify-content-center align-items-center">ID</div>
                             <div className="col-2 d-flex justify-content-start align-items-center">Name</div>
                             <div className="col d-flex justify-content-start align-items-center">Address</div>
@@ -214,7 +213,7 @@ const ManageCustomer = () => {
                         {
                             listQuery != null
                                 ? listQuery.map((customer, index) => (
-                                    <div className="row mb-3 border-bottom" key={index}>
+                                    <div className="row border-bottom align-middle" key={index}>
                                         <div className="col-1 text-break d-flex justify-content-center align-items-center">{customer.customerId}</div>
                                         <div className="col-2 text-break d-flex justify-content-start align-items-center">{customer.name}</div>
                                         <div className="col text-break d-flex justify-content-start align-items-center">{customer.address}</div>

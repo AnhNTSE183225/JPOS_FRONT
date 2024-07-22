@@ -14,7 +14,7 @@ const PendingDesign = ({ order }) => {
     const navigate = useNavigate();
 
     const [note, setNote] = useState('');
-    const validateNote = validateString(note, 8, 512);
+    const validateNote = validateString(note, 8, Math.INFINITY);
     const [processing, setProcessing] = useState(false);
 
     const handleSubmit = async (accepted) => {
@@ -68,37 +68,33 @@ const PendingDesign = ({ order }) => {
                     : <></>
             }
             <div className="container-fluid p-3">
-            <FontAwesomeIcon className={`${styles['back-icon']} position-absolute`} icon={faLeftLong} onClick={() => navigate(-1)} />
-                <div className="row mt-5">
-                    <h1>A design staff has sent you a design</h1>
+                <div className="row mb-3">
+                    <div className="col">
+                        <FontAwesomeIcon className={`${styles['back-icon']} `} icon={faLeftLong} onClick={() => navigate(-1)} />
+                    </div>
                 </div>
                 <div className="row mb-3">
-                    <div className="col-md-8 mx-auto">
-                        {
-                            order.modelFile === null
-                                ? <>
-                                    <img className='img-fluid' src={order.modelFile === null ? empty_image : order.modelFile} alt="" style={{ width: '100%', height: 'auto' }} />
-                                </>
-                                : <>
-                                    <div className="position-relative">
-                                        <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                        <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                        {
-                                            order.modelFile.split("|").map((image, index) => {
-                                                if (index == activeProductionImage) {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                } else {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                }
-                                            })
+                    <div className="col">
+                        <div className="d-flex justify-content-between">
+                            <button onClick={() => handleProductionImageMove(false)} disabled={activeProductionImage == 0} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+
+                            <div style={{ height: '600px' }}>
+                                {
+                                    order.modelFile.split("|").map((image, index) => {
+                                        if (index == activeProductionImage) {
+                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                        } else {
+                                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
                                         }
-                                    </div>
-                                </>
-                        }
+                                    })
+                                }
+                            </div>
+                            <button onClick={() => handleProductionImageMove(true)} disabled={activeProductionImage == order.modelFile.split("|").length - 1} hidden={order.modelFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
+                        </div>
                     </div>
                 </div>
                 <div className="col-md mb-3">
-                    <textarea placeholder='Leave notes....' style={{ resize: "none" }} maxLength={255} className="form-control rounded-0" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
+                    <textarea placeholder='Leave notes....' style={{ resize: "none" }} className="form-control rounded-0" onChange={(e) => setNote(e.target.value)} rows='5' cols='30' aria-label="description"></textarea>
                     <div className="form-text text-danger">{validateNote.reason}</div>
                 </div>
                 <div className='row  mb-3'>

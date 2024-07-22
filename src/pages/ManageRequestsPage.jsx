@@ -42,7 +42,7 @@ const ManageRequestsPage = () => {
                         <td>{order.customer.name}</td>
                         <td>{formatDate(order.orderDate)}</td>
                         <td>{order.totalAmount == null ? `Budget: ${formatPrice(order.budget)}` : `Price: ${formatPrice(order.totalAmount)}`}</td>
-                        <td>{order.status.replaceAll("_", " ")}</td>
+                        <td className="text-capitalize">{order.status.replaceAll("_", " ")}</td>
                         <td>
                             {
                                 order.status == 'wait_manager'

@@ -12,7 +12,7 @@ const TableComponent = ({ requests }) => {
     useDocumentTitle("Custom Requests");
 
     return (
-        <table className={`${styles['request-table']}`}>
+        <table className={`${styles['request-table']} fs-6`}>
             <thead>
                 <tr id={`${styles['table-head']}`}>
                     <th className='col-md-1'>Order ID</th>
@@ -24,15 +24,15 @@ const TableComponent = ({ requests }) => {
                 </tr>
             </thead>
             <tbody>
-                {requests.filter((a, b) => b.id - a.id).map(request => (
+                {requests.sort((a, b) => b.id - a.id).map(request => (
                     <tr key={request.id}>
                         <td className='col-md-1'>{request.id}</td>
                         <td>{request.customer.name}</td>
                         <td>{formatDate(request.orderDate)}</td>
                         <td>{request.totalAmount !== null ? `Price: ${formatPrice(request.totalAmount)}` : `Budget: ${formatPrice(request.budget)}`}</td>
-                        <td>{request.status}</td>
+                        <td className='text-capitalize'>{request.status.replaceAll("_"," ")}</td>
                         <td>
-                            <button onClick={() => navigate(`/staff/request/select/${request.id}`)} className='btn'>Manage</button>
+                            <button onClick={() => navigate(`/staff/request/select/${request.id}`)} className='btn rounded-0'>Manage</button>
                         </td>
                     </tr>
                 ))}
@@ -70,10 +70,10 @@ const RequestPage = () => {
                 response = axios.get(`${import.meta.env.VITE_jpos_back}/api/order/all`, { headers });
         }
 
-        if (response.status === 204) {
-            toast.info(`No available requests`);
-        } else {
+        if (response.status === 200) {
             setRequests(response.data);
+        } else {
+            toast.info("No orders.");
         }
     }
 
@@ -83,7 +83,6 @@ const RequestPage = () => {
 
     return (
         <div>
-
             <TableComponent requests={requests} />
         </div>
     )

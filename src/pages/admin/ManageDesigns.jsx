@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, setRef } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, setRef } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -513,7 +513,13 @@ const ManageDesigns = () => {
                                             </td>
                                         </tr>
                                     ))
-                                    : <></>
+                                    : <>
+                                        <tr>
+                                            <td colSpan={6}>
+                                                <LinearProgress />
+                                            </td>
+                                        </tr>
+                                    </>
                             }
                         </tbody>
                     </table>

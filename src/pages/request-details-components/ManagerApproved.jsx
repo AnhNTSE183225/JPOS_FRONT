@@ -59,6 +59,10 @@ const ManagerApproved = ({ order }) => {
             <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
             <h5 className='fw-semibold'>Customer address</h5>
             <p className='fs-6 ms-4'>{order.customer.address}</p>
+            <h5 className='fw-semibold'>Budget</h5>
+            <p className='fs-6 ms-4'>{formatPrice(order.budget)}</p>
+            <h5 className='fw-semibold'>Description</h5>
+            <p className='fs-6'>{order.description}</p>
             <h5 className='fw-semibold'>Reference image</h5>
             {
               order.designFile === null
@@ -66,18 +70,20 @@ const ManagerApproved = ({ order }) => {
                   <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
                 </>
                 : <>
-                  <div className="position-relative">
-                    <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                    <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                    {
-                      order.designFile.split("|").map((image, index) => {
-                        if (index == activeReferenceImage) {
-                          return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                        } else {
-                          return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                        }
-                      })
-                    }
+                  <div className="d-flex justify-content-between">
+                    <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                    <div style={{height: '400px'}}>
+                      {
+                        order.designFile.split("|").map((image, index) => {
+                          if (index == activeReferenceImage) {
+                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                          } else {
+                            return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                          }
+                        })
+                      }
+                    </div>
+                    <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                   </div>
                 </>
             }

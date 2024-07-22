@@ -1,4 +1,4 @@
-import { Button, Pagination, setRef, Switch } from "@mui/material";
+import { Button, LinearProgress, Pagination, setRef, Switch } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -75,24 +75,23 @@ const ManageDiamonds = () => {
     return (
         <div className="container-fluid">
             <div className="row mb-3">
-                <h1 className="p-0 mt-5 mb-5 text-center">MANAGE DIAMONDS</h1>
                 <div className="col-lg-4 p-0 ">
-                    <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search" className="form-control" />
+                    <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search Diamond Id/Code &#128270;" className="form-control rounded-0" />
+                </div>
+                <div className="col">
+                    <button className="btn btn-primary rounded-0" onClick={() => {
+                        navigate('create')
+                    }}>Create new diamond</button>
                 </div>
                 <div className="col">
                     <Pagination count={totalPage} page={pageNo + 1} onChange={(event, value) => {
                         setPageNo(value - 1)
                     }} />
                 </div>
-                <div className="col-md">
-                    <Button onClick={() => {
-                        navigate('create')
-                    }}>Create new diamond</Button>
-                </div>
             </div>
             <div className="row mb-3">
 
-                <table className="text-start table">
+                <table className="border text-start table align-middle">
                     <thead className="text-center">
                         <tr>
                             <th className="text-start">ID</th>
@@ -101,13 +100,13 @@ const ManageDiamonds = () => {
                             <th className="">Color</th>
                             <th className="">Cut</th>
                             <th className="">Clarity</th>
-                            <th className="">Weight</th>
+                            <th className="">Weight (g)</th>
                             <th className="">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            queryList !== null
+                            queryList.length > 0
                                 ? queryList.slice(pageNo * pageSize, pageNo * pageSize + pageSize).map((diamond, index) => (
                                     <tr key={index}>
                                         <td className="col-md-1">{diamond.diamondId}</td>
@@ -126,7 +125,11 @@ const ManageDiamonds = () => {
                                         </td>
                                     </tr>
                                 ))
-                                : <></>
+                                : <>
+                                    <tr>
+                                        <td colSpan={8}><LinearProgress /></td>
+                                    </tr>
+                                </>
                         }
                     </tbody>
                 </table>

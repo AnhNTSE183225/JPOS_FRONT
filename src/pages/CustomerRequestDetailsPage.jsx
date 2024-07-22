@@ -49,12 +49,12 @@ const CustomerRequestDetailsPage = () => {
             <div className='container' id={`${styles['customer-request-detail']}`}>
                 <div className="row p-0 gap-3">
                     <div className='col p-0'>
-                        <button onClick={() => setCurrentIndex(val => val - 1)} className={` ${styles['btn']} ${currentIndex <= 0 ? styles['disabled'] : ''} btn btn-primary w-100`}>
+                        <button disabled={currentIndex == 0} onClick={() => setCurrentIndex(val => val - 1)} className={`border ${styles['btn']} btn rounded-0 text-white w-100`}>
                             Previous
                         </button>
                     </div>
                     <div className='col p-0'>
-                        <button onClick={() => setCurrentIndex(val => val + 1)} className={` ${styles['btn']} ${currentIndex <= 0 ? styles['disabled'] : ''} btn btn-primary w-100`}>
+                        <button disabled={currentIndex == orderList.length-1} onClick={() => setCurrentIndex(val => val + 1)} className={`border ${styles['btn']} btn rounded-0 text-white w-100`}>
                             Next
                         </button>
                     </div>

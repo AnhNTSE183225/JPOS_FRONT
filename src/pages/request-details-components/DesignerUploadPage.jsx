@@ -7,7 +7,7 @@ import useDocumentTitle from '../../components/Title';
 import empty_image from '/src/assets/empty_image.jpg';
 import styles from '/src/css/DesignerUploadPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft, faCaretRight, faLeftLong, faRightLong } from '@fortawesome/free-solid-svg-icons';
 import { LinearProgress } from '@mui/material';
 
 const DesignerUploadPage = ({ order }) => {
@@ -91,7 +91,8 @@ const DesignerUploadPage = ({ order }) => {
 
     return (
         <>
-            <div className="container">
+            <div className="container position-relative">
+                <FontAwesomeIcon icon={faLeftLong} className='fs-1 position-absolute pe-auto'/>
                 <div className="row mt-3">
                     <div className="col-md-8">
                         <h4 className="text-center fw-bold mb-4 mt-4">CUSTOMER INFORMATION</h4><hr />
@@ -99,6 +100,10 @@ const DesignerUploadPage = ({ order }) => {
                         <p className='fs-6 ms-4'>[ID: {order.customer.customerId}] {order.customer.name}</p>
                         <h5 className='fw-semibold'>Customer address</h5>
                         <p className='fs-6 ms-4'>{order.customer.address}</p>
+                        <h5 className='fw-semibold'>Budget</h5>
+                        <p className='fs-6 ms-4'>{formatPrice(order.budget)}</p>
+                        <h5 className='fw-semibold'>Description</h5>
+                        <textarea value={order.description.trim()} style={{ resize: "none" }} maxLength={255} className="form-control rounded-0" rows='10' cols='30' disabled={true}></textarea>
                         <h5 className='fw-semibold'>Reference image</h5>
                         {
                             order.designFile === null
@@ -106,23 +111,32 @@ const DesignerUploadPage = ({ order }) => {
                                     <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
                                 </>
                                 : <>
-                                    <div className="position-relative">
-                                        <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                        <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                        {
-                                            order.designFile.split("|").map((image, index) => {
-                                                if (index == activeReferenceImage) {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto' }} />
-                                                } else {
-                                                    return <img key={index} className='img-fluid' src={image} alt="" style={{ width: '100%', height: 'auto', display: 'none' }} />
-                                                }
-                                            })
-                                        }
+                                    <div className="d-flex justify-content-between">
+                                        <button onClick={() => handleReferenceImageMove(false)} disabled={activeReferenceImage == 0} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                        <div style={{ height: '600px' }}>
+                                            {
+                                                order.designFile.split("|").map((image, index) => {
+                                                    if (index == activeReferenceImage) {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%' }} />
+                                                    } else {
+                                                        return <img key={index} className='img-fluid' src={image} alt="" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                        <button onClick={() => handleReferenceImageMove(true)} disabled={activeReferenceImage == order.designFile.split("|").length - 1} hidden={order.designFile.split("|").length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                     </div>
                                 </>
                         }
-                        <h5 className='fw-semibold'>Model feedback</h5>
-                        <textarea value={order.modelFeedback} style={{ resize: "none" }} maxLength={255} className="form-control" rows='5' cols='30' disabled={true}></textarea>
+                        {
+                            order.modelFeedback
+                                ? <>
+                                    <h5 className='fw-semibold'>Model feedback</h5>
+                                    <textarea value={order.modelFeedback} style={{ resize: "none" }} maxLength={255} className="form-control rounded-0" rows='5' cols='30' disabled={true}></textarea>
+                                </>
+                                : <>
+                                </>
+                        }
                     </div>
                     <div className="col-md-4">
                         <h4 className="text-center fw-bold mb-4 mt-4">ORDER SUMMARY</h4><hr />
@@ -175,25 +189,27 @@ const DesignerUploadPage = ({ order }) => {
                         <h2>Upload design file</h2>
                         <div>
                             <div className="mb-3">
-                                <input className="form-control mb-3" type="file" multiple={true} accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
-                                <div className={`position-relative `}>
-                                    <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute start-0 top-50`}><FontAwesomeIcon icon={faCaretLeft} /></button>
-                                    <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']} position-absolute end-0 top-50`}><FontAwesomeIcon icon={faCaretRight} /></button>
-                                    {
-                                        imageUrls.length > 0
-                                            ? imageUrls.map((image, index) => {
-                                                if (activeImage == index) {
-                                                    return (
-                                                        <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" />
-                                                    )
-                                                } else {
-                                                    return (
-                                                        <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" style={{ display: 'none' }} />
-                                                    )
-                                                }
-                                            })
-                                            : <p>URL: Not provided</p>
-                                    }
+                                <input className="form-control mb-3 rounded-0" type="file" multiple={true} accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
+                                <div className="d-flex justify-content-between">
+                                    <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
+                                    <div style={{ height: '400px' }}>
+                                        {
+                                            imageUrls.length > 0
+                                                ? imageUrls.map((image, index) => {
+                                                    if (activeImage == index) {
+                                                        return (
+                                                            <img className='img-fluid' style={{ width: 'auto', height: '100%' }} key={index} src={image} crossOrigin="anonymous" />
+                                                        )
+                                                    } else {
+                                                        return (
+                                                            <img className='img-fluid' key={index} src={image} crossOrigin="anonymous" style={{ width: 'auto', height: '100%', display: 'none' }} />
+                                                        )
+                                                    }
+                                                })
+                                                : <p>URL: Not provided</p>
+                                        }
+                                    </div>
+                                    <button onClick={() => handleImageMove(true)} disabled={activeImage == imageUrls.length - 1} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretRight} /></button>
                                 </div>
                                 <div className="row mt-3">
                                     {
