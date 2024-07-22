@@ -102,7 +102,7 @@ const WaitCustomer = ({ order }) => {
                         <h5 className='fw-semibold'>Customer address</h5>
                         <p className='fs-6 ms-4'>{order.customer.address}</p>
                         <h5 className='fw-semibold'>Reference image</h5>
-                        <img className='img-fluid' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
+                        <img className='img-fluid mb-3' src={order.designFile === null ? empty_image : order.designFile} alt="" style={{ width: '100%', height: 'auto' }} />
                         {
                             order.designFile === null
                                 ? <>
@@ -133,12 +133,18 @@ const WaitCustomer = ({ order }) => {
                                 <div key={diamond.diamondId}>
                                     <h5 className='fw-semibold mb-4'>Diamond #{diamond.diamondId}</h5>
                                     <div className='fs-6'>
-                                        <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
-                                        <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
-                                        <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
-                                        <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
-                                        <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut}</span></p>
-                                        <p className={styles.listItem}><span>Carat weight:</span> <span>{diamond.caratWeight}</span></p>
+                                    <p className={styles.listItem}><span>Diamond Code:</span><span>{diamond.diamondCode}</span></p>
+                                            <p className={`${styles.listItem}`}><span className="w-50">Diamond Name:</span><span className="text-end w-50">{diamond.diamondName}</span></p>
+                                            <p className={styles.listItem}><span>Shape:</span> <span>{diamond.shape.charAt(0).toUpperCase() + diamond.shape.slice(1)}</span></p>
+                                            <p className={styles.listItem}><span>Clarity:</span> <span>{diamond.clarity}</span></p>
+                                            <p className={styles.listItem}><span>Color:</span> <span>{diamond.color}</span></p>
+                                            <p className={styles.listItem}><span>Cut:</span> <span>{diamond.cut.replaceAll("_", " ")}</span></p>
+                                            <p className={styles.listItem}><span>Carat weight:</span> <span>{diamond.caratWeight}</span></p>
+                                            <p className={styles.listItem}><span>Origin:</span> <span>{diamond.origin}</span></p>
+                                            <p className={styles.listItem}><span>Proportions:</span> <span>{diamond.proportions}</span></p>
+                                            <p className={styles.listItem}><span>Fluorescence:</span> <span>{diamond.fluorescence.replaceAll("_", " ")}</span></p>
+                                            <p className={`${styles.listItem}`}><span>Symmetry:</span> <span>{diamond.symmetry.replaceAll("_", " ")}</span></p>
+                                            <p className={styles.listItem}><span>Polish:</span> <span>{diamond.polish.replaceAll("_", " ")}</span></p>
                                     </div>
                                 </div>
                             )

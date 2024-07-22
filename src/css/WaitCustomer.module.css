@@ -1,11 +1,16 @@
 .submit-button {
-    background-color: #48AAAD;
-    color: white;
+    margin-top: 1.5rem;
+    background-color: transparent;
+    border: 1px solid black;
+    color: black;
+    transition: 0.3s;
+    padding: 0.3rem;
 }
 
 .submit-button:hover {
-    background-color: rgba(72, 170, 173, 0.3);
-    color: #338c8f;
+    background-color: black;
+    color: white;
+    transform: scale(0.97);
 }
 
 .listItem {
