@@ -17,16 +17,6 @@
     width: 100%; 
 } */
 
-#build-your-own-nav .remove-button {
-    background-color: transparent;
-    border: none;
-    color: black;
-    transition: 0.3s;
-}
-
-#build-your-own-nav .remove-button:hover {
-    color: #48AAAD;
-}
 
 #build-your-own-nav .col:first-child {
     border-radius: 50px 0 0 50px;
@@ -59,4 +49,3 @@
 .final-button:hover #icon {
     right: -10px;
 }
-
