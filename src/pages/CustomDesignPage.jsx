@@ -133,7 +133,7 @@ const CustomDesignPage = () => {
                             <div className="mb-3">
                                 <label className="form-label">Give us reference images of your idea</label>
                                 <input type="file" className="form-control rounded-0 mb-3" multiple accept="image/*" onChange={(e) => setDesignFiles(e.target.files)} />
-                                <div className="d-flex justify-content-between align-items-center border mb-3">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
                                     <button onClick={() => handleImageMove(false)} disabled={activeImage == 0} hidden={imageUrls.length <= 0} className={`${styles['image-btn']}`}><FontAwesomeIcon icon={faCaretLeft} /></button>
                                     <div style={{ height: '400px', width: '400px' }}>
                                         {
